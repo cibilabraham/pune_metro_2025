@@ -1,0 +1,241 @@
+from django.forms import forms
+from django.forms import ModelForm, CheckboxSelectMultiple, MultipleChoiceField, DateField, CharField, TimeField
+from django.forms.models import ModelChoiceIterator, ChoiceField, ModelMultipleChoiceField
+from django.contrib.postgres.forms.ranges import DateRangeField, RangeWidget
+from fracas_site import settings
+from django.contrib.admin.widgets import AdminDateWidget
+from fracas.models import Asset, Defect, FailureData, FailureMode, CorrectiveAction, RootCause, ReviewBoard, DefectDiscussion, EmployeeMaster
+import datetime
+import uuid
+
+type_choices =[('', '')]
+
+if Asset.objects.all().exists():
+    type_choices = [(i['asset_type'], i['asset_type']) for i in Asset.objects.values('asset_type').distinct()]
+    type_choices.insert(0, ('', '----'))
+
+class ArrowCharField(CharField):
+    arrow = True
+
+class RootCauseDefectFailures(ModelMultipleChoiceField):
+    failures = True
+
+
+class RootCauseCorrectiveActions(ModelMultipleChoiceField):
+    actions = True
+
+
+class DefectFailuresChoiceField(ModelMultipleChoiceField):
+    defect_queryset = Defect.objects.all()
+
+
+class ModeFailuresChoiceField(ModelMultipleChoiceField):
+    failure_mode_queryset = FailureMode.objects.all()
+
+class ReviewBoardDefects(ModelMultipleChoiceField):
+    review_board_defects = True
+
+class FailureDataForm(ModelForm):
+    asset_type = ChoiceField(choices=type_choices, required=False)
+    date = DateField(input_formats = settings.DATE_INPUT_FORMATS)
+    cm_start_date = DateField(input_formats = settings.DATE_INPUT_FORMATS)
+    cm_end_date = DateField(input_formats = settings.DATE_INPUT_FORMATS)
+    time = TimeField(input_formats = settings.TIME_INPUT_FORMATS)
+    cm_start_time = TimeField(input_formats = settings.TIME_INPUT_FORMATS)
+    cm_end_time = TimeField(input_formats = settings.TIME_INPUT_FORMATS)
+    def __init__(self, *args, **kwargs):
+        super(FailureDataForm, self).__init__(*args, **kwargs)
+        if self.instance.asset_type:
+            self.fields['asset_config_id'].queryset = Asset.objects.filter(asset_type=self.instance.asset_type)
+            # queryset = queryset.filter(asset_config_id__asset_type = self.instance.asset_type)
+        
+    def save(self, *args, **kwargs):
+        instance = super(FailureDataForm, self).save(commit=False)
+        instance.save()
+        return instance
+    class Meta:
+        model = FailureData
+        fields = '__all__'
+
+
+class AssetForm(ModelForm):
+    asset_type = CharField(max_length=20)
+    class Meta:
+        model = Asset
+        fields = '__all__'
+
+
+class FailureModeForm(ModelForm):
+    start_date = DateField(input_formats = settings.DATE_INPUT_FORMATS, widget=AdminDateWidget(), required=False)
+    end_date = DateField(input_formats = settings.DATE_INPUT_FORMATS, widget=AdminDateWidget(), required=False)
+    asset_type = ChoiceField(choices=type_choices, required=False)
+    failure_data = ModeFailuresChoiceField(queryset=FailureData.objects.all(), widget = CheckboxSelectMultiple, required=False)
+
+
+    def __init__(self, *args, **kwargs):
+        super(FailureModeForm, self).__init__(*args, **kwargs)
+        if self.instance:
+            self.fields['failure_data'].initial = self.instance.failuredata_set.all()
+            self.fields['failure_data'].queryset = FailureData.objects.filter(asset_type=self.instance.asset_type)
+            queryset = self.get_queryset()
+            self.fields['failure_data'].queryset = queryset
+            
+            if self.instance.asset_type:
+                queryset = queryset.filter(asset_config_id__asset_type = self.instance.asset_type)
+            if self.instance.start_date:
+                queryset = queryset.filter(date__gte=self.instance.start_date)
+            if self.instance.end_date:
+                queryset = queryset.filter(date__lte=self.instance.end_date)
+            
+            for failure in self.fields['failure_data'].queryset:
+                failure.mode_description = self.instance.mode_description
+
+
+    def save(self, *args, **kwargs):
+        instance = super(FailureModeForm, self).save(commit=False)
+        instance.save()
+        self.cleaned_data['failure_data'].update(mode_id=instance)
+        return instance
+
+    def get_queryset(self, *args, **kwargs):
+        return self.fields['failure_data'].queryset
+
+
+    def get_queryset(self, *args, **kwargs):
+        return self.fields['failure_data'].queryset
+ 
+    class Meta:
+        model = FailureMode
+        fields = '__all__'
+
+
+class RootCauseForm(ModelForm):
+    root_cause_id = CharField(required=False)    
+    root_cause_status = ChoiceField(choices=[('Open', 'Open'), ('Resolved','Resolved'),  ('Update','Update'), ('Monitoring','Monitoring'), ('Closed','Closed')], required=False)
+    defect_failures = RootCauseDefectFailures(queryset=FailureData.objects.filter(asset_type='<?>&@'), required=False)
+    corrective_actions = RootCauseCorrectiveActions(queryset=CorrectiveAction.objects.filter(corrective_action_description='<?>&@'), required=False)
+    asset_type = ChoiceField(choices=type_choices, required=False)
+    immediate_cause = ArrowCharField(max_length=100, required=False)
+    leading_reasons = ArrowCharField(max_length=100, required=False)
+    root_cause_description = CharField(max_length=100, required=False)   
+
+    def __init__(self, *args, **kwargs):
+        super(RootCauseForm, self).__init__(*args, **kwargs)
+        if self.instance:
+            if self.instance.asset_type:
+                self.fields['defect'].queryset = Defect.objects.filter(asset_type=self.instance.asset_type)
+            if self.instance.defect:
+                self.fields['defect_failures'].initial = self.instance.defect.failuredata_set.all()
+                self.fields['defect_failures'].queryset = self.instance.defect.failuredata_set.all()
+                # self.fields['defect_failures'].queryset = FailureData.objects.filter(defect=self.instance.defect)
+                self.fields['corrective_actions'].initial = self.instance.defect.correctiveaction_set.all()
+                self.fields['corrective_actions'].queryset = self.instance.defect.correctiveaction_set.all()
+
+
+    def save(self, *args, **kwargs):
+        instance = super(RootCauseForm, self).save(commit=False)
+        instance.save()
+        return instance
+
+    class Meta:
+        model = RootCause
+        fields = '__all__'
+        empty_permitted=True
+
+
+class CorrectiveActionForm(ModelForm):
+    corrective_action_status = ChoiceField(choices=[('Open', 'Open'), ('Resolved','Resolved'),  ('Update','Update'), ('Monitoring','Monitoring'), ('Closed','Closed')], required=False)
+
+    class Meta:
+        model = CorrectiveAction
+        fields = '__all__'
+
+
+class DefectForm(ModelForm):
+    start_date = DateField(input_formats = settings.DATE_INPUT_FORMATS, widget=AdminDateWidget(), required=False)
+    end_date = DateField(input_formats = settings.DATE_INPUT_FORMATS, widget=AdminDateWidget(), required=False)
+    asset_type = ChoiceField(choices=type_choices, required=False)
+    failure_data = DefectFailuresChoiceField(queryset=FailureData.objects.all(), widget = CheckboxSelectMultiple, required=False)
+
+    class Meta:
+        model = Defect
+        fields = (
+                    'start_date',
+                    'end_date',
+                    'asset_type',
+                    'failure_data',
+                    'defect_description',
+                    'investigation',                    
+                    'defect_status_remarks',
+                    'oem_defect_reference',
+                    'defect_status',
+                    'defect_open_date',
+                    'defect_closed_date',
+                    'oem_target_date'
+                )
+
+    def __init__(self, *args, **kwargs):
+        super(DefectForm, self).__init__(*args, **kwargs)
+        if self.instance:
+            self.fields['failure_data'].initial = self.instance.failuredata_set.all()
+            self.fields['failure_data'].queryset = FailureData.objects.all()
+            queryset = self.get_queryset()
+            if self.instance.asset_type:
+                queryset = queryset.filter(asset_config_id__asset_type = self.instance.asset_type)
+            if self.instance.start_date:
+                queryset = queryset.filter(date__gte=self.instance.start_date)
+            if self.instance.end_date:
+                queryset = queryset.filter(date__lte=self.instance.end_date)
+            self.fields['failure_data'].queryset = queryset
+
+    def save(self, *args, **kwargs):
+        instance = super(DefectForm, self).save(commit=False)
+        self.fields['failure_data'].initial.update(defect=None)
+        instance.save()
+        self.cleaned_data['failure_data'].update(defect=instance)
+        return instance
+
+    def get_queryset(self, *args, **kwargs):
+        return self.fields['failure_data'].queryset
+
+
+class ReviewBoardForm(ModelForm):
+    from_date = DateField(input_formats = settings.DATE_INPUT_FORMATS, widget=AdminDateWidget(), required=False)
+    to_date = DateField(input_formats = settings.DATE_INPUT_FORMATS, widget=AdminDateWidget(), required=False)
+    asset_type = ChoiceField(choices=type_choices, required=False)
+    defect_data = ReviewBoardDefects(queryset=Defect.objects.all(), required=False)
+
+    def __init__(self, *args, **kwargs):
+            super(ReviewBoardForm, self).__init__(*args, **kwargs)
+            if self.instance:
+                if self.instance.asset_type:
+                    self.fields['defect_data'].queryset = Defect.objects.filter(asset_type=self.instance.asset_type)
+   
+    def save(self, *args, **kwargs):
+        instance = super(ReviewBoardForm, self).save(commit=False)
+        instance.save()
+        return instance
+
+    class Meta:
+        model = ReviewBoard
+        fields = '__all__'
+        empty_permitted=True
+
+
+class DefectDiscussionForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DefectDiscussionForm, self).__init__(*args, **kwargs)
+        if self.instance.get_asset_type():
+            self.fields['defect'].initial = Defect.objects.filter(asset_type=self.instance.get_asset_type())
+            self.fields['defect'].queryset = Defect.objects.filter(asset_type=self.instance.get_asset_type())
+
+
+    def has_changed(self):
+        """ Should returns True if data differs from initial. 
+        By always returning true even unchanged inlines will get validated and saved."""
+        return True
+
+    class Meta:
+        model = DefectDiscussion
+        fields = '__all__'
+        empty_permitted=True

@@ -1,0 +1,16 @@
+{% extends "django_sb_admin/base.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}<div class="breadcrumb"><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></div>{% endblock %}
+
+{% block sb_admin_content %}
+<div id="content-main" class="container">
+    <div class="card card-login mx-auto mt-5">
+      <h2 class="card-header text-center">Admin Login</h2>
+        <div class="card-body">
+            <p>{% trans "Thanks for spending some quality time with the Web site today." %}</p>
+            <p><a href="{% url 'admin:index' %}">{% trans 'Log in again' %}</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

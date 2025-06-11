@@ -1,0 +1,379 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                        {% if data.id != '' %}
+                        Update asset
+                        {% else %}
+                        Add asset
+                        {% endif %}
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-lg-12 mb-3">
+    
+    
+                    <a href="/forms/asset_register/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+            </div>
+            <!-- /.row -->
+           <form id="AssetRegisterForm"> 
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_config_id">*Asset config id:</label>
+                        <input type="hidden" id="id" name="id" value="{{data.id}}">
+                        <input type="text" class="form-control" required="required" id="asset_config_id" name="asset_config_id" value="{{data.asset_config_id}}">
+                        <div class="invalid-feedback">
+                         Please enter Asset config id.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_serial_number">*Asset serial number:</label>
+                        <input type="text" class="form-control" required="required" id="asset_serial_number" name="asset_serial_number" value="{{data.asset_serial_number}}">
+                        <div class="invalid-feedback">
+                         Please enter Asset serial number.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="location_id">*Location id:</label>
+                        <textarea class="form-control" required="required" id="location_id" name="location_id">{{data.location_id}}</textarea>
+                        <div class="invalid-feedback">
+                         Please enter Location id.
+                        </div>
+                    </div>
+                </div>
+
+           
+            </div>
+
+            <div class="row mb-4">
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_type">*Asset type:</label>
+                        {% if request.session.user_Role == 1 %}
+                        <select class="form-control" id="asset_type" name="asset_type" required="required">
+                        <option value="">--  Select Asset type  --</option>
+                        {% for asset_type in asset_types %}
+                        {% if asset_type.asset_type != '' %}
+                            {% if asset_type.id == data.asset_type %}
+                                <option value="{{asset_type.asset_type}}" selected>{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                            {% else %}
+                                <option value="{{asset_type.asset_type}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                            {% endif %}
+                                
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                        {% else %}  
+                        <select class="form-control" id="asset_type" name="asset_type" required="required">
+                        <option value="">--  Select Asset type  --</option>
+                        {% for asset_type in asset_types %}
+                        {% if asset_type.asset_type != '' %}
+                            {% if asset_type.id == data.asset_type %}
+                                <option value="{{asset_type.asset_type}}" selected>{{asset_type.asset_type}} </option>
+                            {% else %}
+                                <option value="{{asset_type.asset_type}}">{{asset_type.asset_type}} </option>
+                            {% endif %}
+                                
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                        {% endif %}  
+                        <div class="invalid-feedback">
+                         Please enter Asset type.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="software_version">Software version:</label>
+                        <input type="text" class="form-control" id="software_version" name="software_version" value="{{data.software_version}}">
+                        <div class="invalid-feedback">
+                         Please enter Software version.
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_status">*Asset status:</label>
+                        <select class="form-control" id="asset_status" name="asset_status" required="required">
+                            <option value="">--Select asset status--</option>
+                        {% if 'Online' == data.asset_status %}
+                            <option value="Online" selected>Online</option>
+                        {% else %}
+                            <option value="Online">Online</option>
+                        {% endif %}
+                        {% if 'Under Repair' == data.asset_status %}
+                            <option value="Under Repair" selected>Under Repair</option>
+                        {% else %}
+                            <option value="Under Repair">Under Repair</option>
+                        {% endif %}
+                        {% if 'Spare' == data.asset_status %}
+                            <option value="Spare" selected>Spare</option>
+                        {% else %}
+                            <option value="Spare">Spare</option>
+                        {% endif %}
+                        </select>
+                         <div class="invalid-feedback">
+                         Please enter Asset status.
+                        </div>
+                    </div>
+                </div>
+
+
+           
+            </div>
+
+            <div class="row mb-4">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="location_description">*Location description:</label>
+                        <textarea class="form-control" required="required" id="location_description" name="location_description">{{data.location_description}}</textarea>
+                        <div class="invalid-feedback">
+                         Please enter Location description.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_description">*Asset description:</label>
+                        <textarea class="form-control" required="required" id="asset_description" name="asset_description">{{data.asset_description}}</textarea>
+                        <div class="invalid-feedback">
+                         Please enter Asset description.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="software_description">Software description:</label>
+                        <textarea class="form-control" id="software_description" name="software_description">{{data.software_description}}</textarea>
+                         <div class="invalid-feedback">
+                         Please enter Software description.
+                        </div>
+                    </div>
+                </div>
+            
+           
+            </div>
+           
+            <div class="row ">
+                <div class="alert alert-warning col-12 d-none" id="message">
+                            
+                </div>
+            </div>
+
+            <div class="row mb-4" align="right">
+                <div class="col-12">  
+                    <input type="hidden" id="buttonClick">   
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(1);">Save</button>
+                    
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(2);">Save and add another</button>
+                
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(3);">Save and continue editing</button>
+                </div>
+            </div>
+        </form>
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+    });
+    function SetButton(id){
+        $('#buttonClick').val(id);
+        return true;
+    }
+
+    $( "#AssetRegisterForm" ).submit(function(e) {
+        e.preventDefault();
+        var buttonClick= $('#buttonClick').val()
+        var location_id= $('#location_id').val()
+        var asset_serial_number= $('#asset_serial_number').val()
+        var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+        var asset_description= $('#asset_description').val()
+        var software_version= $('#software_version').val()
+        var software_description= $('#software_description').val()
+        var asset_status= $('#asset_status').val()
+        var asset_config_id= $('#asset_config_id').val()
+        var location_description= $('#location_description').val()
+        var id= $('#id').val()
+
+        asset_description = asset_description.replace(/['"`]/g, '');
+        location_description = location_description.replace(/['"`]/g, '');
+        software_description = software_description.replace(/['"`]/g, '');
+
+
+        $.ajax({
+            url: "/forms/asset_register/addasset/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'location_id':location_id,
+                'asset_serial_number':asset_serial_number,
+                'asset_type':asset_type,
+                'asset_description' : asset_description,
+                'software_version': software_version,
+                'software_description' : software_description,
+                'asset_status' : asset_status,
+                'asset_config_id':asset_config_id,
+                'location_description':location_description,
+                'id':id,
+                'Action':'1',
+            },
+
+            success: function (response) {
+
+                if(response.status == '1') {
+                    if(buttonClick == 1){
+                        if(id == ""){
+                            swal({
+                                title: 'Successfully add new asset',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/asset_register/";
+                            })    
+
+                            // swal('Successfully add new asset')
+                            // window.location.href = "/forms/asset_register/";
+                        }else{
+                            swal({
+                                title: 'Successfully update asset',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/asset_register/";
+                            })
+
+                       
+                        }
+                        
+                         
+                    } 
+                    else if(buttonClick == 2){
+                        if(id == ""){
+                            swal({
+                                title: 'Successfully add new asset',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href  = "/forms/asset_register/addasset/";
+                            })  
+
+                        }else{
+                            swal({
+                                title: 'Successfully update asset',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/asset_register/addasset/";
+                            })   
+                            // swal('Successfully update asset')
+                            // window.location.href  = "/forms/asset_register/addasset/";
+                        }
+                        
+                    } 
+                    else if(buttonClick == 3) {
+                        if(id == ""){
+                            swal({
+                                title: 'Successfully add new asset',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/asset_register/addasset/"+response.id;
+                            })  
+                         
+                          
+                        }else{
+                            swal({
+                                title: 'Successfully update asset',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/asset_register/addasset/"+response.id;
+                            })  
+                         
+                        }
+                    
+                    }
+                }
+                else if(response.status == '2'){
+                    swal('Asset config id  exists in Failure data')
+                }
+                else{
+                    swal('Asset config id already exists')
+                   // $('#message').removeClass('d-none'); 
+                    //$('#message').html('Asset config id already exists.');
+                }
+            }
+        });
+        
+    });
+
+
+</script>
+
+{% endblock sb_admin_js %}

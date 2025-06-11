@@ -1,0 +1,26 @@
+{% load i18n admin_urls %}
+{% block object-tools-items %}
+<li class="nav-item">
+    {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+    <!-- <a class="btn btn-secondary" href="{% add_preserved_filters history_url %}" class="historylink">
+        {% trans "History" %}
+    </a> -->
+    <a href="{% add_preserved_filters history_url %}" class="btn btn-info btn-icon-split">
+        <span class="icon ">
+          <i class="fas fa-info-circle"></i>
+        </span>
+        <span class="text">{% trans "History" %}</span>
+      </a>
+</li>
+{% if has_absolute_url %}
+<li class="nav-item">
+    <!-- <a href="{{ absolute_url }}" class="viewsitelink">{% trans "View on site" %}</a> -->
+    <a href="{{ absolute_url }}" class="btn btn-info btn-icon-split">
+        <span class="icon ">
+          <i class="fas fa-info-circle"></i>
+        </span>
+        <span class="text">{% trans "View on site" %}</span>
+      </a>
+</li>
+{% endif %}
+{% endblock %}

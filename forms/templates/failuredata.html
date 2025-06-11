@@ -1,0 +1,410 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+     <style>
+        th:first-child,td:first-child,th:last-child,td:last-child,th:nth-child(2),td:nth-child(2) {  
+        background-color:white;    
+        }
+    </style>
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header"  style="margin-left:-15px">
+                      Failure data collection form
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <!-- /.row -->
+            {% if request.session.user_Role != 4 %}
+            <div class="row ">
+            <div class="col-lg-12 mb-5">
+                {% comment %} {% if request.session.user_Role == 1 %}   {% endcomment %}
+                <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
+
+
+                <a href="/forms/failuredata/importfailuredata/">  
+                    <button class="btn btn-primary btn-icon-split float-right m-2" >            
+                    <span class="text">Import failure data</span>
+                    <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                    </span>
+                    </button>
+                </a>
+                {% comment %} {% endif %} {% endcomment %}
+                <a href="/forms/failuredata/addfailuredata/">  
+                    <button class="btn btn-success btn-icon-split float-right m-2" >            
+                    <span class="text">Add failure data</span>
+                    <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                    </span>
+                    </button>
+                </a>
+            </div>
+            </div>
+             {% endif %}  
+
+            <div class="row mb-4">
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="asset_type">By asset type</label>
+                        {% if request.session.user_Role == 1 %}
+                            <select class="form-control" id="asset_type" name="asset_type" required="required">
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% else %}  
+                            <select class="form-control" id="asset_type" name="asset_type" required="required">
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %} 
+                    </div>
+                </div>
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="date">By date</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" value="">
+                    </div>
+                </div> 
+                
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="failure_type">Failure type:</label>
+                        <select class="form-control" id="failure_type" name="failure_type" required="required">
+                             <option value="all">--All--</option>
+                        
+                            <option value="Software">Software</option>
+                        
+                            <option value="Hardware">Hardware</option>
+                        
+                            <option value="Random">Random</option>
+                            <option value="Other">Other</option>
+                        
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="failure_type" name="failure_type" value="{{data.failure_type}}"> {% endcomment %}
+                         <div class="invalid-feedback">
+                         Please enter Failure type.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="safety_failure">Safety failure:</label>
+                        <select class="form-control" id="safety_failure" name="safety_failure" required="required">
+                            <option value="all">--All--</option>
+                            <option value="Yes">Yes</option>
+                            
+                            <option value="No">No</option>
+                           
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="safety_failure" name="safety_failure" value="{{data.safety_failure}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter Safety failure.
+                        </div>
+                    </div>
+                </div>
+           
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="mode_id">By mode id</label>
+                        <select class="form-control" id="mode_id" name="mode_id">
+                        <option value="all">--All--</option>
+                        {% for mode_id in mode_id %}
+                          {% if mode_id.mode_id != '' %}
+                            <option value="{{mode_id.id}}">{{mode_id.mode_id}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+               
+                <div class="col-md-3 pt-4">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter</button>
+                </div>
+                
+           
+            </div>
+
+          <div class="row">
+            <div class="col-md-12">
+                <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="bg-white"><input type="checkbox" id="deleteAll" /></th>
+                            <th class="bg-white">Failure id</th>
+                            <th>Asset type</th>
+                            <th>Asset config id</th>
+                            <th>Event description </th>
+                            <th>Mode id</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Detection</th>
+                            <th>Service delay (mins)</th>
+                            <th>Immediate investigation</th>
+                            <th>Failure type</th>
+                            <th>Safety failure</th>
+                            <th>Hazard id</th>
+                            <th>Cm description</th>
+                            <th>Replaced asset config id</th>
+                            <th>Cm start date</th>
+                            <th>Cm start time</th>
+                            <th>Cm end date</th>
+                            <th>Cm end time</th>
+                            <th>Oem failure reference</th>
+                            <th>defect</th>
+                            <th class="bg-white"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+        $("#deleteAll").click(function () {
+            $(".deleteAll").attr('checked', this.checked);
+        });
+
+         $('#date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+       $('#example').DataTable();
+        getDefectData();
+        /*var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+        var date= $('select[name=date] option').filter(':selected').val()
+        var failure_type= $('select[name=failure_type] option').filter(':selected').val()
+        var safety_failure= $('select[name=safety_failure] option').filter(':selected').val()
+        var mode_id= $('select[name=mode_id] option').filter(':selected').val()
+
+        $.ajax({
+            url: "/forms/failuredata/list/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            'data' : {
+                'asset_type':asset_type,
+                'date':date,
+                'failure_type':failure_type,
+                'safety_failure' : safety_failure,
+                'mode_id': mode_id,
+            },
+            success: function (response) {
+                alert('aaaaaa');
+                console.log(response);
+                var actions = response.data;
+            }
+        });*/
+
+    });
+
+    function deleteFailure(id){
+
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/failuredata/delete/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Failure data has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+    }
+
+    function getids(){
+        ids1=[];
+        $("input:checkbox[name=deleteAll]:checked").each(function(){
+            ids1.push($(this).val());
+        });
+    
+        // return ids1;
+        return ids1.toString();
+    }
+
+    function DELETEALL(){
+        ids= getids();
+        if (ids == ""){
+            swal("Please select atleast one record");
+            return false;
+        }
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/failuredata/deleteAll/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'ids':ids,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Failure data has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+    }
+
+    function getDefectData(){
+        var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+        var date= $('#date').val()
+        var failure_type= $('select[name=failure_type] option').filter(':selected').val()
+        var safety_failure= $('select[name=safety_failure] option').filter(':selected').val()
+        var mode_id= $('select[name=mode_id] option').filter(':selected').val()
+
+            $('#example').DataTable().destroy();
+            $('#example').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        { extend: 'excel', className: 'btn-outline-primary' },
+                        { extend: 'pdf', className: 'btn-outline-primary' },
+                        { extend: 'print', className: 'btn-outline-primary' }
+                    ],
+                    scrollY:        "350px",
+                    scrollX:        true,
+                    scrollCollapse: true,
+                    paging:         true,
+                    fixedColumns:   {
+                        left: 2,
+                        right: 1
+                    },
+                    "order": [[ 1, "asc" ]],
+                    "searching" : true,
+                    'ajax' : {
+                        "url": "/forms/failuredata/",
+                        "type": "POST",
+                        "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                        'data' : {
+                            'asset_type':asset_type,
+                            'date':date,
+                            'failure_type':failure_type,
+                            'safety_failure' : safety_failure,
+                            'mode_id': mode_id,
+                        }
+                    },
+                    "columns" : [
+                        {"data":null,"render":function(item){
+                            if(item.user_Role != 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                                else return '';
+                            }
+                        },
+                        {"data":null,"render":function(item){
+                            if(item.user_Role != 4 ) return '<a href="/forms/failuredata/addfailuredata/'+ item.id +'" >'+ item.failure_id +'</a>';
+                            else return item.failure_id;
+                            }
+                        },
+                        {"data" : "asset_type"},
+                        {"data" : "asset_config_id"},
+                        {"data" : "event_description"},
+                        {"data" : "mode_id"},
+                        //{"data" : "date"},
+                        {"data":null,"render":function(item){
+
+                                if(item.date != null){
+                                    return moment(item.date).format('DD-MM-YYYY');
+                                }
+                                return item.date;
+                            
+                            }
+                        },
+                        {"data" : "time"},
+                        {"data" : "detection"},
+                        {"data" : "service_delay"},
+                        {"data" : "immediate_investigation"},
+                        {"data" : "failure_type"},
+                        {"data" : "safety_failure"},
+                        {"data" : "hazard_id"},
+                        {"data" : "cm_description"},
+                        {"data" : "replaced_asset_config_id"},
+                        //{"data" : "cm_start_date"},
+                        {"data":null,"render":function(item){
+
+                            if(item.cm_start_date != null){
+                                return moment(item.cm_start_date).format('DD-MM-YYYY');
+                            }
+                            return item.cm_start_date;
+
+                            }
+                        },
+                        {"data" : "cm_start_time"},
+                       // {"data" : "cm_end_date"},
+                        {"data":null,"render":function(item){
+
+                            if(item.cm_end_date != null){
+                                return moment(item.cm_end_date).format('DD-MM-YYYY');
+                            }
+                            return item.cm_end_date;
+
+                            }
+                        },
+                        {"data" : "cm_end_time"},
+                        {"data" : "oem_failure_reference"},
+                        {"data" : "defect"},
+                        {"data":null,"render":function(item){
+                            if(item.user_Role != 4 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleteFailure('+ item.id +')">';
+                            else return '';
+                        }
+                        },
+                    ]
+            });
+        }
+
+</script>
+
+{% endblock sb_admin_js %}

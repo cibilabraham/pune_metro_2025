@@ -1,0 +1,355 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                      Review Board
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <!-- /.row -->
+            <form id="ReviewBoardForm"> 
+            <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add FRACAS Review</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form autocomplete="off">
+                        <div class="form-group">
+                            <label for="asset_type">*Select asset type</label>
+                            {% if request.session.user_Role == 1 %}
+                                <select class="form-control" id="asset_types" name="asset_types" required="required">
+                                    <option value="">-- Select asset type --</option>
+                                    {% for asset_type in asset_types %}
+                                    {% if asset_type.asset_type != '' %}
+                                        <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            {% else %}  
+                                <select class="form-control" id="asset_types" name="asset_types" required="required">
+                                    <option value="">-- Select asset type --</option>
+                                    {% for asset_type in asset_types %}
+                                    {% if asset_type.asset_type != '' %}
+                                        <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            {% endif %} 
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="from_date">*From Date</label>
+                                    <input type="text" class="form-control date-time" id="from_date" name="from_date" placeholder="DD/MM/YYYY" required="required" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="to_date">*To Date</label>
+                                    <input type="text" class="form-control date-time" id="to_date" name="to_date" placeholder="DD/MM/YYYY" autocomplete="off" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Details</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </form>
+
+        {% if request.session.user_Role != 4 %}
+        <div class="row ">
+        <div class="col-lg-12 mb-5">
+
+            <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
+
+          
+            <a data-toggle="modal" href="#add" id="addbutton">  
+                <button class="btn btn-success btn-icon-split float-right m-2" >            
+                <span class="text">Add Review Board</span>
+                <span class="icon text-white-50">
+                <i class="fas fa-plus"></i>
+                </span>
+                </button>
+            </a>
+        </div>
+        </div>
+         {% endif %}    
+
+
+            <div class="row mb-4">
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="asset_type">By asset type</label>
+                        {% if request.session.user_Role == 1 %}
+                            <select class="form-control" id="asset_type" name="asset_type" required="required">
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% else %}  
+                            <select class="form-control" id="asset_type" name="asset_type" required="required">
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %} 
+                    </div>
+                </div>
+
+                 <div class="col-md-3 pt-4">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter</button>
+                </div>
+
+            </div>
+
+            
+          <div class="row">
+            <div class="col-md-12">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="deleteAll" /></th>
+                            <th>Meeting Date</th>
+                            <th>Asset Type</th>
+                            <th>Meeting ID</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+        $("#deleteAll").click(function () {
+            $(".deleteAll").attr('checked', this.checked);
+        });
+
+         $('#from_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+          $('#to_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+        $('#example').DataTable();
+        getDefectData();
+        /*$.ajax({
+            url: "/forms/asset_register/list/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {},
+            success: function (response) {
+                console.log(response);
+                var actions = response.data;
+            }
+        });*/
+        if({{add}} == 1){
+           $('#add').modal('show');
+        }
+
+    });
+
+    function deletereviewboard(id){
+
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/review_board/delete/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Review board has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+    }
+
+    function getids(){
+        ids1=[];
+        $("input:checkbox[name=deleteAll]:checked").each(function(){
+            ids1.push($(this).val());
+        });
+    
+        // return ids1;
+        return ids1.toString();
+    }
+
+    function DELETEALL(){
+        ids= getids();
+        if (ids == ""){
+            swal("Please select atleast one record");
+            return false;
+        }
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/review_board/deleteAll/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'ids':ids,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Review board has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+    }
+
+
+
+ 
+
+function getDefectData(){
+    var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+        $('#example').DataTable().destroy();
+        $('#example').DataTable({
+                  dom: 'Bfrtip',
+                  buttons: [
+                    { extend: 'excel', className: 'btn-outline-primary' },
+                    { extend: 'pdf', className: 'btn-outline-primary' },
+                    { extend: 'print', className: 'btn-outline-primary' }
+                  ],
+                  "order": [[ 1, "desc" ]],
+                  "searching" : true,
+                  'ajax' : {
+                      "url": "/forms/review_board/",
+                      "type": "POST",
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                      'data' : {
+                        'asset_type':asset_type,
+                      }
+                  },
+                  "columns" : [
+                    {"data":null,"render":function(item){
+                        if(item.user_Role != 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                            else return '';
+                        }
+                    },
+                    {"data":null,"render":function(item){
+                            var MD = item.meeting_date;
+                            if(item.meeting_date != null){
+                                var MD = moment(item.meeting_date).format('DD-MM-YYYY');
+                            }
+
+                            if(item.user_Role != 4 ) return '<a href="/forms/review_board/details/?asset_type='+ item.asset_type_id +'&start_date='+ item.from_date +'&end_date='+ item.to_date +'&r_id='+ item.id +'" >'+ MD +'</a>';
+                            else return MD;
+                        }
+                    },
+                      {"data" : "asset_type"},
+                      {"data" : "meeting_id"},
+                      {"data" : "meeting_status"},
+                      {"data":null,"render":function(item){
+                            if(item.user_Role != 4 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deletereviewboard('+ item.id +')">';
+                            else return '';
+                        }
+                    },
+                  ]
+        });
+    }
+
+
+    $( "#ReviewBoardForm" ).submit(function(e) {
+        e.preventDefault();
+        var asset_type= $('select[name=asset_types] option').filter(':selected').val()
+        var from_date= $('#from_date').val()
+        var to_date= $('#to_date').val()
+        $.ajax({
+            url: "/forms/review_board/add/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'asset_type':asset_type,
+                'from_date':from_date,
+                'to_date':to_date,
+            },
+            success: function (response) {
+                if(response.status == '1') {
+                    swal({
+                        title: 'Successfully add review board',
+                        text: "",
+                        type: '',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    },function () {
+                        window.location.href = '/forms/review_board/details/?asset_type=' +response.asset_type+'&start_date='+response.from_date+'&end_date='+response.to_date+'&r_id='+response.id;
+                    })  
+
+                   
+                }
+                    
+            }
+        });
+        
+    });
+
+</script>
+
+{% endblock sb_admin_js %}

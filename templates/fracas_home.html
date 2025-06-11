@@ -1,0 +1,128 @@
+{% extends "django_sb_admin/base.html" %}
+{% load i18n static %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+
+{% block sb_admin_content %}
+<div id="content-main" style="width: 200%">
+
+{% if app_list %}
+<div class="row mb-5">
+    <div class="col-lg-12">
+        <h3 class="page-header">
+            Dashboard
+        </h3>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-md-12 work-flow-chart-container" >
+        <!--a href="/admin/fracas/failuredata/" class="failure-data" onclick=""></a-->
+		<!--a href="/admin/fracas/failuremode/" class="failure-mode"></a>
+        <a href="/admin/fracas/asset/" class="asset-reg"></a>
+        <a href="/fracas_admin/defect/" class="fracas-defect"></a>
+        <a href="/admin/fracas/rootcause/" class="root-cause"></a>
+        <a href="/fracas_admin/review_board/" class="review-board"></a-->
+		<a href="javascript:void(0);" class="failure-data" onclick="openlinkbox('failure-data');"></a>
+		<a href="javascript:void(0);" class="failure-attr" onclick="openlinkbox('failure-attr');"></a>
+        <a href="javascript:void(0);" class="failure-mode" onclick="openlinkbox('failure-mode');"></a>
+        <a href="javascript:void(0);" class="asset-reg" onclick="openlinkbox('asset-reg');"></a>
+        <a href="javascript:void(0);" class="fracas-defect" onclick="openlinkbox('fracas-defect');"></a>
+        <a href="javascript:void(0);" class="root-cause" onclick="openlinkbox('root-cause');"></a>
+        <a href="javascript:void(0);" class="review-board" onclick="openlinkbox('review-board');"></a>
+        <img src="{% static "fracas_flowchart.png" %}" alt="Validation" style="margin: auto;" class="work-flow-chart">
+    </div>
+</div>
+{% else %}
+    <p>{% trans "You don't have permission to view or edit anything." %}</p>
+{% endif %}
+</div>
+
+<div class="modal fade" id="correctiveActionsModal" tabindex="-1" role="dialog" aria-labelledby="correctiveActionsModal" aria-hidden="true">
+   <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+         <div class="modal-header" style="border-bottom: 0px;">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body text-center mb-5 mt-2">
+			<a class="btn btn-success btn-icon-split text-white mr-3" id="importLink"  href="">            
+				<span class="text" id="importText">Import Failure data</span>
+				<span class="icon text-white-50">
+				<i class="fas fa-plus"></i>
+				</span>
+			</a>
+			<a class="btn btn-primary btn-icon-split text-white" id="addLink" href="">            
+				<span class="text" id="addText">Add Failure data</span>
+				<span class="icon text-white-50">
+				<i class="fas fa-plus"></i>
+				</span>
+			</a>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+	function  openlinkbox(page){
+		//alert(page);
+		var addLink = "";
+		var importLink = "";
+		var importText = "";
+		var addText = "";
+		$("#importLink").removeClass("d-none");
+		if(page == 'failure-data'){
+			importText = "Import Failure Data";
+			addText = "Add Failure Data";
+			addLink = '/admin/fracas/failuredata/add/';
+			importLink = '/admin/fracas/failuredata/import/';
+		}else if(page == 'failure-mode'){
+			importText = "View/Edit existing failure modes";
+			addText = "Add New Failure Mode";
+			addLink = '/admin/fracas/failuremode/add/';
+			//importLink = '/admin/fracas/failuremode/import/';
+			importLink = '/admin/fracas/failuremode/';
+		}else if(page == 'failure-attr'){
+			importText = "";
+			addText = "Failure Attribution Form";
+			addLink = '/admin/fracas/failuredata/';
+			importLink = '';
+			$("#importLink").addClass("d-none");
+		}else if(page == 'asset-reg'){
+			importText = "Import Asset Data";
+			addText = "Add New Asset";
+			addLink = '/admin/fracas/asset/add/';
+			importLink = '/admin/fracas/asset/import/';
+		}else if(page == 'fracas-defect'){
+			importText = "View/Edit Existing Defects";
+			addText = "Add New Defect";
+			addLink = '/fracas_admin/defect/?add=1';
+			importLink = '/fracas_admin/defect/';
+			//$("#importLink").addClass("d-none");
+		}else if(page == 'root-cause'){
+			importText = "View/Edit Root Cause Analysis";
+			addText = "Add Root Cause Analysis";
+			addLink = '/admin/fracas/rootcause/add/';
+			importLink = '/admin/fracas/rootcause/';
+			//$("#importLink").addClass("d-none");
+		}else if(page == 'review-board'){
+			importText = "View/Edit FRACAS Reviews";
+			addText = "Add Review Board";
+			addLink = '/fracas_admin/review_board/?add=1';
+			importLink = '/fracas_admin/review_board/';
+			//$("#importLink").addClass("d-none");
+		}
+		$("#importText").html(importText);
+		$("#addText").html(addText);
+		$("#addLink").attr("href", addLink);
+		$("#importLink").attr("href", importLink);
+		$("#correctiveActionsModal").modal('toggle');
+	}
+</script>
+{% endblock sb_admin_js %}

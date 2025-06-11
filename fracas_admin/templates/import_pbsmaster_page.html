@@ -1,0 +1,343 @@
+
+
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <style>
+        th:first-child,td:first-child,th:last-child,td:last-child {  
+        background-color:white;    
+        }
+    </style>
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+            {% if status %}
+            <div class="row mb-3 mb-4 mt-4">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                      Import PBS Master
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+
+           
+
+
+            <div class="row ">
+                <div class="col-lg-12 mb-5">
+                    
+                    
+                        <button class="btn btn-success btn-icon-split float-right m-2" onclick="getIdofSelectedCB({{data}})">            
+                        <span class="text">Save </span>
+                        
+                        </button>
+
+                        
+                    <a href="/PBSMaster/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                        <span class="icon text-white-50">
+                            <i class="fas fa-angle-left"></i>
+                            </span>             
+                        <span class="text">Back</span>
+                        </button></a>
+                   
+                </div>
+            </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                      <table id="importDataUpdate" class="table table-striped table-bordered " style="width:100%">
+                          <thead>
+                              <tr>
+                                  <th><input type="checkbox" id="SACB_importPBSMaster" /></th> 
+                                  <th>Project</th>
+                                  <th>System</th>
+                                  <th>Subsystem</th>
+                                  <th>Product id</th>
+                                  <th>Product description</th>
+                                  <th>Asset type</th>
+                                  <th>Asset description</th>
+                                  <th>MTBF</th>
+                                  <th>MTBSAF</th>
+                                  <th>MTTR</th>
+                                  <th>MART</th>
+                                  <th>Asset quantity</th>
+                                  <th>Availability target</th>
+                                  <th></th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            {% for dU in data %}
+                                <tr>
+                                  <td>
+                                        {% if dU.err_status == '1' %}
+                                            <input type="checkbox" value="{{dU.id}}" name="CB_importData" class="CB_importPBSMaster"/>
+                                        {% endif %}
+                                    </td> 
+                                    <td>{{dU.project}}
+                                        {% if dU.project_err != '1' %}
+                                            <span class="text-danger"><br>{{dU.project_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.system}}
+                                        {% if dU.system_err != '1' %}
+                                            <span class="text-danger"><br>{{dU.system_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.subsystem}}
+                                        {% if dU.subsystem_err != '1' %}
+                                            <span class="text-danger"><br>{{dU.subsystem_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.product_id}}
+                                        {% if dU.product_id_err != '1' %}
+                                            <span class="text-danger"><br>{{dU.product_id_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.product_description}}
+                                        {% if dU.product_description_err != '1' %}
+                                            <span class="text-danger"><br>{{dU.product_description_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.asset_type}}
+                                        {% if dU.asset_type_err != '1' %}
+                                            <span class="text-danger"><br>{{dU.asset_type_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.asset_description}}
+                                        {% if dU.asset_description_err != '1' %}
+                                            <span class="text-danger"><br>{{dU.asset_description_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.MTBF}}
+                                        {% if dU.MTBF_err != '1' %}
+                                            <span class="text-danger"><br>{{dU.MTBF_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.MTBSAF}}
+                                        {% if dU.MTBSAF_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.MTBSAF_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.MTTR}}
+                                        {% if dU.MTTR_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.MTTR_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.MART}}
+                                        {% if dU.MART_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.MART_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.asset_quantity}}
+                                        {% if dU.asset_quantity_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.asset_quantity_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.availability_target}}
+                                        {% if dU.availability_target_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.availability_target_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if dU.err_status == '1' %}
+                                            <span class="text-success"><i class="fas fa-check"></i></span>
+                                        {% else %}
+                                            <span class="text-danger"><i class="fas fa-times"></i></span>
+                                        {% endif %}
+                                    </td>
+                                    
+
+                                </tr>
+                            {% endfor %}
+
+                                
+                                
+                          </tbody>
+                      </table>
+                  </div>
+                </div>
+
+                <div class="row mb-4" align="right">
+                    <div class="col-12">  
+                        <button type="button" onclick="getIdofSelectedCB({{data}})" class="btn btn-success" >Save</button>
+                    </div>
+                </div>
+
+
+            {% else %}
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                      Import PBS Master
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-lg-12 mb-3">
+    
+    
+                    <a href="/PBSMaster/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+            </div>
+
+
+            <form  enctype='multipart/form-data' action="/PBSMaster/import/"  id="importpbsmaster" name="importpbsmaster" method="post" > 
+            <!-- <form  enctype='multipart/form-data' id="importpbsmaster" >  -->
+
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <div class="card card-login mx-auto mt-5">
+                    <h2 class="card-header text-center">Import File</h2>
+                <div class="card-body">
+                    <fieldset class="module aligned uploadFileForm">
+                        <div class="form-row">
+                        <label for="import_file">File to import:</label>
+                        <input type="file" name="import_file" required="" id="import_file">
+
+                        </div>
+                        <!-- <div class="form-row">
+                        <label for="id_input_format">Format:</label>
+                        <select name="input_format" required="" id="id_input_format">
+                                <option value="1">xls</option>
+                                <option value="2">xlsx</option>
+                        </select>
+                        </div> -->
+                    </fieldset>
+                    <div>
+                        {% if message %}
+                            <div class="alert alert-warning m-2">
+                            {{message}}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning m-2">  
+                            *Don't include space for the uploaded filename
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="">
+                        <input type="submit" class="btn btn-success float-right" value="Submit">
+                        
+                    </div>
+                   
+                    
+                
+                </div>
+            </form>
+
+        </div>
+        <div class="row mt-5">
+            <div class="mx-auto" style="max-width: 20rem;">
+            <a class="btn btn-primary" href="/static/PBSMaster.xlsx " download="">Download Sample Excel File</a>
+        </div>
+        {% endif %}
+
+
+
+       
+
+
+
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+$(document).ready(function() {
+     $('#importDataUpdate').DataTable({
+        scrollY:        "350px",
+        scrollX:        true,
+        scrollCollapse: true,
+        paging:         false,
+        fixedColumns:   {
+            left: 1,
+            right:1
+        },
+        "ordering": false,
+        "searching" : false,
+    });
+    $("#SACB_importPBSMaster").click(function () {
+        $(".CB_importPBSMaster").attr('checked', this.checked);
+    });
+});
+
+ 
+function getids(){
+    ids1=[];
+    $("input:checkbox[name=CB_importData]:checked").each(function(){
+        ids1.push($(this).val());
+    });
+
+    // return ids1;
+    return ids1.toString();
+}
+
+function getIdofSelectedCB(data1){
+    ids= getids();
+    if (ids == ""){
+        swal("Please select atleast one record");
+        return false;
+    }
+    var datas=data1;
+    $.ajax({
+        url: "/PBSMaster/addimport/",
+        method: 'POST',
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: {
+            'ids':ids,
+            'datas': JSON.stringify(datas),
+         },
+        success: function (response) {
+            if(response.status == '1') {
+                // swal(" Inserted :  " + response.inserted + " Records and Updated :  " + response.updated +" Records");
+                // window.location.href = '/PBSMaster/';
+
+                swal({
+                    title: " Inserted :  " + response.inserted + " Records and Updated :  " + response.updated +" Records",
+                    text: "",
+                    type: '',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok'
+                },function () {
+                    window.location.href = '/PBSMaster/';
+                }) 
+            }
+          
+        }
+    });
+}
+
+
+
+    
+</script>
+
+{% endblock sb_admin_js %}

@@ -1,0 +1,683 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <style>
+        th:first-child,td:first-child,th:last-child,td:last-child,th:nth-child(2),td:nth-child(2) {  
+            background-color:white; 
+        }
+    </style>
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+    <div class="row mb-3">
+      <div class="col-lg-12">
+          <h3 class="page-header">
+            FRACAS defect identification
+          </h3>
+          <!--ol class="breadcrumb">
+              <li>
+                  <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+              </li>
+              <li class="active">
+                  <i class="fa fa-edit"></i> Forms
+              </li>
+          </ol-->
+      </div>
+  </div>
+
+  <div class="row ">
+    <div class="col-lg-12 mb-3">
+
+
+        <a href="/forms/defect/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+        <span class="icon text-white-50">
+            <i class="fas fa-angle-left"></i>
+            </span>             
+        <span class="text">Back</span>
+        </button></a>
+    
+    </div>
+</div>
+
+<form id="DefectForm"> 
+  <div class="row mb-3">
+      <div class="col-md-3">
+          <div class="form-group">
+              <label for="defect_description">*Defect description:</label>
+              <input type="hidden" name="defect_id" id="defect_id" value="{{data.defect_id}}">
+              <input type="hidden" name="asset_type" id="asset_type" value="{{data.asset_type}}">
+              <textarea class="form-control" required="required" id="defect_description" name="defect_description">{{data.defect_description}}</textarea>
+              <div class="invalid-feedback">
+                Please enter defect_description.
+              </div>
+          </div>
+      </div>
+      
+      <div class="col-md-3">
+          <div class="form-group">
+              <label for="investigation">*Investigation:</label>
+              <textarea class="form-control" required="required" id="investigation" name="investigation">{{data.investigation}}</textarea>
+              <div class="invalid-feedback">
+                Please enter investigation.
+              </div>
+          </div>
+      </div>
+      
+      <div class="col-md-3">
+          <div class="form-group">
+              <label for="defect_status_remarks">*Defect status remarks:</label>
+              <textarea class="form-control" required="required" id="defect_status_remarks" name="defect_status_remarks">{{data.defect_status_remarks}}</textarea>
+              <div class="invalid-feedback">
+                Please enter Defect status remarks.
+              </div>
+          </div>
+      </div>
+
+      <div class="col-md-3">
+          <div class="form-group">
+              <label for="oem_defect_reference">Oem defect reference:</label>
+              <textarea class="form-control" id="oem_defect_reference" name="oem_defect_reference">{{data.oem_defect_reference}}</textarea>
+              <div class="invalid-feedback">
+                Please enter Oem defect reference.
+              </div>
+          </div>
+      </div>
+
+  
+  </div>
+
+  <div class="row mb-4">
+
+      <div class="col-md-3">
+          <div class="form-group">
+              <label for="defect_status">*Defect status:</label>
+              <select class="form-control" id="defect_status" name="defect_status" required="required">
+              <option value="">--  Select Status  --</option>
+              {% if 'Open' == data.defect_status %}
+                  <option value="Open" selected>Open</option>
+              {% else %}
+                  <option value="Open">Open</option>
+              {% endif %}
+              {% if 'Resolved' == data.defect_status %}
+                  <option value="Resolved" selected>Resolved</option>
+              {% else %}
+                  <option value="Resolved">Resolved</option>
+              {% endif %}
+              {% if 'Update' == data.defect_status %}
+                  <option value="Update" selected>Update</option>
+              {% else %}
+                  <option value="Update">Update</option>
+              {% endif %}
+              {% if 'Monitoring' == data.defect_status %}
+                  <option value="Monitoring" selected>Monitoring</option>
+              {% else %}
+                  <option value="Monitoring">Monitoring</option>
+              {% endif %}
+              {% if 'Closed' == data.defect_status %}
+                  <option value="Closed" selected>Closed</option>
+              {% else %}
+                  <option value="Closed">Closed</option>
+              {% endif %}
+              </select>
+              <div class="invalid-feedback">
+                Please enter Defect status.
+              </div>
+          </div>
+      </div>
+
+      <div class="col-md-3">
+          <div class="form-group">
+              <label for="defect_open_date">*Defect open date:</label>
+              <input type="text" autocomplete="off" required="required" class="form-control date-time" id="defect_open_date" name="defect_open_date" value="{{data.defect_open_date|date:'d/m/Y'}}">
+              <div class="invalid-feedback">
+                Please enter Defect open date.
+              </div>
+          </div>
+      </div>
+
+      <div class="col-md-3">
+          <div class="form-group">
+              <label for="defect_closed_date">Defect closed date:</label>
+              <input type="text" autocomplete="off" class="form-control date-time" id="defect_closed_date" name="defect_closed_date" value="{{data.defect_closed_date|date:'d/m/Y'}}">
+              <div class="invalid-feedback">
+                Please enter Defect closed date.
+              </div>
+          </div>
+      </div>
+
+      <div class="col-md-3">
+          <div class="form-group">
+              <label for="defect_open_date">*Oem target date:</label>
+              <input type="text" autocomplete="off" required="required" class="form-control date-time" id="oem_target_date" name="oem_target_date" value="{{data.oem_target_date|date:'d/m/Y'}}">
+              <div class="invalid-feedback">
+                Please enter Oem target date.
+              </div>
+          </div>
+      </div>
+  
+  </div>
+
+<div class="mt-3 ml-3" align="right">
+    <div class="col-12">  
+        <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
+
+        <a data-toggle="modal" href="#link" id="linkbutton">
+        <button class="btn btn-success mt-2" onClick="getDefectData();">Link</button>
+        </a>
+        
+    </div>
+</div>
+
+<div class="row mt-3 ml-3">
+   <div class="col-lg-12 pl-0">
+      <h2 class="pl-0 mb-3">Failure Data Attributed To This Defect</h2>
+      <div class="">
+         <table class="table stripe row-border order-column table-bordered" id="example2" style="width:100%">
+            <thead>
+               <tr>
+                <th class="bg-white"><input type="checkbox" id="deleteAll" /></th>
+                    <th class="bg-white">Failure id</th>
+                    <th>Asset config id</th>
+                    <th>Event description </th>
+                    <th>Mode ID </th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Detection</th>
+                    <th>Service delay (mins)</th>
+                    <th>Immediate investigation</th>
+                    <th>Failure type</th>
+                    <th>Safety failure</th>
+                    <th>Hazard id</th>
+                    <th>Cm description</th>
+                    <th>Replaced asset config id</th>
+                    <th>Cm start date</th>
+                    <th>Cm start time</th>
+                    <th>Cm end date</th>
+                    <th>Cm end time</th>
+                    <th>Oem failure reference</th>
+                    <th>defect id</th>
+                    <th class="bg-white"></th>
+                </tr>
+            </thead>
+            <tbody>
+               
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
+<div class="row mb-4" align="right">
+    <div class="col-12">  
+        <input type="hidden" id="buttonClick">   
+        <button class="btn btn-danger mt-2 " onClick="return deletedefect()">Delete</button>
+        <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(1);">Save</button>
+        
+    
+        <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(2);">Save and continue editing</button>
+    </div>
+</div>
+
+
+
+</form>
+ <div class="modal fade" id="link" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Failure Data</h5>
+                <button type="button"  id="closeLinkModal" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th class="bg-white">Failure id</th>
+                                        <th>Asset type</th>
+                                        <th>Asset config id</th>
+                                        <th>Event description </th>
+                                        <th>Mode ID </th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Detection</th>
+                                        <th>Service delay (mins)</th>
+                                        <th>Immediate investigation</th>
+                                        <th>Failure type</th>
+                                        <th>Safety failure</th>
+                                        <th>Hazard id</th>
+                                        <th>Cm description</th>
+                                        <th>Replaced asset config id</th>
+                                        <th>Cm start date</th>
+                                        <th>Cm start time</th>
+                                        <th>Cm end date</th>
+                                        <th>Cm end time</th>
+                                        <th>Oem failure reference</th>
+                                        <th>defect id</th>
+                                        <th class="bg-white"><input type="checkbox" id="LinkAll" /></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-primary" onClick="link()" data-dismiss="modal">Link</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    var failuresAttributed=Array();
+    var allfailuresFromDB=Array();
+     $(document).ready(function() {
+        $("#deleteAll").click(function () {
+            $(".deleteAll").attr('checked', this.checked);
+        });
+
+        $("#LinkAll").click(function () {
+            $(".LinkAll").attr('checked', this.checked);
+        });
+
+        getDefectData2();
+        getDefectData();
+         $('#defect_open_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+        $('#defect_closed_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+        $('#oem_target_date').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',});
+        var defect_id=$('#defect_id').val()
+        $.ajax({
+            url: "/forms/failuremode/getdefectdata/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'defect_id':defect_id,
+            },
+            success: function (response) {
+                //dataObj=response.data[0];
+                //failuresAttributed.push(dataObj);
+                failuresAttributed=response.data;
+                getDefectData2();
+            }
+        });
+      
+    });
+    function SetButton(id){
+        $('#buttonClick').val(id);
+        return true;
+    }
+
+    function deletedefect(){
+        var id=$('#defect_id').val();
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/defect/delete/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Defect has been deleted.");
+                    window.location.href = "/forms/defect/";
+                }
+            });     
+        });
+    }
+
+    $( "#DefectForm" ).submit(function(e) {
+        e.preventDefault();
+        var datas=failuresAttributed;
+        var defect_status= $('select[name=defect_status] option').filter(':selected').val()
+        var defect_description= $('#defect_description').val()
+        var investigation= $('#investigation').val()
+        var defect_status_remarks= $('#defect_status_remarks').val()
+        var oem_defect_reference= $('#oem_defect_reference').val()
+        var defect_open_date= $('#defect_open_date').val()
+        var defect_closed_date= $('#defect_closed_date').val()
+        var oem_target_date= $('#oem_target_date').val()
+        var defect_id= $('#defect_id').val()
+        //console.log(datas);
+        var buttonClick= $('#buttonClick').val()
+        $.ajax({
+            url: "/forms/defect/update/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'defect_status':defect_status,
+                'defect_description':defect_description,
+                'investigation':investigation,
+                'defect_status_remarks' : defect_status_remarks,
+                'oem_defect_reference': oem_defect_reference,
+                'defect_open_date':defect_open_date,
+                'defect_closed_date':defect_closed_date,
+                'oem_target_date':oem_target_date,
+                'defect_id':defect_id,
+                'datas': JSON.stringify(datas),
+            },
+
+            success: function (response) {
+                if(buttonClick == 1){
+                    swal({
+                        title: 'Successfully update defect',
+                        text: "",
+                        type: '',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    },function () {
+                        window.location.href = "/forms/defect/";
+                    })    
+
+                } 
+                else if(buttonClick == 2){
+                    swal({
+                        title: 'Successfully update defect',
+                        text: "",
+                        type: '',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    },function () {
+                        window.location.href = "/forms/defect/update/"+defect_id;
+                    })    
+
+                } 
+               
+            }
+        });
+        
+    });
+
+    function remove(id){
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+            failuresAttributed.splice(id, 1);
+            swal("Deleted!", "Successfully remove Failure Data Attributed to This Defect.");
+            getDefectData2();
+                    
+        });
+    }
+
+      function getids(){
+        ids1=[];
+        $("input:checkbox[name=deleteAll]:checked").each(function(){
+            ids1.push($(this).val());
+        });
+    
+        // return ids1;
+        return ids1.toString();
+    }
+
+    function DELETEALL(){
+        ids= getids();
+        if (ids == ""){
+            swal("Please select atleast one record");
+            return false;
+        }
+        ids2=ids.split(",").reverse().join(",");
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+            arrayIds = ids2.split(',');
+            for(i=0;i<arrayIds.length;i++){
+                failuresAttributed.splice(arrayIds[i], 1);
+            }
+            swal("Deleted!", "Successfully remove Failure Data Attributed to This Defect.");
+            getDefectData2();
+                    
+        });
+
+    }
+
+
+
+
+
+    function link()
+    {
+        $.each($("input[name='failureData']:checked"),function(){
+            ind=($(this).val());
+            dataObj=allfailuresFromDB[ind];
+            failuresAttributed.push(dataObj);
+        });
+        swal('Successfully link Failure Data Attributed to This Defect')
+        //$("#link").modal('toggle');
+        getDefectData2();
+    }
+
+    function getDefectData2(){
+    var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+    var mode_id= $('#mode_id').val()
+    var ind=-1;
+    var ind1=-1;
+        $('#example2').DataTable({
+          "searching" : true,
+          "destroy": true,
+            scrollY:        "350px",
+            scrollX:        true,
+            scrollCollapse: true,
+            paging:         true,
+            fixedColumns:   {
+                left: 2,
+                right: 1
+            },
+          data: failuresAttributed,
+          "columns" : [
+            {"data":null,"render":function(item){ind1++;
+                return '<input type="checkbox" value="'+ ind1 +'" name="deleteAll" class="deleteAll"/>';
+                }
+            },
+              {"data" : "failure_id"},
+              {"data" : "asset_config_id"},
+              {"data" : "event_description"},
+              {"data" : "mode_id"},
+                //{"data" : "date"},
+                {"data":null,"render":function(item){
+
+                    if(item.date != null){
+                        return moment(item.date).format('DD-MM-YYYY');
+                    }
+                    return item.date;
+
+                    }
+                },
+              {"data" : "time"},
+              {"data" : "detection"},
+              {"data" : "service_delay"},
+              {"data" : "immediate_investigation"},
+              {"data" : "failure_type"},
+              {"data" : "safety_failure"},
+              {"data" : "hazard_id"},
+              {"data" : "cm_description"},
+              {"data" : "replaced_asset_config_id"},
+                // {"data" : "cm_start_date"},
+            {"data":null,"render":function(item){
+
+                if(item.cm_start_date != null){
+                    return moment(item.cm_start_date).format('DD-MM-YYYY');
+                }
+                return item.cm_start_date;
+
+                }
+            },
+            {"data" : "cm_start_time"},
+                // {"data" : "cm_end_date"},
+            {"data":null,"render":function(item){
+
+                if(item.cm_end_date != null){
+                    return moment(item.cm_end_date).format('DD-MM-YYYY');
+                }
+                return item.cm_end_date;
+
+                }
+            },
+              {"data" : "cm_end_time"},
+              {"data" : "oem_failure_reference"},
+              {"data" : "defect"},
+              {"data":null,"render":function(item){ind++;
+                  return '<input type="button" value="delete" class="btn btn-danger" onClick="remove('+ ind +')">';
+              }
+              },
+          ],
+        });
+    }
+
+    function getDefectData(){
+      var asset_type= $('#asset_type').val()
+      if(jQuery.isEmptyObject(failuresAttributed)){
+          var failuresAttributedids="";
+      }else{
+          var iterator = failuresAttributed.values();
+          var fav=[];
+          // Here all the elements of the array is being printed.
+          for (let elements of iterator) {
+          fav.push(elements.id);
+          }
+          var failuresAttributedids=fav.join(",");
+      }
+
+      $.ajax({
+          url: "/forms/defect/listfailuredata/",
+          method: 'POST',
+          dataType: 'json',
+          headers: {'X-CSRFToken': '{{ csrf_token }}'},
+          data : {
+              'asset_type':asset_type,
+              'failuresAttributed':failuresAttributedids,
+              'action':11,
+          },
+
+          success: function (response) {
+                  allfailuresFromDB=response.data;
+                  var ind=-1;
+                  //console.log(allfailuresFromDB);
+                  $('#example').DataTable({
+                  "searching" : true,
+                  "order": [[ 0, "asc" ]],
+                  "destroy": true,
+                    scrollY:        "300px",
+                    scrollX:        true,
+                    scrollCollapse: true,
+                    paging:         false,
+                    fixedColumns:   {
+                        left: 1,
+                        right: 1
+                    },
+                  data: response.data,
+                  "columns" : [
+                      {"data" : "failure_id"},
+                      {"data" : "asset_type"},
+                      {"data" : "asset_config_id"},
+                      {"data" : "event_description"},
+                      {"data" : "mode_id"},
+                       //{"data" : "date"},
+                       {"data":null,"render":function(item){
+
+                        if(item.date != null){
+                            return moment(item.date).format('DD-MM-YYYY');
+                        }
+                        return item.date;
+
+                        }
+                    },
+                      {"data" : "time"},
+                      {"data" : "detection"},
+                      {"data" : "service_delay"},
+                      {"data" : "immediate_investigation"},
+                      {"data" : "failure_type"},
+                      {"data" : "safety_failure"},
+                      {"data" : "hazard_id"},
+                      {"data" : "cm_description"},
+                      {"data" : "replaced_asset_config_id"},
+                          // {"data" : "cm_start_date"},
+                    {"data":null,"render":function(item){
+
+                        if(item.cm_start_date != null){
+                            return moment(item.cm_start_date).format('DD-MM-YYYY');
+                        }
+                        return item.cm_start_date;
+
+                        }
+                    },
+                    {"data" : "cm_start_time"},
+                        // {"data" : "cm_end_date"},
+                    {"data":null,"render":function(item){
+
+                        if(item.cm_end_date != null){
+                            return moment(item.cm_end_date).format('DD-MM-YYYY');
+                        }
+                        return item.cm_end_date;
+
+                        }
+                    },
+                      {"data" : "cm_end_time"},
+                      {"data" : "oem_failure_reference"},
+                      {"data" : "defect"},
+                       {"data":null,"render":function(item){ind++;
+                          if(item.user_Role != 4 ) {
+                              return '<input type="checkbox" class="LinkAll" name="failureData" value="'+ ind +'">';
+                              }
+                          else return '';
+                          }
+                      },
+                  ],
+          });
+          
+          }
+      });
+  }
+
+</script>
+
+{% endblock sb_admin_js %}

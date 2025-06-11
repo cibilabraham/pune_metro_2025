@@ -1,0 +1,254 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header" style="margin-left:-15px">
+                      Failure mode identification
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <!-- /.row -->
+            {% if request.session.user_Role != 4  %}
+            <div class="row ">
+            <div class="col-lg-12 mb-5">
+
+                <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
+
+                {% comment %} {% if request.session.user_Role == 1 %}  {% endcomment %}
+                    <a href="/forms/failuremode/import/">  
+                        <button class="btn btn-primary btn-icon-split float-right m-2" >            
+                        <span class="text">Import failure mode </span>
+                        <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                        </span>
+                        </button>
+                    </a>
+                {% comment %} {% endif %} {% endcomment %}
+            <a href="/forms/failuremode/addfailuremode/">  
+                <button class="btn btn-success btn-icon-split float-right m-2" >            
+                <span class="text">Add failure mode</span>
+                <span class="icon text-white-50">
+                <i class="fas fa-plus"></i>
+                </span>
+                </button>
+            </a>
+            </div>
+            </div>
+             {% endif %}  
+
+ 
+            <div class="row mb-4">
+               
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="asset_type">By asset type</label>
+                        {% if request.session.user_Role == 1 %}
+                            <select class="form-control" id="asset_type" name="asset_type" required="required">
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% else %}  
+                            <select class="form-control" id="asset_type" name="asset_type" required="required">
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %} 
+                    </div>
+                </div>
+
+                <div class="col-md-3 pt-4">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter</button>
+                </div>
+
+            </div>
+
+            
+
+            
+          <div class="row">
+            <div class="col-md-12">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="deleteAll" /></th>
+                            <th>Mode id</th>
+                            <th>Mode description</th>
+                            <th>Asset type</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+        $("#deleteAll").click(function () {
+            $(".deleteAll").attr('checked', this.checked);
+        });
+
+        $('#example').DataTable();
+        getDefectData();
+        /*$.ajax({
+            url: "/forms/asset_register/list/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {},
+            success: function (response) {
+                console.log(response);
+                var actions = response.data;
+            }
+        });*/
+
+    });
+
+    function deletefailuremode(id){
+
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/failuremode/delete/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Failuremode has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+        
+    }
+
+    function getids(){
+        ids1=[];
+        $("input:checkbox[name=deleteAll]:checked").each(function(){
+            ids1.push($(this).val());
+        });
+    
+        // return ids1;
+        return ids1.toString();
+    }
+
+    function DELETEALL(){
+        ids= getids();
+        if (ids == ""){
+            swal("Please select atleast one record");
+            return false;
+        }
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/failuremode/deleteAll/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'ids':ids,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Failuremode has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+    }
+
+
+ 
+
+function getDefectData(){
+    var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+        $('#example').DataTable().destroy();
+        $('#example').DataTable({
+                  dom: 'Bfrtip',
+                  buttons: [
+                    { extend: 'excel', className: 'btn-outline-primary' },
+                    { extend: 'pdf', className: 'btn-outline-primary' },
+                    { extend: 'print', className: 'btn-outline-primary' }
+                  ],
+                  "order": [[ 0, "asc" ]],
+                  "searching" : true,
+                  'ajax' : {
+                      "url": "/forms/failuremode/",
+                      "type": "POST",
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                      'data' : {
+                        'asset_type':asset_type,
+                      }
+                  },
+                  "columns" : [
+                    {"data":null,"render":function(item){
+                        if(item.user_Role != 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                            else return '';
+                        }
+                    },
+                    {"data":null,"render":function(item){
+                            if(item.user_Role != 4 ) return '<a href="/forms/failuremode/addfailuremode/'+ item.id +'" >'+ item.mode_id +'</a>';
+                            else return item.mode_id;
+                        }
+                    },
+                      {"data" : "mode_description"},
+                      {"data" : "asset_type"},
+                      {"data":null,"render":function(item){
+                            if(item.user_Role != 4 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deletefailuremode('+ item.id +')">';
+                            else return '';
+                        }
+                    },
+                  ]
+        });
+    }
+
+</script>
+
+{% endblock sb_admin_js %}

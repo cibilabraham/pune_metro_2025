@@ -1,0 +1,488 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header"  style="margin-left:-15px">
+                      List of identified defect
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <!-- /.row -->
+            <form id="DefectForm"> 
+            <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Show Failures</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form autocomplete="off">
+                        <div class="form-group">
+                            <label for="asset_type">*Select asset type</label>
+                            {% if request.session.user_Role == 1 %}
+                                <select class="form-control" id="asset_types" name="asset_types" required="required">
+                                    <option value="">-- Select asset type --</option>
+                                    {% for asset_type in asset_types %}
+                                    {% if asset_type.asset_type != '' %}
+                                        <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            {% else %}  
+                                <select class="form-control" id="asset_types" name="asset_types" required="required">
+                                    <option value="">-- Select asset type --</option>
+                                    {% for asset_type in asset_types %}
+                                    {% if asset_type.asset_type != '' %}
+                                        <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            {% endif %} 
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="start_date">*From Date</label>
+                                    <input type="text" class="form-control date-time" id="start_date" name="start_date" placeholder="DD/MM/YYYY" required="required" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="end_date">*To Date</label>
+                                    <input type="text" class="form-control date-time" id="end_date" name="end_date" placeholder="DD/MM/YYYY" autocomplete="off" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Details</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </form>
+
+        {% if request.session.user_Role != 4  %}
+        <div class="row ">
+        <div class="col-lg-12 mb-5">
+
+            <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
+
+         
+        <a data-toggle="modal" href="#add" id="addbutton">  
+            <button class="btn btn-success btn-icon-split float-right m-2" >            
+            <span class="text">Add Defect</span>
+            <span class="icon text-white-50">
+            <i class="fas fa-plus"></i>
+            </span>
+            </button>
+        </a>
+        </div>
+        </div>
+         {% endif %}  
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="defect_description">By defect description</label>
+                        <select class="form-control" id="defect_description" name="defect_description">
+                        <option value="all">--All--</option>
+                        {% for defect_description in defect_description %}
+                          {% if defect_description.defect_description != '' %}
+                            <option value="{{defect_description.defect_description}}">{{defect_description.defect_description}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="defect_open_date">By defect open date</label>
+                        <input type="text" autocomplete="off" class="form-control date-time" id="defect_open_date" name="defect_open_date" value="">
+                    </div>
+                </div> 
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="defect_closed_date">By defect closed date</label>
+                        <input type="text" autocomplete="off" class="form-control date-time" id="defect_closed_date" name="defect_closed_date" value="">
+                    </div>
+                </div> 
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="investigation">By investigation</label>
+                        <select class="form-control" id="investigation" name="investigation">
+                        <option value="all">--All--</option>
+                        {% for investigation in investigation %}
+                          {% if investigation.investigation != '' %}
+                            <option value="{{investigation.investigation}}">{{investigation.investigation}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+           
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="defect_status">By defect status</label>
+                        <select class="form-control" id="defect_status" name="defect_status">
+                        <option value="all">--All--</option>
+                        {% for defect_status in defect_status %}
+                          {% if defect_status.defect_status != '' %}
+                            <option value="{{defect_status.defect_status}}">{{defect_status.defect_status}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="defect_status_remarks">By defect status remarks</label>
+                        <select class="form-control" class="form-control" id="defect_status_remarks" name="defect_status_remarks">
+                        <option value="all">--All--</option>
+                        {% for defect_status_remarks in defect_status_remarks %}
+                          {% if defect_status_remarks.defect_status_remarks != '' %}
+                            <option value="{{defect_status_remarks.defect_status_remarks}}">{{defect_status_remarks.defect_status_remarks}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div> 
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="oem_defect_reference">By Oem defect reference</label>
+                        <select class="form-control" id="oem_defect_reference" name="oem_defect_reference">
+                        <option value="all">--All--</option>
+                        {% for oem_defect_reference in oem_defect_reference %}
+                          {% if oem_defect_reference.oem_defect_reference != '' %}
+                            <option value="{{oem_defect_reference.oem_defect_reference}}">{{oem_defect_reference.oem_defect_reference}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="asset_type">By asset type</label>
+                        {% if request.session.user_Role == 1 %}
+                            <select class="form-control" id="asset_type" name="asset_type" required="required">
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% else %}  
+                            <select class="form-control" id="asset_type" name="asset_type" required="required">
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %} 
+                    </div>
+                </div>
+           
+            </div>
+
+            <div class="row mb-4">
+                 <div class="col-md-3">  
+                    <div class="form-group">
+                        <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter</button>
+
+                    </div> 
+                </div>
+            </div>
+                
+            
+
+            
+          <div class="row">
+            <div class="col-md-12">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="deleteAll" /></th>
+                            <th>Defect id</th>
+                            <th>Defect description</th>
+                            <th>Defect open date</th>
+                            <th>Defect closed date</th>
+                            <th>Investigation</th>
+                            <th>Defect status</th>
+                            <th>Defect status remarks</th>
+                            <th>Oem defect reference</th>
+                            <th>Asset type</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+        $("#deleteAll").click(function () {
+            $(".deleteAll").attr('checked', this.checked);
+        });
+
+         $('#defect_open_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+          $('#defect_closed_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+          $('#start_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+          $('#end_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+     
+        $('#example').DataTable();
+        getDefectData();
+        /*$.ajax({
+            url: "/forms/asset_register/list/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {},
+            success: function (response) {
+                console.log(response);
+                var actions = response.data;
+            }
+        });*/
+        if({{add}} == 1){
+           $('#add').modal('show');
+        }
+
+    });
+
+    function deletedefect(id){
+
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/defect/delete/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Defect has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+    }
+
+    function getids(){
+        ids1=[];
+        $("input:checkbox[name=deleteAll]:checked").each(function(){
+            ids1.push($(this).val());
+        });
+    
+        // return ids1;
+        return ids1.toString();
+    }
+
+    function DELETEALL(){
+        ids= getids();
+        if (ids == ""){
+            swal("Please select atleast one record");
+            return false;
+        }
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/defect/deleteAll/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'ids':ids,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Defect has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+    }
+
+
+
+ 
+
+function getDefectData(){
+    var defect_description= $('select[name=defect_description] option').filter(':selected').val()
+    var investigation= $('select[name=investigation] option').filter(':selected').val()
+    var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+    var defect_status= $('select[name=defect_status] option').filter(':selected').val()
+    var defect_status_remarks= $('select[name=defect_status_remarks] option').filter(':selected').val()
+    var oem_defect_reference= $('select[name=oem_defect_reference] option').filter(':selected').val()
+    var defect_open_date= $('#defect_open_date').val()
+    var defect_closed_date= $('#defect_closed_date').val()
+
+        $('#example').DataTable().destroy();
+        $('#example').DataTable({
+                  dom: 'Bfrtip',
+                  buttons: [
+                    { extend: 'excel', className: 'btn-outline-primary' },
+                    { extend: 'pdf', className: 'btn-outline-primary' },
+                    { extend: 'print', className: 'btn-outline-primary' }
+                  ],
+                  "order": [[ 1, "asc" ]],
+                  "searching" : true,
+                  'ajax' : {
+                      "url": "/forms/defect/",
+                      "type": "POST",
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                      'data' : {
+                        'defect_description':defect_description,
+                        'investigation':investigation,
+                        'asset_type':asset_type,
+                        'defect_status' : defect_status,
+                        'defect_status_remarks': defect_status_remarks,
+                        'oem_defect_reference' : oem_defect_reference,
+                        'defect_open_date' : defect_open_date,
+                        'defect_closed_date':defect_closed_date,
+                      }
+                  },
+                  "columns" : [
+                    {"data":null,"render":function(item){
+                        if(item.user_Role != 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                            else return '';
+                        }
+                    },
+                    {"data":null,"render":function(item){
+                            if(item.user_Role != 4 ) return '<a href="/forms/defect/update/'+ item.id +'" >'+ item.defect_id +'</a>';
+                            else return item.defect_id;
+                        }
+                    },
+                      {"data" : "defect_description"},
+                    {"data":null,"render":function(item){
+
+                        if(item.defect_open_date != null){
+                            return moment(item.defect_open_date).format('DD-MM-YYYY');
+                        }
+                        return item.defect_open_date;
+                       
+                        }
+                    },
+                    //  {"data" : "defect_open_date"},
+                    //{"data" : "defect_closed_date"},
+                    {"data":null,"render":function(item){
+                            if(item.defect_closed_date != null){
+                                return moment(item.defect_closed_date).format('DD-MM-YYYY');
+                            }
+                            return item.defect_closed_date;
+                        }
+                    },
+                      {"data" : "investigation"},
+                      {"data" : "defect_status"},
+                      {"data" : "defect_status_remarks"},
+                      {"data" : "oem_defect_reference"},
+                      {"data" : "asset_type"},
+                      {"data":null,"render":function(item){
+                            if(item.user_Role != 4 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deletedefect('+ item.id +')">';
+                            else return '';
+                        }
+                    },
+                  ]
+        });
+    }
+
+
+    $( "#DefectForm" ).submit(function(e) {
+        e.preventDefault();
+        var asset_type= $('select[name=asset_types] option').filter(':selected').val()
+        var start_date= $('#start_date').val()
+        var end_date= $('#end_date').val()
+        $.ajax({
+            url: "/forms/defect/add/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'asset_type':asset_type,
+                'start_date':start_date,
+                'end_date':end_date,
+            },
+            success: function (response) {
+                if(response.status == '1'){
+                    swal({
+                        title: 'Successfully add new defect',
+                        text: "",
+                        type: '',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    },function () {
+                        window.location.href = "/forms/defect/update/"+response.id;
+                    })    
+                } 
+            }
+        });
+        
+    });
+
+</script>
+
+{% endblock sb_admin_js %}

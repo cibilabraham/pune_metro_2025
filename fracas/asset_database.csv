@@ -1,0 +1,46 @@
+﻿id,asset_config_id,location_id,location_description,asset_serial_number,asset_type,asset_description,software_version,software_description,asset_status
+,STC-ZC-24,AL Wakra,Al Wakra SER-1,ZC-THLS-XX001,Zone Controller,Zone Controller A and B,03.02.06,ZC software,Online
+,STC-ZC-10,Ras Buntas,Ras Buntas SER-1,ZC-THLS-XX002,Zone Controller,Zone Controller A and B,03.02.06,ZC software,Online
+,STC-ATS-LC1,Red line ICC,Red line ICC,ATS-LC-01-CXX01,ATS RL,ATS Red Line Lin Controller Terminal,05.03.02,ATS software,Online
+,STC-VOBC-T111,T111,Train T111,VOBCA10003,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T107,T107,Train T107,VOBCA10004,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T122,T122,Train T122,VOBCA10005,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T112,T112,Train T112,VOBCA10006,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T115,T115,Train T115,VOBCA10007,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T103,T103,Train T103,VOBCA10008,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T120,T120,Train T120,VOBCA10009,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-SW-2602,Al Wakra,Al Wakra depot,VOS-ZYX-001,Point machine,Point machine and mechanical linkage,VO-Sw-A001,Switch  embedded software,Online
+,STC-VOBC-T127,T127,Train T127,VOBCA10010,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T118,T118,Train T118,VOBCA10011,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T117,T117,Train T117,VOBCA10012,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T106,T106,Train T106,VOBCA10013,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T105,T105,Train T105,VOBCA10014,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T121,T121,Train T121,VOBCA10015,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-VOBC-T101,T101,Train T101,VOBCA10016,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-ATS-VCP,Red line ICC,Red line ICC,ATS-VCP-01-CXX01,ATS RL,ATS Red Line Video Control Panel,05.03.02,ATS software,Online
+,STC-VOBC-T123,T123,Train T123,VOBCA10017,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-SW-0701,Al Bidda,Al Bidda Up line,VOS-ZYX-002,Point machine,Point machine and mechanical linkage,VO-Sw-A001,Switch  embedded software,Online
+,STC-SW-0801,Al Bidda,Al Bidda Down line,VOS-ZYX-003,Point machine,Point machine and mechanical linkage,VO-Sw-A001,Switch  embedded software,Online
+,STC-ACB-1407,ACB-1407,Axle counter at Al Wakra,AZLM001A002,Axle counter,Axle counter section 1407,AZLM 6.1.2,Evaluator software,Online
+,STC-ATS-WS2,Red line ICC,Red line ICC,ATS-WS-02-CXX02,ATS RL,ATS Line Controller Workstation,05.03.02,ATS software,Online
+,STC-ATS-WS1,Red line ICC,Red line ICC,ATS-WS-01-CXX01,ATS RL,ATS Line Controller Workstation,05.03.02,ATS software,Online
+,STC-VOBC-T124,T124,Train T124,VOBCA10018,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-ZC-11,DECC,DECC-SER-1,ZC-THLS-XX003,Zone Controller,Zone Controller A and B,03.02.06,ZC software,Online
+,STC-ACB-1017-1011,ACB-1017-1011,Axle counter at Economic zone,AZLM001A003,Axle counter,Axle counter sections 1011 and 1017,AZLM 6.1.2,Evaluator software,Online
+,STC-SW-0704,Corniche,Corniche Up line,VOS-ZYX-004,Point machine,Point machine and mechanical linkage,VO-Sw-A001,Switch  embedded software,Online
+,STC-ATS-SRS,Red line ICC,Red line ICC,ATS-SRS-CXX01,ATS RL,ATS Red line SRS server,05.03.02,ATS software,Online
+,STC-ATS-RL,Red line ICC,Red line ICC,ATS-RL-SyS,ATS RL,ATS RL,05.03.02,ATS software,Online
+,STC-SW-2501,Economic Zone,Economic Zone Up line,VOS-ZYX-005,Point machine,Point machine and mechanical linkage,VO-Sw-A001,Switch  embedded software,Online
+,STC-ZC-25,AL Wakra,Al Wakra SER-2,ZC-THLS-XX004,Zone Controller,Zone Controller A and B,03.02.06,ZC software,Online
+,STC-ZC-14,Mshreib,Mshreib SER-1,ZC-THLS-XX005,Zone Controller,Zone Controller A and B,03.02.06,ZC software,Online
+,STC-ZC-7,AL Qassar,AL Qassar SER-1,ZC-THLS-XX006,Zone Controller,Zone Controller A and B,03.02.06,ZC software,Online
+,STC-ZC-26,AL Wakra,Al Wakra SER-3,ZC-THLS-XX007,Zone Controller,Zone Controller A and B,03.02.06,ZC software,Online
+,STC-ZC-8,Al Bidda,AL Bidda SER-1,ZC-THLS-XX008,Zone Controller,Zone Controller A and B,03.02.06,ZC software,Online
+,STC-SW-2607,Al Wakra,Al Wakra depot,VOS-ZYX-006,Point machine,Point machine and mechanical linkage,VO-Sw-A001,Switch  embedded software,Online
+,STC-ZC-02,Economic Zone,Economic Zone SER-1,ZC-THLS-XX009,Zone Controller,Zone Controller A and B,03.02.06,ZC software,Online
+,STC-ZC-12,Umm Gwalina,Umm Gwalina SER-1,ZC-THLS-XX0010,Zone Controller,Zone Controller A and B,03.02.06,ZC software,Online
+,STC-VOBC-T161,T161,Train T161,VOBCA10019,VOBC,Vehicle Onboard Computer,04.02.06,VOBC software,Online
+,STC-SW-2427,AL Qassar,Al Qassar Down line,VOS-ZYX-008,Point machine,Point machine and mechanical linkage,VO-Sw-A001,Switch  embedded software,Online
+,STC-SW-2409,Mshreib,Mshreib Down line,VOS-ZYX-009,Point machine,Point machine and mechanical linkage,VO-Sw-A001,Switch  embedded software,Online
+,STC-ACB-1204-1206,ACB-1204-1206,Axle counter at Al Qassar,AZLM001A004,Axle counter,Axle counter sections 1204 and 1206,AZLM 6.1.2,Evaluator software,Online
+,STC-ACB-2602-2604-2606-2608-2610-2611,ACB-2602-2604-2606-2608-2610-2611,Axle counter at Mshreib,AZLM001A006,Axle counter,Axle counter sections 2602 2604 2606 2608 2610 2611,AZLM 6.1.2,Evaluator software,Online

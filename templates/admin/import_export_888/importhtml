@@ -1,0 +1,61 @@
+{% extends "django_sb_admin/base.html" %}
+{% load i18n %}
+
+{% block sb_admin_content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="myfile">
+    <button type="submit">Upload</button>
+  </form>
+  <form action="" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrfmiddlewaretoken" value="sNS3yza6vpHLLg6yFwV3SPWkShkLP2Z9EkuwDj8yYix5p5F413P2ySYu1TWHW6wO">
+
+    <p>
+      This importer will import the following fields: 
+      <code>id, mode_id, mode_description, start_date, end_date, asset_type</code>
+    </p>
+
+    <fieldset class="module aligned">
+      
+        <div class="form-row">
+          
+
+          <label for="id_import_file">File to import:</label>
+
+          <input type="file" name="import_file" required="" id="id_import_file">
+
+          
+        </div>
+      
+        <div class="form-row">
+          
+
+          <label for="id_input_format">Format:</label>
+
+          <select name="input_format" required="" id="id_input_format">
+<option value="" selected="">---</option>
+
+<option value="0">csv</option>
+
+<option value="1">xls</option>
+
+<option value="2">xlsx</option>
+
+<option value="3">tsv</option>
+
+<option value="4">json</option>
+
+<option value="5">yaml</option>
+
+</select>
+
+          
+        </div>
+      
+    </fieldset>
+
+    <div class="submit-row">
+      <input type="submit" class="default" value="Submit">
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,550 @@
+﻿id,failure_id,asset_config_id,event_description,mode_id,mode_description,date,time,detection,service_delay,immediate_investigation,type,safety_failure,hazard_id,cm_description,replaced_asset_config_id,cm_start_date,cm_start_time,cm_end_date,cm_end_time,oem_failure_reference
+,6797,STC-ZC-24,ICC Building 14 ATS - ZC 24 A communication lost 2X,ZC01,Multiple Zone Controller Comms failure,01/01/2019,21:46,ATS,0,Software issue,Software,Yes,HZ111,"21:57 Informed to Thales DNP and MSI team
+ restarted by LC Ajish 2X  Normalized at 21:47",None,02/01/2019,00:46,03/03/2019,02:46,
+,6819,STC-ATS-VCP,Depot ICC VCP Monitors 1 and 2 are not working when IC tried to drop the cameras unable to access.,ATS01,ATS VCP embedded software failure,02/01/2019,12:06,SCADA,0,Software issue,Software,No,,"13:11 Informed to Thales DNP 
+ 15:15 confirmed to RKH FC fault self normalized. LS  tried and it was working normal",None,02/01/2019,15:06,03/03/2019,17:06,
+,6822,STC-VOBC-T120,"T120 (UTO) RBF Station, CBTC Applied EB due to train door eneable output energize check back failure(Investigation needed) Self Normalized@08:58",VOBC06,Correct Side Door Enable failure,02/01/2019,12:56,Inspection,0,Check back failure,Hardware,Yes,HZ397,"Thales team update about the failure,Known issue as per thales ,fault self normalized",None,02/01/2019,15:56,03/03/2019,17:56,
+,6858,STC-ATS-VCP,During functional check of ECS onboard in Train 103 when calling from ECS near to Door- L2 -Car B in VCP camera Pop up is showing for Door- L3-Car A instead of carB.,ATS01,ATS VCP embedded software failure,03/01/2019,10:58,Inspection,0,Software issue,Software,No,,Rebooted the sytem and fault normalized,None,03/01/2019,13:58,04/03/2019,15:58,
+,6975,STC-ATS-WS-2,ATS crash for LC-2 wks.,ATS04,ATS software crash,04/01/2019,08:17,ATS,0,Software issue,Software,Yes,HZ79,8:17 LC restarted the wks and then fault normalised.,None,04/01/2019,11:17,05/03/2019,13:17,
+,6989,STC-VOBC-T117,In T117- EB applied due to obstruction motion detected.,VOBC08,Wayside obstacle detection spurious activation,04/01/2019,13:52,ATS,0,Software issue,Software,Yes,HZ181,"13:10 Informed to Thales signaling team, later they said after dwell time vobc triggered self test(which should not done) this cause the obstruction motion and applied EB, still under investigation.
+ Fault normalised within 30sec after reset the EB by LC.
+ 02252019: Thales SIG  updated at that time both vobc's became active caused the obstruction. This is a known issue and will be fixed in next software.",None,04/01/2019,16:52,05/03/2019,18:52,
+,7865,STC-ZC-24,Depot ATS ZC 24A Communication lost/ Resetted by LC/fault normalized/02:11,ZC01,Zone Controller Comms failure,07/01/2019,02:19,ATS,0,Software issue,Software,Yes,HZ279," 02:11 Resetted by LC/fault normalized
+ 03:31 informed to Thales DNP",None,07/01/2019,05:19,08/03/2019,07:19,
+,8089,STC-ZC-24,ATS ZC 24 A Communication lost,ZC01,Zone Controller Comms failure,08/01/2019,02:27,ATS,0,Software issue,Software,Yes,HZ128,"2:20  ZC -A remotely resetted by LC
+ 6:50 informed to DNP & SMC",None,08/01/2019,05:27,09/03/2019,07:27,
+,8213,STC-ATS-WS-1,RSDT010 Depot - ICC ATS Workstation 1 crashed during Engineering hours and revenue hours,ATS04,ATS software crash,08/01/2019,22:32,ATS,0,Software issue,Software,No,,"Initial action taken by LC restarted the application/Fault normalized @21:05
+ As per Thales Signaling this a known issue.",None,09/01/2019,01:32,10/03/2019,03:32,
+,8223,STC-ATS-SRS,ICC LC ATS LSRS 14 shows fail on ATS.Reported by LC Arun.,ATS05,ATS SRS failure,09/01/2019,02:45,ATS ,0,Software issue,Software,No,,"02:46 informed to SMC SIG , FRT team , MSI support team and DNP thales team via SMS
+ 03:27 SMC Sig team with coordination with Thales SIG team, restarted remotely the application and found normalized. Updated RKH ICC FC",None,09/01/2019,05:45,10/03/2019,07:45,
+,8229,STC-ATS-SRS,"ICC LC ATS , SRS1 Data Logger DL Communication link down,SRS2 Data Logger communication link down messages shows on ATS Alarm page.Reported by LC Arun.",ATS05,ATS SRS failure,09/01/2019,04:06,Inspection,0,installation workmanship error,Software,No,,"Network restored ,server responding correctly",None,09/01/2019,07:06,10/03/2019,09:06,
+,8250,STC-ATS-SRS,All ZC and SRS communication lost in SCADA,ATS05,ATS SRS failure,09/01/2019,11:34,ATS,0,Software issue,Software,No,,"9:24  Thales team restart the ATS wks server after that fault was normalized
+ 11:40 h Informed to DNP, MSI ,SMC & FRT team",None,09/01/2019,14:34,10/03/2019,16:34,
+,8252,STC-VOBC-T105,"T105 both the VOBC are non communicating but train is accepting Drag & Drop command, cannot open the train doors by ATS/Reset the trains, routed to pseudo & platform train doors are opening with MSD but no indication on ATS for train opening",VOBC02,VOBC-ATS comms failure,09/01/2019,12:59,ATS WKS,0,Software issue,Software,No,," 12:44 Informed to DNP, MSI ,SMC & FRT team
+ 12:47 Self Normalized. Confirmed with Thales SIG",None,09/01/2019,15:59,10/03/2019,17:59,
+,8253,STC-VOBC-T106,"T106 both the VOBC are non communicating but train is accepting Drag & Drop command, cannot open the train doors by ATS/Reset the trains, routed to pseudo & platform train doors are opening with MSD but no indication on ATS for train opening",VOBC02,VOBC-ATS comms failure,09/01/2019,13:06,ATS WKS,0,Software issue,Software,No,," 12:44 Informed to DNP, MSI ,SMC & FRT team
+ 12:47 Self Normalized. Confirmed with Thales SIG",None,09/01/2019,16:06,10/03/2019,18:06,
+,8330,STC-ATS-RL,Shutter door A-47 disturbed while train movement through WBCD,ATS06,ATS shutter door interface failure,10/01/2019,17:15,ATS,0,Open and close status observed by ICC,Hardware,No,,"17:40 Informed to SMC MEP Team
+ MEP team updated, fault will be investigated tonight
+ Remedial Action : ICC Receiving Open and Close status , and there is no issue with Roller Shutter. ",None,10/01/2019,20:15,11/03/2019,22:15,
+,8333,STC-ATS-RL,"SBL 2 WEST/SBL 2- when UTO train is routed, train stops at west side and does not proceeds till east side",ATS07,ATS lose control on trains,10/01/2019,17:53,ATS,0,Software issue,Software,Yes,HZ142,"18:30 Informed to Thales SIG team. It is known issue as per Thales
+ Thales SIG updates: 1/29/2019 12:28
+ Known Issue and will be updated in New software",None,10/01/2019,20:53,11/03/2019,22:53,
+,8352,STC-ZC-24,ICC LC ATS WKS ZC 24B Communication Lost/Initial action taken restarted the ZC24B,ZC01,Zone Controller Comms failure,10/01/2019,23:41,ATS,0,Software issue,Software,Yes,HZ56,"ICC Initial action taken restarted the ZC24B. Fault  Normalized at23:11. Reported by ICC LC Arun.
+ Known issue by Thales team.",None,11/01/2019,02:41,12/03/2019,04:41,
+,9386,STC-ZC-24,ICC LC ATS work station ZC 24-B Fail/Try to Restart ZC24-B/Not normaliz,ZC05,Zone controller software failure-self normalised,15/01/2019,00:13,ATS,0,Software issue,Software,No,,"00:18 Informed to Thales SIG 
+ 00:30 Self Normalized
+ Known issue by Thales",None,15/01/2019,03:13,16/03/2019,05:13,
+,9400,STC-ZC-24,ICC LC ATS work station ZC 24-A Fail/Try to Restart ZC24-A/Not normaliz,ZC05,Zone controller software failure-self normalised,15/01/2019,04:27,ATS,0,Software issue,Software,No,,"04:29 informed to Thales DNP SIG and SMC FRT.
+ 05:50 Restarted manually ZC24A by Thales/SMC FRT. Normalized",None,15/01/2019,07:27,16/03/2019,09:27,
+,9403,STC-VOBC-T105,SBL1W/T105 CBTC applied EB due to obstructed motion detected,VOBC08,Wayside obstacle detection spurious activation,15/01/2019,04:59,Inspection,0,Obstruction in train motion,Hardware,Yes,HZ323,Obstruction cleared,None,15/01/2019,07:59,16/03/2019,09:59,
+,9410,STC-VOBC-T115,T115 pick Run-2 intend of Run-1/Reset train and reassign,VOBC07,Train did not pick up assignment,15/01/2019,06:06,Inspection,0,Software issue,Software,Yes,HZ390,Reset command given by LC .Operation restarted,None,15/01/2019,09:06,16/03/2019,11:06,
+,9411,STC-VOBC-T115,"T115 Run1 departure time from Al Qassar at 05:58 but in time table it should be 06:02, T115 depart earlier then time",VOBC02,VOBC-ATS comms failure,15/01/2019,06:11,ATS,0,signalling issue picked up wrong time,Software,No,,06:20 Informed to Thales Sig Team,None,15/01/2019,09:11,16/03/2019,11:11,
+,9929,STC-ZC-7,ICC LC ATS work station ZC 7-B Fail/Self normalized @13:30,ZC05,Zone controller software failure-self normalised,19/01/2019,16:32,ATS,0,Software issue,Software,No,,"13:30 Self normalized
+ 17:20 Informed to Thales Sig team",None,19/01/2019,19:32,20/03/2019,21:32,
+,9944,STC-ATS-RL,Depot Roller shutters RSD-A48/Normalized by Exercising shutter door,ATS06,ATS shutter door interface failure,19/01/2019,19:09,ATS,0,rsd disturbed,Hardware,No,,"19:50 Informed to Thales Sig Team and SMC MEP Team and FRT
+ 20:56  Thales STC &  EQU  shutter door team  said that tommorrow do the   join investigation for this issue. MSI updates WO closed with reference to latest WO to be investigated by MSI. WO-19012019-17",None,19/01/2019,22:09,21/03/2019,00:09,
+,9949,STC-ZC-11,11 B communication failure/Self normalized at 20:03,ZC05,Zone controller software failure-self normalised,19/01/2019,22:05,ATS,0,Software issue,Software,No,,"22:04 fault self  normalized
+ 22:06 Informed to STC &SMC STC team",None,20/01/2019,01:05,21/03/2019,03:05,
+,9951,STC-VOBC-T121,"Location RSD-A02W/T121 reports unknown position, VOBC status is fluctuating from Active to non communicating. NCO created and disappear.",VOBC02,VOBC-ATS comms failure,19/01/2019,22:33,ATS,0,Software issue,Software,Yes,HZ94,"3:30 Informed to Thales STC & SMC  team
+ As per Thales its known issue",None,20/01/2019,01:33,21/03/2019,03:33,
+,10527,STC-VOBC-T122,CC Duty Manager 17-Jan-2019 at 15:20 STC ZC T122 at Oqba P1 UTO ZC 10A lost communication and T122 (Run 10) hold at Oqba Platform 1,ZC01,Zone Controller Comms failure,21/01/2019,16:12,ATS,0,Software issue,Software,Yes,HZ16,"T122 depature command given by LC. This fault was normalized at the same time 
+ 18:00 informed to Thales SIG DNP
+ Thales updated: Train was delay due to train depart command not executed by LC on time. ATS to ZC10A communication lost occurred and cleared immediately, as per system reaction T122 got hold at PF.",None,21/01/2019,19:12,22/03/2019,21:12,
+,10552,STC-ATS-WS2,"ATS crashed, Line controller 2",ATS04,ATS software crash,21/01/2019,22:42,ATS,0,Software issue,Software,No,,"22:52  LC restarted  ATS  wks fault was cleared
+ 23:55 Informed to Thales STC ",None,22/01/2019,01:42,23/03/2019,03:42,
+,10553,STC-VOBC-T124,ICC - Integrated Control Centre T124 routed from PS 1102 TO R-RAB-TB05(drag and drop) train stop at RSST020. LMA only at the station. Train doors/PSD open and close and LMA extended,VOBC02,VOBC-ATS comms failure,21/01/2019,22:49,ATS,0,Software issue,Software,No,,"20:57 Informed to STC & SMC team
+ Thales SIG updates: 1/29/2019  12:28
+ Known Issue and will be updated in New software",None,22/01/2019,01:49,23/03/2019,03:49,
+,10776,STC-VOBC-T123,T123 VOBC 1 is non communicating after energisation & EB cannot be released,VOBC02,VOBC-ATS comms failure,22/01/2019,13:41,ATS,0,Software issue,Software,Yes,HZ174,"14:30 Informed to Thales Sig Team and FRT
+ 15:15 Reset VOBC in DM1 and release EB
+ Fault Normalized",None,22/01/2019,16:41,23/03/2019,18:41,
+,10777,STC-VOBC-T118,T118 VOBC 1 is non communicating after the energisation,VOBC02,VOBC-ATS comms failure,22/01/2019,13:47,ATS,0,Software issue,Software,Yes,HZ175,"14:30 Informed to Thales Sig Team and FRT
+ 15:00 Reset VOBC in DM1. Fault normalized",None,22/01/2019,16:47,23/03/2019,18:47,
+,11053,STC-ZC-24,ICC - ZC 24A failed,ZC04,Zone Controller comms card failure,22/01/2019,14:54,ATS,0,Hardware issue,Hardware,Yes,,"15:15 Informed to Thales Sig Team
+ Thales team update - This is known issue on hardware. Issue will be resolved in next hardware batch update",None,22/01/2019,17:54,23/03/2019,19:54,
+,11075,STC-ZC-24,"ZC 24, 25, 26, 27 Communication lost",ZC02,Multiple Zone Controller Comms failure,22/01/2019,21:14,ATS,0,Software issue,Software,Yes,HZ65,"Communication lost and normalized within 3 seconds. Communication established
+ Informed to Thales SIG. confirmed self normalized.",None,23/01/2019,00:14,24/03/2019,02:14,
+,11096,STC-ATS-WS-1,ATS of LC Workstation was crashed,ATS04,ATS software crash,23/01/2019,05:19,ATS,0,Software issue,Software,No,,"05:37 LC restarted and  normalised
+ As per Thales this is known issue.",None,23/01/2019,08:19,24/03/2019,10:19,
+,11097,STC-ATS-VCP,VCP cannot be controlled from CIC workstation and LC work station,ATS01,ATS VCP embedded software failure,23/01/2019,05:22,SCADA,0,Software issue,Software,No,,"05:20 informed to Thales SCD team at NMOC / SMC
+  TEL
+ 8:21 Thales DNP updated chrome session refreshed",None,23/01/2019,08:22,24/03/2019,10:22,
+,11102,STC-ATS-VCP,On 22/01/2019 DM Noticed VCP-2 was not working in Crisis management room at Building 14 Level 2,ATS01,ATS VCP embedded software failure,23/01/2019,09:16,SCADA,0,Screen uncompatible for workstation,Hardware,No,,"9:22 Informed to DNP & SMC tele
+ 10:00 h Thales DNP team updated This is hardware issue. It seems screen is not compatible for the work station. 
+ Also their request was to display crisis room wall screens as ICC VCP which is not part of design.",None,23/01/2019,12:16,24/03/2019,14:16,
+,11115,STC-VOBC-T107,T124 not moving when routed to test track,VOBC07,Train did not pick up assignment,23/01/2019,18:19,ATS,0,Software issue,Software,No,,"14:35 h Informed to Thales STC & SMC  team
+ 19:20 h VOBC-2 manually  reset done  by Thales STC & SMC  STC team fault normalized.
+ ",None,23/01/2019,21:19,24/03/2019,23:19,
+,11130,STC-ZC-24,SRS ZC-24A failed,ZC05,Zone controller software failure-self normalised,24/01/2019,00:52,ATS,0,Software issue,Software,No,,"23:03 ZC-24A failed. Restarted by LC. Normalized
+ Thales Known issue
+ informed to Thales SIG",None,24/01/2019,03:52,25/03/2019,05:52,
+,11135,STC-ZC-8,"ZC 8,10,14,13,12,11,7 Communication lost",ZC01,Zone Controller Comms failure,24/01/2019,02:04,ATS,0,Software issue,Software,Yes,HZ280," 00:48  SELF NORMALISED
+ informed to Thales SIG",None,24/01/2019,05:04,25/03/2019,07:04,
+,11142,STC-VOBC-T123,"T123, not able to release EB from ATS and train doors not opening from ATS",VOBC10,EB could not be reset,24/01/2019,04:01,ATS,0,Software issue,Software,No,,"Late reporting by RKH 
+ 12:51 Train Driver release EB manually and fault normalized.",None,24/01/2019,07:01,25/03/2019,09:01,
+,11143,STC-VOBC-T127,T127 Self test 08 failed in SCADA,VOBC04,Train unable to set in sleep mode,24/01/2019,04:12,SCADA,0,Software issue,Software,No,,"04:11 informed to KS staff
+ 04:23 KS checked and found No fault in TCMS.
+ 04:30 Fault normalized after ICC put the T127 to sleep and wake up.",None,24/01/2019,07:12,25/03/2019,09:12,
+,11149,STC-VOBC-T122,T122 ACB 1001 Over-speed Detected,VOBC05,Overspeed,24/01/2019,05:33,ATS,0,Overspeed detected,Software,Yes,HZ247,"05:35 informed to Thales SIG
+ 05:21  EB normalized after remote reset by LC",None,24/01/2019,08:33,25/03/2019,10:33,
+,11150,STC-VOBC-T122,T122 ACB 1001 Over-speed Detected,VOBC05,Overspeed,24/01/2019,05:36,ATS,0,Overspeed detected,Software,Yes,HZ246,"05:36 informed to Thales SIG
+ 05:21  EB normalized after remote reset by LC",None,24/01/2019,08:36,25/03/2019,10:36,
+,11184,STC-ATS-VCP,SCADA web server is down. View lost on all system and on VCP,ATS01,ATS VCP embedded software failure,24/01/2019,18:04,SCADA,0,Software issue,Software,Yes,HZ149,"17:41 Informed to SCADA team,they checked and confirmed servers are healthy issue is from Telecom network side.
+ 17:42 Informed to SMC team.
+ 17:48 Informed to Thales DNP and MSI.
+ 18:10 Thales restarted the network from Thales office in Depot and then fault normalised network establised.
+ Thales is doing investigation on this issue.
+ MSI updates:1/28/2019 09:00
+ ICC telecom network issue- due to system migration from ITF and ECC the storage server down.",None,24/01/2019,21:04,25/03/2019,23:04,
+,11189,STC-ATS-VCP,Energy view of depot is not fully available on VCP,ATS01,ATS VCP embedded software failure,24/01/2019,20:04,SCADA,0,Software issue,Software,No,,Adjusted the view by Thales SCADA Team,None,24/01/2019,23:04,26/03/2019,01:04,
+,11239,STC-ATS-VCP,"All VCP monitors in ICC went shutdown, image was Blank later normalized but with an improper display status",ATS01,ATS VCP embedded software failure,25/01/2019,09:28,Monitoring,0,Software issue,Software,No,,"8:10 Informed to Thales DNP
+ 8:30  Thales resteart the application ",None,25/01/2019,12:28,26/03/2019,14:28,
+,11242,STC-ATS-WS-1,Line Controller Work Station-1 ATS Crashed during the Train Operations,ATS04,ATS software crash,25/01/2019,10:39,ATS,0,Software issue,Software,No,,"8:11 Initial Action by LC Restarted the ATS application
+ 10:40 Informed to Thales STC & SMC team",None,25/01/2019,13:39,26/03/2019,15:39,
+,11260,STC-VOBC-T121,T121 VOBC 1 shows Passive only,VOBC01,VOBC Passive,25/01/2019,17:31,Inspection,0,Software issue,Software,Yes,HZ370,"System rebooted , fault normalized",None,25/01/2019,20:31,26/03/2019,22:31,
+,11264,STC-VOBC-T107,T107 shows VOBC 2- Passive only,VOBC01,VOBC Passive,25/01/2019,18:58,ATS,0,Software issue,Software,Yes,HZ140,"18:50 Informed to Thales signaling team and SMC.
+ Thales confirmed the fault was occurred due to improper movement of mode selector by Train operator(KS) when train moves from LMT line to SBL.
+ 19:30 Sent FRT to reset the VOBC manually.After reset the VOBC fault normalised.",None,25/01/2019,21:58,26/03/2019,23:58,
+,11296,STC-ATS-WS2,"ICC Line Controller Work Station 2, ATS application Crashed during Train Movement",ATS04,ATS software crash,26/01/2019,07:47,ATS,0,Software issue,Software,No,,"07:59 LC Initial action taken restarted the ATS application. Normalized
+ 8:50 Informed to Thales STC & SMC team",None,26/01/2019,10:47,27/03/2019,12:47,
+,11337,STC-VOBC-T111,"Reverse output failure due to which EB applied , VOBC 2 became passive",VOBC01,VOBC Passive,26/01/2019,17:18,ATS,0,Software issue,Software,Yes,HZ141,"18:30 Informed to Thales STC 
+ 1/27/2019 10:09 as per Thales SIG, need further investigation on this issue.
+ Thales SIG updates: 1/29/2019 12:28
+ Known Issue and will be updated in New software",None,26/01/2019,20:18,27/03/2019,22:18,
+,11343,STC-ZC-11,ZC hardware failure . No output,ZC01,Zone Controller Comms failure,26/01/2019,20:12,ATS,0,Hardware issue,Hardware,Yes,HZ60,"Fault was self normalized within 3 sec.
+ 20:07 Informed to Thales sig team.",None,26/01/2019,23:12,28/03/2019,01:12,
+,11352,STC-VOBC-T115,T115 VOBC 1 Status showing passive,VOBC01,VOBC Passive,27/01/2019,06:26,ATS,0,Software issue,Software,No,,"06:08 LC tried to reset remotely but unsucessful. On-board TA cannot do manual reset as per ICC
+ As per Thales Sig the Train Driver change the mode very quickly at around 05:30 that’s why the fault occur.
+ 6:50 informed to FRT team to reset VOBC 1 manually
+ 07:10 FRT book in at WAK
+ 07:28 on-board T115 at PF2
+ 07:37 FRT reset via VOBC pushbutton at cab console but unsuccessful. Reset VOBC from MCB at DM1. VOBC restarted. updated to RKH FC, VOBC is now working.
+ 07:40 Book out.
+ VOBC status showed normal after T115 was moved.",None,27/01/2019,09:26,28/03/2019,11:26,
+,11701,STC-VOBC-T103,"T103 when routed to stabling 6 East, stopped at stabling 6 West, Stabling 6 East vacant but train didn't moved",VOBC07,Train did not pick up assignment,27/01/2019,19:00,ATS,0,Software issue,Software,Yes,HZ130,"19:10 Informed to Thales STC & SMC STC team
+ 1/28/2019  10:52  Thales SIG DNP updates: Known issue. Will be rectified in the next ATS sofware version.",None,27/01/2019,22:00,29/03/2019,00:00,
+,11707,STC-VOBC-T107,"T107 routed to stabling, but the train not continuing to Stabling-07 West",VOBC07,Train did not pick up assignment,27/01/2019,20:49,Inspection,0,Signalling software issue on ATS train assignment,Software,Yes,HZ391,Under investigation by Thales,None,27/01/2019,23:49,29/03/2019,01:49,
+,11711,STC-ZC-24,Zone Controller ZC 24-A Communication lost 2 times,ZC01,Zone Controller Comms failure,28/01/2019,01:38,Inspection,0,Software issue,Software,Yes,HZ375,"Network restored,Communication re-established",None,28/01/2019,04:38,29/03/2019,06:38,
+,11713,STC-ZC-24,Zone Controller ZC 24-B Communication Lost,ZC01,Zone Controller Comms failure,28/01/2019,02:32,ATS,0,Software issue,Software,Yes,HZ129,"2:15 LC restarted the ZCB remotely then normalised.
+ 3:15 Informed to Thales signlaing.",None,28/01/2019,05:32,29/03/2019,07:32,
+,11720,STC-VOBC-T105,"EB applied due to over speed, Actual speed was 48 kmph, where as sweep TSR of 45 kmph applied",VOBC05,Overspeed,28/01/2019,05:40,ATS,0,Overspeed detected,Software,Yes,HZ49,"LC EB reset command given and fault normalized  at 05:24
+ ACB 1001 located at zone boundary of Zone 10 & 8.
+ informed to Thales SIG DNP and SMC SIG
+ Thales SIG Updates: 1/29/2019 12:28
+ Known Issue and will be updated in New software",None,28/01/2019,08:40,29/03/2019,10:40,
+,11724,STC-VOBC-T105,T105 was routed to SBL 07- East but it was stopped at SBL 07-West,VOBC02,VOBC-ATS comms failure,28/01/2019,07:47,ATS,0,Signalling software issue on ATS train assignment,Software,Yes,HZ71,As per Thales its  a Known Issue ,None,28/01/2019,10:47,29/03/2019,12:47,
+,11728,STC-VOBC-T112,RSD-A47 got Disturbed while routing train T112 to WBCD,VOBC02,VOBC-ATS comms failure,28/01/2019,09:51,ATS,0,RSD not closed,Hardware,No,,"09:26  LC did exercised 3 times and fault normalized 
+ as per Thales SIG, no issue from their side.
+ 1/29/2019 17:58 MEPS/EQU no more further investigation to be done from their side. WO to be closed",None,28/01/2019,12:51,29/03/2019,14:51,
+,11760,STC-ATS-WS-1,LS ATS workstation was crashed,ATS04,ATS software crash,28/01/2019,15:20,ATS,0,Software issue,Software,No,,"16:57 LC restarted the ATS wks
+ 17:32  Informed to Thales STC team",None,28/01/2019,18:20,29/03/2019,20:20,
+,11788,STC-VOBC-T118,T118 applied EB and Reset command from ATS is not available,VOBC10,EB could not be reset,28/01/2019,21:17,Inspection,0,Software issue,Software,No,,Application restarted and issue further to be resolved in next software update.,None,29/01/2019,00:17,30/03/2019,02:17,
+,11790,STC-ATS-VCP,"Information controller not able to put Monitor-2 on VCP for cycle of cameras through SCADA by using switch on default monitor 2,while on Monitor-1 cycle of cameras working normal",ATS01,ATS VCP embedded software failure,28/01/2019,23:40,SCADA,0,Software issue,Software,No,,"On VCP monitor-2 cycle of cameras are not playing from switch on deafult monitor2 option in SCADA-CTV wks whereas it is palying from switch on monitor1 option.
+ 2:58 Informed to Thales DNP.
+ 29-01-2019 0100 hrs  –THALES Restarted services and now normal",None,29/01/2019,02:40,30/03/2019,04:40,
+,11803,STC-ATS-WS-1,NO playback data available from 17:03 to 23:36 in Duty manager workstation ATS -WKS-0023,ATS08,ATS playback failure,29/01/2019,03:30,Inspection,0,Software issue,Software,No,,Playback data updated IN ATS-workstation,None,29/01/2019,06:30,30/03/2019,08:30,
+,12550,STC-ATS-SRS,Central Server SRS-1 Failure,ATS05,ATS SRS failure,29/01/2019,18:11,ATS,0,Software issue,Software,Yes,HZ153,"17:15 informed to Thales SIG
+ 17:19 informed to SMC SIG
+ 17:40 - 17:46 Thales SIG restarted SRS 1  and fault normalized.updated RKH FC
+ Thales SIG suspected due to temperature in SER is a bit high. FC verified to BMS operator in NMOC found room temp is 21C, requested to adjust to lower.
+ 20:29 FC confirmed to BMS operator the return air temp is now 15C.",None,29/01/2019,21:11,30/03/2019,23:11,
+,12572,STC-ZC-24,"ZC-24A,ZC-25A,ZC-26A and ZC-27A lost communication with ATS",ZC01,Zone Controller Comms failure,29/01/2019,22:50,ATS,0,Software issue,Software,Yes,HZ02,"ZC 24/25/26 comm lost with ATS and with in fraction of seconds normalised.
+ ZC 27 is not yet handovered by Thales.
+ 00:30Informed to Thales signaling team.",None,30/01/2019,01:50,31/03/2019,03:50,
+,12581,STC-ATS-VCP,"ATS VCP crashed, Screen become blank for few minutes",ATS04,ATS software crash,30/01/2019,05:05,Monitoring,0,Installation workmanship error,Hardware,No,,"ATS -VCP application crashed.
+ 3:18 Informed to Thales team checked and found power fluctuation on VCP and they restart the application from  SIG side and adjustment the view on VCP.but again reoccurred@7:10
+ Thales Sig requested to be check by Thales TEL team. 
+ 09:55 informed to Thales DNP
+ [THALES] – 1020 THALES team found loose power connector in VCP controller, fixed issue
+ ",None,30/01/2019,08:05,31/03/2019,10:05,
+,12589,STC-ATS-VCP,"ATS VCP crashed, Screen become blank for few minutes",ATS04,ATS software crash,30/01/2019,07:38,Inspection,0,Software issue,Software,No,,Restarted the Application. Its a known issue and will be fixed after New Software update,None,30/01/2019,10:38,31/03/2019,12:38,
+,12812,STC-VOBC-T111,"STC-STC-ATS-T111-SBL -06 West-UTO-T111, When routed from Pseudo Platform to SBL06, could not align with SBL -06 East. Stopped at SBL -06 West",VOBC03,VOBC stopping point inaccurate,01/02/2019,11:28,ATS,0,Software issue,Software,Yes,HZ201,"12:02 Informed to Thales signaling.
+ 23:00 Thales STC team updated  restarted both central servers",None,01/02/2019,14:28,02/04/2019,16:28,
+,12814,STC-VOBC-T111,"Tried to put in sleep mode, but wake-up due to VOBC Self test failure twice (11:35:32H & 11:49:46H)",VOBC04,Train unable to set in sleep mode,01/02/2019,11:58,ATS,0,Software issue,Software,No,,"As per Thales , Train is not aligned so that is reason LC unable to put into sleep mode. ",None,01/02/2019,14:58,02/04/2019,16:58,
+,12815,STC-VOBC-T111,"Tried to put in sleep mode, but wake up due to VOBC Self test failure (11:35:37H)",VOBC04,Train unable to set in sleep mode,01/02/2019,12:05,ATS,0,Software issue,Software,No,,"As per Thales , Train is not aligned so that is reason LC unable to put into sleep mode. ",None,01/02/2019,15:05,02/04/2019,17:05,
+,12816,STC-VOBC-T111,"Tried to put in sleep mode, but wake up due to VOBC Self test failure (11:35:42H)",VOBC04,Train unable to set in sleep mode,01/02/2019,12:05,ATS,0,Software issue,Software,No,,"As per Thales , Train is not aligned so that is reason LC unable to put into sleep mode. ",None,01/02/2019,15:05,02/04/2019,17:05,
+,12817,STC-VOBC-T124,"Line Controller reported STC VOBC T124 at SBL 06 UTO mode. Tried to put in sleep mode, but wake up due to VOBC Self test failure and rolling stock fault FDS-ODD (11:35:48H)--",VOBC04,Train unable to set in sleep mode,01/02/2019,12:09,ATS,0,Software issue,Software,No,,"14:17 FRT and KS team informed
+ 15:28 - 15:40 KS team with FRT checked and found that detector 4 is showing in TCMS in both Car A & B. KS reset FACP in Car B and then reset TCMS. Fault Rectified. 
+ FC confirmed indication normalized in SCD. Same updated to RKH FC. ICC put T124 to sleep and wake. now successful.",None,01/02/2019,15:09,02/04/2019,17:09,
+,12828,STC-VOBC-T122,Line Controller STC VOBC RSD-A03 E-UTO-T122 Active Car C: VOBC 1 status non communicating in ATS-Degraded Performance-Priority-02-LC Akimi reset VOBC 1-13:48-,VOBC02,VOBC-ATS comms failure,01/02/2019,14:39,ATS,0,Software issue,Software,Yes,HZ177,"13:48 LC VOBC reset command. Fault normalized
+ 14:42 Informed to Thales SIG DNP",None,01/02/2019,17:39,02/04/2019,19:39,
+,12838,STC-VOBC-T112,"Line Controller reported -STC--VOBC-T112-DECC Platform 2-UTO-T112 Active Car A, VOBC 2 status is non communicating, alarm in ATS-Fully Functional-Priority-02-VOBC Resetted by LC-15:59-",VOBC02,VOBC-ATS comms failure,01/02/2019,16:22,ATS,0,Software issue,Software,Yes,HZ164,"15:59 LC reset VOBC 2 remotely. Normalized
+ 17:08 informed to Thales SIG DNP",None,01/02/2019,19:22,02/04/2019,21:22,
+,12839,STC-VOBC-T115,"Line Controller reported STC--VOBC-T115-Between Westbay and DECC Platform 1-UTO-T115 Active Car C, VOBC 1 status is non communicating, When train was leading towards DECC from Westbay-Fully Functional-Priority-02-Self normalised-16:22-ATS Alarm- ATS communication with VOBC 1029 on T115 lost.",VOBC02,VOBC-ATS comms failure,01/02/2019,16:34,ATS,0,Software issue,Software,No,,"16:22 Self Normalized
+ 17:08 informed to Thales SIG DNP",None,01/02/2019,19:34,02/04/2019,21:34,
+,12847,STC-VOBC-T117,"Line Controller reported STC--VOBC--train was standby at Wakra Platform 2-UTO-T117 Active Car C: VOBC 1 non communicating -Degraded Performance-Priority-02-Self normalized-17:15-ATS Alarm, ATS communication with VOBC 1034 on train 117 lost",VOBC02,VOBC-ATS comms failure,01/02/2019,18:02,ATS,0,Software issue,software,Yes,HZ152,"17:15 Self Normalized
+ informed to Thales SIG",None,01/02/2019,21:02,02/04/2019,23:02,
+,12884,STC-VOBC-T120,ATS communication with VOBC 1043 was lost,VOBC02,VOBC-ATS comms failure,02/02/2019,07:31,Inspection,0,Software issue,Software,Yes,HZ285,"Issue updated to DNP,MSI,SMC &FRT team.Fault self normalized",None,02/02/2019,10:31,03/04/2019,12:31,
+,12959,STC-VOBC-T117,"ATS Showing Alarm, T117 (RSST070-P1121) failed to wake up due to VOBC self test failure",VOBC04,Train unable to set in sleep mode,03/02/2019,12:02,ATS,0,Software issue,Software,Yes,HZ169,"15:36 Informed to Thales SIG
+ Known Issue as per Thales SIG team",None,03/02/2019,15:02,04/04/2019,17:02,
+,12995,STC-ZC-24,ZC 24A Communication lost with ATS.,ZC01,Zone Controller Comms failure,04/02/2019,00:47,ATS,0,Software issue,Software,Yes,HZ272,"0:38 LC restarted ZC 24A by remotely 
+ Thales Known issue.",None,04/02/2019,03:47,05/04/2019,05:47,
+,13019,STC-VOBC-T120,"ICC: Alarm on ATS, EB applied due to over speed,Second alarm EB applied due to train move without authorization and NOC created. Both VOBC normal at the time.",VOBC05,Overspeed,04/02/2019,09:04,ATS,0,Alarm showing up for overspeeding,Software,Yes,HZ232,"09:07 Informed to Thales SIG at NMOC 
+ as per Thales SIG team. T111 EB due to T103 lost position due to VOBC to ZC communication lost and self normalized in few seconds(known issue), becomes NCT and affected T111. After LC intervention, Fault normalized. No further investigations as per Thales SIG.",None,04/02/2019,12:04,05/04/2019,14:04,
+,13509,STC-ZC-24,"ZC-24A Communication lost, twice",ZC01,Zone Controller Comms failure,04/02/2019,22:56,SCADA,0,Software issue,Software,Yes,HZ106,"22:47 LC restarted ZC 24A by remotely 
+ Thales Known issue.",None,05/02/2019,01:56,06/04/2019,03:56,
+,13515,STC-ZC-24,ZC 24 B Failed,ZC05,Zone controller software failure-self normalised,05/02/2019,03:31,ATS,0,Software issue,Software,No,,"ZC Restarted  after restarting fault normalized, under investigation by Thales",None,05/02/2019,06:31,06/04/2019,08:31,
+,13517,STC-ZC-24,ZC 24A Communication Lost.,ZC01,Zone Controller Comms failure,05/02/2019,04:14,ATS,0,Software issue,Software,Yes,HZ91,"4:22 LC restarted ZC 24B by remotely 
+ Thales Known issue.",None,05/02/2019,07:14,06/04/2019,09:14,
+,13522,STC-VOBC-T107,T107 direction GD0: Pick wrong run 03 intend of Run 02.,VOBC07,Train did not pick up assignment,05/02/2019,07:40,ATS,0,Software issue,Software,No,,"07:45 informed to Thales SIG DNP
+ 08:00 As per Thales SIG. No fault found. Run no 2 is already available at Al Qassar PF2, as T107 already late, so the  Operator need to assigned run no 2 to the particular train.
+ ",None,05/02/2019,10:40,06/04/2019,12:40,
+,13523,STC-ZC-24,ICC: ATS alarm'' ZC 24 report ZC 1 has lost a redundant communication link''.,ZC01,Zone Controller Comms failure,05/02/2019,07:57,ATS,0,Software issue,Software,Yes,HZ227,"10:00 Informed  to SMC STC and Thales SIG
+ As per Thales, this is known issue. Self normalized at 06:43. WO to be closed.",None,05/02/2019,10:57,06/04/2019,12:57,
+,13732,STC-ATS-WS2,ICC: LC2 ATS work station crashed.,ATS04,ATS software crash,05/02/2019,12:01,ATS,0,Software issue,Software,No,,13:37 LC restarted application. Normalized,None,05/02/2019,15:01,06/04/2019,17:01,
+,14072,STC-ZC-24,"ZC 24, 25, 26 & 27 communication with ATS was lost",ZC01,Zone Controller Comms failure,05/02/2019,20:32,ATS,0,Software issue,Software,Yes,HZ58,"Fault was selfnormalised within few seconds.
+ 20:26  Informed to Thales SIG team.
+ 20:35 Thales updated it’s a known issue and will rectified in the next software version.",None,05/02/2019,23:32,07/04/2019,01:32,
+,14087,STC-ZC-24,ZC 24 B Communication lost with ATS,ZC01,Zone Controller Comms failure,06/02/2019,02:42,ATS,0,Software issue,software,Yes,HZ266,"02:43  Informed to Thales STC & SMC STC Team.
+ As per Thales, This is known Issue and will resolved in next software update.",None,06/02/2019,05:42,07/04/2019,07:42,
+,14091,STC-ZC-24,ZC 24 A Communication lost with ATS,ZC01,Zone Controller Comms failure,06/02/2019,04:33,ATS,0,Software issue,Software,Yes,HZ267,"02:43  Informed to Thales STC & SMC STC Team.
+ As per Thales, This is known Issue and will resolved in next software update.",None,06/02/2019,07:33,07/04/2019,09:33,
+,14096,STC-VOBC-T111,T103 direction GD1: VOBC 1 passive status in Corniche P1.,VOBC01,VOBC Passive,06/02/2019,06:50,ATS,0,Software issue,Software,Yes,HZ82,"6:12 LC reset the VOBC remotely but not normalized.
+ 6:42 Informed to Thales SIG team.
+ 6:50 Thales SIG aksed need to  do the Hard reset, the same informed to FRT and dispatched.
+ 08:11 - 08:27 FRT boarded T103 at Al Qassar P1 . Reset VOBC 1 from MCB panel. Fault Normalized
+ ",None,06/02/2019,09:50,07/04/2019,11:50,
+,14111,STC-ATS-VCP,ICC: VCP 1 and VCP 2 log off automatically.,ATS01,ATS VCP embedded software failure,06/02/2019,12:23,Inspection,0,Software issue,Software,No,,"07:00 informed to TEL SMC and Thales SCD
+ 07:15 No fault found, Log on remotely. Normalized",None,06/02/2019,15:23,07/04/2019,17:23,
+,14112,STC-VOBC-T115,"ICC: T115 Both VOBC healthy status ,NOC created not possible to move train.",VOBC02,VOBC-ATS comms failure,06/02/2019,12:45,ATS,0,Software issue,Software,Yes,HZ210,"11:14 informed to Thales SIG DNP
+ as per Thales SIG updates:
+ 11:07:14 NCO created  due to ZC to VOBC T115 communication lost  at Al Bidda PF2 . Both VOBC are showing healthy. NCO was cleared after communication was established at 11:12:59
+ 11:14 Run re-assigned by LC.
+ -During that period, Operator performed Multiple command such as Door Open, Cancel Route, PF Hold and Train Reset.
+ WO  to be closed as per Thales SIG team.
+ 62 seconds delay as per ICC",None,06/02/2019,15:45,07/04/2019,17:45,
+,14119,STC-ZC-14,"ZC-14 A Communication Lost with ATS Twice, but gained the Communication immediately, Kindly investigate what made ZC14A to lost the Communication.",ZC01,Zone Controller Comms failure,06/02/2019,15:35,ATS,0,Software issue,Software,No,,"14:06 Informed to Thales SIG DNP
+ Known Issue. to be rectified in the next software version as per Thales SIG team.",None,06/02/2019,18:35,07/04/2019,20:35,
+,14118,STC-ATS-VCP,VCP monitor number 06 is failed to work through SCADA in ICC,ATS01,ATS VCP embedded software failure,06/02/2019,15:59,SCADA,0,Software issue,Software,No,,"14:06 Informed to SMC TEL tean in NMOC
+ 14:17 - 14:10 SMC TEL refreshed the VCP aplication remotely and fault Normalized.",None,06/02/2019,18:59,07/04/2019,20:59,
+,14131,STC-ATS-VCP,VCP Monitor 3 was stop working. Blank screen,ATS01,ATS VCP embedded software failure,06/02/2019,20:34,Inspection,0,Software issue,Software,No,,"20:12  Informed to Thales DNP & smc telecom team
+ 20:20 SMC telecom team refreshed  the VCP connection",None,06/02/2019,23:34,08/04/2019,01:34,
+,14132,STC-ATS-VCP,VCP Monitor 4 was stop working. Blank screen,ATS01,ATS VCP embedded software failure,06/02/2019,20:39,Inspection,0,Software issue,Software,No,,"20:12  Informed to Thales DNP & smc telecom team
+ 20:20 SMC telecom team refreshed  the VCP connection",None,06/02/2019,23:39,08/04/2019,01:39,
+,14167,STC-VOBC-T123,T123 was not taken route to STBL 04 West side when routed from Departure Platform 1,VOBC02,VOBC-ATS comms failure,06/02/2019,22:12,ATS,0,Software issue,Software,Yes,HZ120,"21:15 Informed to Thales STC  team 
+ Thales STC team said that know issue",None,07/02/2019,01:12,08/04/2019,03:12,
+,14173,STC-ZC-24,"ZC Lost Operational redundancy, 14 A, 12 B, 11 B, 25 A, 24 B, 26 A, 27 A, 10 A, 13 A",ZC05,Zone controller software failure-self normalised,07/02/2019,01:14,ATS,0,Software issue,Software,Yes,HZ274,"0:00  h self normalized 
+ 1:16 h Informed to Thales team 
+  As per Thales said that  ATS to  ZC communication loss ,this is know issue",None,07/02/2019,04:14,08/04/2019,06:14,
+,14177,STC-ZC-24,ZC 24 B failed.,ZC05,Zone controller software failure-self normalised,07/02/2019,02:45,ATS,0,Software issue,Software,No,,"2:36 LC  restarted by  remotely
+ 2:35 Informed to Thales team said that know issue",None,07/02/2019,05:45,08/04/2019,07:45,
+,14181,STC-VOBC-T120,ATS non communicating with VOBC 2,VOBC02,VOBC-ATS comms failure,07/02/2019,05:36,ATS,0,Software issue,Software,Yes,HZ86,"5:10 Informed to Thales STC & SMC STC team
+ Thales team said that ATS to VOBC non communicating to make healthy VPBC train sent out SBL and then VOBC became he",None,07/02/2019,08:36,08/04/2019,10:36,
+,14185,STC-ZC-24,ICC: ATS alarm'' ZC 24 report ZC 1 has lost a redundant communication link''.,ZC01,Zone Controller Comms failure,07/02/2019,07:18,ATS,0,Software issue,Software,Yes,HZ236,"07:37 Informed to Thales SIG DNP in NMOC
+ Self Normalized.
+ Known Issue as per Thales SIG.",None,07/02/2019,10:18,08/04/2019,12:18,
+,14188,STC-VOBC-T103,T103 direction GD-1: EB applied due to ATS loos communication with VOBC. VOBC-1 passive.,VOBC02,VOBC-ATS comms failure,07/02/2019,08:59,ATS,0,Software issue,Software,Yes,HZ235,"07:56 EB and VOBC rested by LC . Normalized
+ 09:19 informed to Thales SIG DNP
+ Known Issue as per Thales SIG team.EB applied due to EB failure detected.",None,07/02/2019,11:59,08/04/2019,13:59,
+,14267,STC-ATS-WS1,ATS crashed for LC1 work station in ICC,ATS04,ATS software crash,08/02/2019,11:06,ATS,0,Software issue,Software,No,,"12:17  LC Restart the application and normalized .
+ Known Issue as per Thales SIG team.",None,08/02/2019,14:06,09/04/2019,16:06,
+,14336,STC-ZC-24,ZC 24 B Communication lost,ZC01,Zone Controller Comms failure,09/02/2019,02:47,ATS,0,Software issue,Software,Yes,HZ127,"2:38 LC  restarted by  remotely
+ 2:53 Informed to Thales  STC team said that know issue",None,09/02/2019,05:47,10/04/2019,07:47,
+,14338,STC-ZC-24,ZC 24 A Communication lost,ZC01,Zone Controller Comms failure,09/02/2019,04:44,ATS,0,Software issue,Software,Yes,HZ89,"4:33 LC  restarted by  remotely
+ 4:50  Informed to Thales  STC team said that know issue",None,09/02/2019,07:44,10/04/2019,09:44,
+,14339,STC-ATS-WS-1,"ATS Crashed for LC workstation,",ATS04,ATS software crash,09/02/2019,04:49,ATS,0,Software issue,Software,No,,"4:49 LC restarted  the ATS  wks 
+ 4:55 Informed to Thales STC team",None,09/02/2019,07:49,10/04/2019,09:49,
+,14345,STC-VOBC-T107,T107 Run 1 at Al Wakra Platform 1 held bi directional handling,VOBC07,Train did not pick up assignment,09/02/2019,06:44,ATS,0,Software issue,Software,No,,"6:41 Informed to Thales STC  & SMC  team.
+ 9:30 Thales SIG updated, a recoverable route was set for MV64(Maintenance vehicle stabled at UWL) to RABTB06 last night by operator. After reset that mainteneace vehicle from ATS the fault was normalised. ",None,09/02/2019,09:44,10/04/2019,11:44,
+,14347,STC-VOBC-T121,"T121 in Al Qassar PL2 pickup the wrong run, Pick up Run 03 instead of Run 02",VOBC07,Train did not pick up assignment,09/02/2019,07:11,ATS,0,Signalling software issue on ATS train assignment,Software,No,,"6:41 Informed to Thales STC  & SMC team.
+ 02102019:MSI updated this is not a fault and normal system behaviour.  If the train arrives less than 15 minutes before its planned departure time (as set in the timetable) it will pick up the next run.   ",None,09/02/2019,10:11,10/04/2019,12:11,
+,14356,STC-VOBC-T122,"T122 at Al Bidda PL-1, VOBC 1 was non communicating and ATS Alarm by 08:32: ATS Communication with VOBC 1043 on Tran 122 lost",VOBC02,VOBC-ATS comms failure,09/02/2019,10:05,ATS,0,Software issue,Software,Yes,HZ52,"It was self normalised.
+ 10:50 Informed to Thales SIG team and SMC.",None,09/02/2019,13:05,10/04/2019,15:05,
+,14365,STC-VOBC-T161,"T161 in ATS depot, train's positioning not available",VOBC02,VOBC-ATS comms failure,09/02/2019,12:29,Inspection,0,Software issue,Software,Yes,HZ392,Under investigation by Thales,None,09/02/2019,15:29,10/04/2019,17:29,
+,14395,STC-VOBC-T112,"T112, applied EB while parking in RSD-A05, RSD-A05 remains open and reserved",VOBC02,VOBC-ATS comms failure,10/02/2019,03:56,ATS,0,Software issue,Software,Yes,HZ93,"4:00 Informed to Thales STC  & SMC  team 
+ 5:25  Thales team said that EB applied due to  ZC to VOBC communication loss and did not align properly due to which RSD-A05  got  reserved by crawl back protection .Thales team want to move the train and aligend properly . After ZC communication established moved the train and alligned in Depot.
+ Known issue of ZC to VOBC comm lost as per Thales SIG",None,10/02/2019,06:56,11/04/2019,08:56,
+,14403,STC-VOBC-T106,"T106, at Al Qassar PL 2 picked up Wrong Run, it took Run 3 instead of Run 2",VOBC07,Train did not pick up assignment,10/02/2019,06:49,ATS,0,Signalling software issue on ATS train assignment,Software,No,,"LC Reset command given and Run 2 Manually assigned.
+ 07:11 informed to Thales SIG DNP.
+ Known Issue as per Thales SIG team.",None,10/02/2019,09:49,11/04/2019,11:49,
+,14404,STC-ATS-LC1,"The trains in stabling didn't take Run assignments, except T105 (Run 08)",VOBC07,Train did not pick up assignment,10/02/2019,07:10,Inspection,0,Software issue,Software,No,,"Manually assigned run, under investigation by Thales",None,10/02/2019,10:10,11/04/2019,12:10,
+,14641,STC-ATS-WS1,RSDT010 ICC Line Controller 1 Work Station ATS application Crashed during Train Movement .,ATS04,ATS software crash,10/02/2019,16:17,Inspection,0,Software issue,Software,No,,"16:43 Informed to Thales DNP and SMC team. 
+ 17:49 Thales Tel onboard team asked to check with the Sig team team.
+ 17:50 Informed to Thales Sig team , they are also checking their logs.
+ 17/02/2019 Thales update:
+ Restarted the Software. Fault Normalized
+ ",None,10/02/2019,19:17,11/04/2019,21:17,
+,14679,STC-ATS-VCP,Camera RSDT114-CTV-CAM-401 is always pop up on all the VCP's in ICC automatically without anyone's command.,ATS01,ATS VCP embedded software failure,10/02/2019,18:12,Inspection,0,Software issue,Software,No,,"18:10 Informed to SMC team.
+ 19:15 Informed to Thales DNP.
+ 02112019:This is normal function of the VCP and not a failure.",None,10/02/2019,21:12,11/04/2019,23:12,
+,14699,STC-VOBC-T105,T105 VOBC-1 status is non communicating and VOBC-2 status is passive available,VOBC02,VOBC-ATS comms failure,10/02/2019,22:38,ATS,0,Software issue,Software,Yes,HZ100,23:35  SMC FRT VOBC 1 hard  Reset and Fault normalized.,None,11/02/2019,01:38,12/04/2019,03:38,
+,14898,STC-ZC-24,Zone controller ZC 24 A failed,ZC05,Zone controller software failure-self normalised,12/02/2019,05:06,ATS,0,Software issue,Software,No,,"4:50 LC reset the normalized 
+ 5:08 Informed to STC team
+ Known Issue as per Thales SIG",None,12/02/2019,08:06,13/04/2019,10:06,
+,14922,STC-VOBC-T103,DEPOT ICC: T103 both VOBC1 and VOBC2 become non-communicating with ATS.,VOBC02,VOBC-ATS comms failure,12/02/2019,15:00,ATS,0,Software issue,Software,Yes,HZ371,"System rebooted , fault normalized",None,12/02/2019,18:00,13/04/2019,20:00,
+,14926,STC-ZC-24,ICC: ZC-24 A lost communication with ATS.,ZC01,Zone Controller Comms failure,12/02/2019,16:17,ATS,0,Software issue,Software,Yes,HZ376,"Network restored,Communication re-established",None,12/02/2019,19:17,13/04/2019,21:17,
+,14928,STC-ZC-24,ICC: ZC-24 B lost communication with ATS.,ZC01,Zone Controller Comms failure,12/02/2019,17:14,ATS,0,Software issue,Software,Yes,HZ377,"Network restored,Communication re-established",None,12/02/2019,20:14,13/04/2019,22:14,
+,14934,STC-ZC-24,"ICC: ZC- 24A,25A,26A and ZC-24B,25B,26B lost communication with ATS same time.",ZC01,Zone Controller Comms failure,12/02/2019,20:34,ATS,0,Software issue,Software,Yes,HZ59,"Fault was self normalized.
+ 21:05 Informed to Thales sig team
+ Known Issue as per Thales SIG team",None,12/02/2019,23:34,14/04/2019,01:34,
+,15109,STC-ZC-24,Zone controller ZC 24 A failed,ZC05,Zone controller software failure-self normalised,13/02/2019,05:29,ATS,0,Software issue,Software,Yes,HZ257,"04:01 LC restarted the Application
+ 04:30 Informed to Thales STC
+ Fault Normalized",None,13/02/2019,08:29,14/04/2019,10:29,
+,15127,STC-ATS,RSD-A01 Shutter door disturbed.,ATS06,ATS shutter door interface failure,13/02/2019,10:52,ATS,0,Door not closing,Hardware,Yes,HZ219,"10:30 RKH FC reported via landline RSD-A01 disturbed, exercised 3X but still disturbed
+ 10:31 informed to SMC EQU team and Thales SIG in NMOC
+ 10:33 Fault Normalzied after another 2X fuctional test. Updated to SMC EQU",None,13/02/2019,13:52,14/04/2019,15:52,
+,15448,STC-ZC-24,RSDT010 Depot - Zone Controller ZC24-B Lost communication.,ZC01,Zone Controller Comms failure,13/02/2019,18:26,ATS,0,Software issue,Software,Yes,HZ148,"17:46 LC restarted the ZC24-B   by remotely
+ 18:30 Informed to Thales STC team",None,13/02/2019,21:26,14/04/2019,23:26,
+,15464,STC-VOBC-T103,Train T103 DM1 VOBC 1 become passive.,VOBC01,VOBC Passive,13/02/2019,23:35,ATS,0,Software issue,Software,Yes,HZ104,23:20 VOBC reset given by LC. Fault Normalized,None,14/02/2019,02:35,15/04/2019,04:35,
+,15466,STC-ZC-24,ZC24- ZC2 has lost redundant communication link,ZC01,Zone Controller Comms failure,14/02/2019,02:09,ATS,0,Software issue,Software,Yes,HZ118,21:28 Fault Self Normalized,None,14/02/2019,05:09,15/04/2019,07:09,
+,15477,STC-ZC-24,Zone Controller ZC 24 A communication lost.,ZC01,Zone Controller Comms failure,14/02/2019,04:36,ATS,0,Software issue,Software,Yes,HZ256,04:02 Reset ZC 24A by LC. Fault Normalized,None,14/02/2019,07:36,15/04/2019,09:36,
+,15495,STC-ZC-24,ATS ZC 24B communication lost,ZC01,Zone Controller Comms failure,14/02/2019,08:51,ATS,0,Software issue,Software,Yes,HZ245,05:49 ZC reset command given ,None,14/02/2019,11:51,15/04/2019,13:51,
+,15562,STC-ZC-24,"RSDT010 Zone Controller ZC24-A Failed, ATS Alarm ZC24-A Communication Lost.",ZC01,Zone Controller Comms failure,15/02/2019,04:41,ATS,0,Software issue,Software,Yes,HZ255,04:10 LC restarted ZC-24A from ATS. Fault Normalized,None,15/02/2019,07:41,16/04/2019,09:41,
+,15569,STC-ZC-24,ZC 24 B Communication lost with ATS,ZC01,Zone Controller Comms failure,15/02/2019,06:14,ATS,0,Software issue,Software,Yes,HZ378,"Network restored,Communication re-established",None,15/02/2019,09:14,16/04/2019,11:14,
+,15580,STC-ATS-WS-1,ATS HMI workstation line controller 2 crashed,ATS04,ATS software crash,15/02/2019,08:46,ATS,0,Software issue,software,No,,Restarted the Application. Its a known issue and will be fixed after New Software update,None,15/02/2019,11:46,16/04/2019,13:46,
+,15582,STC-VOBC-T117,T117 did not picked up run assignment,VOBC07,Train did not pick up assignment,15/02/2019,08:55,ATS,0,Signalling software issue on ATS train assignment,Software,No,,"9:30 Informed to Thales Sig team.
+ Known issue as per Thales SIG",None,15/02/2019,11:55,16/04/2019,13:55,
+,15583,STC-VOBC-T122,T122 did not picked up run assignment,VOBC07,Train did not pick up assignment,15/02/2019,09:07,ATS,0,Signalling software issue on ATS train assignment,Software,No,,"9:30 Informed to Thales Sig team.
+ Known issue as per Thales SIG",None,15/02/2019,12:07,16/04/2019,14:07,
+,15584,STC-VOBC-T106,T106 did not picked up run assignment,VOBC07,Train did not pick up assignment,15/02/2019,09:08,ATS,0,Signalling software issue on ATS train assignment,Software,No,,"9:30 Informed to Thales Sig team.
+ Known issue as per Thales SIG",None,15/02/2019,12:08,16/04/2019,14:08,
+,15609,STC-VOBC-T105,T105: Physically found train not align with MSD door.,VOBC03,VOBC stopping point inaccurate,24/02/2019,23:15,Inspection,0,Alignment issue,Hardware,Yes,HZ357,,None,25/02/2019,02:15,26/04/2019,04:15,
+,15617,STC-ZC-24,"ICC: ZC24,ZC25 and ZC27 ground fault detected on ATS.",ZC06,Zone controller ground fault,25/02/2019,12:04,Inspection,0,Ground fault detected,Hardware,No,,"Network restored,Communication re-established",None,25/02/2019,15:04,26/04/2019,17:04,
+,15625,STC-VOBC-T112,At 21:56H T112 Reports Unknown position and Self Cleared on ATS Alarms and at 21:58H ZC25 reports Communication Lost with T112 VOBC 1003 Unknown position and Self cleared on ATS alarms.,VOBC02,VOBC-ATS comms failure,25/02/2019,13:04,Inspection,0,Software issue,Software,Yes,HZ105,"23:20 Informed to Thales SIG and SMC team
+ As per Thales team, unknown position due to ZC-VOBC comms lost. This is common known issue",None,25/02/2019,16:04,26/04/2019,18:04,
+,15626,STC-ZC-24,Zone Controller ZC-24 has lost a redundant communication link lost at a time.,ZC01,Zone Controller Comms failure,25/02/2019,13:37,Inspection,0,Software issue,Software,Yes,HZ101,"23:30 Informed to Thales SIG and SMC team
+ As per Thales team, ZC single link comms lost and no ZC halt observed. It is a known issue",None,25/02/2019,16:37,26/04/2019,18:37,
+,15627,STC-VOBC-T122,At 22:05H T122 ATS Communication lost with VOBC 1044.,VOBC02,VOBC-ATS comms failure,25/02/2019,15:07,Inspection,0,Software issue,Software,Yes,HZ98,"23:40 Informed to Thales SIG and SMC team
+ As per Thales team, ATS-VOBC lost, this is known issue",None,25/02/2019,18:07,26/04/2019,20:07,
+,15641,STC-VOBC-T111,T111 Failed to set in Sleep Mode.,VOBC04,Train unable to set in sleep mode,25/02/2019,15:12,Inspection,0,Software issue,Software,Yes,HZ250,"04:35 Informed to Thales and SMC SIG Team
+ 2/17/2019 MSI updates  13:02
+ ATC system is working as per design. T111 was not aligned and therefore, train failed to go to sleep mode
+ The alignment issue is a known one by Thales, MHI and RKH.   
+ ",None,25/02/2019,18:12,26/04/2019,20:12,
+,15639,STC-ZC-26,Zone Controller ZC26 Communication lost with T106 and Established after 2 Seconds NCO Reported.,ZC01,Zone Controller Comms failure,25/02/2019,15:33,Inspection,0,Software issue,Software,Yes,HZ259,"03:55 Informed to Thales and SMC SIG Team
+ As per Thales SIG, ZC to VOBC communication lost is a known issue.",None,25/02/2019,18:33,26/04/2019,20:33,
+,15640,STC-ZC-26,Zone Controller ZC26 Communication lost with T117 and Established after 2 Seconds NCO Reported.,ZC01,Zone Controller Comms failure,25/02/2019,15:43,Inspection,0,Software issue,Software,Yes,HZ260,"03:55 Informed to Thales and SMC SIG Team
+ As per Thales SIG, ZC to VOBC communication lost is a known issue.",None,25/02/2019,18:43,26/04/2019,20:43,
+,15642,STC-VOBC-T107,T105 Failed to set in Sleep Mode.,VOBC04,Train unable to set in sleep mode,25/02/2019,16:06,Inspection,0,Software issue,Software,Yes,HZ251,"04:35 Informed to Thales and SMC SIG Team
+ 2/17/2019 MSI updates  13:02
+ ATC system is working as per design. T111 was not aligned and therefore, train failed to go to sleep mode
+ The alignment issue is a known one by Thales, MHI and RKH.   
+ ",None,25/02/2019,19:06,26/04/2019,21:06,
+,15643,STC-VOBC-T112,"T112 Failed to Wake up due to VOBC self test Failure, but SCADA showing Self test successful.",VOBC04,Train unable to set in sleep mode,25/02/2019,23:17,Inspection,0,Software issue,Software,Yes,HZ327,,None,26/02/2019,02:17,27/04/2019,04:17,
+,15659,STC-ATS-RL,"All the trains in the depot were unable to take RUN automatically, As informed by LC.",ATS07,ATS lose control on trains,26/02/2019,00:12,Inspection,0,Software issue,Software,Yes,HZ239,"06:14 Trains were manually assigned in ATS.
+ 8:00 Informed toThales Sig team.
+ Thales SIG team updated as Known Issue.",None,26/02/2019,03:12,27/04/2019,05:12,
+,15660,STC-ZC-24,ZC 24 B Communication lost,ZC01,Zone Controller Comms failure,26/02/2019,01:11,Inspection,0,Software issue,Software,Yes,HZ80,8:15 Informed toThales Sig team.,None,26/02/2019,04:11,27/04/2019,06:11,
+,15666,STC-VOBC-T127,T127 unable to sleep due to VOBC self test failure,VOBC04,Train unable to set in sleep mode,26/02/2019,05:06,Inspection,0,Software issue,Software,Yes,HZ372,"System rebooted , fault normalized",None,26/02/2019,08:06,27/04/2019,10:06,
+,15878,STC-ZC-24,Zone Controller ZC 24 reports ZC 2 has lost a redundant communication,ZC01,Zone Controller Comms failure,26/02/2019,10:12,Inspection,0,Software issue,Software,Yes,HZ110,"22:05 Informed to Thales SIG team
+ As per Thales team, ZC single link comms lost and no ZC halt observed. It is a known issue",None,26/02/2019,13:12,27/04/2019,15:12,
+,15887,STC-ZC-24,"Zone Controller ZC24-A Communication lost, ATS Alarm.",ZC01,Zone Controller Comms failure,26/02/2019,10:50,Inspection,0,Software issue,Software,Yes,HZ264,"02:56 LC Akimi restarted ZC 24A from ATS. Fault Normalized
+ 03:24 Informed to Thales SIG team. As per Thales it is known issue",None,26/02/2019,13:50,27/04/2019,15:50,
+,15896,STC-ATS-WS2,ICC: ATS crashed of LC-2 work station.,ATS04,ATS software crash,26/02/2019,11:04,Inspection,0,ATS crashed,Software,Yes,HZ243,"15:53 LC restarted ATS and fault normalized.
+ Known Issue as per Thales SIG DNP.",None,26/02/2019,14:04,27/04/2019,16:04,
+,15897,STC-ZC-24,ICC: ZC 24B Failed alarm showing on ATS.,ZC05,Zone controller software failure-self normalised,26/02/2019,12:10,Inspection,0,Software issue,Software,Yes,HZ244,"05:52 LC restarted ZC and fault normalized.
+ Known Issue as per Thales SIG DNP.",None,26/02/2019,15:10,27/04/2019,17:10,
+,15898,STC-ATS-RL,ICC: Trains in SBL not picking RUN automatically after inserting time table.,ATS07,ATS lose control on trains,26/02/2019,12:24,Inspection,0,Software issue,Software,No,,"06:45 LC assigned Run manually.
+ 07:06 informed to Thales SIG.
+ Known Issue as per Thales SIG",None,26/02/2019,15:24,27/04/2019,17:24,
+,15899,STC-VOBC-T105,ICC: T105 not in use-set unavailable and close on SBL-1E still getting RUN from time table.,VOBC02,VOBC-ATS comms failure,26/02/2019,12:52,Inspection,0,Software issue,Software,No,,"05:19 LC command off run and reset.
+ 07:16 Informed to Thaled SIG and SMC SIG for further investigations
+ Known Issue as per Thales SIG",None,26/02/2019,15:52,27/04/2019,17:52,
+,15900,STC-VOBC-T127,"ICC: T127 Routed directly to DECC but train stop in Corniche P1, Train doors and MSD open.",VOBC02,VOBC-ATS comms failure,26/02/2019,19:29,Inspection,0,Software issue,Software,Yes,HZ389,"12:02 Informed to Thales signaling.
+ 23:00 Thales STC team updated  restarted both central servers",None,26/02/2019,22:29,28/04/2019,00:29,
+,16321,STC-VOBC-T107,T105 Active Car:DM2-Unable to route in UTO mode.,VOBC14,UTO mode failure,27/02/2019,02:49,Inspection,0,Software issue,Software,Yes,HZ170,"15:28 Informed to KS ,SMC FRT & Thales STC team
+ 16:06   KS ,SMC FRTreached to the train 
+ 16:09-16:26  SMC FRT & KS team updated  EB released through  push button in DM-1 ",None,27/02/2019,05:49,28/04/2019,07:49,
+,16353,STC-ATS-VCP,ICC VCP monitor 03 not displaying CCTV image,ATS01,ATS VCP embedded software failure,27/02/2019,02:57,Inspection,0,Software issue,Software,Yes,HZ155,"17:05  Informed to Thales DNP &SMC telecom team
+ SMC telecom team tried to reslove the issue but not solved.
+ 02182019: SMC team refresh the VCP application then normalized.",None,27/02/2019,05:57,28/04/2019,07:57,
+,16366,STC-ZC-24,ZC-24 reports ZC-1 has lost redundant communication link,ZC01,Zone Controller Comms failure,27/02/2019,07:46,Inspection,0,Software issue,Software,Yes,HZ379,"Network restored,Communication re-established",None,27/02/2019,10:46,28/04/2019,12:46,
+,16382,STC-ZC-24,ZC 24 B Communication lost,ZC01,Zone Controller Comms failure,27/02/2019,10:03,Inspection,0,Software issue,Software,Yes,HZ242,"05:58 LC restarted ZC and fault normalized.
+ Known Issue as per Thales SIG team",None,27/02/2019,13:03,28/04/2019,15:03,
+,16384,STC-ATS-RL,T 113- Did not assigned the run automatically,VOBC07,Train did not pick up assignment,27/02/2019,11:25,Inspection,0,Software issue,Software,Yes,HZ238,"06:27 LC Run assigned manually from ATS
+ Known Issue as per Thales SIG team",None,27/02/2019,14:25,28/04/2019,16:25,
+,16394,STC-ATS-WS-1,"ATS workstation no.2 is lagging, delay in transmission of train information",ATS07,ATS lose control on trains,27/02/2019,12:45,Inspection,0,Software issue,Software,Yes,HZ216,"10:48 informed to Thales SIG
+ SMC FC informed to RKH FC to advice LC to restart ATS WKS as per request by Thales SIG
+ Known Issue as per Thales team.
+ 2/26/2019  8:05 SMC STC team updated As it is a recurring Fault ,hence it  was kept Under Observation for longer period. ",None,27/02/2019,15:45,28/04/2019,17:45,
+,16876,STC-ZC-24,"RSDT010- Zone Controller ZC24-A Lost Communication with ATS, Alarm triggered.",ZC01,Zone Controller Comms failure,27/02/2019,16:44,Inspection,0,Software issue,Software,Yes,HZ380,"Network restored,Communication re-established",None,27/02/2019,19:44,28/04/2019,21:44,
+,16878,STC-ZC-24,ATS and Zone Controller 24 B Communication lost,ZC01,Zone Controller Comms failure,27/02/2019,18:56,Inspection,0,Software issue,Software,Yes,HZ241,"06:00 LC action, Zone Controller 24 B restarted.Fault normalised.
+ Known Issue as per Thales SIG team.",None,27/02/2019,21:56,28/04/2019,23:56,
+,16886,STC-ATS-SRS,"Fault Alarm-ATS SRS2 and SCADA ::CE-SCADA RED communication lost, frequently appearing in the alarm section of the ATS alarm page",ATS05,ATS SRS failure,27/02/2019,21:34,Inspection,0,Software issue,Software,Yes,HZ286,"Issue updated to DNP,MSI,SMC &FRT team.Fault self normalized",None,28/02/2019,00:34,29/04/2019,02:34,
+,16944,STC-ZC-24,ATS and Zone Controller 24 B Communication lost at 06:00 and 06:02,ZC01,Zone Controller Comms failure,28/02/2019,14:42,Inspection,0,Software issue,Software,Yes,HZ240,"06:04  LC action, Zone Controller 24 B restarted. Fault normalized.
+ Known Issue as per Thales SIG team.",None,28/02/2019,17:42,29/04/2019,19:42,
+,16945,STC-VOBC-T118,T118 Emergency Brake applied due to Over-speed in UTO mode,VOBC05,Overspeed,28/02/2019,19:42,Inspection,0,overspeed,Software,Yes,HZ276,"19:55 informed to Thales SIG
+ 19:39  EB normalized after remote reset by LC",None,28/02/2019,22:42,30/04/2019,00:42,
+,16958,STC-VOBC-T103,"Misalignment of T103 at ECZ, platform 1, observed in ATS.",VOBC03,VOBC stopping point inaccurate,01/03/2019,07:11,Inspection,0,Alignment issue,Hardware,Yes,HZ75,"9:45 Informed to KS  & RST team 
+ 09:45: RKH FC verbally informed SMC FC that T103 brake pad release failure
+ 09:45-09:50: SMC FC checked in SCADA and found actual failure is brake pad failing release (4th axle) in T car BCU 2 logged at 09:17:49 and cleared at 09:17:50
+ 09:50: Informed to KS team to dispatch their team along with FRT team.KS informed that since the failure has cleared itself, they would download the logs and carry out further investigation once the train would reach depot.Same informed to SMC RST team as well.
+ 11:04: RKH FC informed SMC FC that the train is being removed from service for further investigation
+ 11:09: Train moved to depot
+ KS and SMC RST team updates:17:50
+ 15:00 - 16:00 T Car BCU 2 was replaced by KS team. Fault Rectified. 
+ 17:52 updated RKH FC
+ ",None,01/03/2019,10:11,30/04/2019,12:11,
+,16967,STC-VOBC-T103,"As observed For T 103- alarm, ' train did not align in ATO Mode ' was in Low category alarm.",VOBC03,VOBC stopping point inaccurate,01/03/2019,10:03,Inspection,0,Alignment issue,Hardware,No,,"As per Thales SIG Team, it is as per design.  Not a fault",None,01/03/2019,13:03,30/04/2019,15:03,
+,16970,STC-ATS-SRS,ATS SRS 2 and SCADA communication lost,ATS05,ATS SRS failure,01/03/2019,10:25,Inspection,0,Software issue,Software,Yes,HZ183,"13:00 Informed to SMC TEL and Thales SIG.
+ as per Thales SIG Scada to ATS link is intermittently down but as per Thales SIG side No issues from their side. SMC TEL and Thales SCD team updated that NETTRAC Server is up, but still intermittent alarm in ATS.
+ Informed to Thales DNP team.
+ Previous WO reported  WO-16886 assigned to STC
+ 23:30 SMC TEL team restarted the NETRAC services.
+ Indication of third rail showing normal in ATS ",None,01/03/2019,13:25,30/04/2019,15:25,
+,17010,STC-VOBC-T107,T107 did not picked up run assignment,VOBC07,Train did not pick up assignment,01/03/2019,10:28,Inspection,0,Signalling software issue on ATS train assignment,Software,No,,"Manually assigned run, under investigation by Thales",None,01/03/2019,13:28,30/04/2019,15:28,
+,17011,STC-VOBC-T122,T122 did not picked up run assignment,VOBC07,Train did not pick up assignment,01/03/2019,10:31,Inspection,0,Signalling software issue on ATS train assignment,Software,No,,"Manually assigned run, under investigation by Thales",None,01/03/2019,13:31,30/04/2019,15:31,
+,17046,STC-ZC-24,"Alarm on ATS, ZC-24 Has lost a redundant communication link.",ZC01,Zone Controller Comms failure,02/03/2019,00:30,Inspection,0,Software issue,Software,Yes,HZ50,"LC done the remote reset then normalized.
+ 19:40 Informed to Thales Sig team and it is a known issue to them",None,02/03/2019,03:30,01/05/2019,05:30,
+,17074,STC-ZC-24,ATS and Zone Controller 24 B Communication lost,ZC01,Zone Controller Comms failure,02/03/2019,04:12,Inspection,0,Software issue,Software,Yes,HZ381,"Network restored,Communication re-established",None,02/03/2019,07:12,01/05/2019,09:12,
+,17082,STC-ATS-WS1,ICC: ATS crashed of LC-1 work station,ATS04,ATS software crash,02/03/2019,04:38,Inspection,0,Software issue,Software,No,,"LC Restarted the application, Issue Normalized , Under Investigation by Thales ",None,02/03/2019,07:38,01/05/2019,09:38,
+,17083,STC-ATS-LC1,ICC: ATS of LC 1 is not displaying dwelling time for auto launch trains in Depot stabling,ATS03,ATS dwell time not displayed,02/03/2019,04:57,Inspection,0,Software issue,Software,No,,under investigation by Thales,None,02/03/2019,07:57,01/05/2019,09:57,
+,17110,STC-ZC-24,ZC-24 reports ZC-2 has lost redundant communication link,ZC01,Zone Controller Comms failure,02/03/2019,05:04,Inspection,0,Software issue,Software,Yes,HZ171,"15:15 LC done remote reset then normalized.
+ 15:50 Informed to Thales Sig team.",None,02/03/2019,08:04,01/05/2019,10:04,
+,17117,STC-VOBC-T122,"T122 indicating HELD and not moving while routed form SGP-2437 to Pseudo platform SBL 5,SBL 7 and SBL 8.",VOBC02,VOBC-ATS comms failure,03/03/2019,00:22,Inspection,0,Software issue,Software,No,,"17:45 Informed to Thales Sig team, it is a known issue to them and will be solved in next software.
+ 16:25 LC reset the route and then given route from train to signal.",None,03/03/2019,03:22,02/05/2019,05:22,
+,17187,STC-VOBC-T107,T 107- VOBC 1 non communicating,VOBC02,VOBC-ATS comms failure,03/03/2019,07:28,Inspection,0,Software issue,Software,Yes,HZ287,"Issue updated to DNP,MSI,SMC &FRT team.Fault self normalized",None,03/03/2019,10:28,02/05/2019,12:28,
+,17388,STC-ZC-24,ZC24- ZC1 has lost redundant communication link alarm on ATS.,ZC01,Zone Controller Comms failure,03/03/2019,10:31,Inspection,0,Software issue,Software,Yes,HZ45,LC reset the ZC then normalized.,None,03/03/2019,13:31,02/05/2019,15:31,
+,17457,STC-ZC-02,"ZC25 reports ZC2 has lost redundant communication link, Alarm on ATS.",ZC01,Zone Controller Comms failure,03/03/2019,10:34,Inspection,0,Software issue,Software,Yes,HZ382,"Network restored,Communication re-established",None,03/03/2019,13:34,02/05/2019,15:34,
+,17463,STC-ZC-24,ZC 24 B Communication lost,ZC01,Zone Controller Comms failure,03/03/2019,17:20,Inspection,0,Software issue,Software,Yes,HZ01,"ZC Restarted Fault normalized at 18:10, under investigation by Thales",None,03/03/2019,20:20,02/05/2019,22:20,
+,17468,STC-VOBC-T107,"VOBC 1 Active: T107 EB applied, No alarm for EB on ATS. LC not able to reset from ATS.",VOBC10,EB could not be reset,03/03/2019,21:13,Inspection,0,Software issue,Software,Yes,HZ67,"CBTC applied EB due to storage mode active or in pending state at time - 2019-02-23 13:12:43, 18:47, SIG Team asked LC to switch over the VOBC and then sleep and wake up the train then EB released, under investigation by Thales",None,04/03/2019,00:13,03/05/2019,02:13,
+,17474,STC-ATS-RL,"All trains cannot be routed to All stabling platform except SBL1, All Train showing HELD and not moving.",ATS07,ATS lose control on trains,03/03/2019,22:10,Inspection,0,Software issue,Software,Yes,HZ393,"Restarted the server ,train operation normalized",None,04/03/2019,01:10,03/05/2019,03:10,
+,17480,STC-ZC-24,Zone Controller 24-A Failed Lost Communication with ATS.,ZC01,Zone Controller Comms failure,04/03/2019,01:32,Inspection,0,Software issue,Software,Yes,HZ263,03:06 LC Restarted the ZC24-A by ATS. Fault Normalized,None,04/03/2019,04:32,03/05/2019,06:32,
+,17874,STC-VOBC-T105,T105 Active Car: DM2- VOBC 1 became passive,VOBC01,VOBC Passive,04/03/2019,01:41,Inspection,0,Software issue,Software,Yes,HZ200,"12:05  LC VOBC restart command given became normal
+ 12:43 Informed to Thales STC & SMC STC team 
+ 12:50 As per thales passive available VOBC-1 became passive due to self test execution , know issue",None,04/03/2019,04:41,03/05/2019,06:41,
+,18336,STC-VOBC-T118,"T118 Active VOBC-2 : ATS alarm'' Front position at changing R02e122'',CBTC EB applied due to unrecoverable disconnect (door and MSD) open automatically.",VOBC11,VOBC-MSD Interface failure,04/03/2019,05:24,Inspection,0,Software issue,Software,Yes,HZ146,"17:51 Informed to Thales Sig team.
+ 17:51 As per Thales LC done the vobc1 remote reset then issue normalized.
+ 17:55 Thales updated due to some emergency door output checkback failure vobc1 was down this causes the EB applied.",None,04/03/2019,08:24,03/05/2019,10:24,
+,18353,STC-ZC-24,Zone Controller ZC 24 B failed,ZC04,Zone Controller comms card failure,04/03/2019,13:03,Inspection,0,Hardware issue,Hardware,Yes,HZ83,"6:09 Restart command given by LC and fault normalized
+ Known Issue by Thales SIG team.",None,04/03/2019,16:03,03/05/2019,18:03,
+,18364,STC-VOBC-T120,T118 VOBC 1 became non communicating,VOBC02,VOBC-ATS comms failure,04/03/2019,15:40,Inspection,0,Software issue,Software,Yes,HZ77,"8:55 lC Reset the VOBC then normalized.
+ 14:20 Informed to Thales sig team.",None,04/03/2019,18:40,03/05/2019,20:40,
+,18375,STC-VOBC-T107,Stabling 07 NCO created with train association(T106 and T107 was in stabling 07),VOBC02,VOBC-ATS comms failure,04/03/2019,19:36,Inspection,0,Software issue,Software,No,,"Thales sig team updated The NCO is self normalized , This is a known issue to Thales and fixed in next software.",None,04/03/2019,22:36,04/05/2019,00:36,
+,18392,STC-ZC-25,"ZC25 reports ZC2 has lost redundant communication link, Alarm on ATS.",ZC01,Zone Controller Comms failure,05/03/2019,01:53,Inspection,0,Software issue,Software,Yes,HZ167,"15:40 LC given the reset command it was normalized.
+ 16:30 Informed to Thales Sig team, it is a known issue to them will solve in next software.",None,05/03/2019,04:53,04/05/2019,06:53,
+,18402,STC-ATS-SRS,"ICC ATS:OCC:RedLine _SRS1-Fail Lost Communication with ATS, ATS:OCC:RedLine _SRS2 Hot Standby Take over as Active.",ATS05,ATS SRS failure,05/03/2019,02:01,Inspection,0,SRS halted,Software,Yes,HZ107,"22:32:00 PM: informed to Thales SIG and SMC SIG team
+ 23:07 Thales and SMC SIG team checked at NMOC. Need to check at Signaling room
+ 00:08 Thales and SMC SIG and FRT checked in SER and found SRS 1 Halted. Restarted SRS1 and  Fault was normalized. SRS1 Active, SRS2 Passive.
+ As per SIG team observed high temperature in the Room =23C. Informed to NMOC BMS operator and found set point is 24C. Now set point adjusted to 20C.",None,05/03/2019,05:01,04/05/2019,07:01,
+,18404,STC-ZC-12,"Zone Controller ZC12 both A and B, Lost Communication with ATS.",ZC01,Zone Controller Comms failure,05/03/2019,14:39,Inspection,0,Software issue,Software,Yes,HZ383,"Network restored,Communication re-established",None,05/03/2019,17:39,04/05/2019,19:39,
+,18426,STC-ZC-SRS,"ATS-OCC-Red line ICC_SRS 1 - Fail, Standby SRS active, All ZC don't have redundancy in ICC",ATS05,ATS SRS failure,05/03/2019,20:29,Inspection,0,Extra ZC not available,Software,Yes,HZ180,"Provided extra ZC ,Fault normalized",None,05/03/2019,23:29,05/05/2019,01:29,
+,18515,STC-ATS-SRS,ATS-OCC-Red line ICC_SRS 1 - SRS and all ZC failed in ICC due to communication lost,ZC01,Zone Controller Comms failure,06/03/2019,18:08,Inspection,0,Software issue,Software,Yes,HZ384,"Network restored,Communication re-established",None,06/03/2019,21:08,05/05/2019,23:08,
+,18548,STC-ACB-1204-1206,ACB-1204 and 1206 shows Disturbed and failed occupied in ATS at Msheireb PF-04,ACB01,ACB soft disturbance,07/03/2019,05:18,Inspection,0,Software issue,Software,Yes,HZ66,"Checked alaram ACB-1204 failed at 1:45.15 AM   and 2:12:30 AM LC reset ACB-1204,STC team investigated P4 PTW open at the time of failure",None,07/03/2019,08:18,06/05/2019,10:18,
+,18608,STC-ZC-24,ATS alarm- ZC24 has lost a redundant communication link,ZC01,Zone Controller Comms failure,07/03/2019,15:18,Inspection,0,Software issue,Software,Yes,HZ37,"Reseted by LC Fault Normalized, under investigation by Thales.",None,07/03/2019,18:18,06/05/2019,20:18,
+,18642,STC-ACB-1017-1011,ACB 1017 and ACB 1011 is disturbed healthy on ATS and ACB 1011 NCO created,ACB01,ACB soft disturbance,07/03/2019,19:44,Inspection,0,Alarm indicated,Software,Yes,HZ63,"Failure occurred at 03:22 Hrs on 01-03-2019, And Alarm generated that PSD in Unsafe Condition at RSST030 station under investigation by Thales",None,07/03/2019,22:44,07/05/2019,00:44,
+,20050,STC-VOBC-T103,T103 Over speed detected and EB applied while train was entering in RSD-A06 W.,VOBC05,Overspeed,08/03/2019,11:15,Inspection,0,overspeed,Software,Yes,HZ09,"TS#103 B-02, LMA -03, CBTC applied EB due to train doors opened without being enabled, Train 111 was already there and it had communication loss due to there NCO was created,  at that time train 103 entered in SBL due to NCO availabe at next Track train faced EB.",None,08/03/2019,14:15,07/05/2019,16:15,
+,20079,STC-ATS-LC1,Depot ICC-ATS Application for LC work station Crashed.,ATS04,ATS software crash,08/03/2019,12:05,Inspection,0,Software issue,Software,No,,Restarted the Application. Its a known issue and will be fixed after New Software update,None,08/03/2019,15:05,07/05/2019,17:05,
+,21202,STC-VOBC-T120,T 120 over speed detected at location ACB 2607,VOBC05,Overspeed,08/03/2019,14:31,Inspection,0,overspeed,Software,Yes,HZ117,"21:29 LC Reset EB and normalized.
+ 23:20 Informed to Thales SIG.
+ Thales updated due to VOBC to ATS communication lost. Known Issue as per Thales SIG>",None,08/03/2019,17:31,07/05/2019,19:31,
+,21219,STC-ZC-24,ATS alarm-ATS and ZC ZC24-A communication lost,ZC01,Zone Controller Comms failure,08/03/2019,14:31,Inspection,0,Software issue,Software,Yes,HZ261,03:35 ATS and ZC24A communication established. Self Normalized. Known Issue by Thales SIG team.,None,08/03/2019,17:31,07/05/2019,19:31,
+,21255,STC-VOBC-T107,"T107- Misaligned at Ras Bu Fontas P1, Oqba P1, Umm Ghuwailina P1 and Al Matar P1",VOBC03,VOBC stopping point inaccurate,08/03/2019,20:46,Inspection,0,Alignment issue,Hardware,Yes,HZ363,,None,08/03/2019,23:46,08/05/2019,01:46,
+,21259,STC-VOBC-T117,"T117 Both VOBC1 and VOBC2 were Failed Non- Communicating with ATS, Approaching Al Bidda Station PF4.",VOBC02,VOBC-ATS comms failure,08/03/2019,20:46,Inspection,0,Software issue,Software,Yes,HZ199,"12:14 Informed to Thales STC ,SMC STC & FRT team 
+ 12:15 RKH FC reported T117 both VOBC became showing non communicating in ATS at Al Bidda PLT02
+ 12:15 SMC FC informed to SMC STC and Thales STC team inside NMOC
+ 12:16 Dispatched FRT to board T117
+ 12:29 FRT still on the way to Al Bidda
+ 12:37 ICC instructed CETL to move T117 in RM mode up to MSH. While approaching MSH one VOBC started communicating.
+  ICC route T117 in ATO and removed the train from mainline. Spare train T112 (Stabled in Wakra station) swapped with T117.
+ 13:58 FRT along with Thales STC board T117 in SBL06, checked TCMS alarms and found ATS and ZC communication lost alarm in TCMS (Picture Attached)
+ 14:20 Thales team updated after restarted VOBC-1 & MRU, Fault Normalized
+ 16:30 Thales Team updated that train is fit for the service
+ Same time Informed to RKH FC Verbally",None,08/03/2019,23:46,08/05/2019,01:46,
+,19989,STC-VOBC-T124,T124 not aligned in Oqba Platform 1,VOBC03,VOBC stopping point inaccurate,09/03/2019,03:17,Inspection,0,Alignment issue,Hardware,Yes,HZ358,,None,09/03/2019,06:17,08/05/2019,08:17,
+,20080,STC-ZC-24,"Depot ICC- ZC 24A and ZC 24B lost communication with ATS, Failed",ZC01,Zone Controller Comms failure,09/03/2019,18:38,Inspection,0,Software issue,Software,Yes,HZ24,"STC Team Manual Reset with Thales ,fault is normal at 16:32hrs ",None,09/03/2019,21:38,08/05/2019,23:38,
+,20860,STC-VOBC-T124,"T124- Misaligned at Umm Ghuwailina P1, Train Position In-determine.",VOBC03,VOBC stopping point inaccurate,09/03/2019,18:50,Inspection,0,Alignment issue,Hardware,Yes,HZ360,,None,09/03/2019,21:50,08/05/2019,23:50,
+,19981,STC-VOBC-T106,T106 at block ACB 1403 reported train has violated in non permissive signal due to that T106 applied EB as STL violated.,VOBC12,SPAD,10/03/2019,06:09,Inspection,0,Software issue,Software,Yes,HZ39,On Board TA released the EB Manually and the train was re routed.  Its a Software Issue and  its under investigation by Thales,None,10/03/2019,09:09,09/05/2019,11:09,
+,21254,STC-VOBC-T120,"T120 occurred Misalignment with Platform, on Qassar PF2 and Matar PF2.",VOBC03,VOBC stopping point inaccurate,10/03/2019,19:21,Inspection,0,Alignment issue,Hardware,Yes,HZ362,,None,10/03/2019,22:21,10/05/2019,00:21,
+,20861,STC-VOBC-T120,T120- Misaligned at Msheireb P1. Train Position In-determine.,VOBC03,VOBC stopping point inaccurate,11/03/2019,10:20,Inspection,0,Alignment issue,Hardware,Yes,HZ361,,None,11/03/2019,13:20,10/05/2019,15:20,
+,19602,STC-VOBC-T101,T101 was observed at Al Qasar Platform 1 on ATS. Physically there was no train confirmed by SM. MHI confirmed that T101 was actually at Qatar University Station,VOBC02,VOBC-ATS comms failure,11/03/2019,17:45,Inspection,0,Software issue,Software,No,,"Playback Checked found T101 entered into Red Line but Physically it was in, Red Line Extension So It was A False View, under investigation by Thales.",None,11/03/2019,20:45,10/05/2019,22:45,
+,19639,STC-ZC-10,ATS alarm- ZC10 A and B Fail/ lost communication with ATS,ZC01,Zone Controller Comms failure,11/03/2019,19:22,Inspection,0,Software issue,Software,Yes,HZ03,"ZC 10 Hard reseted after reseting fault normalized, under investigation by Thales",None,11/03/2019,22:22,11/05/2019,00:22,
+,19645,STC-VOBC-T111,"T111 VOBC1 is Passive, Should be in Passive Available. Stabling 04",VOBC01,VOBC Passive,11/03/2019,23:04,Inspection,0,Software issue,Software,Yes,HZ05,Under investigation by Thales,None,12/03/2019,02:04,11/05/2019,04:04,
+,19646,STC-VOBC-T107,"T107 VOBC is Passive, Should be in Passive Available. Stabling 01",VOBC01,VOBC Passive,11/03/2019,23:16,Inspection,0,Software issue,Software,Yes,HZ06,Under investigation by Thales,None,12/03/2019,02:16,11/05/2019,04:16,
+,19718,STC-ZC-24,ZC - Zone Controller 24 reported ZC 2 has lost communication link with ATS,ZC01,Zone Controller Comms failure,12/03/2019,03:41,Inspection,0,Software issue,Software,Yes,HZ217,"10:45 Informed to Thales SIG
+ as per Thales this is a known issue. Single communication lost. WO can be closed",None,12/03/2019,06:41,11/05/2019,08:41,
+,19719,STC-ATS-WS-2,ATS - Line controller work station 2 is crashed.,ATS04,ATS software crash,12/03/2019,04:16,Inspection,0,Software issue,Software,No,,Initial action taken by LC restarted the ATS application. ,None,12/03/2019,07:16,11/05/2019,09:16,
+,19787,STC-VOBC-T103,T103 VOBC 2 status is passive.,VOBC01,VOBC Passive,12/03/2019,04:16,Inspection,0,Software issue,Software,No,,LC given VOBC reset command. Under investigation by Thales,None,12/03/2019,07:16,11/05/2019,09:16,
+,19830,STC-VOBC-T118,T118 - Train door does not open at RBF Station Platform1 on the Train Door open command given by LC and the ATS does not displays the Alarm,VOBC02,VOBC-ATS comms failure,12/03/2019,05:17,Inspection,0,Software issue,Software,no,,"9:18 Informed to Thales STC & SMC STC team
+ 3/15/2019  10:52  Thales SIG DNP updates: Known issue. Will be rectified in the next ATS sofware version.",None,12/03/2019,08:17,11/05/2019,10:17,
+,19851,STC-VOBC-T115,T115 VOBC1 Non Communicating. Train in SBL-06 East.,VOBC02,VOBC-ATS comms failure,12/03/2019,07:29,Inspection,0,Software issue,Software,Yes,HZ269,"00:50 Informed to SMC and Thales Sig team.
+ 1:24 The fault was self normalized.",None,12/03/2019,10:29,11/05/2019,12:29,
+,19859,STC-ATS,"Depot - ATS Indicating, NCO Reported On SBL 03,04,05,07 and 08 without Train Association.",ATS07,ATS lose control on trains,12/03/2019,10:10,Inspection,0,Software issue,Software,No,,07:15 Thales team Reset the blocks. Fault Normalized,None,12/03/2019,13:10,11/05/2019,15:10,
+,19898,STC-ZC-24,ATS alarm-ATS and ZC ZC24-B communication lost,ZC01,Zone Controller Comms failure,12/03/2019,11:46,Inspection,0,Software issue,Software,Yes,HZ68,ATS alarm-ATS and ZC ZC24-B communication established at 18:16. under investigation by Thales,None,12/03/2019,14:46,11/05/2019,16:46,
+,19906,STC-ACB-2602-2604-2606-2608-2610-2611,"Depot SBL: ACB 2602,2604,2606,2608,2610 and 2614 Indicating Disturbed Alarm on ATS.",ACB01,ACB soft disturbance,12/03/2019,13:26,Inspection,0,Alarm disturbed,Software,Yes,HZ398,"Restatred software,fault self normalized",None,12/03/2019,16:26,11/05/2019,18:26,
+,20000,STC-VOBC-T107,T107 not aligned in RBF Platform 2,VOBC03,VOBC stopping point inaccurate,12/03/2019,18:56,Inspection,0,Alignment issue,Hardware,Yes,HZ359,,None,12/03/2019,21:56,11/05/2019,23:56,
+,20013,STC-ATS-LC1,As observed in ATS- there is no label information for all the trains reaching Al Bidda platform 1,ATS02,ATS train label disappeared,12/03/2019,20:23,Inspection,0,Software issue,Software,No,,Software issue Under investigation by Thales,None,12/03/2019,23:23,12/05/2019,01:23,
+,20016,STC-VOBC-T112,T 112 doors were not opened at platform 2. Misalignment status - in-determine,VOBC03,VOBC stopping point inaccurate,13/03/2019,01:00,Inspection,0,Alignment issue,Hardware,Yes,HZ328,,None,13/03/2019,04:00,12/05/2019,06:00,
+,21203,STC-VOBC-T124,"T 124 - Self test 8 and 6 failed, set to sleep but failed",VOBC04,Train unable to set in sleep mode,13/03/2019,11:54,Inspection,0,Software issue,Software,Yes,HZ99,"23:39 Informed to FRT and SMC and KS team
+ 00:20 - 00:30 T124 HVAC Breaker reset done and the fault was cleared by KS team. Indication in SCD all train self teset successful. Updated to RKH FC",None,13/03/2019,14:54,12/05/2019,16:54,
+,21222,STC-VOBC-T120,"T120 SBL 06 - VOBC-01 fluctuating from active to non-communicating, VOBC-02 status Non communicating",VOBC02,VOBC-ATS comms failure,13/03/2019,12:30,Inspection,0,Software issue,Software,Yes,HZ48,LC observed that the VOBC-01 self normalises at the start and after few seconds again becomes non communicating under investigation by Thales,None,13/03/2019,15:30,12/05/2019,17:30,
+,21306,STC-ZC-24,ATS- ZC 24 B Failed,ZC01,Zone Controller Comms failure,13/03/2019,20:12,Inspection,0,Software issue,software,No,,"ZC Restarted  after restarting fault normalized, under investigation by Thales",None,13/03/2019,23:12,13/05/2019,01:12,
+,21307,STC-ZC-24,ATS- ZC 24 A Failed,ZC01,Zone Controller Comms failure,13/03/2019,20:32,Inspection,0,Software issue,software,No,,"ZC Restarted  after restarting fault normalized, under investigation by Thales",None,13/03/2019,23:32,13/05/2019,01:32,
+,21389,STC-VOBC-T120,T 123 VOBC 1045 is lost communication with ATS,VOBC02,VOBC-ATS comms failure,14/03/2019,05:08,Inspection,0,Software issue,Software,Yes,HZ97,23:46 Fault Self Normalized. 01:05 Informed to Thales SIG. Known Issue as per Thales team,None,14/03/2019,08:08,13/05/2019,10:08,
+,21420,STC-ATS-RL,Umm Ghuwailina P2- Close Track applied on TK1120. No alarm on ATS.,ATS010,ATS close track failure,14/03/2019,05:47,Inspection,0,close track applied,Software,Yes,HZ282,"System restarted ,fault normalized",None,14/03/2019,08:47,13/05/2019,10:47,
+,21429,STC-VOBC-T115,"T115- Misaligned at Msheireb P1, West Bay P1,Msheireb P2. Train Position In-determine and EB applied",VOBC03,VOBC stopping point inaccurate,14/03/2019,05:48,Inspection,0,Alignment issue,Hardware,Yes,HZ364,,None,14/03/2019,08:48,13/05/2019,10:48,
+,21432,STC-VOBC-T111,"T111- Obstruction Motion Detected, EB applied in Ras Bu Fontas and Door did not open",VOBC08,Wayside obstacle detection spurious activation,14/03/2019,08:36,Inspection,0,Obstruction in motion,Hardware,Yes,HZ324,Obstruction cleared,None,14/03/2019,11:36,13/05/2019,13:36,
+,21433,STC-VOBC-T107,"T107- Misaligned at Ras Bu Fontas Platform-01, Oqba Platform-01, Umm Ghuwailina P1 and Al Matar Platform-01. Train Position In-determine",VOBC03,VOBC stopping point inaccurate,14/03/2019,08:54,Inspection,0,Alignment issue,Hardware,Yes,HZ365,,None,14/03/2019,11:54,13/05/2019,13:54,
+,21459,STC-VOBC-T112,T112- VOBC 2 non communicating,VOBC02,VOBC-ATS comms failure,14/03/2019,11:42,Inspection,0,Software issue,Software,Yes,HZ288,"Issue updated to DNP,MSI,SMC &FRT team.Fault self normalized",None,14/03/2019,14:42,13/05/2019,16:42,
+,21476,STC-VOBC-T112,T112- Misaligned at Al Doha Al Jadeeda Platform-02. Train Position In-determine,VOBC03,VOBC stopping point inaccurate,14/03/2019,13:03,Inspection,0,Alignment issue,Hardware,Yes,HZ366,,None,14/03/2019,16:03,13/05/2019,18:03,
+,21477,STC-VOBC-T103,T103 misalignment indetermine @ Al Bidda PTF-1,VOBC03,VOBC stopping point inaccurate,14/03/2019,13:04,Inspection,0,Alignment issue,Hardware,Yes,HZ367,SMC FC checked in SCADA CAR T BCU 1 and DM2 BCU 1 fault appear and disappear. SMC FRT checked in TCMS event it is showing BCU break pad failing release. This subsystem belongs to RST.,None,14/03/2019,16:04,13/05/2019,18:04,
+,21480,STC-ATS-LC1,T 105 - Launch availaibility is set to unavailable but still the train is getting the runs,ATS07,ATS lose control on trains,14/03/2019,13:39,Inspection,0,Software issue,Software,No,,"RSDT010-0001645 Reseted and assigned run to another train, Under investigation by Thales",None,14/03/2019,16:39,13/05/2019,18:39,
+,21493,STC-ZC-24,ATS- ZC 24 A Communication lost Out of Service,ZC01,Zone Controller Comms failure,14/03/2019,15:15,Inspection,0,Software issue,Software,Yes,HZ43,"LC tried reset but not successful.
+ 16:00 Informed to Thales and STC.
+ 16:32 SMC team dome manual reset then normalized.",None,14/03/2019,18:15,13/05/2019,20:15,
+,21505,STC-VOBC-T112,T112- Misaligned at Al Doha Al Jadeeda Platform2,VOBC03,VOBC stopping point inaccurate,14/03/2019,17:15,Inspection,0,Alignment issue,Hardware,Yes,HZ368,,None,14/03/2019,20:15,13/05/2019,22:15,
+,21506,STC-ZC-24,ATS- ZC 24 B Communication lost Out of Service,ZC01,Zone Controller Comms failure,14/03/2019,18:21,Inspection,0,Software issue,Software,Yes,HZ385,"Network restored,Communication re-established",None,14/03/2019,21:21,13/05/2019,23:21,
+,21510,STC-ZC-24,ATS- ZC 24 A Communication lost Out of Service,ZC01,Zone Controller Comms failure,14/03/2019,19:53,Inspection,0,Software issue,Software,Yes,HZ386,"Network restored,Communication re-established",None,14/03/2019,22:53,14/05/2019,00:53,
+,21515,STC-VOBC-T111,"T111 SBL08 West - Unable to set train to sleep mode and status as not aligned on ATS, but aligned on TCMS as per on board Staff. Train was set to sleep manually. but after the train was set to slept, ATS status - Storage Mode activation command rejected, ATS failed to wake up due to VOBC self test Failure",VOBC04,Train unable to set in sleep mode,14/03/2019,20:28,Inspection,0,Software issue,Software,Yes,HZ373,"System rebooted , fault normalized",None,14/03/2019,23:28,14/05/2019,01:28,
+,21516,STC-VOBC-T105,T105 SBL03 East - Alarm indicating on ATS RSST070 P1-P1172 Failed to Wake up due to VOBC self test Failure. Degraded Performance,VOBC04,Train unable to set in sleep mode,14/03/2019,20:41,Inspection,0,Software issue,Software,Yes,HZ374,"System rebooted , fault normalized",None,14/03/2019,23:41,14/05/2019,01:41,
+,21520,STC-VOBC-T122,T122 SBL03 West - Alarm indicating on ATS- RSST070 P1-P1169 Failed to Wake up due to VOBC self test Failure,VOBC04,Train unable to set in sleep mode,14/03/2019,21:20,Inspection,0,Software issue,Software,Yes,HZ07,Under investigation by Thales,None,15/03/2019,00:20,14/05/2019,02:20,
+,21525,STC-VOBC-T111,"T111- Obstruction Motion Detected, EB applied in Ras Bu Fontas and Door did not open.",VOBC08,Wayside obstacle detection spurious activation,14/03/2019,22:59,Inspection,0,Obstruction in motion,Hardware,Yes,HZ325,Obstruction cleared,None,15/03/2019,01:59,14/05/2019,03:59,
+,21526,STC-VOBC-T115,"T115- Misaligned at Msheireb Platform-01, West Bay Platform-01,Msheireb Platform-02. Train Position In-determine and EB applied",VOBC03,VOBC stopping point inaccurate,15/03/2019,02:36,Inspection,0,Alignment issue,Hardware,Yes,HZ369,,None,15/03/2019,05:36,14/05/2019,07:36,
+,21551,STC-VOBC-T103,T103 - Stabling 05 Obstruction motion detected due to brake applied status,VOBC08,Wayside obstacle detection spurious activation,15/03/2019,07:53,Inspection,0,Obstruction in motion,Hardware,Yes,HZ326,Obstruction cleared,None,15/03/2019,10:53,14/05/2019,12:53,
+,21553,STC-ATS-RL,T 105 - ATS alarm- Storage mode activation command rejected and doors remained open,ATS07,ATS lose control on trains,15/03/2019,11:45,Inspection,0,Software issue,Software,Yes,HZ394,"Know issue as per Thales, Will be resolved in next software update",None,15/03/2019,14:45,14/05/2019,16:45,
+,21566,STC-VOBC-T105,T 105 Over speed EB detected at ACB 1108,VOBC05,Overspeed,15/03/2019,16:38,Inspection,0,overspeed,Software,Yes,HZ46,LC released EB fault normalized under observation by Thales,None,15/03/2019,19:38,14/05/2019,21:38,
+,21567,STC-ZC-24,ATS- ZC 24 A Communication lost Out of Service,ZC01,Zone Controller Comms failure,15/03/2019,18:46,Inspection,0,Software issue,Software,Yes,HZ34,Restarted ZC Fault normalized under investigation by Thales,None,15/03/2019,21:46,14/05/2019,23:46,
+,21589,STC-VOBC-T112,T112 VOBC 2 status is passive and failed to sleep,VOBC01,VOBC Passive,16/03/2019,05:24,Inspection,0,Software issue,Software,Yes,HZ103,23:23 Informed to Thales SIG and they advice to Reset remotely VOBC once again. 23:30 LC reset VOBC and fault normalized.,None,16/03/2019,08:24,15/05/2019,10:24,
+,21606,STC-VOBC-T103,T103 VOBC 1 status is non communicating shown on train Icon but in train detail it was showing passive available at the same time.,VOBC02,VOBC-ATS comms failure,16/03/2019,07:05,Inspection,0,Software issue,Software,Yes,HZ23,"T103 VOBC 1  passive Available ,VOBC 2 non -communicating show at 12:30 Am and VOBC self normalized at 12:30.at 12:30 Am T103 showing non -communicating status,status showing 03:55 AM Non communicating indication self normalized .",None,16/03/2019,10:05,15/05/2019,12:05,
+,21607,STC-VOBC-T118,T118 VOBC 1 status is non communicating shown on train Icon but in train detail it was showing passive available at the same time.,VOBC02,VOBC-ATS comms failure,16/03/2019,07:19,Inspection,0,Software issue,Software,Yes,HZ19,"T118 VOBC 1  passive Available ,VOBC 2-Active  show at 12:30 Am and VOBC self normalized at 12:30.at 12:30 Am T118 showing non -communicating status,status showing 03:51 AM Non communicating indication self normalized.Under investigation by Thales",None,16/03/2019,10:19,15/05/2019,12:19,
+,21622,STC-VOBC-T107,T107- Routed to stabling 3 which was empty for both east and west but train did not align in east,VOBC03,VOBC stopping point inaccurate,16/03/2019,07:40,Inspection,0,Software issue,Software,Yes,HZ08,Under investigation by Thales,None,16/03/2019,10:40,15/05/2019,12:40,
+,21642,STC-VOBC-T117,T117- Routed to stabling 1 which was empty for both east and west but train did not align in east,VOBC03,VOBC stopping point inaccurate,16/03/2019,11:22,Inspection,0,Software issue,Software,Yes,HZ20,Thales Investigating  this issue,None,16/03/2019,14:22,15/05/2019,16:22,
+,21646,STC-VOBC-T106,T106- Routed to stabling 1 which was empty for both east and west but train did not align in east,VOBC03,VOBC stopping point inaccurate,16/03/2019,11:27,Inspection,0,Software issue,Software,Yes,HZ21,Thales Investigating  this issue,None,16/03/2019,14:27,15/05/2019,16:27,
+,21656,STC-VOBC-T127,T127- Routed to stabling 5 which was empty for both east and west but train did not align in east,VOBC03,VOBC stopping point inaccurate,16/03/2019,13:21,Inspection,0,Software issue,Software,Yes,HZ15,Thales Investigating  this issue,None,16/03/2019,16:21,15/05/2019,18:21,
+,21660,STC-VOBC-T105,T105- Routed to stabling 4 which was empty for both east and west but train did not align in east,VOBC03,VOBC stopping point inaccurate,16/03/2019,14:59,Inspection,0,Software issue,Software,Yes,HZ22,Thales Investigating  this issue,None,16/03/2019,17:59,15/05/2019,19:59,
+,21662,STC-VOBC-T105,T05- VOBC2 reported door lock lost status in stabling 04,VOBC02,VOBC-ATS comms failure,16/03/2019,18:12,Inspection,0,Door lock lost ,Software,No,,"Thales team checked the ,found it at the position,issue with vobc,fault normalized after server restarted",None,16/03/2019,21:12,15/05/2019,23:12,
+,21666,STC-VOBC-T127,T127- VOBC2 reported Door lock lost status in stabling 05,VOBC02,VOBC-ATS comms failure,16/03/2019,18:58,Inspection,0,Door lock lost ,Software,No,,"Thales team checked the ,found it at the position,issue with vobc,fault normalized after server restarted",None,16/03/2019,21:58,15/05/2019,23:58,
+,21679,STC-ATS-WS-1,ICC-Line controller 1 ATS workstation software stopped working,ATS04,ATS software crash,16/03/2019,21:01,Inspection,0,Software issue,Software,No,,ICC Line controller 1 restarted the ATS client immediately Fault normalised under investigation by Thales,None,17/03/2019,00:01,16/05/2019,02:01,
+,21705,STC-ATS,Closed Track not applied in ATS after De energization. ATS status remain energized,ATS07,ATS lose control on trains,17/03/2019,10:57,Inspection,0,Software issue,Software,No,,"Known issue as per thales,RCA will be done",None,17/03/2019,13:57,16/05/2019,15:57,
+,21767,STC-VOBC-T118,T 118 SBL 4 East - VOBC - Vehicle On-Board Controller 01 status passive,VOBC01,VOBC Passive,17/03/2019,13:17,Inspection,0,Software issue,Software,Yes,HZ204,"11:44 Reset VOBC 1, fault normalized, under investigation by Thales",None,17/03/2019,16:17,16/05/2019,18:17,
+,21768,STC-VOBC-T118,T 118 SBL 8 East - VOBC - Vehicle On-Board Controller 02 status passive,VOBC01,VOBC Passive,17/03/2019,15:18,Inspection,0,Software issue,Software,No,,"STC,Thales And FLRT  Performed VOBC 01 Restart at 12:01. but did not normalized, then Train Moved in UTO By LC After Thales Confirmation Upto Departure And VOBC 01 Become Passive Available, under investigation by Thales",None,17/03/2019,18:18,16/05/2019,20:18,
+,21838,STC-VOBC-T120,T120 VOBC 2 status is non communicating,VOBC02,VOBC-ATS comms failure,17/03/2019,21:53,Inspection,0,Software issue,Software,Yes,HZ44,LC routed Train to departure platform and back to stabling ,None,18/03/2019,00:53,17/05/2019,02:53,
+,21841,STC-VOBC-T124,T124 NCO Created 4 Times in Between RBF and ECZ Stations Platform1 Alarm Reported on ATS.,VOBC02,VOBC-ATS comms failure,18/03/2019,05:28,Inspection,0,Software issue,Software,No,,"FRT updated that Thales took logs from DM2 MRU and reset MRU B circuit breaker. Fault Normalized. Updated to RKH FC, Automatically Cleared Investigation needed, under investigation by Thales",None,18/03/2019,08:28,17/05/2019,10:28,
+,22618,STC-ATS-LC1,ICC- ATS Application Crash on LC1 Work station.,ATS04,ATS software crash,18/03/2019,16:46,Inspection,0,Software issue,Software,No,,"LC Restarted the application, Issue Normalized , Under Investigation by Thales ",None,18/03/2019,19:46,17/05/2019,21:46,
+,22625,STC-VOBC-T106, T106-Routed to stabling 06 which was empty for both side train did not align in east.,VOBC03,VOBC stopping point inaccurate,18/03/2019,20:23,Inspection,0,Software issue,Software,Yes,HZ396,Under investigation by thales,None,18/03/2019,23:23,18/05/2019,01:23,
+,22665,STC-ACB-1407,ACB - Axle Counter Block 1407 status is disturbed and healthy due to Unimog movement,ACB01,ACB soft disturbance,19/03/2019,03:42,Inspection,0,Software issue,Software,Yes,HZ51,LC  reseted the block. Its happens due to Unimog Movement .,None,19/03/2019,06:42,18/05/2019,08:42,
+,22697,STC-VOBC-T123,"T123- Over speed, EB applied at ACB-0710",VOBC05,Overspeed,19/03/2019,17:30,Inspection,0,overspeed,Software,Yes,HZ42,Line controller gave command to release the EB Fault normalized Under Investigation By Thales ,None,19/03/2019,20:30,18/05/2019,22:30,
+,22705,STC-VOBC-T120,T120 Active VOBC 1-CBTC applied brake due to obstructed motion detected.,VOBC09,Obstacle detected,19/03/2019,18:13,Inspection,0,Obstruction in motion,Hardware,Yes,HZ18,"T120 :  docking at 2:50 hrs at 2:51 hrs T120 obstructed motion detected due to break applied status ,showing in ATS ,Reset Available ,LC reset the EB at 02:52 hrs.Under investigation by Thales. Closed with Reference to 22602",None,19/03/2019,21:13,18/05/2019,23:13,
+,22930,STC-VOBC-T105,T105- CBTC Applied EB due to Obstructed Motion with Brake Applied Status. ACB 1022 Zone Controller 10.,VOBC09,Obstacle detected,19/03/2019,21:13,Inspection,0,Obstruction in motion,Hardware,No,,"T105: docking at 5:37 hrs,at 5:51 hrs T105 obstructed motion detected due to brake applied status showing in ATS .Reset Available, LC Reset the EB at 5:41 hrs.Thales Under investigation.",None,20/03/2019,00:13,19/05/2019,02:13,
+,22959,STC-VOBC-T103,T103 VOBC 2 Non Communicating,VOBC02,VOBC-ATS comms failure,20/03/2019,01:47,Inspection,0,Software issue,software,Yes,HZ73,"As per failure time observed there is no failure on reported   time, ATS Communication with VOBC 1006 on train 103 is lost at 17/03/2019- 21:31:11., hard reset done by Thales with FRT at 18/03/2019 05:19 hrs, under Investigation by Thales",None,20/03/2019,04:47,19/05/2019,06:47,
+,22965,STC-VOBC-T120,T120 VOBC 2 status is non communicating,VOBC02,VOBC-ATS comms failure,20/03/2019,09:59,Inspection,0,Software issue,Software,Yes,HZ289,"Issue updated to DNP,MSI,SMC &FRT team.Fault self normalized",None,20/03/2019,12:59,19/05/2019,14:59,
+,22982,STC-ATS-WS-1,ATS application of Line Controller 02 workstation crashed.,ATS04,ATS software crash,20/03/2019,11:16,Inspection,0,Software issue,Software,No,,"LC Restarted the application, Issue Normalized , Under Investigation by Thales ",None,20/03/2019,14:16,19/05/2019,16:16,
+,23005,STC-ZC-24,"ICC- ZC 24-A lost communication wits ATS, Alarm indicating on ATS.",ZC01,Zone Controller Comms failure,20/03/2019,12:12,Inspection,0,Software issue,Software,Yes,HZ36,"Restart ZC 24 at 14:58 and normalized at 15:10
+ Known issue as per Thales ",None,20/03/2019,15:12,19/05/2019,17:12,
+,23068,STC-VOBC-T103,"T103-SSR output test failed due to EBS1, EBS2 and ZVCS failure",VOBC13,VOBC software failure,21/03/2019,04:34,Inspection,0,Software issue,Software,Yes,HZ74,"Analogue output failure at ACB 1104- 09:09:27. Obstructed motion detected due to Brake applied Status at time 09:09:28, output test failed due to ZVCS Failure- 09:09:28., Invalid LMA Received from ZC 0 at  09:09:28,Line controller released emergency brake and departed the Train T103,  discussed with Thales - as per Thales it's Software issue, Under investigation by Thales.",None,21/03/2019,07:34,20/05/2019,09:34,
+,23160,STC-ZC-24,Zone Controller ZC24-A Communication Lost.,ZC01,Zone Controller Comms failure,21/03/2019,20:25,Inspection,0,Software issue,Software,Yes,HZ387,"Network restored,Communication re-established",None,21/03/2019,23:25,21/05/2019,01:25,
+,23163,STC-ATS-RL,ATS and Platform Door System communication lost at RNST040-P2A,ATS09,ATS PED Interface failure,22/03/2019,00:14,Inspection,0,Software issue,Software,Yes,HZ290,"Issue updated to DNP,MSI,SMC &FRT team.Fault self normalized",None,22/03/2019,03:14,21/05/2019,05:14,
+,23167,STC-VOBC-T103,T103-VOBC2 status changed to passive from passive availble at Mushreib Station PF1,VOBC01,VOBC Passive,22/03/2019,00:21,Inspection,0,Software issue,Software,No,,"Line controller gave VOBC reset command and VOBC2 became passive available 11:14, T103 LMA set at 11:09 hrs train waiting in AL Doha Al JADEDA ,same time VOBC 2 is Passive ,LC gave the Reset command but still now VOBC 2 passive showing,train rich in Mushreib station at 11:12 hrs VOBC 2 is Non-communicating, VOBC 2 become passive available at 11:14 hrs in AL BIDDA station.",None,22/03/2019,03:21,21/05/2019,05:21,
+,23169,STC-VOBC-T112,T112-VOBC2 status passive in westbay platform 2,VOBC01,VOBC Passive,22/03/2019,01:40,Inspection,0,Software issue,Software,No,,"Line controller gave VOBC reset command and VOBC became passive available 11:55, Under investigation by Thales.",None,22/03/2019,04:40,21/05/2019,06:40,
+,23218,STC-VOBC-T115,"T115- EB Applied Due To Cancellation of Route While Moving Train, not Able to Release EB from ATS and the Train Door's were not Opening from ATS.",VOBC02,VOBC-ATS comms failure,22/03/2019,11:36,Inspection,0,Train door not opening,Software,Yes,HZ283,"System rebooted,fault normalized",None,22/03/2019,14:36,21/05/2019,16:36,
+,23232,STC-VOBC-T111,T111-DM1 NBRU indicating not reachable with green status on SCADA.,VOBC02,VOBC-ATS comms failure,22/03/2019,15:19,Inspection,0,Software issue,software,Yes,HZ30,"SMC team checked and found NBRU unit was unsacanned, Inform to thales team and they restarted train device status publisher, Now fault got normalized",None,22/03/2019,18:19,21/05/2019,20:19,
+,23244,STC-ATS-WS-2,ATS workstation application got crashed at Line controller-2 desk,ATS04,ATS software crash,22/03/2019,18:28,Inspection,0,Software issue,Software,No,,At 05:57 LC restarted the ATS client and logged again . Under Investigation by Thales,None,22/03/2019,21:28,21/05/2019,23:28,
+,23524,STC-VOBC-T120,"T120- Both VOBC Showing Non Communicating in ATS workstation and Train Still Moving towards Al Bidda Station T120- In ATS Workstation there is No Train doors Open Indication, But physically doors were opened and closed",VOBC02,VOBC-ATS comms failure,22/03/2019,21:07,Inspection,0,Software issue,Software,No,,"Train doors opening and closing confirmed by onboard staff,  Fault occurred at Al Bidda station,  Actual alarm came at 14:23 indicating ATS to VOBC lost for both VOBC's and cleared at 14:27.
+ Thales Sig confirmed that it is ATS-VOBC link lost, after link establishment in ATS it is visible that one VOBC Active and the othere is Passive available. Under investigation by Thales",None,23/03/2019,00:07,22/05/2019,02:07,
+,24460,STC-VOBC-T123,T103-CBTC applied EB applied due to overspeed detected,VOBC05,Overspeed,23/03/2019,02:48,Inspection,0,overspeed,Software,Yes,HZ41,"Line controller reset the Emergency brake from ATS EB applied at  ACB-2410 in front of ATW,  under investigation by Thales",None,23/03/2019,05:48,22/05/2019,07:48,
+,24528,STC-VOBC-T112,T112 Applied EB at Departure Platform PF-RSD-DEP-01 due to ATS Alarm - VOBC 1023 on T112(RSST070-P1087) front position at chainage DC3e2506-FWD/REV out put failure detected.,VOBC02,VOBC-ATS comms failure,23/03/2019,07:41,Inspection,0,Software issue,Software,No,,Under investigation by Thales,None,23/03/2019,10:41,22/05/2019,12:41,
+,24536,STC-VOBC-T121,T121 - SBL 8 Storage mode activation command rejected. Failed to wake up due to door cycle test failure,VOBC04,Train unable to set in sleep mode,23/03/2019,07:56,Inspection,0,Software issue,Software,No,,,None,23/03/2019,10:56,22/05/2019,12:56,
+,24545,STC-ZC-24,ATS- ZC 24 B Communication lost,ZC01,Zone Controller Comms failure,23/03/2019,07:59,Inspection,0,Software issue,Software,Yes,HZ168,"15:37 LC restarted the ZC and then normalized.
+ 15:37 Informed to Thales Sig and SMC, Its Under Investigation by Thales.",None,23/03/2019,10:59,22/05/2019,12:59,
+,24546,STC-ZC-24,ATS- ZC 24 B Communication lost,ZC01,Zone Controller Comms failure,23/03/2019,08:24,Inspection,0,Software issue,Software,Yes,HZ151,"17:36 LC restarted the ZC and then normalized.
+ 18:30 Informed to Thales Sig and SMC, Its Under Investigation by Thales.",None,23/03/2019,11:24,22/05/2019,13:24,
+,24550,STC-VOBC-T120,T121 - Depot - VOBC 01 non communicating,VOBC02,VOBC-ATS comms failure,23/03/2019,08:38,Inspection,0,Software issue,Software,Yes,HZ165,"15:56 LC reset the VOBC and fault normalized.
+ 18:55 Informed to Thales Sig and SMC.",None,23/03/2019,11:38,22/05/2019,13:38,
+,24596,STC-VOBC-T120,T120-VOBC status keep changing intermittently. ATS indicating Alarm T120 reports unknown status,VOBC02,VOBC-ATS comms failure,24/03/2019,03:36,Inspection,0,Software issue,Software,Yes,HZ70,"As per Thales SIG, need to reset VOBC 2 manually , 09:10 - 09:12 FRT VOBC 2 reset -Normalized, under investigation by Thales",None,24/03/2019,06:36,23/05/2019,08:36,
+,24661,STC-ZC-24,"RSDT010 Depot- Zone Controller ZC-24 A Communication Lost with ATS. Redline_ICC_SRS1-ZC24-A-Fails, ATS Alarm Shows as Rack Temperature sensor Fan Failure Detected.",ZC01,Zone Controller Comms failure,24/03/2019,12:41,Inspection,0,Temperature sensor fan failure,Software,No,,"Initial Action taken by Line Controller Restarted ZC24 A with ATS for 3 times but failed to Start, SMC FRT Hard reset the ZC, Fault Normalized 23:20 hrs,  under investigation by Thales.",None,24/03/2019,15:41,23/05/2019,17:41,
+,24684,STC-VOBC-T105,T105-VOBC 1 indicating passive on ATS.,VOBC01,VOBC Passive,24/03/2019,12:48,Inspection,0,Software issue,Software,No,,"System rebooted , fault normalized",None,24/03/2019,15:48,23/05/2019,17:48,
+,24685,STC-ZC-24,Zone Controller ZC24-A Communication Lost.,ZC01,Zone Controller Comms failure,24/03/2019,16:50,Inspection,0,Software issue,Software,Yes,HZ388,"Network restored,Communication re-established",None,24/03/2019,19:50,23/05/2019,21:50,
+,24719,STC-VOBC-T111,VOBC 2 passive,VOBC01,VOBC Passive,24/03/2019,17:22,Inspection,0,Software issue,Software,No,,"Initial Action taken by Line Controller VOBC reseted,  under investigation by Thales.",None,24/03/2019,20:22,23/05/2019,22:22,
+,24757,STC-ZC-24,Zone Controller no power- Hardware issue,ZC05,Zone controller software failure-self normalised,24/03/2019,22:49,Inspection,0,Hardware issue,Hardware,Yes,HZ53,"Replaced power supply Initial Action taken by Line Controller tried to Restart it from ATS 00:03hrs Fault Normalized, Under investigation by Thales",None,25/03/2019,01:49,24/05/2019,03:49,
+,24758,STC-VOBC-T115,"RSDT010 Depot T115- Reports Unknown Position on ATS and Cleared Immediately, But NCO Created in the Stabling Lane 2 East Side.VOBC-1030 ZC-25 ACB2505.",VOBC02,VOBC-ATS comms failure,25/03/2019,00:30,Inspection,0,Software issue,Software,No,,Under investigation by Thales,None,25/03/2019,03:30,24/05/2019,05:30,

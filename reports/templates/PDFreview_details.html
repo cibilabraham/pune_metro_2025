@@ -1,0 +1,296 @@
+
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{% block sb_admin_description %}{% endblock sb_admin_description %}">
+  <meta name="author" content="{% block sb_admin_author %}{% endblock %}">
+  <title>Minutes of meeting review board</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+  <!-- Custom fonts for this template-->
+  <link href="{% static "vendor/fontawesome-free/css/all.min.css"  %}" rel="stylesheet" type="text/css">
+
+  <!-- Page level plugin CSS-->
+  <link href="{% static "vendor/datatables/dataTables.bootstrap4.css" %}" rel="stylesheet">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+
+  <!-- Custom styles for this template-->
+  <link href="{% static "css/sb-admin.css" %}" rel="stylesheet">
+  <link href="{% static "css/sweetalert2.min.css" %}" rel="stylesheet">
+  <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
+</head>
+<body id="page-top" class="ml-5 mr-5">
+
+
+                  <!-- Page Heading -->
+                  <div class="row mb-5 mt-5" align="center">
+                    <div class="col-lg-12">
+                        <h3 class="page-header">
+                            Minutes of meeting review board
+                        </h3>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card text-black">
+                        <div class="card-header"><b>Date: </b>{{review_date|date:"d/m/Y"}}</div>
+                    </div>
+                   
+                    <br><br>
+                </div>
+                
+                <div class="col-md-3">     
+                    <!-- <div class="form-group">
+                        <label for="startDate">START DATE</label>
+                        <input type="text" class="form-control date-time" id="startDate">
+                    </div> -->
+
+                </div> 
+                
+                <div class="col-md-3">     
+                    <!-- <div class="form-group">
+                        <label for="endDate">END DATE</label>
+                        <input type="text" class="form-control date-time" id="endDate">
+                    </div> -->
+                </div>
+                    
+            </div>
+          <div class="row">
+            <div class="col-md-12">
+                <p><b>Attendees</b></p>
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <tbody>
+                    
+                        <tr>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Designation</th>
+                        </tr>
+                
+                    {% for attende in attendees %}
+                        <tr>
+                            <td>{{attende.first_name}} {{attende.last_name}}</td>
+                            <td></td>
+                            <td>
+                            {% for user_role in user_roles %}
+                              {% if user_role.id == attende.user_role_id %}
+                                {{user_role.name}}
+                                {% endif %}
+                            {%endfor%}
+                            </td>
+                        </tr>
+                    {%endfor%}
+                    
+                    </tbody>
+                </table>
+                <br><br>
+                <p><b>Defect by LRU type</b></p>
+                <table id="example1" class="table table-striped table-bordered" style="width:100%">
+                    <tbody>
+                    
+                        <tr>
+                            <th>LRU Type</th>
+                            <th>Defect</th>
+                            <th>No. of failures</th>
+                            <th>Root cause analysis</th>
+                            <th>Corrective action/status</th>
+                            <th>OEM reference</th>
+                            <th>Target date</th>
+                            <th>Defect status</th>
+                        </tr>
+                
+                    {% for final_deffect in final_deffects %}
+                        <tr>
+                            {% ifchanged final_deffect.asset_type %}
+                            <td>{{final_deffect.asset_type}}</td>
+                            {% else %}
+                            <td></td>
+                            {% endifchanged %}
+                            <td>{{final_deffect.defect_id}}</td>
+                            <td>{{final_deffect.failure_count}}</td>
+                            <td>N/A</td>
+                            {% if final_deffect.corrective_actions %}
+                            <td>
+                                {% for corrective_action in final_deffect.corrective_actions %}
+                                <div> {{corrective_action.corrective_action_description}} 
+                                    <span class='badge badge-light'> Status : {{corrective_action.corrective_action_status}}<span></div>
+                                        
+                                {% endfor %}
+                            </td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            <td>{{final_deffect.oem_number}}</td>
+                            <td>{{final_deffect.oem_target_date|date:"d/m/Y"}}</td>
+                            <td>{{final_deffect.defect_status}}</td>
+                        </tr>
+                    {%endfor%}
+                    
+                    </tbody>
+                </table>
+                <br><br>
+                <p><b>Actions</b></p>   
+                
+                <table id="example2" class="table table-striped table-bordered" style="width:100%">
+                    <tbody>
+                    
+                        <tr>
+                            <th>Defect ID</th>
+                            <th>Action ID</th>
+                            <th>Action description</th>
+                            <th>Actionee</th>
+                            <th>Target date</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                            <th>Process Log</th>
+                        </tr>
+                
+                    {% for final_action in final_actions %}
+                        <tr>
+                            {% ifchanged final_action.action.defect_discussion_id.defect.defect_id %}
+                            <td>{{final_action.action.defect_discussion_id.defect.defect_id}}</td>
+                            {% else %}
+                            <td></td>
+                            {% endifchanged %}
+                            <td>{{final_action.action.action_id}}</td>
+                            <td>{{final_action.action.action_description}}</td>
+                            <td>{{final_action.action.action_owner}}</td>
+                            <td>{{final_action.action.defect_discussion_id.defect.oem_target_date|date:"Y-m-d"}}</td>
+                            <td>
+                                <span class="badge {{final_action.cls}} badge-light" style="padding: 5px 5px 8px 5px;">{{final_action.action.action_status}}</span>
+                            </td>
+                            <td>{{final_action.action.defect_discussion_id.defect.defect_status_remarks}}</td>
+                            <td>{{final_action.action.progress_log}}</td>
+                        </tr>
+                    {%endfor%}
+                    
+                    </tbody>
+                </table>      
+            </div>
+          </div>
+
+<!-- jQuery -->
+<script src="{% static "js/jquery.js"%}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static "js/bootstrap.min.js"%}"></script>
+{% block sb_admin_custom_js %}{% endblock sb_admin_custom_js %}
+<!-- Bootstrap core JavaScript-->
+<script src="{% static "vendor/jquery/jquery.min.js"%}"></script>
+<script src="{% static "vendor/bootstrap/js/bootstrap.bundle.min.js"%}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static "vendor/jquery-easing/jquery.easing.min.js"%}"></script>
+
+<!-- Page level plugin JavaScript-->
+<script src="{% static "vendor/chart.js/Chart.min.js"%}"></script>
+<!-- <script src="{% static "vendor/chart.js/Chart.bundle.js"%}"></script> -->
+<script src="{% static "vendor/datatables/jquery.dataTables.js"%}"></script>
+<script src="{% static "vendor/datatables/dataTables.bootstrap4.js"%}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static "js/sb-admin.min.js"%}"></script>
+
+<!-- Demo scripts for this page-->
+<!-- <script src="{% static "js/demo/datatables-demo.js" %}"></script> -->
+<!-- <script src="{% static "js/demo/chart-area-demo.js" %}"></script> -->
+<script src="{% static "js/Chart.bundle.js" %}"></script>
+<script src="{% static "js/moment.min.js" %}"></script>
+<script src="{% static "js/bootstrap-datepicker.js" %}"></script>
+<script src="{% static "js/dataTables.buttons.min.js" %}"></script>
+<script src="{% static "js/buttons.flash.min.js" %}"></script>
+<script src="{% static "js/jszip.min.js" %}"></script>
+<script src="{% static "js/pdfmake.min.js" %}"></script>
+<script src="{% static "js/vfs_fonts.js" %}"></script>
+<script src="{% static "js/buttons.html5.min.js" %}"></script>
+<script src="{% static "js/buttons.print.min.js" %}"></script>
+<script src="{% static "js/jspdf.min.js" %}"></script>
+<script src="{% static "js/multiselect.js" %}"></script>
+<script src="{% static "js/jquery.repeatable.js" %}"></script>
+<script src="{% static "js/sweetalert2.all.min.js" %}"></script>
+
+<script src="{% static "js/dataTables.fixedColumns.min.js" %}"></script>
+
+<script type="text/javascript" src="{% static "js/daterangepicker.min.js" %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static "css/daterangepicker.css" %}" />
+
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script> -->
+<!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script> -->
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script> -->
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> -->
+
+<script>
+
+    $(document).ready(function() {
+
+        $('[data-toggle="tooltip"]').tooltip()
+        $(".vTextField").addClass("form-control");
+        $('.dropdown-item[href="' + this.location.pathname + '"]').addClass('active');
+      
+        $("#dataCollectiondiv table").addClass("table table-striped table-bordered mt-2");
+        $("#dataCollectiondiv table tr").removeClass("form-row row1");
+
+        DWD();
+      
+      });
+      function showloader() {
+        document.getElementById("overlay").style.display = "flex";
+      }
+      
+      function hideloader() {
+        document.getElementById("overlay").style.display = "none";
+      }
+      function PrintImage(canvasId) {
+              var newCanvas = document.querySelector('#'+canvasId);
+              var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
+                  //creates PDF from img
+              var doc = new jsPDF('landscape');
+              doc.setFontSize(18);
+              //doc.text(15, 15, "");       
+              doc.addImage(newCanvasImg, 'JPEG', 10, 10, 280, 150 );
+              //doc.autoPrint();
+              window.open(doc.output('bloburl'), '_blank');
+              //doc.save('new-canvas.pdf');
+              //doc.location.reload();
+          }
+
+          function DWD(){
+
+            let doc = new jsPDF('p','pt','a4');
+
+            doc.addHTML(document.body,function() {
+                doc.save('Minutes of meeting review board.pdf');
+                window.location.href = "/reports/review_details/?meeting_id=79";
+            });
+          }
+      </script>
+      </body>
+      
+      </html>

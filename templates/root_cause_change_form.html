@@ -1,0 +1,221 @@
+{% extends "django_sb_admin/base.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}">{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumb">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+<!--&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>-->
+&rsaquo; {% if has_view_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+&rsaquo; {% if add %}{% blocktrans with name=opts.verbose_name %}Add {{ name }}{% endblocktrans %}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+</div>
+<h2>{% if add %}{% blocktrans with name=opts.verbose_name %}Add {{ name }}{% endblocktrans %}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+</h2>
+{{request.GET.param1}}
+{% endblock %}
+{% endif %}
+
+{% block sb_admin_content %}
+<div id="content-main">
+{% block object-tools %}
+{% if change %}{% if not is_popup %}
+<div class="row mb-3 mt-3">
+  <div class="col-sm-12">
+  <ul class="object-tools">
+    {% block object-tools-items %}
+      {% change_form_object_tools %}
+    {% endblock %}
+  </ul>
+</div>
+</div>
+{% endif %}{% endif %}
+{% endblock %}
+<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
+<div>
+  <div class="row">
+    <div class="col-sm-12">
+      <input type="button" class="btn btn-success span-2 float-right mb-4 ml-2" value="Add Corrective Action" onclick="openCorrectiveActionsModal('');"/>
+        {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+        {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+        {% if save_on_top %}<input class="btn btn-success float-right" type="submit" value="{% trans 'Save failure data filter settings' %}" name="_continue">{% endif %}
+    </div>
+  </div>
+{% if errors %}
+    <p class="errornote">
+    {% if errors|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+    </p>
+    {{ adminform.form.non_field_errors }}
+{% endif %}
+
+{% block field_sets %}
+{% for fieldset in adminform %}
+    {% include "root_cause_failure_data_fieldset.html" %}
+{% endfor %}
+{% endblock %}
+
+{% block after_field_sets %}{% endblock %}
+
+{% block inline_field_sets %}
+{% for inline_admin_formset in inline_admin_formsets %}
+    {% include inline_admin_formset.opts.template %}
+{% endfor %}
+{% endblock %}
+
+{% block after_related_objects %}{% endblock %}
+<!-- <div class="row mt-5 ml-3">
+  <div class="col-lg-12 pl-0 inline-group" id="defectdiscussion_set-group">
+     <div class="tabular inline-related last-related" id="defectdiscussion_set">
+        <fieldset class="module card todos_labels pl-0">
+           <h2 class="mb-4 card-header">Corrective Actions</h2>
+           <div class="table-responsive card-body pl-0">
+             <div class="col-sm-12">
+              <input type="button" class="btn btn-success span-2 float-right mb-4" value="Add Corrective Action" onclick="openCorrectiveActionsModal('');"/>
+             </div>
+             <input type="hidden" name="review_board_id" id="review_board_id" value="{{review_board.id}}">
+             <div id="correctiveActionListDiv"></div>
+           </div>
+        </fieldset>    
+      </div>
+  </div>
+</div> -->
+
+{% block submit_buttons_bottom %}{% submit_row %}{% endblock %}
+
+{% block admin_change_form_document_ready %}
+    <script type="text/javascript"
+            id="django-admin-form-add-constants"
+            src="{% static 'admin/js/change_form.js' %}"
+            {% if adminform and add %}
+                data-model-name="{{ opts.model_name }}"
+            {% endif %}>
+    </script>
+{% endblock %}
+
+{# JavaScript for prepopulated fields #}
+{% prepopulated_fields_js %}
+
+</div>
+</form>
+</div>
+
+
+<div class="modal fade" id="correctiveActionsModal" tabindex="-1" role="dialog" aria-labelledby="correctiveActionsModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="actionModalLabel">Add New Corrective Action</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <form>
+             <div class="form-row">
+               <div class="form-group col-md-12">
+                 <label for="corrective_actionaction_owner">Corrective action owner</label>
+                 <input type="text" name="corrective_actionaction_owner" class="form-control" maxlength="100" id="corrective_action_owner">
+               </div>
+       
+               <div class="form-group col-md-12">
+                 <label for="corrective_actionaction_status">Corrective action status</label>
+                 <!-- <input type="text" name="corrective_actionaction_status" class="form-control" maxlength="100" id="corrective_action_status"> -->
+                 <select  name="corrective_actionaction_status" id="corrective_action_status">
+                  <option value="">Select Status</option>
+                  <option value="Open">Open</option>
+                  <option value="Resolved">Resolved</option>
+                  <option value="Update">Update</option>
+                  <option value="Monitoring">Monitoring</option>
+                  <option value="Closed">Closed</option>
+                 </select>
+               </div>
+             </div>
+       <div class="form-row">
+               <div class="form-group col-md-12">
+                 <label for="corrective_action_description">Corrective action description</label>
+                 <textarea name="corrective_action_description" class="form-control" maxlength="100" id="corrective_action_description"></textarea>
+               </div>
+                <div class="form-group col-md-12">
+                 <label for="corrective_action_update">Corrective action update</label>
+                 <textarea name="corrective_action_update" class="form-control" maxlength="100" id="corrective_action_update"></textarea>
+               </div>
+             </div> 
+        </form>
+        </div>
+        <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+           <button type="button" class="btn btn-primary" id="saveCorrectiveActionButton" onclick="SaveCorrectiveAction();">Save Corrective Action</button>
+        </div>
+     </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block sb_admin_js %}
+<script>
+  $(document).ready(function() {
+    var asset = $("#id_asset_type").val();
+    //setTimeout(function(){
+      // $("#crtvActntittle").html("Correction Actions associated with "+asset);
+      $("#crtvActntittle").html("Corrective Actions Associated With Selected Defect ");
+
+    //}, 1000);
+    
+  });
+  $("#id_asset_type").change(function(){ //name="_continue"
+    $('input[name$="_continue"]').click();
+  });
+  $("#id_defect").change(function(){ //name="_continue"
+    $('input[name$="_continue"]').click();
+  });
+  function openCorrectiveActionsModal(id){
+     $("#correctiveActionsModal").modal('toggle');
+     $("#actionModalLabel").html("Add New Corrective Action");
+     $("#saveCorrectiveActionButton").html("Save Corrective Action");
+     $("#saveCorrectiveActionButton").attr("onclick","SaveCorrectiveAction()");
+   }
+
+   function SaveCorrectiveAction(){
+
+    var defect_id = $("#id_defect").val();
+    if(defect_id == ""){
+      alert("Please select the defect !");
+      return false;
+    }
+    var corrective_action_owner = $("#corrective_action_owner").val();
+    var corrective_action_status = $("#corrective_action_status").val();
+    var corrective_action_description = $("#corrective_action_description").val();
+    var corrective_action_update = $("#corrective_action_update").val();
+    console.log("errer");
+    $.ajax({
+     url: "/fracas_admin/defect/add/c_action/",
+     method: 'POST',
+     dataType: 'json',
+     headers: {'X-CSRFToken': '{{ csrf_token }}'},
+     data : {
+         'corrective_action_owner' : corrective_action_owner,
+         'corrective_action_status' : corrective_action_status,
+         'corrective_action_description'   : corrective_action_description,
+         'corrective_action_update' : corrective_action_update,
+         'defect_id':defect_id
+     },
+     success: function (response) {
+        console.log(response);
+        //getCorrectiveActions();
+        $('input[name$="_continue"]').click();
+        $("#correctiveActionsModal").modal('toggle');
+     }
+    });
+  }
+</script>
+{% endblock sb_admin_js %}

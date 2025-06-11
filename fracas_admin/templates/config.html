@@ -1,0 +1,210 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                      Set PBS Master Unit
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+
+               
+                <div class="col-lg-2"></div>
+                <div class="col-lg-6">
+                    
+
+                    <div class="card card-primary card-outline card-outline-tabs">
+                        <div class="card-header p-0 border-bottom-0">
+                          <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                
+                          
+                            <li class="nav-item">
+                              <a class="nav-link text-dark" data-toggle="pill" role="tab"  aria-selected="true" id="SetPBSMasterUnit-tab" href="#SetPBSMasterUnit" aria-controls="SetPBSMasterUnit"> Set PBS Master Units</a>
+                            </li>
+                            {% comment %}                 
+                             <li class="nav-item">
+                              <a class="nav-link text-secondary" data-toggle="pill" role="tab"  aria-selected="true" id="VegitablesPurchaseOrder-tab" href="#VegitablesPurchaseOrder" aria-controls="VegitablesPurchaseOrder">Tab-2</a>
+                            </li> {% endcomment %}
+                            
+                
+                            
+                          </ul>
+                        </div>
+                
+                        <div class="card-body">
+                          <div class="tab-content" id="custom-tabs-one-tabContent">
+                            <div class="tab-pane fade show" role="tabpanel" id="SetPBSMasterUnit">
+                                <form id="ConfiguForm"> 
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">MTBF/MTBSAF </label>
+                                    <div class="col-sm-10">
+                                        <input type="hidden" name="id" id="id" value="{{id}}"/>
+                                        <select class="form-control" id="MTBFMTBSAF" name="MTBFMTBSAF" required="required">
+                                            {% if 'days' == MTBFMTBSAF %}
+                                                <option value="days" selected>days</option>
+                                            {% else %}
+                                                <option value="days">days</option>
+                                            {% endif %}
+                                            {% if 'hrs' == MTBFMTBSAF %}
+                                                <option value="hrs" selected>hrs</option>
+                                            {% else %}
+                                                <option value="hrs">hrs</option>
+                                            {% endif %}
+                                            {% if 'mins' == MTBFMTBSAF %}
+                                                <option value="mins" selected>mins</option>
+                                            {% else %}
+                                                <option value="mins">mins</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">MTTR</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="MTTR" name="MTTR" required="required">
+                                            {% if 'days' == MTTR %}
+                                                <option value="days" selected>days</option>
+                                            {% else %}
+                                                <option value="days">days</option>
+                                            {% endif %}
+                                            {% if 'hrs' == MTTR %}
+                                                <option value="hrs" selected>hrs</option>
+                                            {% else %}
+                                                <option value="hrs">hrs</option>
+                                            {% endif %}
+                                            {% if 'mins' == MTTR %}
+                                                <option value="mins" selected>mins</option>
+                                            {% else %}
+                                                <option value="mins">mins</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">Service delay (Minutes)</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="service_delay" name="service_delay" required="required">
+                                                <option value="mins" selected>mins</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">Average Speed</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" value="{{average_speed}}" class="form-control" id="average_speed" name="average_speed" placeholder="Enter average speed" required="required">
+                                       
+                                    </div>
+                                    <div class="col-sm-1">
+                                        {% if 1 == chk_average_speed %}
+                                             <input type="checkbox" id="chk_average_speed" name="chk_average_speed" class="form-control" checked>
+                                        {% else %}
+                                            <input type="checkbox" id="chk_average_speed" name="chk_average_speed" class="form-control" >
+                                        {% endif %}
+
+
+                                        
+                                    </div>
+                                </div>
+
+                                 <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">MDBF</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="mdbf_unit" name="mdbf_unit" required="required">
+                                                <option value="KM" selected>KM</option>
+                                                <option value="MILES" disabled>MILES</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+                                {% if request.session.user_Role == 1 %}
+                                    <div class="form-group row">
+                                        <div class="col-sm-12" align="center">
+                                            <button type="submit" class="col-3 form-control btn-primary">Change unit</button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                        </form>
+                            {% comment %} <div class="tab-pane fade show" role="tabpanel" id="VegitablesPurchaseOrder">123</div> {% endcomment %}
+                          </div>
+                        </div>
+
+
+
+
+
+                </div>
+
+            </div>
+            <!-- /.row -->
+          
+          
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+        $("#SetPBSMasterUnit-tab").click();
+    });
+    $( "#ConfiguForm" ).submit(function(e) {
+        e.preventDefault();
+        var MTBFMTBSAF= $('select[name=MTBFMTBSAF] option').filter(':selected').val()
+        var MTTR= $('select[name=MTTR] option').filter(':selected').val()
+        var id= $('#id').val()
+        var service_delay= $('select[name=service_delay] option').filter(':selected').val()
+        var average_speed = $('#average_speed').val();
+        var checkbox = document.getElementById("chk_average_speed");
+        // Check if the checkbox is checked
+        var chk_average_speed = 0;
+        if (checkbox.checked) {
+            chk_average_speed = 1;
+        }
+
+        $.ajax({
+            url: "/config/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'MTBFMTBSAF':MTBFMTBSAF,
+                'MTTR':MTTR,
+                'id':id,
+                'service_delay':service_delay,
+                'average_speed':average_speed,
+                'chk_average_speed':chk_average_speed
+            },
+            success: function (response) {
+                if(response.status == '1') {
+                    swal('Successfully change unit')
+                }
+               
+            }
+        });
+        
+});
+    
+
+</script>
+
+{% endblock sb_admin_js %}

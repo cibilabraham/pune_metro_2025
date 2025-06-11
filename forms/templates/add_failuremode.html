@@ -1,0 +1,1376 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+     <style>
+        th:first-child,td:first-child,th:last-child,td:last-child,th:nth-child(2),td:nth-child(2) {  
+            background-color:white;    
+        }
+    </style>
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                      Failure Mode Identification Form
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-lg-12 mb-3">
+    
+    
+                    <a href="/forms/failuremode/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+            </div>
+
+            <!-- /.row -->
+            <!-- Modal -->
+            <form id="FailureForm"> 
+        <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
+            <div class="modal-dialog" role="document" style="max-width: 90%;">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">*Add failure data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row mb-4">
+                       
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="failure_id">*Failure id:</label>
+                                <input type="hidden" id="mode_ids" name="mode_ids" value="{{ data.mode_ID }}">
+                                <input type="hidden" id="MID" name="MID" value="{{ data.mode_id }}">
+                                <input type="hidden" id="asset_types" name="asset_types">
+                                <input type="number" class="form-control" required="required" id="failure_id" name="failure_id">
+                                <div class="invalid-feedback">
+                                Please enter Failure id.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="asset_config_id">*Asset config id:</label>
+                                <select class="form-control" id="asset_config_id" name="asset_config_id" required="required">
+                                </select>
+                                {% comment %} <input type="text" class="form-control" id="asset_config_id" name="asset_config_id" value="{{data.asset_config_id}}"> {% endcomment %}
+                                <div class="invalid-feedback">
+                                Please enter Asset config id.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="event_description">*Event description:</label>
+                                <input type="text" class="form-control" id="event_description" required="required" name="event_description" >
+                                <div class="invalid-feedback">
+                                Please enter Event description.
+                                </div>
+                            </div>
+                        </div>
+
+                
+                    </div>
+
+                    <div class="row mb-4">
+                        
+                        
+                        <!-- <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="mode_description">*Mode description:</label>
+                                <input type="text" class="form-control" id="mode_description" required="required" name="mode_description" >
+                                <div class="invalid-feedback">
+                                Please enter Event description.
+                                </div>
+                            </div>
+                        </div> -->
+                        
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="date">*Date:</label>
+                                <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" >
+                                <div class="invalid-feedback">
+                                Please enter Date.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="time">*Time:</label>
+                                <input type="time" class="form-control" id="time" required="required" name="time" >
+                                <div class="invalid-feedback">
+                                Please enter Time.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="detection">*Detection:</label>
+                                <input type="text" class="form-control" id="detection" required="required" name="detection" >
+                                <div class="invalid-feedback">
+                                Please enter Detection.
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                
+                    </div>
+
+                    <div class="row mb-4">
+                        
+                        
+                       
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="service_delay">*Service delay (mins):</label>
+                                <input type="number" class="form-control" id="service_delay" required="required" name="service_delay">
+                                <div class="invalid-feedback">
+                                Please enter Service delay.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="failure_type">*Failure type:</label>
+                                <select class="form-control" id="failure_type" name="failure_type" required="required">
+                               
+                                    <option value="Safety">Safety</option>
+                               
+                                    <option value="Software">Software</option>
+                                
+                                    <option value="Hardware">Hardware</option>
+                               
+                                    <option value="Random">Random</option>
+                              
+                                </select>
+                                {% comment %} <input type="text" class="form-control" id="failure_type" name="failure_type" value="{{data.failure_type}}"> {% endcomment %}
+                                <div class="invalid-feedback">
+                                Please enter Failure type.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="safety_failure">*Safety failure:</label>
+                                <select class="form-control" id="safety_failure" name="safety_failure" required="required">
+                                   
+                                        <option value="Yes">Yes</option>
+                                    
+                                        <option value="No">No</option>
+                                  
+                                </select>
+                                {% comment %} <input type="text" class="form-control" id="safety_failure" name="safety_failure" value="{{data.safety_failure}}"> {% endcomment %}
+                                <div class="invalid-feedback">
+                                Please enter Safety failure.
+                                </div>
+                            </div>
+                        </div>
+
+                
+                    </div>
+
+                    <div class="row mb-4">
+                        
+                        
+                        
+                        
+                       
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="hazard_id">Hazard id:</label>
+                                <input type="text" class="form-control" id="hazard_id" name="hazard_id" >
+                                <div class="invalid-feedback">
+                                Please enter Hazard id.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="replaced_asset_config_id">Replaced asset config id:</label>
+                                <input type="text" class="form-control" id="replaced_asset_config_id" name="replaced_asset_config_id" >
+                                <div class="invalid-feedback">
+                                Please enter Replaced asset config id.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="cm_start_date">*Cm start date:</label>
+                                <input type="text" autocomplete="off" required="required" class="form-control date-time" id="cm_start_date" name="cm_start_date" >
+                                <div class="invalid-feedback">
+                                Please enter Cm start date.
+                                </div>
+                            </div>
+                        </div>
+
+                
+                    </div>
+
+                    <div class="row mb-4">
+
+                       
+                        
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="cm_start_time">*Cm start time:</label>
+                                <input type="time" class="form-control" required="required" id="cm_start_time" name="cm_start_time" >
+                                <div class="invalid-feedback">
+                                Please enter Cm start time.
+                                </div>
+                            </div>
+                        </div>
+
+                         <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="cm_end_date">Cm end date:</label>
+                                <input type="text" autocomplete="off" class="form-control date-time" id="cm_end_date" name="cm_end_date" >
+                                <div class="invalid-feedback">
+                                Please enter Cm end date.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="cm_end_time">Cm end time:</label>
+                                <input type="time" class="form-control" id="cm_end_time" name="cm_end_time" >
+                                <div class="invalid-feedback">
+                                Please enter Cm end time.
+                                </div>
+                            </div>
+                        </div>
+
+                
+                    </div>
+
+                    <div class="row mb-4">
+                        
+                        
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="defect">Defect:</label>
+                                <select class="form-control" id="defect" name="defect">
+                                <option value="">--  Select Defect  --</option>
+                                {% for defect in defect %}
+                                {% if defect.defect_id != '' %}
+                               
+                                    <option value="{{defect.defect_id}}">{{defect.defect_id}}: {{defect.defect_description}}</option>
+                                   
+                                {% endif %}
+                                {% endfor %}
+                                </select>
+                                {% comment %} <input type="text" class="form-control" id="defect" name="defect" value="{{data.defect}}"> {% endcomment %}
+                                <div class="invalid-feedback">
+                                Please enter Defect.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="immediate_investigation">*Immediate investigation:</label>
+                                <textarea class="form-control" required="required" id="immediate_investigation" name="immediate_investigation"></textarea>
+                                <div class="invalid-feedback">
+                                Please enter Immediate investigation.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="cm_description">*Cm description:</label>
+                                <textarea class="form-control" required="required" id="cm_description" name="cm_description"></textarea>
+                                <div class="invalid-feedback">
+                                Please enter Cm description.
+                                </div>
+                            </div>
+                        </div>
+
+                
+                    </div>
+
+                    
+
+                    <div class="row mb-4">
+                    
+
+                       
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="oem_failure_reference">Oem failure reference:</label>
+                                <textarea class="form-control" id="oem_failure_reference" name="oem_failure_reference"></textarea>
+                                <div class="invalid-feedback">
+                                Please enter Oem failure reference.
+                                </div>
+                            </div>
+                        </div>
+
+                
+                    </div>
+
+                    <div class="row ">
+                        <div class="alert alert-warning col-12 d-none" id="messageModel">
+                                    
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+                </div>
+            </div>
+            </div>
+        </form>
+
+       
+
+        <div class="modal fade" id="link" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document" style="max-width: 90%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="heading1"></h5>
+                        <button type="button"  id="closeLinkModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th >Failure id</th>
+                                                <th>Asset type</th>
+                                                <th>Asset config id</th>
+                                                <th>Event description </th>
+                                                <th>Date</th>
+                                                <th>Time</th>
+                                                <th>Detection</th>
+                                                <th>Service delay (mins)</th>
+                                                <th>Immediate investigation</th>
+                                                <th>Failure type</th>
+                                                <th>Safety failure</th>
+                                                <th>Hazard id</th>
+                                                <th>Cm description</th>
+                                                <th>Replaced asset config id</th>
+                                                <th>Cm start date</th>
+                                                <th>Cm start time</th>
+                                                <th>Cm end date</th>
+                                                <th>Cm end time</th>
+                                                <th>Oem failure reference</th>
+                                                <th>defect id</th>
+                                                <th class="bg-white"><input type="checkbox" id="LinkAll" /></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" data-dismiss="modal" onClick="link()">Link</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <form id="FailuremodeForm"> 
+           <div class="row ">
+            <div class="col-lg-12 mb-5">
+                <button type="submit" class="btn btn-success btn-icon-split d-none float-right" onClick="return SetButton(4);">            
+                <span class="text">Save failure data filter settings</span>
+                </button>
+            </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="mode_id">*Mode id:</label>
+                        <input type="hidden" id="id" name="id" value="{{data.id}}">
+                        <input type="text" class="form-control" required="required" id="mode_id" name="mode_id" value="{{data.mode_id}}">
+                        <div class="invalid-feedback">
+                         Please enter mode id.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="mode_descriptions">*Mode description:</label>
+                        <input type="text" class="form-control" required="required" id="mode_descriptions" name="mode_descriptions" value="{{data.mode_description}}">
+                        <div class="invalid-feedback">
+                         Please enter Asset serial number.
+                        </div>
+                    </div>
+                </div>
+                
+           
+            </div>
+            <div class="row ">
+                <div class="alert alert-warning col-12 d-none" id="message">
+                            
+                </div>
+            </div>
+
+            <div class="row mt-4 mb-2">
+                <div class="col-lg-12">
+                    <h3 class="page-header" id="heading1">
+                      Failure Events Attributed
+                    </h3>
+                </div>
+            </div>
+            <div class="row mb-4">
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="start_date">Start date:</label>
+                        <input type="text" autocomplete="off" class="form-control date-time" id="start_date" name="start_date" value="{{data.start_date|date:'d/m/Y'}}">
+                        <div class="invalid-feedback">
+                            Please enter Start date.
+                        </div>
+                    </div>
+                    </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="end_date">End date:</label>
+                        <input type="hidden" value="{{ data.id }}" id="id" name="id">
+                        <input type="text" autocomplete="off" class="form-control date-time" id="end_date" name="end_date" value="{{data.end_date|date:'d/m/Y'}}">
+                        <div class="invalid-feedback">
+                         Please enter End date.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {% if request.session.user_Role == 1 %}
+                        <label  for="cm_description">*Select asset type:</label>
+                        <select class="form-control" id="asset_type" name="asset_type" required>
+                        <option value="">--  Select Asset type  --</option>
+                        {% for asset_type in asset_types %}
+                        {% if asset_type.asset_type != '' %}
+                            
+                                <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                            
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                        {% else %}  
+                        <label  for="cm_description">Select asset type:</label>
+                        <select class="form-control" id="asset_type" name="asset_type">
+                        <option value="">--  Select Asset type  --</option>
+                        {% for asset_type in asset_types %}
+                        {% if asset_type.asset_type != '' %}
+                            
+                                <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
+                           
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                        {% endif %}  
+                        
+                    </div>
+                </div>
+
+                <div class="col-md-3 mt-4" align="right">
+                    <div class="form-group">
+
+                        <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
+
+
+                        <a data-toggle="modal" href="#add" id="addbutton" >
+                        <button class="btn btn-success mt-2" id="bt1">Add New</button>
+                        </a>
+                        <a data-toggle="modal" href="#link" id="linkbutton" >
+                        <button class="btn btn-success mt-2" id="bt2" onClick="getDefectData();">Link</button>
+                        </a>
+                    </div>
+                </div>
+
+                
+           
+            </div>
+
+
+
+
+
+            <div class="row mb-4" align="right">
+               
+                   
+              
+            </div>
+
+            <div class="row">
+            <div class="col-md-12">
+                <table id="example2" class="table stripe row-border order-column table-bordered bg-white" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="bg-white"><input type="checkbox" id="deleteAll" /></th>
+                            <th class="bg-white">Failure id</th>
+                            <th>Asset type</th>
+                            <th>Asset config id</th>
+                            <th>Event description </th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Detection</th>
+                            <th>Service delay (mins)</th>
+                            <th>Immediate investigation</th>
+                            <th>Failure type</th>
+                            <th>Safety failure</th>
+                            <th>Hazard id</th>
+                            <th>Cm description</th>
+                            <th>Replaced asset config id</th>
+                            <th>Cm start date</th>
+                            <th>Cm start time</th>
+                            <th>Cm end date</th>
+                            <th>Cm end time</th>
+                            <th>Oem failure reference</th>
+                            <th>defect id</th>
+                            <th class="bg-white"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+
+          <div class="row ">
+                <div class="alert alert-warning col-12 d-none" id="message3">
+                            
+                </div>
+            </div>
+
+
+            <div class="row mb-4" align="right">
+                <div class="col-12">  
+                    <input type="hidden" id="buttonClick">   
+                    <button class="btn btn-danger mt-2 d-none" id="dltbtn" onClick="return deletefailuremode()">Delete</button>
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(1);">Save</button>
+                    
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(2);">Save and add another</button>
+                
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(3);">Save and continue editing</button>
+                </div>
+            </div>
+        </form>
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    var failuresAttributed=Array();
+    var allfailuresFromDB=Array();
+ 
+    $(document).ready(function() {
+        var d1 = new Date(new Date());
+        $('#date').val(moment(d1).format('DD/MM/YYYY'))
+
+        $("#LinkAll").click(function () {
+            $(".LinkAll").attr('checked', this.checked);
+        });
+
+        $("#deleteAll").click(function () {
+            $(".deleteAll").attr('checked', this.checked);
+        });
+
+        document.getElementById("linkbutton").disabled = true;
+        document.getElementById("addbutton").disabled = true;
+        $('#bt1').addClass('disabled');
+        $('#bt2').addClass('disabled');
+        getDefectData2();
+         $('#date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+        $('#cm_start_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+        $('#cm_end_date').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',});
+        $('#example').DataTable();
+         $('#start_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+        $('#end_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+       $('#asset_type').val('{{ data.asset_type }}');
+       var id= $('#id').val();
+       if(id != ""){
+           getDefectData2();
+           getDefectData();
+           document.getElementById("linkbutton").disabled = false;
+            document.getElementById("addbutton").disabled = false;
+            $('#bt1').removeClass('disabled');
+        $('#bt2').removeClass('disabled');
+            $('#dltbtn').removeClass('d-none');
+            var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+            $.ajax({
+                url: "/forms/failuremode/getasset_type/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'asset_type':asset_type,
+                },
+                success: function (response) {
+                    $('#heading1').html('Failure Events Of '+response.asset_type)
+                }
+            });
+            $.ajax({
+            url: "/forms/system/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+            'asset_type' : asset_type
+            },
+            success: function (response) {
+                //console.log(response);
+                var asset_config_id = "<option value="+""+">"+"--  Select Asset config id  --"+"</options>";
+                    $.each(response, function (i,value) {
+                    if (value.asset_config_id != ''){
+                    asset_config_id = asset_config_id + "<option value="+value.id+">"+value.asset_config_id+"</options>";
+                    }
+                });
+                    var select = "<select>"+asset_config_id+"</select>";
+                $("#asset_config_id").html(select);
+                
+                }
+            });
+            $('#asset_type').val(asset_type);
+            $.ajax({
+                url: "/forms/failuremode/getmodedata/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'mode_id':id,
+                },
+                success: function (response) {
+                    failuresAttributed=response.data;
+                    getDefectData2();
+                }
+            });
+            
+        }
+    });
+    function SetButton(id){
+        $('#buttonClick').val(id);
+        return true;
+    }
+
+    function deletefailuremode(){
+        var id= $('#id').val();
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+            },
+            function(){
+                $.ajax({
+                    url: "/forms/failuremode/delete/",
+                    method: 'GET',
+                    dataType: 'json',
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    data : {
+                        'id':id,
+                    },
+                    success: function (response) {
+                        swal("Deleted!", "Failuremode has been deleted.");
+                        window.location.href = "/forms/failuremode/";
+                    }
+                });     
+            });
+
+        
+    }
+
+    $('#mode_id').change(function(){
+        var mode_id= $('#mode_id').val()
+        $.ajax({
+            url: "/forms/failuremode/findmodeid/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'mode_id':mode_id,
+            },
+            success: function (response) {
+                if(response.status == '1') {$('#mode_ids').val(mode_id);
+                $('#MID').val(mode_id);
+                $('#message').addClass('d-none'); 
+                getDefectData2();
+                }
+                else {
+                    swal('Mode id already exists')
+                    //$('#message').removeClass('d-none'); 
+                    //$('#message').html('Mode id already exists.');
+                }
+            }
+        });
+
+    });
+
+    $('#asset_type').change(function(){
+        /*while(failuresAttributed.length > 0) {
+            failuresAttributed.pop();
+        }
+        getDefectData2();*/
+        //failuresAttributed.clear();
+        //getDefectData2();
+        document.getElementById("linkbutton").disabled = false;
+        document.getElementById("addbutton").disabled = false;
+        $('#bt1').removeClass('disabled');
+        $('#bt2').removeClass('disabled');
+        var asset_type= $('select[name=asset_type] option').filter(':selected').val();
+        if(asset_type == ""){
+            document.getElementById("linkbutton").disabled = true;
+            document.getElementById("addbutton").disabled = true;
+            $('#bt1').addClass('disabled');
+            $('#bt2').addClass('disabled');
+        }
+        $.ajax({
+            url: "/forms/failuremode/getasset_type/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'asset_type':asset_type,
+            },
+            success: function (response) {
+                $('#heading1').html('Failure Events Of '+response.asset_type)
+            }
+        });
+
+        $.ajax({
+        url: "/forms/system/",
+        method: 'GET',
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data : {
+        'asset_type' : asset_type
+        },
+        success: function (response) {
+            //console.log(response);
+            var asset_config_id = "<option value="+""+">"+"--  Select Asset config id  --"+"</options>";
+                $.each(response, function (i,value) {
+                if (value.asset_config_id != ''){
+                asset_config_id = asset_config_id + "<option value="+value.id+">"+value.asset_config_id+"</options>";
+                }
+            });
+                var select = "<select>"+asset_config_id+"</select>";
+            $("#asset_config_id").html(select);
+            
+            }
+        });
+        $('#asset_type').val(asset_type);
+
+    });
+
+    $( "#FailuremodeForm" ).submit(function(e) {
+        e.preventDefault();
+        var datas=failuresAttributed;
+        var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+        var mode_id= $('#mode_id').val()
+        var mode_descriptions= $('#mode_descriptions').val()
+        var start_date= $('#start_date').val()
+        var end_date= $('#end_date').val()
+        var id= $('#id').val()
+        var buttonClick= $('#buttonClick').val()
+        //console.log(datas);
+        if(buttonClick == 4) var action=1;
+        else var action=2;
+        $.ajax({
+            url: "/forms/failuremode/addfailuremode/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'asset_type':asset_type,
+                'mode_id':mode_id,
+                'mode_description':mode_descriptions,
+                'start_date' : start_date,
+                'end_date': end_date,
+                'id':id,
+                'action':action,
+                'datas': JSON.stringify(datas),
+            },
+
+            success: function (response) {
+
+                if(response.status == '1') {
+                    if(id == ""){
+                        if(buttonClick == 1){
+                            swal({
+                                title: 'Successfully add new failuremode',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/failuremode/";
+                            })    
+
+                          
+                        } 
+                        else if(buttonClick == 2){
+                            swal({
+                                title: 'Successfully add new failuremode',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href  = "/forms/failuremode/addfailuremode/";
+                            })    
+
+                         
+                        } 
+                        else if(buttonClick == 3){
+                            swal({
+                                title: 'Successfully add new failuremode',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/failuremode/addfailuremode/"+response.id;
+                            })  
+
+                          
+                        } 
+                        else if(buttonClick == 4){
+                            swal({
+                                title: 'Successfully add new failuremode',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/failuremode/addfailuremode/"+response.id;
+                            })  
+
+                        } 
+                    }else{
+                        if(buttonClick == 1){
+                            swal({
+                                title: 'Successfully update failuremode',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/failuremode/";
+                            })  
+
+                        } 
+                        else if(buttonClick == 2){
+                            swal({
+                                title: 'Successfully update failuremode',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href  = "/forms/failuremode/addfailuremode/";
+                            })  
+
+                        } 
+                        else if(buttonClick == 3){
+                            swal({
+                                title: 'Successfully update failuremode',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/failuremode/addfailuremode/"+response.id;
+                            })  
+
+                           
+                        } 
+                        else if(buttonClick == 4){
+                            swal('Successfully update failuremode')
+                            //window.location.href = "/forms/failuremode/addfailuremode/"+response.id;
+                        } 
+                    }
+                }else if(response.status == '2'){
+                    swal('Failure id '+ response.Fail_ID +' already exists')
+                   // $('#message3').removeClass('d-none'); 
+                    //$('#message3').html('Failure id '+ response.Fail_ID +' already exists.');
+                }
+                else{
+                    swal('Mode id already exists')
+                    //$('#message3').removeClass('d-none'); 
+                   // $('#message3').html('Mode id already exists.');
+                }
+            }
+        });
+        
+    });
+
+    function link()
+    {
+        $.each($("input[name='failureData']:checked"),function(){
+            ind=($(this).val());
+            dataObj=allfailuresFromDB[ind];
+            failuresAttributed.push(dataObj);
+        });
+        swal('Successfully link Failure Data Attributed To This Mode')
+        //$("#link").modal('toggle');
+        getDefectData2();
+    }
+
+    function getDefectData2(){
+        var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+        var mode_id= $('#mode_id').val()
+        var ind=-1;
+        var ind1=-1;
+            $('#example2').DataTable({
+                    "searching" : true,
+                    "destroy": true,
+                     scrollY:        "350px",
+                    scrollX:        true,
+                    scrollCollapse: true,
+                    paging:         true,
+                    fixedColumns:   {
+                        left: 2,
+                        right: 1
+                    },
+                    data: failuresAttributed,
+                    "columns" : [
+                    {"data":null,"render":function(item){ind1++;
+                        return '<input type="checkbox" value="'+ ind1 +'" name="deleteAll" class="deleteAll"/>';
+                        }
+                    },
+                        {"data" : "failure_id"},
+                        {"data" : "asset_type"},
+                        {"data" : "asset_config_id"},
+                        {"data" : "event_description"},
+                        //{"data" : "date"},
+                        {"data":null,"render":function(item){
+
+                            if(item.date != null){
+                                return moment(item.date).format('DD-MM-YYYY');
+                            }
+                            return item.date;
+
+                            }
+                        },
+                        {"data" : "time"},
+                        {"data" : "detection"},
+                        {"data" : "service_delay"},
+                        {"data" : "immediate_investigation"},
+                        {"data" : "failure_type"},
+                        {"data" : "safety_failure"},
+                        {"data" : "hazard_id"},
+                        {"data" : "cm_description"},
+                        {"data" : "replaced_asset_config_id"},
+                      //  {"data" : "cm_start_date"},
+                        {"data":null,"render":function(item){
+
+                            if(item.cm_start_date != null){
+                                return moment(item.cm_start_date).format('DD-MM-YYYY');
+                            }
+                            return item.cm_start_date;
+
+                            }
+                        },
+                        {"data" : "cm_start_time"},
+                        //{"data" : "cm_end_date"},
+                        {"data":null,"render":function(item){
+
+                            if(item.cm_end_date != null){
+                                return moment(item.cm_end_date).format('DD-MM-YYYY');
+                            }
+                            return item.cm_end_date;
+
+                            }
+                        },
+                        {"data" : "cm_end_time"},
+                        {"data" : "oem_failure_reference"},
+                        {"data" : "defect"},
+                        {"data":null,"render":function(item){ind++;
+                            return '<input type="button" value="delete" class="btn btn-danger" onClick="remove('+ ind +')">';
+                        }
+                        },
+                    ],
+            });
+        }
+
+      
+
+        function remove(id){
+            swal({
+                title: "Are you sure?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false,
+                width: '300px'
+            },
+            function(){
+                failuresAttributed.splice(id, 1);
+                swal("Deleted!", "Successfully remove Failure Data Attributed from This Mode.");
+                getDefectData2();
+                        
+            });
+        }
+
+        function getids(){
+            ids1=[];
+            $("input:checkbox[name=deleteAll]:checked").each(function(){
+                ids1.push($(this).val());
+            });
+        
+            // return ids1;
+            return ids1.toString();
+        }
+    
+        function DELETEALL(){
+            ids= getids();
+            if (ids == ""){
+                swal("Please select atleast one record");
+                return false;
+            }
+            ids2=ids.split(",").reverse().join(",");
+            swal({
+                title: "Are you sure?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false,
+                width: '300px'
+            },
+            function(){
+                // $("input:checkbox[name=deleteAll]:checked").each(function(){
+                //     failuresAttributed.splice($(this).val(), 1);
+                // });
+                arrayIds = ids2.split(',');
+                for(i=0;i<arrayIds.length;i++){
+                    failuresAttributed.splice(arrayIds[i], 1);
+                }
+                swal("Deleted!", "Successfully remove Failure Data Attributed to This Defect.");
+                getDefectData2();
+                        
+            });
+    
+        }
+
+        function deletefailuredata(id){
+        
+            $.ajax({
+            url: "/forms/failuremode/failuredata/delete/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'id':id,
+            },
+            success: function (response) {
+                 getDefectData2();
+            }
+        }); 
+        
+        
+        }
+        
+        function getDefectData(){
+            var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+            var start_date= $('#start_date').val()
+            var end_date= $('#end_date').val()
+            if(jQuery.isEmptyObject(failuresAttributed)){
+                var failuresAttributedids="";
+            }else{
+                var iterator = failuresAttributed.values();
+                var fav=[];
+                // Here all the elements of the array is being printed.
+                for (let elements of iterator) {
+                fav.push(elements.id);
+                }
+                var failuresAttributedids=fav.join(",");
+            }
+
+            $.ajax({
+                url: "/forms/failuremode/listfailuredata/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'asset_type':asset_type,
+                    'failuresAttributed':failuresAttributedids,
+                    'start_date':start_date,
+                    'end_date':end_date,
+                },
+
+                success: function (response) {
+                        allfailuresFromDB=response.data;
+                        var ind=-1;
+                        //console.log(allfailuresFromDB);
+                        $('#example').DataTable({
+                        "searching" : true,
+                        "order": [[ 0, "asc" ]],
+                        "destroy": true,
+                         scrollY:        "300px",
+                        scrollX:        true,
+                        scrollCollapse: true,
+                        paging:         false,
+                        fixedColumns:   {
+                            left: 1,
+                            right: 1
+                        },
+                        data: response.data,
+                        "columns" : [
+                            {"data" : "failure_id"},
+                            {"data" : "asset_type"},
+                            {"data" : "asset_config_id"},
+                            {"data" : "event_description"},
+                            //{"data" : "date"},
+                            {"data":null,"render":function(item){
+
+                                if(item.date != null){
+                                    return moment(item.date).format('DD-MM-YYYY');
+                                }
+                                return item.date;
+
+                                }
+                            },
+                            {"data" : "time"},
+                            {"data" : "detection"},
+                            {"data" : "service_delay"},
+                            {"data" : "immediate_investigation"},
+                            {"data" : "failure_type"},
+                            {"data" : "safety_failure"},
+                            {"data" : "hazard_id"},
+                            {"data" : "cm_description"},
+                            {"data" : "replaced_asset_config_id"},
+                           // {"data" : "cm_start_date"},
+                            {"data":null,"render":function(item){
+
+                                if(item.cm_start_date != null){
+                                    return moment(item.cm_start_date).format('DD-MM-YYYY');
+                                }
+                                return item.cm_start_date;
+
+                                }
+                            },
+                            {"data" : "cm_start_time"},
+                           // {"data" : "cm_end_date"},
+                            {"data":null,"render":function(item){
+
+                                if(item.cm_end_date != null){
+                                    return moment(item.cm_end_date).format('DD-MM-YYYY');
+                                }
+                                return item.cm_end_date;
+
+                                }
+                            },
+                            {"data" : "cm_end_time"},
+                            {"data" : "oem_failure_reference"},
+                            {"data" : "defect"},
+                            {"data":null,"render":function(item){ind++;
+                                if(item.user_Role != 4 ) {
+                                    return '<input type="checkbox" class="LinkAll" name="failureData" id="failureData" value="'+ ind +'">';
+                                    }
+                                else return '';
+                                }
+                            },
+                        ],
+                });
+                
+                }
+            });
+        }
+
+
+    $("#asset_types").change(function () {                            
+        var asset_type= $('select[name=asset_type]').val()
+        $.ajax({
+            url: "/forms/system/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+            'asset_type' : asset_type
+            },
+            success: function (response) {
+                console.log(response);
+                var asset_config_id = "<option value="+""+">"+"--  Select Asset config id  --"+"</options>";
+                    $.each(response, function (i,value) {
+                    if (value.asset_config_id != ''){
+                    asset_config_id = asset_config_id + "<option value="+value.asset_config_id+">"+value.asset_config_id+"</options>";
+                    }
+                });
+                    var select = "<select>"+asset_config_id+"</select>";
+                $("#asset_config_id").html(select);
+                
+                }
+        }); 
+    });
+
+    $( "#FailureForm" ).submit(function(e) {
+        e.preventDefault();
+        var asset_types= $('select[name=asset_type] option').filter(':selected').val()
+        var asset_ty= $('select[name=asset_type] option').filter(':selected').html()
+        var defect= $('select[name=defect] option').filter(':selected').val()
+        var asset_config_ids= $('select[name=asset_config_id] option').filter(':selected').val()
+        var asset_config_id= $('select[name=asset_config_id] option').filter(':selected').html()
+        var failure_type= $('select[name=failure_type] option').filter(':selected').val()
+        var safety_failure= $('select[name=safety_failure] option').filter(':selected').val()
+        //var mode_description= $('#mode_description').val()
+        var failure_id= $('#failure_id').val()
+        var event_description= $('#event_description').val()
+        var mode_ids= $('#mode_ids').val()
+        var MID= $('#MID').val()
+        var date= $('#date').val()
+        var time= $('#time').val()
+        var detection= $('#detection').val()
+        var service_delay= $('#service_delay').val()
+        var immediate_investigation= $('#immediate_investigation').val()
+        var hazard_id= $('#hazard_id').val()
+        var cm_description= $('#cm_description').val()
+        var replaced_asset_config_id= $('#replaced_asset_config_id').val()
+        var cm_start_date= $('#cm_start_date').val()
+        var cm_start_time= $('#cm_start_time').val()
+        var cm_end_date= $('#cm_end_date').val()
+        var cm_end_time= $('#cm_end_time').val()
+        var oem_failure_reference= $('#oem_failure_reference').val()
+        $.ajax({
+            url: "/forms/failuremode/addfailuredata/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'failure_id':failure_id,
+            },
+
+            success: function (response) {
+                if(response.status == '1') {
+                    var check=0;
+                    if(jQuery.isEmptyObject(failuresAttributed)){
+                        check=0;
+                    }else{
+                        var iterator = failuresAttributed.values();
+                        for (let elements of iterator) {
+                            if(elements.failure_id == failure_id) check=1;
+                        }
+                    }
+                    if(check == 1){
+                        swal('Failure id already exists')
+                        //$('#messageModel').removeClass('d-none'); 
+                        //$('#messageModel').html('Failure id already exists.');
+                    }else{
+                            var dataObj = {};
+                            dataObj.id=0;
+                            dataObj.asset_type=asset_ty;
+                            dataObj.asset_ty=asset_types;
+                            dataObj.failure_id=failure_id;
+                            dataObj.asset_config_id=asset_config_id;
+                            dataObj.asset_config_ids=asset_config_ids;
+                            dataObj.event_description=event_description;
+                           // dataObj.mode_description=mode_description;
+                            dataObj.date=date;
+                            dataObj.time=time;
+                            dataObj.detection=detection;
+                            dataObj.service_delay=service_delay;
+                            dataObj.immediate_investigation=immediate_investigation;
+                            dataObj.failure_type=failure_type;
+                            dataObj.safety_failure=safety_failure;
+                            dataObj.hazard_id=hazard_id;
+                            dataObj.cm_description=cm_description;
+                            dataObj.replaced_asset_config_id=replaced_asset_config_id;
+                            dataObj.cm_start_date=cm_start_date;
+                            dataObj.cm_start_time=cm_start_time;
+                            dataObj.cm_end_date=cm_end_date;
+                            dataObj.cm_end_time=cm_end_time;
+                            dataObj.oem_failure_reference=oem_failure_reference;
+                            dataObj.defect=defect;
+                            failuresAttributed.push(dataObj);
+                        getDefectData2();
+                        //$('#add').removeClass('in show'); 
+                        //$('#add').modal({dismiss: true})
+                        swal('Successfully add Failure Data Attributed To This Mode')
+                        //$('#messageModel').removeClass('d-none'); 
+                        //$('#messageModel').html('Successfully add Failure Data Attributed To This Mode.');
+                        //$('#add').modal('data-dismiss');
+                       
+                    }
+                }
+                else{
+                    swal('Failure id already exists')
+                    //$('#messageModel').removeClass('d-none'); 
+                    //$('#messageModel').html('Failure id already exists.');
+                }
+            }
+        });
+        
+    });
+
+</script>
+
+{% endblock sb_admin_js %}

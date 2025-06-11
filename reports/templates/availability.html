@@ -1,0 +1,851 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+<style>
+  .hide{
+    display: none ! important;
+  }
+</style>
+              <!-- Page Heading -->
+              <div class="row mb-5">
+                <div class="col-lg-12">
+                    <h3 class="page-header"  style="margin-left:-15px">
+                        Actual availability vs Time
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+         
+            <!-- /.row -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="project">PROJECT:</label>
+                        <select class="form-control" id="project" name="project" required="required">
+                        <option value="all">--  Select Project  --</option>
+                        {% for project in project %}
+                        {% if project.product_id != '' %}
+                            {% if project.product_id == request.session.P_id %}
+                                    <option value="{{project.product_id}}" selected>{{project.product_name}}</option>
+                            {% else %}
+                                <option value="{{project.product_id}}" >{{project.product_name}}</option>
+                            {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                      <label for="system">SYSTEM:</label>
+                      <select class="form-control" id="system" name="system" >
+                      </select>
+                  </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                    <label for="subsystem">SUBSYSTEM:</label>
+                    <select class="form-control" id="subsystem" name="subsystem" >
+                    </select>
+                </div>
+                </div>
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="selLRUType">LRU TYPE</label>
+                        <select class="form-control" id="selLRUType" name="selLRUType">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="startDate">START DATE</label>
+                        <input type="text" autocomplete="off" class="form-control date-time" id="startDate" value="">
+                    </div>
+                </div> 
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="endDate">END DATE</label>
+                        <input type="text" autocomplete="off" class="form-control date-time" id="endDate" value="">
+                    </div>
+                </div>
+              
+
+                <div class="col-md-3 pt-4">     
+                    <button type="button" onClick="return Validate();" class="btn btn-primary mt-2" id="GenBTN">Generate</button>
+                </div>
+           
+            </div>
+            <!-- <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="productId">PRODUCT ID</label>
+                        <select class="form-control" class="form-control" id="productId" name="pbs_productID">
+                        </select>
+                    </div>
+                </div> 
+                
+            </div> -->
+            <div class="row mb-4 d-none d-print-none" id="print_chart">
+                <div class="col-md-12">   
+                    <a href="#" onclick="return Print_Graph(1);"><button class="btn btn-danger float-right m-2" > 
+                                 
+                        <span class="text">Print</span>
+                        </button></a>
+  
+                    
+                    <a href="#" onclick="return Print_Graph(2);"><button class="btn btn-success btn-success-split float-right m-2" > 
+                                   
+                        <span class="text">Download</span>
+                        </button></a>
+
+                </div>
+            </div>
+
+
+            <div class="card mb-4">
+                <div class="card-header d-none">
+                    <i class="fas fa-chart-area mr-1"></i>
+                    Cumulative MTBF of selected subsystem vs Time
+                </div>
+                <h1 class="nodata" style="margin-top: 20px;text-align: center;">No data available please search</h1>
+                <div class="card-body" id="canvasDiv">
+                    <canvas id="mtbfChart" width="100%" height="30" style="background-color:#fff"></canvas>                    
+                </div>
+                <div class="card-footer small text-muted d-none">
+                    Search By :  
+                    <div class="chart_searchby"><b>Project: </b><span  id="search_project"><span></div>
+                    <div class="chart_searchby"><b>URL Type: </b><span  id="search_type"><span></div>
+                    <div class="chart_searchby"><b>Start Date: </b><span  id="search_startDate"><span></div>
+                    <div class="chart_searchby"><b>End Date: </b><span  id="search_endDate"><span></span></div>
+                </div>
+            </div>
+
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    function Print_Graph(PrintOption){
+        // $("#canvasDiv").css({"width": "75%"});
+        // $('.page-header').addClass('text-center');
+        
+        // //document.title='Minutes of meeting review board';
+        // window.print();
+        // $('.page-header').removeClass('text-center');
+
+        var project= $('select[name=project] option').filter(':selected').html();
+        var system= $('select[name=system] option').filter(':selected').val();
+        if(system !="all"){
+            system= $('select[name=system] option').filter(':selected').html();
+            var subsystem = $('select[name=subsystem] option').filter(':selected').html();
+            var LRU_Type = $('select[name=selLRUType] option').filter(':selected').html();
+        }else{
+            system= 'All';
+            var subsystem = 'All';
+            var LRU_Type = 'All';
+        }
+        var startDate = $('#startDate').val() ;
+        var endDate = $('#endDate').val() ;
+
+        var canvas = document.getElementById('mtbfChart');
+        var imgData = canvas.toDataURL("image/png");
+        var pdf = new jsPDF('p', 'mm', 'a4');
+        var pdfWidth = canvas.width;
+        var pdfHeight = canvas.height;
+        ratio = pdfHeight/pdfWidth;
+        pw=(pdf.internal.pageSize.getWidth()*.9)-20;
+        pdfHeight=ratio*pw;
+        pdfWidth=pw;
+        y = 25;
+        pdf.setFontSize(18);
+        pdf.text(pdfWidth/3, y, 'Target Availability Report');
+        y = y + 10
+        pdf.setFontSize(10);
+        y = y + 10
+        pdf.setFontSize(10);
+        pdf.text(20, y, 'Project: '+project);
+        pdf.text(pdf.internal.pageSize.getWidth()/2, y, 'System: '+system);
+        y = y + 10
+        pdf.text(20, y, 'Sub System: '+subsystem);
+        pdf.text(pdf.internal.pageSize.getWidth()/2, y, 'LRU Type: '+LRU_Type);
+        y = y + 10
+        pdf.text(20, y, 'Start Date: '+startDate);
+        pdf.text(pdf.internal.pageSize.getWidth()/2, y, 'End Date: '+endDate);
+        y = y + 10
+        pdf.addImage(imgData, 'PNG', 20, y, pdfWidth, pdfHeight);
+        y = y + 40 + pdfHeight
+        var d1 = new Date();
+        d1 = moment(d1).format('DD/MM/YYYY HH:mm:ss')
+        pdf.text(20, y, 'Generated by: '+'{% firstof user.get_short_name user.get_username %}');
+        pdf.text(pdfWidth/2+65, y, 'Date: '+d1);
+        if(PrintOption == 1){window.open(pdf.output('bloburl'), '_blank');}
+        else{pdf.save("Availability Report.pdf");}
+    }
+  
+     var MTBFChart = null;
+    $(document).ready(function() {
+        var d1 = new Date(new Date().getFullYear(), 0, 1);
+        var d2 = new Date(new Date().getFullYear(), 11, 31);
+        $('#startDate').val(moment(d1).format('DD/MM/YYYY'))
+        $('#endDate').val(moment(d2).format('DD/MM/YYYY'))
+        
+        $(".chart_searchby").hide()
+        //$("#print_chart").hide();
+        $('#startDate').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+        $('#endDate').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+          $('#startDate').on('changeDate', function(event) {
+            var endDate = $('#endDate').datepicker("getDate");
+            if(event.date  > endDate){
+              $('#endDate').datepicker("setDate", event.date);
+            }
+            //alert($(this).val());
+          });
+          $('#endDate').on('changeDate', function(event) {
+            var startDate = $('#startDate').datepicker("getDate");
+            //console.log(event.date,startDate);
+            //alert($(this).val());
+            
+            if(event.date < startDate){
+              $('#startDate').datepicker("setDate", event.date);
+            }
+          });
+
+            if({{request.session.P_id}} != 0){
+        
+            var project= $('select[name=project]').val()
+            $.ajax({
+              url: "/reports/project/",
+              method: 'GET',
+              dataType: 'json',
+              headers: {'X-CSRFToken': '{{ csrf_token }}'},
+              data : {
+                'project' : project,
+              },
+              success: function (response) {
+                    console.log(response);
+                    var system = "<option value="+"all"+">"+"--All--"+"</options>";
+                    $.each(response, function (i,value) {
+                      if (value.system != ''){
+                        system = system + "<option value='"+value.system+"'>"+value.system+"</options>";
+                    }
+                  });
+                    var select = "<select>"+system+"</select>";
+                    $("#system").html(select);
+                    
+                  }
+              });
+            //   getChartData2('one')
+          }
+    });
+
+    // function PrintImage(canvasId) {
+    //     var newCanvas = document.querySelector('#'+canvasId);
+    //     var newCanvasImg = newCanvas.toDataURL("image/png", 1.0);
+    //         //creates PDF from img
+    //     var doc = new jsPDF('landscape');
+    //     doc.setFontSize(18);
+    //     //doc.text(15, 15, "");       
+    //     doc.addImage(newCanvasImg, 'JPEG', 10, 10, 280, 150 );
+    //     //doc.autoPrint();
+    //     window.open(doc.output('bloburl'), '_blank');
+    //     //doc.save('new-canvas.pdf');
+    //     //doc.location.reload();
+    // }
+
+   
+
+    function Validate(){
+        var project= $('select[name=project] option').filter(':selected').val()
+        var system= $('select[name=system] option').filter(':selected').val()
+        var subsystem = $('select[name=subsystem] option').filter(':selected').val()
+        var LRU_Type = $('select[name=selLRUType] option').filter(':selected').val();
+
+        if(project != "all"){
+            if(system != "all"){
+                if(subsystem != "all"){
+                    if(LRU_Type != "all"){
+                        getChartData2('two')
+                    } 
+                    else $('#selLRUType').focus()
+                } 
+                else{
+                    getChartData2('three')
+                } 
+            } 
+            else{
+                getChartData2('one')
+            } 
+        } 
+        else $('#project').focus()
+       
+    }
+
+
+    function getChartData2(FN_NAME){
+        $("#canvasDiv").html('<canvas id="mtbfChart" width="100%" height="30" style="background-color:#fff"></canvas>');
+        showloader();
+        var project= $('select[name=project] option').filter(':selected').val()
+        var system= $('select[name=system] option').filter(':selected').val()
+        var subsystem = $('select[name=subsystem] option').filter(':selected').val()
+        var LRU_Type = $('select[name=selLRUType] option').filter(':selected').val();
+        var product_id = 'all'
+        var startDate = $('#startDate').val() ;
+        var endDate = $('#endDate').val() ;
+         $.ajax({
+          url: "/reports/availability/",
+          method: 'POST',
+          dataType: 'json',
+          headers: {'X-CSRFToken': '{{ csrf_token }}'},
+          data : {
+            'project':project,
+            'system':system,
+            'sub_system':subsystem,
+            'product_id':product_id,
+            'lru_type' : LRU_Type,
+            'start_date': startDate,
+            'end_date' : endDate,
+            'FN_NAME':FN_NAME,
+          },
+          success: function (response) {
+                console.log(response)
+                if(response.status == 1){
+                    $("#canvasDiv").css({"height": "30"});
+                    $("#print_chart").addClass('d-none');
+                    $(".chart_searchby").hide()
+                    $('.nodata').removeClass('d-none')
+                    swal('This asset does not have any failure data in selected timeframe')
+                    hideloader();
+                }else if(response.status == 2){
+                    $("#canvasDiv").css({"height": "30"});
+                    $("#print_chart").addClass('d-none');
+                    $(".chart_searchby").hide()
+                    $('.nodata').removeClass('d-none')
+                    swal('This system does not set System Level RAM Targets')
+                    hideloader();
+                }else{
+                    getChart(response)
+                    $(".chart_searchby").show()
+                    $("#search_project").html($('select[name=project] option').filter(':selected').html())
+                    if(system !="all"){$("#search_type").html($('select[name=selLRUType] option').filter(':selected').html())}
+                    else{$("#search_type").html('All')}
+                    $("#search_startDate").html($('#startDate').val())
+                    $("#search_endDate").html($('#endDate').val())
+                    $('.nodata').addClass('d-none')              
+                    $("#print_chart").removeClass('d-none');
+                }
+              }
+          });
+    }
+
+  
+
+    function getChart(chartData){
+
+        var system= $('select[name=system] option').filter(':selected').val()
+        if(system == "all"){
+            subsystem = "All Sub System(s)";
+        }else{
+            var subsystem = $('select[name=subsystem] option').filter(':selected').val()
+        }
+
+        $("#canvasDiv").css({"height": "500"});
+        var stepSize = 10;
+        var stepMax = 100;
+        var stepMin = 0;
+        if(chartData.Avaiability.length != 0){
+            var minV = chartData.Avaiability[0].y;
+            var maxV = chartData.Avaiability[0].y;
+            var a = chartData.Avaiability;
+            a.forEach(function(entry) {
+                if(minV > entry.y) minV = entry.y
+                if(maxV < entry.y) maxV = entry.y
+            });
+
+            var minT = chartData.availability_targets[0].y;
+            var b = chartData.availability_targets;
+            b.forEach(function(entry) {
+                if(minT > entry.y) minT = entry.y
+                if(maxV < entry.y) maxV = entry.y
+            });
+
+            if (minT < minV){
+                minV = minT
+            }
+
+            z = minV - maxV;
+            z = z/20;
+            z = z/-1
+            stepSize = z
+            stepMin = minV - z;
+            stepMax = maxV + z;
+        }
+        var ctx = document.getElementById("mtbfChart").getContext("2d");
+        if(MTBFChart != null) MTBFChart.destroy();
+        var config = {
+            type:    'line',
+            data:    {
+                labels: chartData.rangeScale,
+                datasets: [
+                {
+                    label: "Avaiability",
+                    data: chartData.Avaiability,
+                    fill: false,
+                    borderColor: '#0099cc',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#0099cc',
+                    pointBorderColor: '#0099cc',
+                    pointRadius: 5,
+                    pointHoverRadius: 5,
+                    tension: 0,
+                    showLine: true,
+                    pointStyle : 'dash'
+                },
+                {
+                    label: "Target Avaiability",
+                    data: chartData.availability_targets,
+                    borderColor: '#cc0000',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#cc0000',
+                    pointBorderColor: '#cc0000',
+                    pointRadius: 5,
+                    pointHoverRadius: 5,
+                    fill: false,
+                    tension: 0,
+                    showLine: true,
+                    pointStyle : 'dash'
+                }
+            ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                title:      {
+                    display: true,
+                    text:    "Availability performance of "+subsystem,
+                    fontSize: 18
+                },
+                legend: {
+                    position: "bottom"
+                },
+                scales:     {
+                    xAxes: [{
+                        ticks: {
+                            stepSize: 1,
+                            min: 0,
+                            max: 52,
+                            // Include a dollar sign in the ticks
+                            callback: function(value, index, values) {
+                                if(value == 0 || value == 53) return '';
+                                return value + ' week';
+                            }
+                        },
+                        scaleLabel: {
+                            display:     false,
+                            labelString: 'Date'
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: stepMin,
+                            max: stepMax,
+                            stepSize: stepSize
+                        },
+                        scaleLabel: {
+                            display:     false,
+                            labelString: 'value'
+                        }
+                    }]
+                }
+            }
+        };
+        
+        MTBFChart = new Chart(ctx, config);
+        hideloader();
+    }
+
+    /*function getChart(chartData){
+       var myLineExtend = Chart.controllers.line.prototype.draw;
+
+        var ctx = document.getElementById("mtbfChart").getContext("2d");
+        if(MTBFChart != null) MTBFChart.destroy();
+
+        var config = {
+            type: 'line',
+            data: {
+                labels: chartData.rangeScale,
+                datasets: [
+                        {
+                            label: "Target Availability",
+                            data: chartData.availability_targets,
+                            borderColor: '#cc0000',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#cc0000',
+                            pointBorderColor: '#cc0000',
+                            pointRadius: 5,
+                            pointHoverRadius: 5,
+                            fill: false,
+                            tension: 0,
+                            showLine: true,
+                            pointStyle : 'dash'
+                        },{
+                            label: "Availability",
+                            data: chartData.Avaiability,
+                            fill: false,
+                            borderColor: '#0099cc',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#0099cc',
+                            pointBorderColor: '#0099cc',
+                            pointRadius: 15,
+                            pointHoverRadius: 15,
+                            tension: 0,
+                            showLine: false,
+                            pointStyle : 'dash'
+                        }
+                ],
+                datasetFill : false,
+                //lineAtIndex: chartData.availability_targets
+            },
+            options: {
+                responsive: true,
+                title:      {
+                    display: true,
+                    text:    "Deterministic reliability growing chart",
+                    fontSize: 18
+                },
+                legend: {
+                position: "bottom"
+                },
+                scales:     {
+                    xAxes: [{
+                        ticks: {
+                            stepSize: 1,
+                            min: 0,
+                            max: 52,
+                            // Include a dollar sign in the ticks
+                            callback: function(value, index, values) {
+                                if(value == 0 || value == 53) return '';
+                                return value + ' week';
+                            }
+                        },
+                        scaleLabel: {
+                            display:     false,
+                            labelString: 'Date'
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display:     false,
+                            labelString: 'value'
+                        }
+                    }]
+                }
+            }
+        };
+
+        Chart.helpers.extend(Chart.controllers.line.prototype, {
+            draw: function () {
+            
+            myLineExtend.apply(this, arguments);   
+
+            var chart = this.chart;
+            var ctx = chart.chart.ctx;
+
+            var index = chart.config.data.lineAtIndex;
+            var xaxis = chart.scales['x-axis-0'];
+            var yaxis = chart.scales['y-axis-0'];
+            index.forEach(function(value){
+                if(value.y != "null"){
+                        var x = value.x;
+                        x = x;
+                        var data = value.custome;
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.setLineDash([10, 5]);
+                        ctx.lineWidth = 2;
+                        ctx.moveTo(xaxis.getPixelForValue(undefined, x), yaxis.top + 50);
+                        ctx.strokeStyle = '#00b33c';
+                        ctx.lineTo(xaxis.getPixelForValue(undefined, x), yaxis.bottom);
+                        
+                        ctx.stroke();
+                        ctx.restore();
+
+                        ctx.textAlign = 'center';
+                        ctx.font = "12px Arial";
+                        ctx.fillStyle = "black";
+                        ctx.fillText(data[0], xaxis.getPixelForValue(undefined, x), yaxis.top + 40);
+                }
+            });
+            }
+        });
+
+        MTBFChart = new Chart(ctx, config);
+        hideloader();*/
+     /* var timeFormat = 'YYYY-MM-DD';
+
+      var config = {
+        type:    'scatter',
+        data:    {
+            datasets: [
+              {
+                label: "Actual MTBF",
+                data: chartData.actualMTBF,
+                borderColor: 'black',
+                borderWidth: 1,
+                pointBackgroundColor: 'red',
+                pointBorderColor: 'red',
+                pointRadius: 5,
+                pointHoverRadius: 5,
+                fill: false,
+                tension: 0,
+                showLine: true,
+                pointStyle : 'triangle'
+              },
+              {
+                    label: "Predicted MTBF",
+                    data: chartData.predicedMTBF,
+                    fill: false,
+                    borderColor: '#000',
+                    borderWidth: 3,
+                    pointBackgroundColor: 'red',
+                    pointBorderColor: 'red',
+                    pointRadius: 5,
+                    pointHoverRadius: 5,
+                    fill: false,
+                    tension: 0,
+                    showLine: true,
+                    pointStyle : 'dash'
+              },
+              {
+                    label: "MTBF Target",
+                    data: chartData.MTBFtarget,
+                    fill: false,
+                    borderColor: 'blue',
+                    borderWidth: 5,
+                    pointBackgroundColor: 'red',
+                    pointBorderColor: 'red',
+                    pointRadius: 15,
+                    pointHoverRadius: 5,
+                    fill: false,
+                    tension: 0,
+                    showLine: false,
+                    pointStyle : 'dash'
+              },
+              {
+                  type: 'bar',
+                  label: "Software mod",
+                  data: chartData.softwareMode,
+                  fill: false,
+                  borderColor: 'blue'
+              }
+          ]
+          },
+          options: {
+              responsive: true,
+              title:      {
+                  display: false,
+                  text:    "Chart.js Time Scale"
+              },
+              legend: {
+                position: "bottom"
+              },
+              scales:     {
+                  xAxes: [{
+                        ticks: {
+                            stepSize: 1,
+                            min: 0,
+                            max: 52,
+                            // Include a dollar sign in the ticks
+                            callback: function(value, index, values) {
+                                if(value == 0 || value == 53) return '';
+                                return value + ' week';
+                            }
+                        },
+                        scaleLabel: {
+                            display:     false,
+                            labelString: 'Date'
+                        }
+                  }],
+                  yAxes: [{
+                        scaleLabel: {
+                            display:     false,
+                            labelString: 'value'
+                        }
+                  }]
+              }
+          }
+      };
+      var ctx       = document.getElementById("mtbfChart").getContext("2d");
+      
+      var MTBFChart = new Chart(ctx, config);*/
+//}
+
+$("#project").change(function () { 
+    var project= $('select[name=project]').val()  
+    $.ajax({
+      url: "/reports/project/",
+      method: 'GET',
+      dataType: 'json',
+      headers: {'X-CSRFToken': '{{ csrf_token }}'},
+      data : {
+        'project' : project,
+      },
+      success: function (response) {
+            console.log(response);
+            var system = "<option value="+"all"+">"+"--All--"+"</options>";
+             $.each(response, function (i,value) {
+               if (value.system != ''){
+                system = system + "<option value='"+ value.system +"'>"+value.system+"</options>";
+             }
+           });
+             var select = "<select>"+system+"</select>";
+            $("#system").html(select);
+            $("#subsystem").prop('selectedIndex',0);
+            $("#selLRUType").prop('selectedIndex',0);
+            
+          }
+      }); 
+ });
+
+$("#system").change(function () {                            
+var system= $("#system").val()
+var project= $('select[name=project]').val()
+if(project !="all"){
+    if(system !="all"){
+        var subsystem= $('select[name=subsystem]').val()
+        if(subsystem !=null){
+            var LRU_Type= $('select[name=LRU_Type]').val()
+            if(LRU_Type !="all"){
+                document.getElementById("GenBTN").disabled = false;
+            } 
+        }
+    }     
+}
+    
+ $.ajax({
+   url: "/reports/system/",
+   method: 'GET',
+   dataType: 'json',
+   headers: {'X-CSRFToken': '{{ csrf_token }}'},
+   data : {
+     'system' : system,
+   },
+   success: function (response) {
+         console.log(response);
+         var subsystem = "<option value="+"all"+">"+"--All--"+"</options>";
+          $.each(response, function (i,value) {
+            if (value.subsystem != ''){
+              subsystem = subsystem + "<option value='"+value.subsystem+"''>"+value.subsystem+"</options>";
+          }
+        });
+          var select = "<select>"+subsystem+"</select>";
+         $("#subsystem").html(select);
+          $("#selLRUType").prop('selectedIndex',0);
+         
+       }
+   }); 
+});
+
+// $("#subsystem").change(function () {                            
+//    var system= $('select[name=pbs_system]').val()
+//    var sub_system = $('select[name=pbs_subsystem]').val()
+//    $.ajax({
+//      url: "/reports/product/",
+//      method: 'GET',
+//      dataType: 'json',
+//      headers: {'X-CSRFToken': '{{ csrf_token }}'},
+//      data : {
+//        'system' : system,
+//        'sub_system': sub_system
+//      },
+//      success: function (response) {
+//            console.log(response);
+//            var product = "<option value="+"all"+">"+"--All--"+"</options>";
+//             $.each(response, function (i,value) {
+//               if (value.product_id != ''){
+//               product = product + "<option value="+value.product_id+">"+value.product_id+"</options>";
+//             }
+//           });
+//             var select = "<select>"+product+"</select>";
+//            $("#productId").html(select);
+         
+//          }
+//      }); 
+// });
+
+
+$("#subsystem").change(function () {                            
+var project= $('select[name=project]').val()
+var subsystem= $('select[name=subsystem]').val()
+if(project !="all"){
+    var system= $('select[name=system]').val()
+    if(system !="all"){
+        if(subsystem !="all"){
+            var LRU_Type= $('select[name=LRU_Type]').val()
+            if(LRU_Type !=null){
+                document.getElementById("GenBTN").disabled = false;
+            } 
+        }
+    }     
+}       
+ $.ajax({
+   url: "/reports/asset_type/",
+   method: 'GET',
+   dataType: 'json',
+   headers: {'X-CSRFToken': '{{ csrf_token }}'},
+   data : {
+     'subsystem': subsystem
+   },
+   success: function (response) {
+         console.log(response);
+         var asset_type = "<option value="+"all"+">"+"--All--"+"</options>";
+          $.each(response, function (i,value) {
+            if (value.asset_type != ''){
+            asset_type = asset_type + "<option value="+value.id+">"+value.asset_type+"</options>";
+          }
+        });
+          var select = "<select>"+asset_type+"</select>";
+         $("#selLRUType").html(select);
+         
+       }
+   }); 
+});
+
+
+$("#selLRUType").change(function () {                            
+var project= $('select[name=project]').val()
+var LRU_Type= $('select[name=LRU_Type]').val()
+if(project !="all"){
+    var system= $('select[name=system]').val()
+    if(system !="all"){
+        var subsystem= $('select[name=subsystem]').val()
+        if(subsystem !="all"){
+            if(LRU_Type !="all"){
+                document.getElementById("GenBTN").disabled = false;
+            } 
+        }
+    }     
+}       
+}); 
+</script>
+
+{% endblock sb_admin_js %}

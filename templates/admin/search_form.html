@@ -1,0 +1,27 @@
+{% load i18n static %}
+{% if cl.search_fields %}
+<div id="toolbar" class="mt-4 mb-4">
+<form id="changelist-search" method="get">
+<div class=""><!-- DIV needed for valid HTML -->
+
+    <div class="input-group">
+        <input style="border: 1px solid #ccc !important;" type="text" class="form-control bg-light border-0 small" placeholder="Search" aria-label="Search" name="{{ search_var }}" value="{{ cl.query }}" id="searchbar" autofocus>
+        <div class="input-group-append">
+            <button class="btn btn-primary" src="{% static "admin/img/search.svg" %}" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+<!-- <label for="searchbar"><img src="{% static "admin/img/search.svg" %}" alt="Search"></label>
+<input type="text" size="40" name="{{ search_var }}" value="{{ cl.query }}" id="searchbar" autofocus>
+<input type="submit" value="{% trans 'Search' %}"> -->
+{% if show_result_count %}
+    <span class="small quiet">{% blocktrans count counter=cl.result_count %}{{ counter }} result{% plural %}{{ counter }} results{% endblocktrans %} (<a href="?{% if cl.is_popup %}_popup=1{% endif %}">{% if cl.show_full_result_count %}{% blocktrans with full_result_count=cl.full_result_count %}{{ full_result_count }} total{% endblocktrans %}{% else %}{% trans "Show all" %}{% endif %}</a>)</span>
+{% endif %}
+{% for pair in cl.params.items %}
+    {% if pair.0 != search_var %}<input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}">{% endif %}
+{% endfor %}
+</div>
+
+</form></div>
+{% endif %}

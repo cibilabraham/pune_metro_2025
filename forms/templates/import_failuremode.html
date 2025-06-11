@@ -1,0 +1,249 @@
+
+
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+            {% if status %}
+
+            <div class="row mb-3 mb-4 mt-4">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                        Import Failure Mode
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+
+           
+
+            <div class="row ">
+                <div class="col-lg-12 mb-5">
+                    
+                    
+                        <button class="btn btn-success btn-icon-split float-right m-2" onclick="getIdofSelectedCBFailureMode({{data}})">            
+                        <span class="text">Save </span>
+                        
+                        </button>
+
+                        <a href="/forms/failuremode/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                            <span class="icon text-white-50">
+                                <i class="fas fa-angle-left"></i>
+                                </span>             
+                            <span class="text">Back</span>
+                            </button></a>
+                   
+                </div>
+            </div>
+
+            
+
+                <div class="row">
+                  <div class="col-md-12">
+                      <h3>Existing Config id</h3>
+                      <table id="importDataUpdate" class="table table-striped table-bordered " style="width:100%">
+                          <thead>
+                              <tr>
+                                    <th><input type="checkbox" id="SACB_failureMode" /></th>
+                                    <th>Mode id</th>
+                                    <th>Mode description</th>
+                                    <th>asset_type</th>
+                                    <th>Error</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            {% for dU in data %}
+                                <tr>
+                                    <td>
+                                        {% if dU.err_status == '1' %}
+                                            <input type="checkbox" value="{{dU.id}}"  name="CB_importData" class="CB_failureMode"/>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.mode_id}}
+                                        {% if dU.mode_id_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.mode_id_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.mode_description}}
+                                        {% if dU.mode_description_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.mode_description_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.asset_type}}
+                                        {% if dU.asset_type_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.asset_type_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    
+                                    <td>
+                                        {% if dU.err_status == '1' %}
+                                            <span class="text-success"><i class="fas fa-check"></i></span>
+                                        {% else %}
+                                            <span class="text-danger"><i class="fas fa-times"></i></span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                                
+                                
+                          </tbody>
+                      </table>
+                  </div>
+                </div>
+
+                <div class="row mb-4" align="right">
+                    <div class="col-12">  
+                        <button type="button" onclick="getIdofSelectedCBFailureMode({{data}})" class="btn btn-success" >Save</button>
+                    </div>
+                </div>
+
+               
+
+            {% else %}
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                      Import Failure Mode
+                    </h3>
+                   
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-lg-12 mb-3">
+    
+    
+                    <a href="/forms/failuremode/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+            </div>
+
+
+            <form  enctype='multipart/form-data' action="/forms/failuremode/import/"  id="importFailureMode" name="importFailureMode" method="post" > 
+            <!-- <form  enctype='multipart/form-data' id="importassetregister" name="importassetregister" method="post" >  -->
+
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <div class="card card-login mx-auto mt-5">
+                    <h2 class="card-header text-center">Import File</h2>
+                <div class="card-body">
+                    <fieldset class="module aligned uploadFileForm">
+                        <div class="form-row">
+                        <label for="import_file">File to import:</label>
+                        <input type="file" name="import_failureMode" required="" id="import_assetRegister">
+                        </div>
+                    </fieldset>
+                    <div>
+                        {% if message %}
+                            <div class="alert alert-warning m-2">
+                            {{message}}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning m-2">
+                            *Don't include space for the uploaded filename
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="">
+                        <input type="submit" class="btn btn-success float-right" value="Submit">
+                        
+                    </div>
+                    
+                
+                </div>
+            </form>
+
+        </div>
+        <div class="row mt-5">
+            <div class="mx-auto" style="max-width: 20rem;">
+            <a class="btn btn-primary" href="/static/FailureMode.xlsx " download="">Download Sample Excel File</a>
+        </div>
+        {% endif %}
+
+
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+$(document).ready(function() {
+    $("#SACB_failureMode").click(function () {
+        $(".CB_failureMode").attr('checked', this.checked);
+    });
+});
+
+ 
+function getids(){
+    ids1=[];
+    $("input:checkbox[name=CB_importData]:checked").each(function(){
+        ids1.push($(this).val());
+    });
+
+    // return ids1;
+    return ids1.toString();
+}
+
+function getIdofSelectedCBFailureMode(data1){
+    ids= getids();
+    // alert(ids);
+    if (ids == ""){
+        swal("Please select atleast one record");
+        return false;
+    }
+    var datas=data1;
+   
+    $.ajax({
+        url: "/forms/failuremode/addimport/",
+        method: 'POST',
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: {
+            'ids':ids,
+            'datas': JSON.stringify(datas),
+         },
+        success: function (response) {
+            if(response.status == '1') {
+                // swal(" Inserted Records :  " + response.inserted + " Updated Records :  " + response.updated);
+                // window.location.href = '/forms/failuremode/';
+
+                swal({
+                    title: " Inserted :  " + response.inserted + " Records and Updated :  " + response.updated +" Records",
+                    text: "",
+                    type: '',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok'
+                },function () {
+                    window.location.href = '/forms/failuremode/';
+                }) 
+            }
+                
+        }
+    });
+}
+
+
+
+    
+</script>
+
+{% endblock sb_admin_js %}

@@ -1,0 +1,210 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+              <div class="row mb-5">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                      History
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <!-- /.row -->
+
+            <div class="row mb-4">
+               
+                {% if request.session.user_Role == 1 %}
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="subsystem">PROJECT:</label>
+                        <select class="form-control" id="subsystem" name="subsystem" required="required">
+                        <option value="all">--  Select Project  --</option>
+                        {% for subsystem in subsystem %}
+                        {% if subsystem.product_id != '' %}
+                                <option value="{{subsystem.product_id}}">{{subsystem.product_name}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="startDate">START DATE</label>
+                        <input type="text" autocomplete="off" class="form-control date-time" id="startDate" value="">
+                    </div>
+                </div> 
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="endDate">END DATE</label>
+                        <input type="text" autocomplete="off" class="form-control date-time" id="endDate" value="">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="time">START TIME:</label>
+                        <input type="time" class="form-control" id="starttime" name="starttime" value="">
+                        <div class="invalid-feedback">
+                         Please enter Time.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="time">END TIME:</label>
+                        <input type="time" class="form-control" id="endtime" name="endtime" value="">
+                        <div class="invalid-feedback">
+                         Please enter Time.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 pt-4">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter</button>
+                </div>
+
+           
+            </div>
+           
+          <div class="row">
+            <div class="col-md-12">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Product</th>
+                            <th>User role</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Function</th>
+                            <th>Changes</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+
+
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+        $('#startDate').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',});
+          $('#endDate').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',});
+            $('#startDate').on('changeDate', function(event) {
+              var endDate = $('#endDate').datepicker("getDate");
+              if(event.date  > endDate){
+                $('#endDate').datepicker("setDate", event.date);
+              }
+              //alert($(this).val());
+            });
+            $('#endDate').on('changeDate', function(event) {
+              var startDate = $('#startDate').datepicker("getDate");
+              //console.log(event.date,startDate);
+              //alert($(this).val());
+              
+              if(event.date < startDate){
+                $('#startDate').datepicker("setDate", event.date);
+              }
+            });
+
+        $('#example').DataTable();
+        getDefectData();
+        /*$.ajax({
+            url: "/forms/asset_register/list/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {},
+            success: function (response) {
+                console.log(response);
+                var actions = response.data;
+            }
+        });*/
+
+    });
+
+
+
+    function getDefectData(){
+        var subsystem= $('select[name=subsystem] option').filter(':selected').val()
+        var startDate = $('#startDate').val() ;
+        var endDate = $('#endDate').val() ;
+        var starttime = $('#starttime').val() ;
+        var endtime = $('#endtime').val() ;
+        $('#example').DataTable().destroy();
+        $('#example').DataTable({
+                  dom: 'Bfrtip',
+                  buttons: [
+                    { extend: 'excel', className: 'btn-outline-primary' },
+                    { extend: 'pdf', className: 'btn-outline-primary' },
+                    { extend: 'print', className: 'btn-outline-primary' }
+                  ],
+                  "order": [[ 4, "desc" ],[ 5, "desc" ]],
+                  "searching" : false,
+                  'ajax' : {
+                      "url": "/history/",
+                      "type": "POST",
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                      'data' : {
+                          'subsystem':subsystem,
+                          'startDate':startDate,
+                          'endDate':endDate,
+                          'starttime':starttime,
+                          'endtime':endtime,
+                      }
+                  },
+                  "columns" : [
+                    {"data":null,"render":function(item){
+                        return '<a href="/history/'+ item.id +'" >'+ item.email +'</a>';
+                        }
+                    },
+                    {"data" : "name"},
+                    {"data" : "product"},
+                    {"data" : "user_role"},
+                   // {"data" : "date"},
+                   {"data":null,"render":function(item){
+                            if(item.date != null){
+                                return moment(item.date).format('DD-MM-YYYY');
+                            }
+                            return item.date;
+                        }
+                    },
+                    {"data" : "time"},
+                    {"data" : "function_name"},
+                    {"data" : "message"},
+                    
+                ]
+            });
+        }
+
+
+</script>
+
+{% endblock sb_admin_js %}

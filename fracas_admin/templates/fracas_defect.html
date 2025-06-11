@@ -1,0 +1,460 @@
+{% extends "django_sb_admin/base.html" %}
+{% block breadcrumbs %}
+<div class="breadcrumb">
+  <a href="/admin/">Home</a> › List of Defects 
+  </div>
+  <h2>List of Identified Defect</h2>
+{% endblock breadcrumbs %}
+{% block sb_admin_content %}
+<div class="row ">
+   <div class="col-lg-12 mb-5">
+      <button class="btn btn-success btn-icon-split float-right"  data-toggle="modal" data-target="#addReviewModal">            
+      <span class="text">Add Defect</span>
+      <span class="icon text-white-50">
+      <i class="fas fa-plus"></i>
+      </span>
+      </button>
+   </div>
+</div>
+<div class="row mr-0 ml-0">
+   <div class="col-lg-10">
+      <div class="table-responsive">
+         <table class="table table-bordered table-hover table-striped">
+            <thead>
+               <tr>
+                  <th>Defect id</th>
+                  <th>Defect description</th>
+                  <th>Defect open date</th>
+                  <th>Defect closed date</th>
+                  <th>Investigation</th>
+                  <th>Defect status</th>
+                  <th>Defect status remarks</th>
+                  <th>Oem defect reference</th>
+                  <th>Asset type</th>
+                  <th>Delete</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for defect in defects %}
+               <tr>
+                  <!-- <td><b><a href="failures/details/?asset_type={{defect.asset_type}}&start_date={{defect.start_date|date:'Y-m-d'}}&end_date={{defect.end_date|date:'Y-m-d'}}&defect_id={{defect.defect_id}}">{{defect.defect_id}}</a></td> -->
+                  <td><b><a href="failures/details/?asset_type={{defect.asset_type}}&defect_id={{defect.defect_id}}">{{defect.defect_id}}</a></td>
+                  <td>{{defect.defect_description}}</td>
+                  <td>{{defect.defect_open_date}}</td>
+                  <td>{{defect.defect_closed_date}}</td>
+                  <td>{{defect.investigation}}</td>
+                  <td>{{defect.defect_status}}</td>
+                  <td>{{defect.defect_status_remarks}}</td>
+                  <td>{{defect.oem_defect_reference}}</td>
+                  <td>{{defect.asset_type}}</td>
+                  <td><input type="button" class="btn btn-danger span-2" value="Delete" onclick="deleteDefectIdentification({{defect.defect_id}});"></td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+<div class="col-sm-2 card shadow p-0" id="changelist-filter">
+      <div class="card-header" style="padding: 10px 0px;text-align: center;">
+         <h4 class="m-0 font-weight-bold text-primary">Filter</h4>
+      </div>
+      <div class="card-body mt-2">
+         <div id="accordion">
+            <div class="card mb-4">
+               <div class="card-header p-0" id="heading_description">
+                  <h5 class="mb-0">
+                    <button class="btn" data-toggle="collapse" data-target="#collapseDiv_description" aria-expanded="true" aria-controls="collapseOne">
+                        <h6> By defect description </h6>
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseDiv_description" class="collapse in" aria-labelledby="heading_description" data-parent="#accordion">
+                  <div class="card-body p-2">
+                     <div>
+                        <a href="?" title="All" class="btn  btn-info  btn-icon-split" style="margin: 2px;">
+                        <span class="text">All</span>
+                        </a>
+                     </div>
+                     {% for defect in defects %}
+                     {% if defect.defect_description %}
+                     <div>
+                        <a href="?defect_description={{defect.defect_description}}" title="{{defect.defect_description}}" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">{{defect.defect_description}}</span>
+                        </a>
+                     </div>
+                     {% endif %}
+                     {% endfor %}
+                  </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+               <div class="card-header p-0" id="heading_opendate">
+                  <h5 class="mb-0">
+                    <button class="btn" data-toggle="collapse" data-target="#collapseDiv_opendate" aria-expanded="true" aria-controls="collapseTwo">
+                        <h6>  By defect open date </h6>
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseDiv_opendate" class="collapse in" aria-labelledby="heading_opendate" data-parent="#accordion">
+                  <div class="card-body p-2">
+                     <div>
+                        <a href="?" title="Any date" class="btn  btn-info  btn-icon-split" style="margin: 2px;">
+                        <span class="text">Any date</span>
+                        </a>
+                     </div>
+            
+                     <div>
+                        <a href="?defect_open_date__gte={{current_date}}&amp;defect_open_date__lt={{tomorrow_date}}" title="Today" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">Today</span>
+                        </a>
+                     </div>
+            
+                     <div>
+                        <a href="?defect_open_date__gte={{past_7_day_date}}&amp;defect_open_date__lt={{tomorrow_date}}" title="Past 7 days" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">Past 7 days</span>
+                        </a>
+                     </div>
+            
+                     <div>
+                        <a href="?defect_open_date__gte={{first_day_of_month}}&amp;defect_open_date__lt={{first_day_of_next_month}}" title="This month" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">This month</span>
+                        </a>
+                     </div>
+            
+                     <div>
+                        <a href="?defect_open_date__gte={{first_day_of_year}}&amp;defect_open_date__lt={{first_day_of_next_year}}" title="This year" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">This year</span>
+                        </a>
+                     </div>
+                     
+                     <div>
+                        <a href="?defect_open_date__isnull=True" title="No date" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">No date</span>
+                        </a>
+                     </div>
+            
+                     <div>
+                        <a href="?defect_open_date__isnull=False" title="Has date" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">Has date</span>
+                        </a>
+                     </div>
+                  </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+               <div class="card-header p-0" id="heading_closeddate">
+                  <h5 class="mb-0">
+                    <button class="btn" data-toggle="collapse" data-target="#collapseDiv_closeddate" aria-expanded="true" aria-controls="collapseThree">
+                        <h6> By defect closed date </h6>
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseDiv_closeddate" class="collapse in" aria-labelledby="heading_closeddate" data-parent="#accordion">
+                  <div class="card-body p-2">
+                     <div>
+                        <a href="?" title="Any date" class="btn  btn-info  btn-icon-split" style="margin: 2px;">
+                        <span class="text">Any date</span>
+                        </a>
+                     </div>
+            
+                     <div>
+                        <a href="?defect_closed_date__gte={{current_date}}&amp;defect_closed_date__lt={{tomorrow_date}}" title="Today" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">Today</span>
+                        </a>
+                     </div>
+            
+                     <div>
+                        <a href="?defect_closed_date__gte={{past_7_day_date}}&amp;defect_closed_date__lt={{tomorrow_date}}" title="Past 7 days" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">Past 7 days</span>
+                        </a>
+                     </div>
+            
+                     <div>
+                        <a href="?defect_closed_date__gte={{first_day_of_month}}&amp;defect_closed_date__lt={{first_day_of_next_month}}" title="This month" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">This month</span>
+                        </a>
+                     </div>
+            
+                     <div>
+                        <a href="?defect_closed_date__gte={{first_day_of_year}}&amp;defect_closed_date__lt={{first_day_of_next_year}}" title="This year" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">This year</span>
+                        </a>
+                     </div>
+                     <div>
+                        <a href="?defect_closed_date__isnull=True" title="No date" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">No date</span>
+                        </a>
+                     </div>
+            
+                     <div>
+                        <a href="?defect_closed_date__isnull=False" title="Has date" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">Has date</span>
+                        </a>
+                     </div>
+                  </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+               <div class="card-header p-0" id="heading_investigation">
+                  <h5 class="mb-0">
+                    <button class="btn" data-toggle="collapse" data-target="#collapseDiv_investigation" aria-expanded="true" aria-controls="collapseOne">
+                        <h6> By investigation </h6>
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseDiv_investigation" class="collapse in" aria-labelledby="heading_investigation" data-parent="#accordion">
+                  <div class="card-body p-2">
+                     <div>
+                        <a href="?" title="All" class="btn  btn-info  btn-icon-split" style="margin: 2px;">
+                        <span class="text">All</span>
+                        </a>
+                     </div>
+                     {% for defect in defects %}
+                     {% if defect.investigation %}
+                     <div>
+                        <a href="?investigation={{defect.investigation}}" title="{{defect.investigation}}" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">{{defect.investigation}}</span>
+                        </a>
+                     </div>
+                     {% endif %}
+                     {% endfor %}
+                  </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+               <div class="card-header p-0" id="heading_defect_status">
+                  <h5 class="mb-0">
+                    <button class="btn" data-toggle="collapse" data-target="#collapseDiv_defect_status" aria-expanded="true" aria-controls="collapseOne">
+                        <h6> By defect status </h6>
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseDiv_defect_status" class="collapse in" aria-labelledby="heading_defect_status" data-parent="#accordion">
+                  <div class="card-body p-2">
+                     <div>
+                        <a href="?" title="All" class="btn  btn-info  btn-icon-split" style="margin: 2px;">
+                        <span class="text">All</span>
+                        </a>
+                     </div>
+                     {% for defect in distinct_status_defects %}
+                     {% if defect.defect_status %}
+                     <div>
+                        <a href="?defect_status={{defect.defect_status}}" title="{{defect.defect_status}}" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">{{defect.defect_status}}</span>
+                        </a>
+                     </div>
+                     {% endif %}
+                     {% endfor %}
+                  </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+               <div class="card-header p-0" id="heading_defect_statusremarks">
+                  <h5 class="mb-0">
+                    <button class="btn" data-toggle="collapse" data-target="#collapseDiv_defect_statusremarks" aria-expanded="true" aria-controls="collapseOne">
+                        <h6> By defect status remarks </h6>
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseDiv_defect_statusremarks" class="collapse in" aria-labelledby="heading_defect_statusremarks" data-parent="#accordion">
+                  <div class="card-body p-2">
+                     <div>
+                        <a href="?" title="All" class="btn  btn-info  btn-icon-split" style="margin: 2px;">
+                        <span class="text">All</span>
+                        </a>
+                     </div>
+                     {% for defect in defects %}
+                     {% if defect.defect_status_remarks %}
+                     <div>
+                        <a href="?defect_status_remarks={{defect.defect_status_remarks}}" title="{{defect.defect_status_remarks}}" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">{{defect.defect_status_remarks}}</span>
+                        </a>
+                     </div>
+                     {% endif %}
+                     {% endfor %}
+                  </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+               <div class="card-header p-0" id="heading_defect_references">
+                  <h5 class="mb-0">
+                    <button class="btn" data-toggle="collapse" data-target="#collapseDiv_defect_references" aria-expanded="true" aria-controls="collapseOne">
+                        <h6> By oem defect reference </h6>
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseDiv_defect_references" class="collapse in" aria-labelledby="heading_defect_references" data-parent="#accordion">
+                  <div class="card-body p-2">
+                     <div>
+                        <a href="?" title="All" class="btn  btn-info  btn-icon-split" style="margin: 2px;">
+                        <span class="text">All</span>
+                        </a>
+                     </div>
+                     {% for defect in defects %}
+                     {% if defect.defect_status_remarks %}
+                     <div>
+                        <a href="?defect_status_remarks={{defect.defect_status_remarks}}" title="{{defect.defect_status_remarks}}" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">{{defect.defect_status_remarks}}</span>
+                        </a>
+                     </div>
+                     {% endif %}
+                     {% endfor %}
+                  </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+               <div class="card-header p-0" id="heading_defect_assettype">
+                  <h5 class="mb-0">
+                    <button class="btn" data-toggle="collapse" data-target="#collapseDiv_defect_assettype" aria-expanded="true" aria-controls="collapseOne">
+                        <h6> By asset type </h6>
+                    </button>
+                  </h5>
+                </div>
+                <div id="collapseDiv_defect_assettype" class="collapse in" aria-labelledby="heading_defect_assettype" data-parent="#accordion">
+                  <div class="card-body p-2">
+                     <div>
+                        <a href="?" title="All" class="btn  btn-info  btn-icon-split" style="margin: 2px;">
+                        <span class="text">All</span>
+                        </a>
+                     </div>
+                     {% for defect in distinct_asset_type_defects %}
+                     {% if defect.asset_type %}
+                     <div>
+                        <a href="?asset_type={{defect.asset_type}}" title="{{defect.asset_type}}" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+                        <span class="text">{{defect.asset_type}}</span>
+                        </a>
+                     </div>
+                     {% endif %}
+                     {% endfor %}
+                  </div>
+                </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="modal fade" id="addReviewModal" tabindex="-1" role="dialog" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Show Failures</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form autocomplete="off">
+               <div class="form-group">
+                  <label for="exampleFormControlSelect1">Select Asset Type</label>
+                  <select class="form-control" id="AssetType">
+                     {% for asset_data in asset_datas %}
+                     <option>{{asset_data.asset_type}}</option>
+                     {% endfor %}
+                  </select>
+               </div>
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <label for="startDate">From Date</label>
+                        <input type="text" class="form-control date-time" id="startDate" placeholder="DD/MM/YYYY" autocomplete="off">
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <label for="toDate">To Date</label>
+                        <input type="text" class="form-control date-time" id="toDate" placeholder="DD/MM/YYYY" autocomplete="off">
+                     </div>
+                  </div>
+               </div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="getFailureData();">Save Details</button>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
+{% block sb_admin_js %}
+<script>
+   function getFailureData(){
+    var asset_type = $("#AssetType").val();
+    var startDate = '' ;
+    var endDate = '';
+    if($('#startDate').datepicker("getDate") != 'Invalid Date') 
+     startDate = $('#startDate').datepicker("getDate");
+    if($('#toDate').datepicker("getDate") != 'Invalid Date') 
+     endDate = $('#toDate').datepicker("getDate");
+     console.log(asset_type,startDate,endDate)
+    $.ajax({
+     url: "/fracas_admin/defect/add/",
+     method: 'POST',
+     dataType: 'json',
+     headers: {'X-CSRFToken': '{{ csrf_token }}'},
+     data : {
+         'asset_type' : asset_type,
+         'start_date' : startDate,
+         'end_date'   : endDate
+     },
+     success: function (response) {
+         var formated_asset_type = response.asset_type.split('_').join(' ');
+         console.log(formated_asset_type,'vvvvvvvvv');
+         var url = '/fracas_admin/defect/failures/details/?asset_type=' +formated_asset_type+'&defect_id='+response.defect_id;
+         var decodedUrl = decodeURIComponent(url);
+         window.location = decodedUrl;
+     }
+
+     });
+   }
+   
+
+   function deleteDefectIdentification(identificationId){
+      console.log(identificationId);
+      var delete_defect = "true"
+      var x = confirm("Are you sure you want to delete?");
+      if (x){
+        $.ajax({
+          url: "/fracas_admin/defect/update/",
+          method: 'POST',
+          dataType: 'json',
+          headers: {'X-CSRFToken': '{{ csrf_token }}'},
+          data : {
+             'defect_id' : identificationId,
+             'delete_defect':delete_defect
+          },
+          success: function (response) {
+            console.log(response) 
+            window.location.href = "/fracas_admin/defect/";
+          }
+        });
+      }
+   }
+
+   function gertUrlparam( name, url ) {
+      if (!url) url = location.href;
+      name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+      var regexS = "[\\?&]"+name+"=([^&#]*)";
+      var regex = new RegExp( regexS );
+      var results = regex.exec( url );
+      return results == null ? null : results[1];
+   }
+
+   $(document).ready(function() {
+   var addDef = gertUrlparam('add','');
+   if(addDef == 1){
+      $("#addReviewModal").modal('toggle');
+   }
+
+   $('#startDate').datepicker({
+           autoclose: true,
+           format: 'dd/mm/yyyy',
+   });
+   $('#toDate').datepicker({
+           autoclose: true,
+           format: 'dd/mm/yyyy',
+   });
+   
+   });
+</script>
+{% endblock sb_admin_js %}

@@ -1,0 +1,33 @@
+﻿id,AssetType,ModeID,ModeDescription
+1,,ACB01,ACB soft disturbance
+2,,ATS01,ATS VCP embedded software failure
+3,,ATS010,ATS close track failure
+4,,ATS02,ATS train label disappeared
+5,,ATS03,ATS dwell time not displayed
+6,,ATS04,ATS software crash
+7,,ATS05,ATS SRS failure
+8,,ATS06,ATS shutter door interface failure
+9,,ATS07,ATS lose control on trains
+10,,ATS08,ATS playback failure
+11,,ATS09,ATS PED Interface failure
+12,,SW01,Switch signalling interface failure
+13,,SW02,Switch blade excessive tolerance
+14,,VOBC01,VOBC Passive
+15,,VOBC02,VOBC-ATS comms failure
+16,,VOBC03,VOBC stopping point inaccurate
+17,,VOBC04,Train unable to set in sleep mode
+18,,VOBC05,Overspeed
+19,,VOBC06,Correct Side Door Enable failure
+20,,VOBC07,Train did not pick up assignment
+21,,VOBC08,Wayside obstacle detection spurious activation
+22,,VOBC09,Obstacle detected
+23,,VOBC10,EB could not be reset
+24,,VOBC11,VOBC-MSD Interface failure
+25,,VOBC12,SPAD
+26,,VOBC13,VOBC software failure
+27,,VOBC14,UTO mode failure
+28,,ZC01,Zone Controller Comms failure
+29,,ZC02,Multiple Zone Controller Comms failure
+30,,ZC04,Zone Controller comms card failure
+31,,ZC05,Zone controller software failure-self normalised
+32,,ZC06,Zone controller ground fault

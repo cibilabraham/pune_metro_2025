@@ -1,0 +1,10 @@
+{% extends "django_sb_admin/base.html" %}
+{% load i18n %}
+
+{% block sb_admin_content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="myfile">
+    <button type="submit">Upload</button>
+  </form>
+{% endblock %}

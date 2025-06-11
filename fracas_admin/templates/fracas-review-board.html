@@ -1,0 +1,192 @@
+{% extends "django_sb_admin/base.html" %}
+{% block breadcrumbs %}
+<div class="breadcrumb">
+  <a href="/admin/">Home</a> › Review Board 
+  </div>
+  <h2 style="margin-left: 1rem;">Review Board </h2>
+{% endblock %}
+{% block sb_admin_content %}
+<div class="row ">
+   <div class="col-lg-12 mb-5">
+      <button class="btn btn-success btn-icon-split float-right"  data-toggle="modal" data-target="#addReviewModal">            
+      <span class="text">Add Review Board</span>
+      <span class="icon text-white-50">
+      <i class="fas fa-plus"></i>
+      </span>
+      </button>
+   </div>
+</div>
+<div class="row">
+   <div class="col-lg-10">
+      <div class="table-responsive">
+         <table class="table table-bordered table-hover table-striped">
+            <thead>
+               <tr>
+                  <th>Meeting Date</th>
+                  <th>Asset Type</th>
+                  <th>Meeting ID</th>
+                  <th>Status</th>
+                  <th>Delete</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for review_board in review_boards %}
+               <tr>
+                  <td><b><a href="/fracas_admin/review_board/details/?asset_type={{review_board.asset_type}}&start_date={{review_board.from_date}}&end_date={{review_board.to_date}}&r_id={{review_board.id}}">{{review_board.meeting_date}}</a></td>
+                  <td>{{review_board.asset_type}}</td>
+                  <td>{{review_board.meeting_id}}</td>
+                  <td>{{review_board.meeting_status}}</td>
+                  <td><input type="button" class="btn btn-danger span-2" value="Delete" onclick="deleteMeetingData({{review_board.id}});"></td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div class="col-lg-2">
+      <div class="card-header" style="padding: 10px 0px;text-align: center;">
+         <h4 class="m-0 font-weight-bold text-primary">Filter</h4>
+      </div>
+      <div class="card-body p-0 mt-2">
+         <h5 class="mb-3"> By asset type </h5>
+         <div>
+            <a href="?" title="All" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+            <span class="text">All</span>
+            </a>
+         </div>
+         {% for review_board in asset_distinct_review_boards %}
+         <div>
+            <a href="?asset_type={{review_board.asset_type}}" title="{{review_board.asset_type}}" class="btn  btn-light  btn-icon-split" style="margin: 2px;">
+            <span class="text">{{review_board.asset_type}}</span>
+            </a>
+         </div>
+         {% endfor %}
+         
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="addReviewModal" tabindex="-1" role="dialog" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add FRACAS Review</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form>
+               <div class="form-group">
+                  <label for="exampleFormControlSelect1">Select Asset Type</label>
+                  <select class="form-control" id="AssetType">
+                     {% for asset_data in asset_datas %}
+                     <option>{{asset_data.asset_type}}</option>
+                     {% endfor %}
+                  </select>
+               </div>
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <label for="startDate">From Date</label>
+                        <input type="text" class="form-control date-time" id="startDate" placeholder="DD/MM/YYYY" autocomplete="off">
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <label for="toDate">To Date</label>
+                        <input type="text" class="form-control date-time" id="toDate" placeholder="DD/MM/YYYY" autocomplete="off">
+                     </div>
+                  </div>
+               </div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="SaveReviewBoard();">Save Details</button>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
+{% block sb_admin_js %}
+<script>
+   function SaveReviewBoard(){
+         var asset_type = $("#AssetType").val();
+         var startDate = '' ;
+         var endDate = '';
+         if($('#startDate').datepicker("getDate") != 'Invalid Date') 
+           startDate = $('#startDate').datepicker("getDate");
+         if($('#toDate').datepicker("getDate") != 'Invalid Date') 
+           endDate = $('#toDate').datepicker("getDate");
+           console.log(asset_type,startDate,endDate)
+          $.ajax({
+           url: "/fracas_admin/review_board/",
+           method: 'POST',
+           dataType: 'json',
+           headers: {'X-CSRFToken': '{{ csrf_token }}'},
+           data : {
+             'asset_type' : asset_type,
+             'start_date' : startDate,
+             'end_date'   : endDate
+           },
+           success: function (response) {
+                 var formated_asset_type = response.asset_type.split('_').join(' ');
+                 console.log(formated_asset_type,'vvvvvvvvv');
+                 var url = '/fracas_admin/review_board/details/?asset_type=' +formated_asset_type+'&start_date='+response.start_date+'&end_date='+response.end_date+'&r_id='+response.review_board_id;
+                 var decodedUrl = decodeURIComponent(url);
+                 window.location = decodedUrl;
+               },
+           });
+     }
+   
+   function deleteMeetingData(id){
+      var delete_action = "true"
+      var x = confirm("Are you sure you want to delete?");
+     if (x){
+      var delete_action = "true";
+        $.ajax({
+
+           url: "/fracas_admin/review_board/update/",
+           method: 'POST',
+           dataType: 'json',
+           headers: {'X-CSRFToken': '{{ csrf_token }}'},
+           data : {
+             'review_board_id' : id,
+             'delete_action':delete_action
+           },
+           success: function (response) {
+             window.location.href = "/fracas_admin/review_board/";
+           }
+      });
+    }else{
+      return false;
+    }
+   }
+
+   function gertUrlparam( name, url ) {
+      if (!url) url = location.href;
+      name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+      var regexS = "[\\?&]"+name+"=([^&#]*)";
+      var regex = new RegExp( regexS );
+      var results = regex.exec( url );
+      return results == null ? null : results[1];
+   }
+
+   $(document).ready(function() {
+      var addDef = gertUrlparam('add','');
+      if(addDef == 1){
+         $("#addReviewModal").modal('toggle');
+      }
+      $('#startDate').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+      });
+      $('#toDate').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+      });
+   
+   });
+</script>
+{% endblock sb_admin_js %}

@@ -1,0 +1,383 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <style>
+        th:first-child,td:first-child,th:last-child,td:last-child,th:nth-child(2),td:nth-child(2) {  
+        background-color:white;    
+        }
+    </style>
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header" style="margin-left:-15px">
+                      Asset register
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <!-- /.row -->
+             {% if request.session.user_Role != 4 %}
+            <div class="row ">
+            <div class="col-lg-12 mb-5">
+
+                <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
+
+                {% comment %} {% if request.session.user_Role == 1 %}        {% endcomment %}
+                <a href="/forms/asset_register/importasset/">  
+                    <button class="btn btn-primary btn-icon-split float-right m-2" >            
+                    <span class="text">Import asset </span>
+                    <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                    </span>
+                    </button>
+                </a>
+                {% comment %} {% endif %} {% endcomment %}
+                <a href="/forms/asset_register/addasset/">  
+                    <button class="btn btn-success btn-icon-split float-right m-2" >            
+                    <span class="text">Add asset</span>
+                    <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                    </span>
+                    </button>
+                </a>
+            </div>
+            </div>
+             {% endif %}    
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="location_id">By location id</label>
+                        <select class="form-control" id="location_id" name="location_id">
+                        <option value="all">--All--</option>
+                        {% for location_id in location_id %}
+                          {% if location_id.location_id != '' %}
+                            <option value="{{location_id.location_id}}">{{location_id.location_id}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="asset_serial_number">By asset serial number</label>
+                        <select class="form-control" class="form-control" id="asset_serial_number" name="asset_serial_number">
+                        <option value="all">--All--</option>
+                        {% for asset_serial_number in asset_serial_number %}
+                          {% if asset_serial_number.asset_serial_number != '' %}
+                            <option value="{{asset_serial_number.asset_serial_number}}">{{asset_serial_number.asset_serial_number}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div> 
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="asset_type">By asset type</label>
+                        {% if request.session.user_Role == 1 %}
+                            <select class="form-control" id="asset_type" name="asset_type" required="required">
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% else %}  
+                            <select class="form-control" id="asset_type" name="asset_type" required="required">
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %} 
+                    </div>
+                </div>
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="asset_description">By asset description</label>
+                        <select class="form-control" id="asset_description" name="asset_description">
+                        <option value="all">--All--</option>
+                        {% for asset_description in asset_description %}
+                          {% if asset_description.asset_description != '' %}
+                            <option value="{{asset_description.asset_description}}">{{asset_description.asset_description}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+           
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="software_version">By software version</label>
+                        <select class="form-control" id="software_version" name="software_version">
+                        <option value="all">--All--</option>
+                        {% for software_version in software_version %}
+                          {% if software_version.software_version != '' %}
+                            <option value="{{software_version.software_version}}">{{software_version.software_version}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="software_description">By software description</label>
+                        <select class="form-control" class="form-control" id="software_description" name="software_description">
+                        <option value="all">--All--</option>
+                        {% for software_description in software_description %}
+                          {% if software_description.software_description != '' %}
+                            <option value="{{software_description.software_description}}">{{software_description.software_description}}</option>
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div> 
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="asset_status">By asset status</label>
+                        <select class="form-control" id="asset_status" name="asset_status" >
+                             <option value="all">--All--</option>
+                        
+                            <option value="Online">Online</option>
+                        
+                            <option value="Under Repair">Under Repair</option>
+                        
+                            <option value="Spare">Spare</option>
+                        
+                        </select>
+                         <div class="invalid-feedback">
+                         Please enter Failure type.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 pt-4">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter</button>
+                </div>
+               
+            </div>
+            
+
+            
+          <div class="row">
+            <div class="col-md-12">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="deleteAll" /></th>
+                            <th>Asset config id</th>
+                            <th>Location id</th>
+                            <th>Location description</th>
+                            <th>Asset serial number </th>
+                            <th>Asset type</th>
+                            <th>Asset description</th>
+                            <th>Software version</th>
+                            <th>Software description</th>
+                            <th>Asset status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+        $("#deleteAll").click(function () {
+            $(".deleteAll").attr('checked', this.checked);
+        });
+
+        $('#example').DataTable();
+        getDefectData();
+        /*$.ajax({
+            url: "/forms/asset_register/list/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {},
+            success: function (response) {
+                console.log(response);
+                var actions = response.data;
+            }
+        });*/
+
+    });
+
+    function deleteAsset(id){
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/asset_register/delete/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Asset has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+
+        /*if (confirm('Are you sure')) {
+           
+        } else {
+            return false;
+        }*/
+    }
+
+    function getids(){
+        ids1=[];
+        $("input:checkbox[name=deleteAll]:checked").each(function(){
+            ids1.push($(this).val());
+        });
+    
+        // return ids1;
+        return ids1.toString();
+    }
+
+    function DELETEALL(){
+        ids= getids();
+        if (ids == ""){
+            swal("Please select atleast one record");
+            return false;
+        }
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/asset_register/deleteAll/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'ids':ids,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Asset has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+    }
+
+
+ 
+
+function getDefectData(){
+    var location_id= $('select[name=location_id] option').filter(':selected').val()
+    var asset_serial_number= $('select[name=asset_serial_number] option').filter(':selected').val()
+    var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+    var asset_description= $('select[name=asset_description] option').filter(':selected').val()
+    var software_version= $('select[name=software_version] option').filter(':selected').val()
+    var software_description= $('select[name=software_description] option').filter(':selected').val()
+    var asset_status= $('select[name=asset_status] option').filter(':selected').val()
+        $('#example').DataTable().destroy();
+        $('#example').DataTable({
+                  dom: 'Bfrtip',
+                  buttons: [
+                    { extend: 'excel', className: 'btn-outline-primary' },
+                    { extend: 'pdf', className: 'btn-outline-primary' },
+                    { extend: 'print', className: 'btn-outline-primary' }
+                  ],
+                  scrollY:        "400px",
+                    scrollX:        true,
+                    scrollCollapse: true,
+                    paging:         true,
+                    fixedColumns:   {
+                        left: 2,
+                        right: 1
+                    },
+                  "order": [[ 1, "asc" ]],
+                  "searching" : true,
+                  'ajax' : {
+                      "url": "/forms/asset_register/",
+                      "type": "POST",
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                      'data' : {
+                        'location_id':location_id,
+                        'asset_serial_number':asset_serial_number,
+                        'asset_type':asset_type,
+                        'asset_description' : asset_description,
+                        'software_version': software_version,
+                        'software_description' : software_description,
+                        'asset_status' : asset_status
+                      }
+                  },
+                  "columns" : [
+                    {"data":null,"render":function(item){
+                        if(item.user_Role != 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                            else return '';
+                        }
+                    },
+                    {"data":null,"render":function(item){
+                            if(item.user_Role != 4) return '<a href="/forms/asset_register/addasset/'+ item.id +'" >'+ item.asset_config_id +'</a>';
+                            else return item.asset_config_id;
+                        }
+                    },
+                      {"data" : "location_id"},
+                      {"data" : "location_description"},
+                      {"data" : "asset_serial_number"},
+                      {"data" : "asset_type"},
+                      {"data" : "asset_description"},
+                      {"data" : "software_version"},
+                      {"data" : "software_description"},
+                      {"data" : "asset_status"},
+                      {"data":null,"render":function(item){
+                            if(item.user_Role != 4) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleteAsset('+ item.id +')">';
+                            else return '';
+                        }
+                    },
+                  ]
+        });
+    }
+
+</script>
+
+{% endblock sb_admin_js %}

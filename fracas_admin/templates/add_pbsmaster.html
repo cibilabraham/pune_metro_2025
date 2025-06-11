@@ -1,0 +1,436 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                    {% if data.id != '' %}
+                        Update Record
+                        {% else %}
+                        Add Record
+                        {% endif %}
+                    </h3>
+                  
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-lg-12 mb-3">
+    
+    
+                    <a href="/PBSMaster/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+            </div>
+
+
+
+
+            <!-- /.row -->
+            <form id="PBSForm"> 
+            {% if request.session.user_Role == 2 or request.session.user_Role == 3 %}
+
+                <input type="hidden" id="id" name="id" value="{{data.id}}">
+                <input type="hidden" id="project" name="project" value="{{data.project}}">
+                <input type="hidden" id="system" name="system" value="{{data.system}}">
+                <input type="hidden" id="subsystem" name="subsystem" value="{{data.subsystem}}">
+                <input type="hidden" id="product_id" name="product_id" value="{{data.product_id}}">
+                <input type="hidden" id="product_description" name="product_description" value="{{data.product_description}}">
+                <input type="hidden" id="asset_type" name="asset_type" value="{{data.asset_type}}">
+                <input type="hidden" id="asset_description" name="asset_description" value="{{data.asset_description}}">
+                <input type="hidden" id="MART" name="MART" value="{{data.MART}}">
+                <input type="hidden" id="asset_quantity" name="asset_quantity" value="{{data.asset_quantity}}">
+                <input type="hidden" id="availability_target" name="availability_target" value="{{data.availability_target}}">
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="system">System:</label><br>
+                            <label >{{data.system}}</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="subsystem">Subsystem:</label><br>
+                            <label >{{data.subsystem}}</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="product_id">Product id:</label><br>
+                            <label >{{data.product_id}}</label>
+                        </div>
+                    </div>
+    
+               
+                </div>
+    
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="product_description">Product description:</label><br>
+                            <label >{{data.product_description}}</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="asset_type">Asset type:</label><br>
+                            <label >{{data.asset_type}}</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="asset_description">Asset description:</label><br>
+                            <label >{{data.asset_description}}</label>
+                        </div>
+                    </div>
+    
+               
+                </div>
+    
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="MTBF">*MTBF ({{MTBFMTBSAF}}):</label>
+                            <input type="number" step="0.001" class="form-control" id="MTBF" value="{{data.MTBF}}" name="MTBF" required="required">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="MTBSAF">MTBSAF ({{MTBFMTBSAF}}):</label>
+                            <input type="number" step="0.001" class="form-control" id="MTBSAF" value="{{data.MTBSAF}}" name="MTBSAF" >
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="MTTR">MTTR ({{MTTR}}):</label>
+                            <input type="number" step="0.001" class="form-control" id="MTTR" name="MTTR" value="{{data.MTTR}}" >
+                        </div>
+                    </div>
+    
+               
+                </div>
+    
+                <div class="row mb-4">
+    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="MART">MART:</label><br>
+                            <label >{{data.MART}}</label>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="asset_quantity">Asset quantity:</label><br>
+                            <label >{{data.asset_quantity}}</label>
+                        </div>
+                    </div>
+                    
+                </div>
+            
+    
+                <div class="row ">
+                    <div class="alert alert-warning col-12 d-none" id="message">
+                                
+                    </div>
+                </div>
+            {% else %}
+        
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="project">*Project:</label>
+                        <select class="form-control" id="project" name="project" required="required">
+                        <option value="all">--  Select Project  --</option>
+                        {% for project in project %}
+                        {% if project.product_id != '' %}
+                            {% if project.product_id == data.project %}
+                                <option value="{{project.product_id}}" selected>{{project.product_name}}</option>
+                            {% else %}
+                                <option value="{{project.product_id}}">{{project.product_name}}</option>
+                            {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="system">*System:</label>
+                        <input type="hidden" id="id" name="id" value="{{data.id}}">
+                        <input type="text" class="form-control" id="system" name="system" value="{{data.system}}" required="required" list="systemlist">
+                        <datalist id="systemlist">
+                            {% for system in system %}
+                            {% if system.system != '' %}
+                                    <option value="{{system.system}}"></option>
+                            {% endif %}
+                            {% endfor %}
+                        </datalist>
+                       
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="subsystem">*Subsystem:</label>
+                        <input type="text" class="form-control" id="subsystem" name="subsystem" value="{{data.subsystem}}" required="required" list="subsystemlist">
+                        <datalist id="subsystemlist">
+                            {% for subsystem in subsystem %}
+                        {% if subsystem.subsystem != '' %}
+                                <option value="{{subsystem.subsystem}}"></option>
+                        {% endif %}
+                        {% endfor %}
+                        </datalist>
+                    </div>
+                </div>
+                
+               
+
+           
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="product_id">*Product id:</label>
+                        <input type="text" class="form-control" id="product_id" name="product_id" value="{{data.product_id}}" required="required">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="product_description">*Product description:</label>
+                        <input type="text" class="form-control" id="product_description" name="product_description" value="{{data.product_description}}" required="required">
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_type">*Asset type:</label>
+                        <input type="text" class="form-control" id="asset_type" name="asset_type" value="{{data.asset_type}}" required="required">
+                    </div>
+                </div>
+                
+               
+
+           
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_description">*Asset description:</label>
+                        <input type="text" class="form-control" id="asset_description" value="{{data.asset_description}}" name="asset_description" required="required">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="MTBF">*MTBF ({{MTBFMTBSAF}}):</label>
+                        <input type="number" step="0.001" class="form-control" id="MTBF" value="{{data.MTBF}}" name="MTBF" required="required">
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="MTBSAF">MTBSAF ({{MTBFMTBSAF}}):</label>
+                        <input type="number" step="0.001" class="form-control" id="MTBSAF" value="{{data.MTBSAF}}" name="MTBSAF">
+                    </div>
+                </div>
+                
+
+           
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="MTTR">MTTR ({{MTTR}}):</label>
+                        <input type="number" step="0.001" class="form-control" id="MTTR" name="MTTR" value="{{data.MTTR}}" >
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="MART">MART:</label>
+                        <input type="number" step="0.001" class="form-control" id="MART" name="MART" value="{{data.MART}}" >
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_quantity">*Asset quantity:</label>
+                        <input type="number" class="form-control" id="asset_quantity" name="asset_quantity" value="{{data.asset_quantity}}" required="required">
+                    </div>
+                </div>
+                
+               
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="availability_target">Availability target:</label>
+                        <input type="number" step="0.001" class="form-control" id="availability_target" name="availability_target" value="{{data.availability_target}}" >
+                    </div>
+                </div>
+            </div>
+        
+
+            <div class="row ">
+                <div class="alert alert-warning col-12 d-none" id="message">
+                            
+                </div>
+            </div>
+            {% endif %}
+            <div class="row mb-4" align="right">
+                <div class="col-12">  
+                    <input type="hidden" id="buttonClick">   
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(1);">Save</button>
+                    {% if request.session.user_Role == 1 %}  
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(2);">Save and add another</button>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(3);">Save and and continue editing</button>
+                </div>
+            </div>
+        </form>
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+
+<script>
+    $(document).ready(function() {
+    });
+
+    function SetButton(id){
+        $('#buttonClick').val(id);
+        return true;
+    }
+
+    $( "#PBSForm" ).submit(function(e) {
+        e.preventDefault();
+        var buttonClick= $('#buttonClick').val()
+        var system= $('#system').val()
+        var subsystem= $('#subsystem').val()
+        {% if request.session.user_Role == 2 or request.session.user_Role == 3 %}
+            var project= $('#project').val()
+        {% else %}
+            var project= $('select[name=project] option').filter(':selected').val()
+        {% endif %}
+        
+        //var system= $('#system').val()
+        //var subsystem= $('#subsystem').val()
+        var product_id= $('#product_id').val()
+        var product_description= $('#product_description').val()
+        var asset_type= $('#asset_type').val()
+        var asset_description= $('#asset_description').val()
+        var MTBF= $('#MTBF').val()
+        var MTBSAF= $('#MTBSAF').val()
+        var MTTR= $('#MTTR').val()
+        var MART= $('#MART').val()
+        var asset_quantity= $('#asset_quantity').val()
+        var availability_target= $('#availability_target').val()
+        var id= $('#id').val()
+
+        product_description = product_description.replace(/['"`]/g, '');
+        asset_description = asset_description.replace(/['"`]/g, '');
+
+        if(MTBF == 0){
+            $('#MTBF').focus()
+            swal('Please enter a value greather than zero')
+            return false
+        }
+        
+        $.ajax({
+            url: "/PBSMaster/add/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'system':system,
+                'subsystem':subsystem,
+                'product_id':product_id,
+                'product_description' : product_description,
+                'asset_type': asset_type,
+                'asset_description' : asset_description,
+                'MTBF' : MTBF,
+                'MTBSAF' : MTBSAF,
+                'MTTR':MTTR,
+                'MART': MART,
+                'asset_quantity' : asset_quantity,
+                'id':id,
+                'availability_target':availability_target,
+                'project':project,
+            },
+
+            success: function (response) {
+                if(response.status == '0') {
+                    swal(response.message)
+                    //$('#message').removeClass('d-none'); 
+                    //$('#message').html(response.message);
+                }
+                else{
+                    if(id ==""){
+                        if(buttonClick == 1){
+                            swal('Successfully add new PBSMaster')
+                            window.location.href = "/PBSMaster/";
+                        } 
+                        else if(buttonClick == 2){
+                            swal('Successfully add new PBSMaster')
+                            window.location.href  = "/PBSMaster/add/";
+                        } 
+                        else if(buttonClick == 3){
+                            swal('Successfully add new PBSMaster')
+                            window.location.href = "/PBSMaster/add/"+response.id;
+                        } 
+                    }else{
+                        if(buttonClick == 1){
+                            swal('Successfully Update PBSMaster')
+                            window.location.href = "/PBSMaster/";
+                        } 
+                        else if(buttonClick == 2){
+                            swal('Successfully Update PBSMaster')
+                            window.location.href  = "/PBSMaster/add/";
+                        } 
+                        else if(buttonClick == 3){
+                            swal('Successfully Update PBSMaster')
+                            window.location.href = "/PBSMaster/add/"+response.id;
+                        } 
+                    }
+                    
+                }
+            }
+        });
+        
+    });
+ 
+</script>
+
+{% endblock sb_admin_js %}

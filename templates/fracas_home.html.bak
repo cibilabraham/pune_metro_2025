@@ -1,0 +1,43 @@
+{% extends "django_sb_admin/base.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}">{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block sb_admin_content %}
+<div id="content-main" style="width: 200%">
+
+{% if app_list %}
+    {% for app in app_list %}
+        {% if app.name == "Fracas" %}
+        <div class="app-{{ app.app_label }} module">
+        <table style="float:left; width:50%; overflow:hidden;">
+        <caption>
+            <h2>Asset Optima Form List</h2>
+        </caption>
+        {% for model in app.models %}
+            <tr class="model-{{ model.object_name|lower }}">
+            {% if model.admin_url %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+            {% else %}
+                <th scope="row">{{ model.name }}</th>
+            {% endif %}
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            </tr>
+        {% endfor %}
+        </table>
+        <img src="{% static "fracas_flowchart.png" %}" alt="Validation" style="float:right; width:45%; overflow:hidden;">
+        </div>
+    {% endif %}
+    {% endfor %}
+{% else %}
+    <p>{% trans "You don't have permission to view or edit anything." %}</p>
+{% endif %}
+</div>
+{% endblock %}

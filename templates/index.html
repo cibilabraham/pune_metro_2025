@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>FRACAS TOOL</title>
+  {% load static %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+    <h1>Asset Optima- Project FRACAS</h1>
+    <br/>
+    <body style="transform: scale(0.5);">
+        <div django-app="TaskManager"> 
+            <div class="container">
+                <form action="" method="post" style="display:inline-block; width:20%; text-align: center;">
+                    {% csrf_token %} <!-- csrf token for basic security -->
+                    <button class="failureDataCollection" name="failureDataCollection" type="submit">
+                        <img src="{% static "blue_cylinder.png" %}" alt="Cylinder" width="200px">
+                    </button>
+                </form>
+                <div style="display:inline-block; width:15%; text-align: center;">
+                    <img src="{% static "right_arrow.png" %}" alt="Right arrow" width="100px" style="display:inline-block;">
+                </div>
+                <form action="" method="post" style="display:inline-block; width:20%; text-align: center;">
+                    {% csrf_token %} <!-- csrf token for basic security -->
+                        <button class="failureDataCollection" name="failureDataCollection" type="submit">
+                            <img src="{% static "failure_data_validation.png" %}" alt="Validation" width="200px">
+                        </button>
+                </form>
+                <div style="display:inline-block; width:15%; text-align: center;">
+                    <img src="{% static "right_arrow.png" %}" alt="Right arrow" width="100px" style="display:inline-block;">
+                </div>
+                <form action="" method="post" style="display:inline-block; width:20%; text-align: center;">
+                    {% csrf_token %} <!-- csrf token for basic security -->
+                        <button class="failureDataCollection" name="failureDataCollection" type="submit">
+                            <img src="{% static "failure_mode_identification.png" %}" alt="Validation" width="200px">
+                        </button>
+                </form>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <div class="container" style=" width: 20%; position:absolute; left: 1040px">       
+                <div style="display:inline-block; text-align: center;">
+                    <img src="{% static "down_arrow.png" %}" alt="Down arrow" width="35px" style="display:inline-block; text-align: center;">
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="container" style=" width: 50%; position:absolute; left: 650px;">
+                <div style="display:inline-block; text-align: center; position:absolute; left: -30px; top: -90px;">
+                    <img src="{% static "L_arrow_left.png" %}" alt="L arrow" width="300px" style="display:inline-block; text-align: center;">
+                </div>
+                <form action="" method="post" style="display:inline-block; width:20%; text-align: center;  position:absolute; left: 315px;">
+                    {% csrf_token %} <!-- csrf token for basic security -->       
+                    <button class="failureDataCollection" name="failureDataCollection" type="submit">
+                        <img src="{% static "failure_attribute.png" %}" alt="Validation" width="200px">
+                    </button>
+                </form>
+                <div style="display:inline-block; text-align: center; position:absolute; left: 550px; top: 100px;">
+                    <img src="{% static "L_right_arrow.png" %}" alt="L arrow right" width="150px" style="display:inline-block; text-align: center;">
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="container" style=" width: 20%; position:absolute; left: 1040px">
+                <div style="display:inline-block; text-align: center;">
+                    <img src="{% static "down_arrow.png" %}" alt="Down arrow" width="35px" style="display:inline-block; text-align: center;">
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="container" style=" width: 20%; position:absolute; left: 960px"> 
+                <form action="" method="post" style="display:inline-block; width:20%; text-align: center;">
+                {% csrf_token %} <!-- csrf token for basic security -->      
+                    <button class="failureDataCollection" name="failureDataCollection" type="submit">
+                        <img src="{% static "fracas_defect_identification.png" %}" alt="Validation" width="200px">
+                    </button>
+                </form>
+                <form action="" method="post" style="display:inline-block; width:20%; text-align: center; position:absolute; left: 250px; top: 50px;">
+                {% csrf_token %} <!-- csrf token for basic security -->      
+                    <button class="failureDataCollection" name="failureDataCollection" type="submit">
+                        <img src="{% static "software_update.png" %}" alt="OEM Software update" width="180px">
+                    </button>
+                </form>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="container" style=" width: 20%; position:absolute; left: 1040px">
+                <div style="display:inline-block; text-align: center;">
+                    <img src="{% static "down_arrow.png" %}" alt="Down arrow" width="35px" style="display:inline-block; text-align: center;">
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="container" style=" width: 20%; position:absolute; left: 960px"> 
+                <form action="" method="post" style="display:inline-block; width:20%; text-align: center;">
+                {% csrf_token %} <!-- csrf token for basic security -->      
+                    <button class="failureDataCollection" name="failureDataCollection" type="submit">
+                        <img src="{% static "root_cause_analysis.png" %}" alt="Validation" width="200px">
+                    </button>
+                </form>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="container" style=" width: 20%; position:absolute; left: 1040px">
+                <div style="display:inline-block; text-align: center;">
+                    <img src="{% static "down_arrow.png" %}" alt="Down arrow" width="35px" style="display:inline-block; text-align: center;">
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="container" style=" width: 20%; position:absolute; left: 960px"> 
+                <form action="" method="post" style="display:inline-block; width:20%; text-align: center;">
+                {% csrf_token %} <!-- csrf token for basic security -->      
+                    <button class="failureDataCollection" name="failureDataCollection" type="submit">
+                        <img src="{% static "fracas_review.png" %}" alt="Validation" width="200px">
+                    </button>
+                </form>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </body>
+</html>

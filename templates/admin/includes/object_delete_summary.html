@@ -1,0 +1,14 @@
+{% load i18n %}
+<div class="card shadow">
+    <div class="card-header py-3">
+        <h4 class="m-0">{% trans "Summary" %}</h4>
+    </div>
+<!-- <h2>{% trans "Summary" %}</h2> -->
+    <div class="card-body">
+        <ul class="pl-10">
+            {% for model_name, object_count in model_count %}
+            <li>{{ model_name|capfirst }}: {{ object_count }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

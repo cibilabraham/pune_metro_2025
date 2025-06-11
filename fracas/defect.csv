@@ -1,0 +1,33 @@
+﻿id,DefectID,ModeID,DefectDescription,DefectOpenDate,DefectClosedDate,Investigation,DefectStatus,DefectStatusRemarks,OEMDefectReference
+1,D-ACB01-1,ACB01,Proximity of non-compliant EMI objects,07-Mar-19,,ACB disturbed due to passage of UniMog,Resolved,,
+2,D-ATS01-1,ATS01,ATS VCP embedded software failure- Error code(01),02-Jan-19,,Error code displayed ATS Error code(01),Resolved,,CCPDOHATS001
+3,D-ATS010-1,ATS010,ATS close track failure- Error code (03),14-Mar-19,,Error code displayed ATS Error code(02),Open,,
+4,D-ATS02-1,ATS02,ATS train label disappeared- Error code (03),12-Mar-19,,Error code displayed ATS Error code(03),Open,,
+5,D-ATS03-1,ATS03,ATS dwell time not displayed - Error code (04),02-Mar-19,,Error code displayed ATS Error code(04),Open,,
+6,D-ATS04-1,ATS04,ATS software Stack overflow error - Error code (58),04-Jan-19,,Error code displayed ATS Error code(58),Resolved,,CCPDOHATS002
+7,D-ATS05-1,ATS05,ATS SRS Memory leakge -Error code (42),09-Jan-19,,Error code displayed ATS Error code(06),Monitoring,,CCPDOHATS003
+8,D-ATS06-1,ATS06,ATS shutter door interface Protocol status failure,10-Jan-19,30-Mar-19,Shutter door signalling wiring wrong connection,Closed,Installation snag,
+9,D-ATS07-1,ATS07,ATS - VOBC Telegrams relaying failure,10-Jan-19,,Error code displayed ATS Error code(07),Open,,
+10,D-ATS08-1,ATS08,ATS playback software hangup,29-Jan-19,,Error code displayed ATS Error code(08),Open,,
+11,D-ATS09-1,ATS09,ATS PED Interface Protocol statu stuck high,22-Mar-19,,Error code displayed ATS Error code(09),Open,,
+12,D-SW01-1,SW01,Switch signalling interface relay random failure,,30-Mar-19,Detection relay failure,Closed,Random failure,
+13,D-SW02-1,SW02,Switch blade preventive maintenance not carried out,,,Mechanical linkage pivot excessive clearance,Open,,
+14,D-VOBC01-1,VOBC01,VOBC software error code (01),25-Jan-19,,Error code displayed VOBC Error code(01),Resolved,,CCPDOHVOBC001
+15,D-VOBC02-1,VOBC02,VOBC software error code (02),09-Jan-19,,Error code displayed VOBC Error code(02),Resolved,,CCPDOHVOBC002
+16,D-VOBC03-1,VOBC03,VOBC software error code (03),01-Feb-19,,Error code displayed VOBC Error code(03),Open,,
+17,D-VOBC04-1,VOBC04,VOBC software error code (23),24-Jan-19,,Error code displayed VOBC Error code(23),Resolved,,CCPDOHVOBC003
+18,D-VOBC05-1,VOBC05,VOBC software error code (15),24-Jan-19,,Error code displayed VOBC Error code(15),Resolved,,CCPDOHVOBC004
+19,D-VOBC06-1,VOBC06,VOBC software error code (05),02-Jan-19,30-Mar-19,Train line disconnected,Closed,Installation defect,
+20,D-VOBC07-1,VOBC07,VOBC software error code (06),15-Jan-19,,Error code displayed VOBC Error code(06),Resolved,,CCPDOHVOBC005
+21,D-VOBC08-1,VOBC08,Wayside obstacle detection spurious activation,04-Jan-19,,No error message,Resolved,,CCPDOHVOBC006
+22,D-VOBC09-1,VOBC09,Obstacle detected,19-Mar-19,,Tools left on trackside,Open,,
+23,D-VOBC10-1,VOBC10,VOBC software error code (07),24-Jan-19,,Error code displayed VOBC Error code(07),Resolved,,CCPDOHVOBC007
+24,D-VOBC11-1,VOBC11,VOBC software error code (08),04-Mar-19,,Error code displayed VOBC Error code(08),Open,,
+25,D-VOBC12-1,VOBC12,VOBC software error code (09),10-Mar-19,,Error code displayed VOBC Error code(09),Open,,
+26,D-VOBC13-1,VOBC13,VOBC software error code (10),21-Mar-19,,Error code displayed VOBC Error code(10),Open,,
+27,D-VOBC14-1,VOBC14,VOBC software error code (11),27-Feb-19,,Error code displayed VOBC Error code(11),Open,,
+28,D-ZC01-1,ZC01,ZC Comms software version not updated Error code (01),01-Jan-19,,System hand No error message,Resolved,,CCPDOHZC001
+29,D-ZC01-1,ZC02,ZC Comms software version not updated Error code (01),22-Jan-19,,Error code displayed ZC0 Error code(01),Resolved,,CCPDOHZC002
+30,D-ZC04-1,ZC04,Zone Controller comms card short circuit -manufacturing defect,22-Jan-19,30-Mar-19,ZC comms card high resistance high,Closed,Random failure,
+31,D-ZC01-1,ZC05,ZC Comms software version not updated,15-Jan-19,30-Mar-19,Error code displayed ZC0 Error code(02),Closed,ZC software updated,CCPDOHZC003
+32,D-ZC06-1,ZC06,Zone controller circuits insulation fault while transportation,25-Feb-19,,ZC Power supply earth wire disconnection,Open,,

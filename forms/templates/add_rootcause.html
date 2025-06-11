@@ -1,0 +1,1082 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+     <style>
+        th:first-child,td:first-child,th:last-child,td:last-child {  
+        background-color:white;    
+        }
+    </style>
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+                <div class="row mb-5">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                        Root Cause Analysis of 
+                        {% if data.defect %}
+                            {% for defect in defect %}
+                            {% if defect.defect_id == data.defect %}
+                                {{defect.defect_description}}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            defect
+                        {% endif %}
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-lg-12 mb-3">
+
+                    <!-- <a href="#" onclick="Print_RecordDetails()"><button class="btn btn-danger float-right m-2" > 
+                                 
+                        <span class="text">Print</span>
+                        </button></a>
+  
+                    
+                    <a href="/reports/review_details/PDF/?meeting_id={{ meeting_id }}"><button class="btn btn-success btn-success-split float-right m-2" > 
+                                   
+                        <span class="text">Download</span>
+                        </button></a> -->
+    
+    
+                    <a href="/forms/rootcause/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                    
+                
+                </div>
+            </div>
+
+            <!-- /.row -->
+
+        <form id="RootcauseForm"> 
+            <div class="row mb-4" align="right">
+                <div class="col-12">  
+                    
+                    <button type="submit" class="btn btn-success mt-2 d-none" onClick="return SetButton(4);">Save failure data filter settings</button>
+                    
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="asset_type">*Asset type:</label>
+                        <input type="hidden" value="{{ data.id }}" id="id" name="id">
+                        {% if request.session.user_Role == 1 %}
+                        <select class="form-control" id="asset_type" name="asset_type" required="required">
+                        <option value="">--  Select Asset type  --</option>
+                        {% for asset_type in asset_types %}
+                        {% if asset_type.asset_type != '' %}
+                            {% if asset_type.id == data.asset_type %}
+                                <option value="{{asset_type.id}}" selected>{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                            {% else %}
+                                <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                            {% endif %}
+                                
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                        {% else %}  
+                        <select class="form-control" id="asset_type" name="asset_type" required="required">
+                        <option value="">--  Select Asset type  --</option>
+                        {% for asset_type in asset_types %}
+                        {% if asset_type.asset_type != '' %}
+                            {% if asset_type.id == data.asset_type %}
+                                <option value="{{asset_type.id}}" selected>{{asset_type.asset_type}} </option>
+                            {% else %}
+                                <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
+                            {% endif %}
+                                
+                            {% endif %}
+                        {% endfor %}
+                        </select>
+                        {% endif %}  
+                        <div class="invalid-feedback">
+                         Please enter Asset type.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="defect">*Defect:</label>
+                        <select class="form-control" id="defect" required="required" name="defect" value="{{data.defect}}">
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="defect" name="defect" value="{{data.defect}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter Defect.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="rca_workshop_date">*Rca workshop date:</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="rca_workshop_date" name="rca_workshop_date" value="{{data.rca_workshop_date|date:'d/m/Y'}}">
+                        <div class="invalid-feedback">
+                            Please enter Rca workshop date.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="root_cause_status">*Root cause status:</label>
+                        <select class="form-control" id="root_cause_status" name="root_cause_status" required="required">
+                        <option value="">--  Select Root cause status  --</option>
+                        {% if 'Open' == data.root_cause_status %}
+                            <option value="Open" selected>Open</option>
+                        {% else %}
+                            <option value="Open">Open</option>
+                        {% endif %}
+                        {% if 'Resolved' == data.root_cause_status %}
+                            <option value="Resolved" selected>Resolved</option>
+                        {% else %}
+                            <option value="Resolved">Resolved</option>
+                        {% endif %}
+                        {% if 'Update' == data.root_cause_status %}
+                            <option value="Update" selected>Update</option>
+                        {% else %}
+                            <option value="Update">Update</option>
+                        {% endif %}
+                        {% if 'Monitoring' == data.root_cause_status %}
+                            <option value="Monitoring" selected>Monitoring</option>
+                        {% else %}
+                            <option value="Monitoring">Monitoring</option>
+                        {% endif %}
+                        {% if 'Closed' == data.root_cause_status %}
+                            <option value="Closed" selected>Closed</option>
+                        {% else %}
+                            <option value="Closed">Closed</option>
+                        {% endif %}
+                        </select>
+                        <div class="invalid-feedback">
+                            Please enter Root cause status.
+                        </div>
+                    </div>
+                </div>
+
+           
+            </div>
+
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="immediate_cause">*Immediate cause:</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control" id="immediate_cause" name="immediate_cause" value="{{data.immediate_cause}}">
+                        <div class="invalid-feedback">
+                            Please enter Immediate cause.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="leading_reasons">*Leading reasons:</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control" id="leading_reasons" name="leading_reasons" value="{{data.leading_reasons}}">
+                        <div class="invalid-feedback">
+                            Please enter Rca workshop date.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="root_cause_description">*Root cause description:</label>
+                        <textarea autocomplete="off" class="form-control" required="required" id="root_cause_description" name="root_cause_description">{{data.root_cause_description}}</textarea>
+                         <div class="invalid-feedback">
+                         Please enter Root cause description.
+                        </div>
+                    </div>
+                </div>
+
+           
+            </div>
+
+
+            <div class="row ">
+                <div class="alert alert-warning col-12 d-none" id="message">
+                            
+                </div>
+            </div>
+
+
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <h3 class="page-header" id="heading1">
+                      List of Failures Associated With The Selected Defect
+                    </h3>
+                </div>
+            </div>
+           
+            <div class="row">
+            <div class="col-md-12">
+                <label for="">Defect failures:</label>
+                <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="bg-white">Failure id</th>
+                            <th>Asset config id</th>
+                            <th>Event description </th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Detection</th>
+                            <th>Service delay (mins)</th>
+                            <th>Immediate investigation</th>
+                            <th>Failure type</th>
+                            <th>Safety failure</th>
+                            <th>Hazard id</th>
+                            <th>Cm description</th>
+                            <th>Replaced asset config id</th>
+                            <th>Cm start date</th>
+                            <th>Cm start time</th>
+                            <th>Cm end date</th>
+                            <th>Cm end time</th>
+                            <th>Oem failure reference</th>
+                            <th class="bg-white">defect id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+                <div class="col-lg-12">
+                    <h3 class="page-header" id="heading1">
+                      Corrective Actions Associated With Selected Defect
+                    </h3>
+                </div>
+            </div>
+            <div class="row mb-4" align="right">
+                <div class="col-12">  
+                    <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete Corrective Actions</button>
+                    
+                    <button type="button" onclick="ADDCA()" class="btn btn-success float-right m-2" >Add Corrective Action</button>
+
+                 
+                </div>
+            </div>
+
+          <div class="row">
+            <div class="col-md-12 table-responsive">
+                <label for="">Corrective actions:</label>
+                <table id="example2" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="bg-white"><input type="checkbox" id="deleteAll" /></th>
+                            <th>Defect</th>
+                            <th>Corrective Action ID</th>
+                            <th>Corrective Action Owner </th>
+                            <th>Corrective Action Description</th>
+                            <th>Corrective Action Update</th>
+                            <th>Corrective Action Status</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+
+          <div class="row ">
+                <div class="alert alert-warning col-12 d-none" id="message2">
+                            
+                </div>
+            </div>
+
+          <div class="row mb-4" align="right">
+                <div class="col-12">  
+                    <input type="hidden" id="buttonClick">   
+                    <button class="btn btn-danger mt-2 d-none" id="dltbtn" onClick="return deleterootcause()">Delete</button>
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(1);">Save</button>
+                    
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(2);">Save and add another</button>
+                
+                    <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(3);">Save and continue editing</button>
+                </div>
+            </div>
+        </form>
+
+    <form id="CorrectiveForm"> 
+        <div class="modal fade" id="add" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ECA">Add New Corrective Action</h5>
+                        <button type="button"  id="closeLinkModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="corrective_action_owner">*Corrective action owner:</label>
+                                    <input type="hidden" name="Editid" id="Editid">
+                                    <input type="hidden" name="EditCAid" id="EditCAid">
+                                    <input type="text" class="form-control" required="required" id="corrective_action_owner" name="corrective_action_owner" >
+                                    <div class="invalid-feedback">
+                                    Please enter Corrective action owner.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="defect_status">*Corrective action status:</label>
+                                    <select class="form-control" id="corrective_action_status" name="corrective_action_status" required="required">
+                                    <option value="">--  Select Corrective action status  --</option>
+                                   
+                                        <option value="Open">Open</option>
+                                    
+                                        <option value="Resolved">Resolved</option>
+                                   
+                                        <option value="Update">Update</option>
+                                    
+                                        <option value="Monitoring">Monitoring</option>
+                                    
+                                        <option value="Closed">Closed</option>
+                                    
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please enter Corrective action status.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="cm_end_time">*Corrective action description:</label>
+                                    <textarea class="form-control" required="required" id="corrective_action_description" name="corrective_action_description"></textarea>
+                                    <div class="invalid-feedback">
+                                    Please enter Corrective action description.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="cm_end_time">*Corrective action update:</label>
+                                    <textarea class="form-control" required="required" id="corrective_action_update" name="corrective_action_update"></textarea>
+                                    <div class="invalid-feedback">
+                                    Please enter Corrective action update.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="alert alert-warning col-12 d-none" id="messageModel">
+                                        
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="submit">Save Corrective Action</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </form>
+
+     
+        
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    function Print_RecordDetails(){
+        var asset_type= $('select[name=asset_type] option').filter(':selected').html();
+        var defect= $('select[name=defect] option').filter(':selected').html();
+        var rca_workshop_date= $('#rca_workshop_date').val();
+        var root_cause_status= $('select[name=root_cause_status] option').filter(':selected').val();
+        var immediate_cause= $('#immediate_cause').val();
+        var leading_reasons= $('#leading_reasons').val();
+        var root_cause_description= $('#root_cause_description').val();
+
+
+        var pdf = new jsPDF('p', 'mm', 'a4');
+        var pdfWidth = 100;
+        var pdfHeight = 1000;
+        ratio = pdfHeight/pdfWidth;
+        pw=(pdf.internal.pageSize.getWidth()*.9)-20;
+        pdfHeight=ratio*pw;
+        pdfWidth=pw;
+        y = 25;
+        pdf.setFontSize(18);
+        pdf.text(pdfWidth/3, y, 'Root Cause Analysis of Fault in ACO');
+        
+        window.open(pdf.output('bloburl'), '_blank');
+
+    }
+
+
+
+
+    var failuresAttributed=Array();
+    $(document).ready(function() {
+        $('#example').DataTable({
+            scrollY:        "350px",
+            scrollX:        true,
+            scrollCollapse: true,
+            paging:         true,
+            fixedColumns:   {
+                left: 1,
+                right: 1
+            },
+        });
+        $("#deleteAll").click(function () {
+            $(".deleteAll").attr('checked', this.checked);
+        });
+
+        $('#asset_type').val('{{ data.asset_type }}');
+        $('#defect').val('{{ data.defect }}');
+        $('#rca_workshop_date').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',});
+
+        var id=$('#id').val();
+        if(id != ""){
+            $('#AddCorrectiveAction').removeClass('d-none');
+            $('#dltbtn').removeClass('d-none');
+            var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+            defect ='{{data.defect}}';
+            $.ajax({
+                url: "/forms/rootcause/GETdefect/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                'asset_type' : asset_type,
+                },
+                success: function (response) {
+                    console.log(response);
+                    var system = "<option value="+"all"+">"+"--All--"+"</options>";
+                    $.each(response, function (i,value) {
+                        if (value.system != ''){
+                            if(value.defect_id == defect){
+                                system = system + "<option value='"+ value.defect_id +"' selected>"+value.defect_id+": " +value.defect_description+"</options>";
+                            }else{
+                                system = system + "<option value='"+ value.defect_id +"'>"+value.defect_id+": " +value.defect_description+"</options>";
+                            }
+                        
+                    }
+                    });
+                    var select = "<select>"+system+"</select>";
+                    $("#defect").html(select);
+                    getDefectData();
+                
+                }
+            }); 
+            $.ajax({
+                url: "/forms/rootcause/Correctivedata/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'defect':defect,
+                },
+                success: function (response) {
+                    //console.log(response.data);
+                    failuresAttributed=response.data;
+                    getDefectData2();
+                }
+            });
+            
+            
+        }
+        
+        
+    });
+
+    function SetButton(id){
+        $('#buttonClick').val(id);
+        return true;
+    }
+
+    function getDefectData(){
+    var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+    var defect= $('select[name=defect] option').filter(':selected').val()
+
+        $('#example').DataTable().destroy();
+        $('#example').DataTable({
+                "order": [[ 0, "asc" ]],
+                "searching" : true,
+                scrollY:        "350px",
+                scrollX:        true,
+                scrollCollapse: true,
+                paging:         true,
+                fixedColumns:   {
+                    left: 1,
+                    right: 1
+                },
+                'ajax' : {
+                    "url": "/forms/rootcause/listfailuredata/",
+                    "type": "POST",
+                    "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                    'data' : {
+                        'asset_type':asset_type,
+                        'defect':defect,
+                    }
+                },
+                "columns" : [
+                {"data" : "failure_id"},
+                {"data" : "asset_config_id"},
+                {"data" : "event_description"},
+               // {"data" : "date"},
+                {"data":null,"render":function(item){
+
+                    if(item.date != null){
+                        return moment(item.date).format('DD-MM-YYYY');
+                    }
+                    return item.date;
+
+                    }
+                },
+                {"data" : "time"},
+                {"data" : "detection"},
+                {"data" : "service_delay"},
+                {"data" : "immediate_investigation"},
+                {"data" : "failure_type"},
+                {"data" : "safety_failure"},
+                {"data" : "hazard_id"},
+                {"data" : "cm_description"},
+                {"data" : "replaced_asset_config_id"},
+                //{"data" : "cm_start_date"},
+                {"data":null,"render":function(item){
+
+                    if(item.cm_start_date != null){
+                        return moment(item.cm_start_date).format('DD-MM-YYYY');
+                    }
+                    return item.cm_start_date;
+
+                    }
+                },
+                {"data" : "cm_start_time"},
+                //{"data" : "cm_end_date"},
+                {"data":null,"render":function(item){
+
+                    if(item.cm_end_date != null){
+                        return moment(item.cm_end_date).format('DD-MM-YYYY');
+                    }
+                    return item.cm_end_date;
+
+                    }
+                },
+                {"data" : "cm_end_time"},
+                {"data" : "oem_failure_reference"},
+                {"data" : "defect"},
+               
+            ],
+        });
+    }
+
+    function remove(id){
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+            failuresAttributed.splice(id, 1);
+            swal("Deleted!", "Successfully remove corrective action.");
+            getDefectData2();
+                    
+        });
+    }
+
+
+    function getids(){
+        ids1=[];
+        $("input:checkbox[name=deleteAll]:checked").each(function(){
+            ids1.push($(this).val());
+        });
+    
+        // return ids1;
+        return ids1.toString();
+    }
+
+    function DELETEALL(){
+        ids= getids();
+        if (ids == ""){
+            swal("Please select atleast one record");
+            return false;
+        }
+        ids2=ids.split(",").reverse().join(",");
+
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+            // $("input:checkbox[name=deleteAll]:checked").each(function(){
+            //     failuresAttributed.splice($(this).val(), 1);
+            // });
+            arrayIds = ids2.split(',');
+            for(i=0;i<arrayIds.length;i++){
+                failuresAttributed.splice(arrayIds[i], 1);
+            }
+            swal("Deleted!", "Successfully remove corrective action.");
+            getDefectData2();
+                    
+        });
+
+    }
+
+    function ADDCA(){
+        $('#corrective_action_status').attr('value', '')
+        $('#corrective_action_owner').attr('value', '')
+        $('#corrective_action_description').attr('value', '')
+        $('#corrective_action_update').attr('value', '')
+        $('#Editid').attr('value', '')
+        $('#EditCAid').attr('value', '')
+        $('#ECA').html('Add new Corrective Action')
+        $('#add').modal('show');
+    }
+
+    function Edit(id){
+      
+        $('#corrective_action_status').val(failuresAttributed[id].corrective_action_status)
+        $('#corrective_action_owner').val(failuresAttributed[id].corrective_action_owner)
+        $('#corrective_action_description').val(failuresAttributed[id].corrective_action_description)
+        $('#corrective_action_update').val(failuresAttributed[id].corrective_action_update)
+        $('#Editid').val(id)
+        $('#EditCAid').val(failuresAttributed[id].corrective_action_id)
+        $('#ECA').html('Update Corrective Action')
+        $('#add').modal('show');
+
+    }
+
+    function getDefectData2(){
+    var ind=-1;
+    var ind1=-1;
+    var ind2=-1;
+        $('#example2').DataTable({
+            "searching" : false,
+            "destroy": true,
+            data: failuresAttributed,
+            "columns" : [
+                {"data":null,"render":function(item){ind1++;
+                    return '<input type="checkbox" value="'+ ind1 +'" name="deleteAll" class="deleteAll"/>';
+                    }
+                },
+                {"data" : "defect"},
+                {"data" : "corrective_action_id"},
+                {"data" : "corrective_action_owner"},
+                {"data" : "corrective_action_description"},
+                {"data" : "corrective_action_update"},
+                {"data" : "corrective_action_status"},
+                {"data":null,"render":function(item){ind2++;
+                    return '<input type="button" value="Edit" class="btn btn-primary" onClick="Edit('+ ind2 +')">';
+                }
+                },
+
+                {"data":null,"render":function(item){ind++;
+                    return '<input type="button" value="delete" class="btn btn-danger" onClick="remove('+ ind +')">';
+                }
+                },
+            ],
+        });
+    }
+
+    $('#asset_type').change(function(){
+        var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+        $.ajax({
+            url: "/forms/rootcause/GETdefect/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+              'asset_type' : asset_type,
+            },
+            success: function (response) {
+                console.log(response);
+                var system = "<option value="+"all"+">"+"--All--"+"</options>";
+                $.each(response, function (i,value) {
+                    if (value.system != ''){
+                    system = system + "<option value='"+ value.defect_id +"'>"+value.defect_id+": " +value.defect_description+"</options>";
+                }
+                });
+                var select = "<select>"+system+"</select>";
+                $("#defect").html(select);
+              
+            }
+        }); 
+    });
+
+    $('#defect').change(function(){
+        $('#AddCorrectiveAction').removeClass('d-none');
+        getDefectData();
+        defect =$('select[name=defect] option').filter(':selected').val();
+        var id=$('#id').val();
+        if (defect == ""){
+            $('#AddCorrectiveAction').addClass('d-none');
+            $('#message').addClass('d-none');
+        }else{
+            $.ajax({
+            url: "/forms/rootcause/checkdefect/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'defect':defect,
+                'id':id,
+            },
+            success: function (response) {
+                if(response.status == '1') {
+                    $('#message').addClass('d-none');
+                    $('#message2').addClass('d-none');
+                }
+                else {
+                    swal('Root cause with this Defect already exists')
+                    //$('#message').removeClass('d-none'); 
+                    //$('#message').html('Root cause with this Defect already exists.');
+                }
+            }
+          });
+        }
+        $.ajax({
+            url: "/forms/rootcause/Correctivedata/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'defect':defect,
+            },
+            success: function (response) {
+                //console.log(response.data);
+                failuresAttributed=response.data;
+                getDefectData2();
+            }
+        });
+        
+    });
+
+    function deleterootcause(){
+        var id=$('#id').val();
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/rootcause/delete/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Rootcause has been deleted.");
+                    window.location.href = "/forms/rootcause/";
+                }
+            });     
+        });
+
+
+    }
+
+
+    $( "#CorrectiveForm" ).submit(function(e) {
+        e.preventDefault();
+        var check = false;
+        var corrective_action_status= $('select[name=corrective_action_status] option').filter(':selected').val()
+        var defect= $('select[name=defect] option').filter(':selected').val()
+        var corrective_action_owner= $('#corrective_action_owner').val()
+        var corrective_action_description= $('#corrective_action_description').val()
+        var corrective_action_update= $('#corrective_action_update').val()
+        var id = $('#Editid').val()
+        var CAid = $('#EditCAid').val()       
+
+        $.ajax({
+            url: "/forms/rootcause/CheckCorrectivedata/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'defect':defect,
+                'CAid':CAid,
+                'corrective_action_description':corrective_action_description,
+            },
+            success: function (response) {
+                if(response.status == '1') {
+                    check = true;
+                }
+            },
+        });
+
+        for (let i = 0; i < failuresAttributed.length; i++) {
+            if(id == ''){
+                if(failuresAttributed[i].corrective_action_description == corrective_action_description){
+                    check = true;
+                }
+            }else{
+                if(i != id){
+                    if(failuresAttributed[i].corrective_action_description == corrective_action_description){
+                        check = true;
+                    }
+                }
+            }
+        }
+
+        setTimeout(function() {
+            if(check){
+                swal('Corrective action description already exists.')
+                return false;
+            }
+
+            if(id == ''){
+                var dataObj = {};
+                dataObj.id=0;
+                dataObj.corrective_action_id="";
+                dataObj.corrective_action_status=corrective_action_status;
+                dataObj.defect=defect;
+                dataObj.corrective_action_owner=corrective_action_owner;
+                dataObj.corrective_action_description=corrective_action_description;
+                dataObj.corrective_action_update=corrective_action_update;
+                failuresAttributed.push(dataObj);
+                //$('#add').removeClass('in show'); 
+                //$('#add').modal({dismiss: true})
+                swal('Successfully add Corrective Action To This Defect')
+                //$('#messageModel').removeClass('d-none'); 
+                //$('#messageModel').html('Successfully add Corrective Action To This Defect.');
+                //$('#add').modal('data-dismiss');
+
+            }else{
+                failuresAttributed[id].corrective_action_status = corrective_action_status
+                failuresAttributed[id].corrective_action_owner = corrective_action_owner
+                failuresAttributed[id].corrective_action_description = corrective_action_description
+                failuresAttributed[id].corrective_action_update = corrective_action_update
+        
+                //$('#add').removeClass('in show'); 
+                //$('#add').modal({dismiss: true})
+                swal('Successfully Updated Corrective Action To This Defect')
+                //$('#messageModel').removeClass('d-none'); 
+                //$('#messageModel').html('Successfully add Corrective Action To This Defect.');
+                //$('#add').modal('data-dismiss');
+                            
+
+            }
+            
+            getDefectData2();
+        }, 500);
+            
+                     
+    });
+
+
+    $("#RootcauseForm").submit(function(e) {
+        e.preventDefault();
+        var datas=failuresAttributed;
+        var asset_type= $('select[name=asset_type] option').filter(':selected').val();
+        var defect= $('select[name=defect] option').filter(':selected').val();
+        var rca_workshop_date= $('#rca_workshop_date').val();
+        var root_cause_status= $('select[name=root_cause_status] option').filter(':selected').val();
+        var immediate_cause= $('#immediate_cause').val();
+        var id= $('#id').val();
+        var buttonClick= $('#buttonClick').val();
+        var leading_reasons= $('#leading_reasons').val();
+        var root_cause_description= $('#root_cause_description').val();
+        console.log(datas);
+        if(buttonClick == 4) var action=1;
+        else var action=2;
+        $.ajax({
+            url: "/forms/rootcause/add/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data :{
+                'asset_type':asset_type,
+                'defect':defect,
+                'rca_workshop_date' : rca_workshop_date,
+                'root_cause_status': root_cause_status,
+                'id':id,
+                'action':action,
+                'immediate_cause':immediate_cause,
+                'leading_reasons':leading_reasons,
+                'root_cause_description':root_cause_description,
+                'datas': JSON.stringify(datas),
+            },
+            success: function (response) {
+
+                if(response.status == '1') {
+                    if(id ==""){
+                        if(buttonClick == 1){
+                            swal({
+                                title: 'Successfully add root cause',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/rootcause/";
+                            })    
+
+                           
+                        } 
+                        else if(buttonClick == 2){
+                            swal({
+                                title: 'Successfully add root cause',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href  = "/forms/rootcause/add/";
+                            })    
+
+                        
+                        } 
+                        else if(buttonClick == 3){
+                            swal({
+                                title: 'Successfully add root cause',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/rootcause/add/"+response.id;
+                            })    
+
+                          
+                        } 
+                        else if(buttonClick == 4){
+                            swal({
+                                title: 'Successfully add root cause',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/rootcause/add/"+response.id;
+                            })    
+
+
+                        } 
+                    }else{
+                        if(buttonClick == 1){
+                            swal({
+                                title: 'Successfully update root cause',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/rootcause/";
+                            })    
+
+                          
+                        } 
+                        else if(buttonClick == 2){
+                            swal({
+                                title: 'Successfully update root cause',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href  = "/forms/rootcause/add/";
+                            })    
+
+                        } 
+                        else if(buttonClick == 3){
+                            swal({
+                                title: 'Successfully update root cause',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/rootcause/add/"+response.id;
+                            })  
+
+                        } 
+                        else if(buttonClick == 4){
+                            swal({
+                                title: 'Successfully update root cause',
+                                text: "",
+                                type: '',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ok'
+                            },function () {
+                                window.location.href = "/forms/rootcause/add/"+response.id;
+                            })  
+                        } 
+                    }
+                    
+                }
+                else{
+                    swal('Root cause with this Defect already exists')
+                    //$('#message2').removeClass('d-none'); 
+                    //$('#message2').html('Root cause with this Defect already exists.');
+                    //$('#message').removeClass('d-none'); 
+                    //$('#message').html('Root cause with this Defect already exists.');
+                }
+            }
+        });
+        
+    });
+
+   
+</script>
+
+{% endblock sb_admin_js %}

@@ -1,0 +1,346 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <style>
+        th:first-child,td:first-child,th:last-child,td:last-child,th:nth-child(2),td:nth-child(2) {  
+            background-color:white;    
+        }
+    </style>
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                      PBS Master
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <!-- /.row -->
+             {% if request.session.user_Role == 1 %}
+            <div class="row ">
+            <div class="col-lg-12 mb-5">
+
+                <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
+
+
+                <a href="/PBSMaster/import/"><button class="btn btn-primary btn-icon-split float-right m-2 "  >            
+                    <span class="text">Import Record</span>
+                    <span class="icon text-white-50">
+                    <i class="fas fa-file-import"></i>
+                    </span>
+                </button></a>
+            
+                
+                <a href="/PBSMaster/add/"><button class="btn btn-success btn-icon-split float-right m-2" >              
+                <span class="text">Add New Record</span>
+                <span class="icon text-white-50">
+                <i class="fas fa-plus"></i>
+                </span>
+                </button></a>
+            
+            </div>
+            </div>
+             {% endif %}   
+
+             <div class="row mb-4">
+         
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="project">Project:</label>
+                        <select class="form-control" id="project" name="project" required="required">
+                        <option value="all">--  Select Project  --</option>
+                        {% for project in project %}
+                        {% if project.product_id != '' %}
+                                <option value="{{project.product_id}}">{{project.product_name}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">   
+                    <div class="form-group">
+                        <label for="selSystem">System:</label>
+                        <select class="form-control" id="selSystem" name="selSystem">
+                        <option value="all">--  Select System  --</option>
+                        {% for system in system %}
+                        {% if system.system != '' %}
+                                <option value="{{system.system}}">{{system.system}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>  
+                    
+                </div>
+
+                <div class="col-md-3">   
+                    <div class="form-group">
+                        <label for="selSubsystem">Subsystem:</label>
+                        <select class="form-control" id="selSubsystem" name="selSubsystem">
+                        <option value="all">--  Select Subsystem  --</option>
+                        {% for subsystem in subsystem %}
+                        {% if subsystem.subsystem != '' %}
+                                <option value="{{subsystem.subsystem}}">{{subsystem.subsystem}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>  
+                    
+                </div>
+
+                <div class="col-md-3">   
+                    <div class="form-group">
+                        <label for="selProduct">Product id:</label>
+                        <select class="form-control" id="selProduct" name="selProduct">
+                        <option value="all">--  Select Product id  --</option>
+                        {% for product_id in product_id %}
+                        {% if product_id.product_id != '' %}
+                                <option value="{{product_id.product_id}}">{{product_id.product_id}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>  
+                    
+                </div>
+
+                <div class="col-md-3">   
+                    <div class="form-group">
+                        <label for="selasset_type">Asset type:</label>
+                        <select class="form-control" id="selasset_type" name="selasset_type">
+                        <option value="all">--  Select Asset type  --</option>
+                        {% for asset_type in asset_type %}
+                        {% if asset_type.asset_type != '' %}
+                                <option value="{{asset_type.asset_type}}">{{asset_type.asset_type}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        </select>
+                    </div>  
+                    
+                </div>
+            
+                <div class="col-md-3 pt-4">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Generate</button>
+                </div>
+
+                
+           
+            </div>
+             
+             
+
+
+
+
+          <div class="row">
+            <div class="col-md-12">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="deleteAll" /></th>
+                            <th>ID</th>
+                            <th>Project</th>
+                            <th>System</th>
+                            <th>Subsystem</th>
+                            <th>Product id</th>
+                            <th>Product description</th>
+                            <th>Asset type</th>
+                            <th>Asset description</th>
+                            <th>MTBF ({{MTBFMTBSAF}})</th>
+                            <th>MTBSAF ({{MTBFMTBSAF}})</th>
+                            <th>MTTR ({{MTTR}})</th>
+                            <th>MART</th>
+                            <th>Asset quantity</th>
+                            <th>Availability target</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+        $("#deleteAll").click(function () {
+            $(".deleteAll").attr('checked', this.checked);
+        });
+
+        $('#example').DataTable();
+        getDefectData();
+        /*$.ajax({
+            url: "/forms/asset_register/list/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {},
+            success: function (response) {
+                console.log(response);
+                var actions = response.data;
+            }
+        });*/
+
+    });
+
+    
+
+    function deletePBSMaster(id){
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+            $.ajax({
+                url: "/PBSMaster/add/delete/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                },
+                success: function (response) {
+                    swal("Deleted!", "PBSMaster has been deleted.");
+                    getDefectData();
+                }
+            });
+        });
+    }
+
+    function getids(){
+        ids1=[];
+        $("input:checkbox[name=deleteAll]:checked").each(function(){
+            ids1.push($(this).val());
+        });
+    
+        // return ids1;
+        return ids1.toString();
+    }
+
+    function DELETEALL(){
+        ids= getids();
+        if (ids == ""){
+            swal("Please select atleast one record");
+            return false;
+        }
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/PBSMaster/add/deleteAll/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'ids':ids,
+                },
+                success: function (response) {
+                    swal("Deleted!", "PBSMaster has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+    }
+
+
+
+    function getDefectData(){
+        var project= $('select[name=project] option').filter(':selected').val()
+        var system= $('select[name=selSystem] option').filter(':selected').val()
+        var subsystem= $('select[name=selSubsystem] option').filter(':selected').val()
+        var product_id= $('select[name=selProduct] option').filter(':selected').val()
+        var asset_type= $('select[name=selasset_type] option').filter(':selected').val()
+        $('#example').DataTable().destroy();
+        $('#example').DataTable({
+                  dom: 'Bfrtip',
+                  buttons: [
+                    { extend: 'excel', className: 'btn-outline-primary' },
+                    { extend: 'pdf', className: 'btn-outline-primary' },
+                    { extend: 'print', className: 'btn-outline-primary' }
+                  ],
+                  scrollY:        "400px",
+                  scrollX:        true,
+                  scrollCollapse: true,
+                  paging:         true,
+                  fixedColumns:   {
+                      left: 2,
+                      right: 1
+                  },
+                  "order": [[ 1, "asc" ]],
+                  "searching" : true,
+                  'ajax' : {
+                      "url": "/PBSMaster/",
+                      "type": "POST",
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                      'data' : {
+                          'project':project,
+                          'system':system,
+                          'subsystem':subsystem,
+                          'product_id':product_id,
+                          'asset_type':asset_type,
+                      }
+                  },
+                  "columns" : [
+                    {"data":null,"render":function(item){
+                        if(item.user_Role != 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                            else return '';
+                        }
+                    },
+                    {"data":null,"render":function(item){
+                            if(item.user_Role == 4 ) return item.id;
+                            return '<a href="/PBSMaster/add/'+ item.id +'" >'+ item.id +'</a>';
+                        }
+                    },
+                    {"data" : "project"},
+                      {"data" : "system"},
+                      {"data" : "subsystem"},
+                      {"data" : "product_id"},
+                      {"data" : "product_description"},
+                      {"data" : "asset_type"},
+                      {"data" : "asset_description"},
+                      {"data" : "MTBF"},
+                      {"data" : "MTBSAF"},
+                      {"data" : "MTTR"},
+                      {"data" : "MART"},
+                      {"data" : "asset_quantity"},
+                      {"data" : "availability_target"},
+                      {"data":null,"render":function(item){
+                            if(item.user_Role == 1 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="deletePBSMaster('+ item.id +')">';
+                            else return '';
+                        }
+                    },
+                ]
+            });
+        }
+
+
+</script>
+
+{% endblock sb_admin_js %}

@@ -1,0 +1,485 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+              <div class="row mb-5">
+                <div class="col-lg-12">
+                    <h3 class="page-header">
+                      Root Cause Analysis and Corrective action status of Failures
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <!-- /.row -->
+            <div class="row mb-4">
+              <div class="col-md-3">
+                <div class="form-group">
+                    <label for="project">PROJECT:</label>
+                    <select class="form-control" id="project" name="project" required="required">
+                    <option value="all">--  Select Project  --</option>
+                    {% for project in project %}
+                    {% if project.product_id != '' %}
+                      {% if project.product_id == request.session.P_id %}
+                            <option value="{{project.product_id}}" selected>{{project.product_name}}</option>
+                      {% else %}
+                        <option value="{{project.product_id}}" >{{project.product_name}}</option>
+                      {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                  <label for="system">SYSTEM:</label>
+                  <select class="form-control" id="system" name="system" >
+                  </select>
+              </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+                <label for="subsystem">SUBSYSTEM:</label>
+                <select class="form-control" id="subsystem" name="subsystem" >
+                </select>
+            </div>
+        </div>
+            
+            <div class="col-md-3">     
+                <div class="form-group">
+                    <label for="selLRUType">LRU TYPE</label>
+                    <select class="form-control" id="selLRUType" name="selLRUType">
+                    </select>
+                </div>
+            </div>
+
+                
+           </div>
+            <div class="row mb-4">
+                 <!--  <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="productId">PRODUCT ID</label>
+                        <select class="form-control" class="form-control" id="productId" name="pbs_productID">
+                        </select>
+                    </div>
+                </div> -->
+                <div class="col-md-3">     
+                  <div class="form-group">
+                      <label for="DefectID">FRACA DEFFECT ID</label>
+                      <select class="form-control" id="DefectID" name="DefectID">
+                      </select>
+                  </div>
+              </div>
+               <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="startDate">START DATE</label>
+                        <input type="text" autocomplete="off" class="form-control date-time" id="startDate" value="">
+                    </div>
+                </div> 
+                
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="endDate">END DATE</label>
+                        <input type="text" autocomplete="off" class="form-control date-time" id="endDate" value="">
+                    </div>
+                </div>
+                <div class="col-md-3 pt-4">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Generate</button>
+                </div>
+           
+            </div>
+          <div class="row mt-4">
+            <div class="col-md-12">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>DEFECT ID</th>
+                            <th>ROOT CAUSE ID</th>
+                            <th>ROOT CAUSE DESCRIPTION</th>
+                            <th>CORRECTIVE ACTION ID</th>
+                            <th>CORRECTIVE ACTION OWNER</th>
+                            <th>CORRECTIVE ACTION DESCRIPTION</th>
+                            <th>CORRECTIVE ACTION STATUS</th>
+                            <th>ROOT CAUSE STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+    
+      var d1 = new Date(new Date().getFullYear(), 0, 1);
+        var d2 = new Date(new Date().getFullYear(), 11, 31);
+        $('#startDate').val(moment(d1).format('DD/MM/YYYY'))
+        $('#endDate').val(moment(d2).format('DD/MM/YYYY'))
+        
+        $('#example').DataTable();
+        $('#startDate').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+        $('#endDate').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+          $('#startDate').on('changeDate', function(event) {
+            var endDate = $('#endDate').datepicker("getDate");
+            if(event.date  > endDate){
+              $('#endDate').datepicker("setDate", event.date);
+            }
+            //alert($(this).val());
+          });
+          $('#endDate').on('changeDate', function(event) {
+            var startDate = $('#startDate').datepicker("getDate");
+            //console.log(event.date,startDate);
+            //alert($(this).val());
+            
+            if(event.date < startDate){
+              $('#startDate').datepicker("setDate", event.date);
+            }
+          });
+          if({{request.session.P_id}} != ""){
+            var project= $('select[name=project]').val()
+            $.ajax({
+              url: "/reports/project/",
+              method: 'GET',
+              dataType: 'json',
+              headers: {'X-CSRFToken': '{{ csrf_token }}'},
+              data : {
+                'project' : project,
+              },
+              success: function (response) {
+                    console.log(response);
+                    var system = "<option value="+"all"+">"+"--All--"+"</options>";
+                    $.each(response, function (i,value) {
+                      if (value.system != ''){
+                        system = system + "<option value='"+value.system+"'>"+value.system+"</options>";
+                    }
+                  });
+                    var select = "<select>"+system+"</select>";
+                    $("#system").html(select);
+                    $("#subsystem").prop('selectedIndex',0);
+                    $("#selLRUType").prop('selectedIndex',0);
+                    
+                  }
+              }); 
+          }
+        getDefectData();
+    });
+
+    function getDefectData(){
+        var project= $('select[name=project] option').filter(':selected').val()
+        var system= $('select[name=system] option').filter(':selected').val()
+        var subsystem = $('select[name=subsystem] option').filter(':selected').val()
+        var LRU_Type = $('select[name=selLRUType] option').filter(':selected').val();
+        var defect_id = $('select[name=DefectID] option').filter(':selected').val();
+        var product_id = "all";
+        var startDate = $('#startDate').val() ;
+        var endDate = $('#endDate').val() ;
+
+        if(project !="all"){
+          var search_project = $('select[name=project] option').filter(':selected').html()
+          if(system !="all"){
+            var search_system = $('select[name=system] option').filter(':selected').html()
+            if(subsystem !="all"){
+              var search_subsystem = $('select[name=subsystem] option').filter(':selected').html()
+              if(LRU_Type !="all"){
+                var search_LRU_Type = $('select[name=selLRUType] option').filter(':selected').html()
+                if(defect_id !="all"){
+                  var search_defect_id = $('select[name=DefectID] option').filter(':selected').html()
+                }else{
+                  var search_defect_id = 'All'
+                }
+              }else{
+                var search_LRU_Type = 'All'
+                var search_defect_id = 'All'
+              }
+            }else{
+              var search_subsystem = 'All'
+              var search_LRU_Type = 'All'
+              var search_defect_id = 'All'
+            }
+          }else{
+            var search_system = 'All'
+            var search_subsystem = 'All'
+            var search_LRU_Type = 'All'
+            var search_defect_id = 'All'
+          }
+        }else{
+          var search_project = 'All'
+          var search_system = 'All'
+          var search_subsystem = 'All'
+          var search_LRU_Type = 'All'
+          var search_defect_id = 'All'
+        }
+        var search_startDate = startDate
+        var search_endDate = endDate
+
+        var d1 = new Date();
+        d1 = moment(d1).format('DD/MM/YYYY HH:mm:ss')
+        // pdf.text(20, y, 'Generated by: '+'{% firstof user.get_short_name user.get_username %}');
+        // pdf.text(pdfWidth/2+65, y, 'Date: '+d1);
+
+        var meg ='<div class="small text-muted ">Search By :<div class="chart_searchby"><b>Project: </b><span>'+search_project+'<span></div><div class="chart_searchby"><b>System: </b><span >'+search_system+'<span></div><div class="chart_searchby"><b>Sub System: </b><span >'+search_subsystem+'<span></div><div class="chart_searchby"><b>URL Type: </b><span >'+search_LRU_Type+'<span></div><div class="chart_searchby"><b>Defect Id: </b><span >'+search_defect_id+'<span></div><div class="chart_searchby"><b>Start Date: </b><span >'+search_startDate+'<span></div><div class="chart_searchby"><b>End Date: </b><span >'+search_endDate+'<span></span></div></div>';
+        var meg1 ='<br><div class="mt-5 row"><div class="col-md-12"><span class="float-left"> Generated by: {% firstof user.get_short_name user.get_username %}</span><span class="float-right">Date: '+d1+'</span></div></div>'
+        $('#example').DataTable().destroy();
+        var tableData = $('#example').DataTable({
+                  "dom": 'lBfrtip',
+                  "buttons": [
+                    { extend: 'excel', className: 'btn-outline-primary' },
+                    { extend: 'print', 
+                      className: 'btn-outline-primary' ,
+                      title: 'Root cause analysis and corrective action status of failures',
+                      messageTop: meg,
+                      messageBottom: meg1,
+                      autoPrint: true,
+                    }
+                  ],
+                  "ordering": false,
+                  "searching" : false,
+                  'ajax' : {
+                      "url": "/reports/rootcause_corrective_status/",
+                      "type": "POST",
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                      'data' : {
+                        'project':project,
+                        'system':system,
+                        'sub_system':subsystem,
+                        'product_id':product_id,
+                        'lru_type' : LRU_Type,
+                        'start_date': startDate,
+                        'end_date' : endDate,
+                        'defect_id':defect_id
+                      }
+                  },
+                  "columns" : [
+                      {"data" : "defect_id"},
+                      {"data" : "root_cause_id"},
+                      {"data" : "root_cause_description"},
+                      {"data" : "corrective_action_id"},
+                      {"data" : "corrective_action_owner"},
+                      {"data" : "corrective_action_description"},
+                      {"data" : "corrective_action_status"},
+                      {"data" : "root_cause_status"}
+                  ]
+        });
+        
+        $(".dt-button").addClass('btn');
+        getDigramData();
+        
+    }
+
+    function getDigramData(){
+        var system= $('select[name=system] option').filter(':selected').val()
+        var sub_system = $('select[name=subsystem] option').filter(':selected').val()
+        if (sub_system =="all")var LRU_Type = "all";
+        else var LRU_Type = $('select[name=LRUType] option').filter(':selected').val();
+        //var product_id = $('select[name=pbs_productID] option').filter(':selected').val()
+        if (LRU_Type =="all")var defect_id = "all";
+        else var defect_id = $('select[name=DefectID] option').filter(':selected').val();
+        var product_id = "all";
+        var startDate = $('#startDate').val() ;
+        var endDate = $('#endDate').val() ;
+        if (startDate == "" && endDate =="") { var a="";var b=""}
+        else if(startDate != "" && endDate !=""){ var a=startDate;var b=endDate}
+        else if(startDate != "") { var a=startDate;var b=startDate}
+        else if(endDate != "") { var a=endDate;var b=endDate}
+         $.ajax({
+          url: "/reports/rootcause_corrective_status/",
+          method: 'POST',
+          dataType: 'json',
+          headers: {'X-CSRFToken': '{{ csrf_token }}'},
+          data : {
+            'lru_type' : LRU_Type,
+            'start_date': a,
+            'end_date' : b,
+            'defect_id':defect_id
+            },
+          success: function (response) {
+                console.log(response.data)
+              }
+          });
+    }
+
+    $("#project").change(function () {                            
+      var project= $('select[name=project]').val()
+      $.ajax({
+        url: "/reports/project/",
+        method: 'GET',
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data : {
+          'project' : project,
+        },
+        success: function (response) {
+              console.log(response);
+              var system = "<option value="+"all"+">"+"--All--"+"</options>";
+               $.each(response, function (i,value) {
+                 if (value.system != ''){
+                  system = system + "<option value='"+value.system+"''>"+value.system+"</options>";
+               }
+             });
+               var select = "<select>"+system+"</select>";
+              $("#system").html(select);
+              $("#subsystem").prop('selectedIndex',0);
+              $("#selLRUType").prop('selectedIndex',0);
+              $("#DefectID").prop('selectedIndex',0);
+              
+            }
+        }); 
+   });
+
+$("#system").change(function () {                            
+   var system= $('select[name=system]').val()
+   $.ajax({
+     url: "/reports/system/",
+     method: 'GET',
+     dataType: 'json',
+     headers: {'X-CSRFToken': '{{ csrf_token }}'},
+     data : {
+       'system' : system,
+     },
+     success: function (response) {
+           console.log(response);
+           var subsystem = "<option value="+"all"+">"+"--All--"+"</options>";
+            $.each(response, function (i,value) {
+              if (value.subsystem != ''){
+                subsystem = subsystem + "<option value='"+value.subsystem+"''>"+value.subsystem+"</options>";
+            }
+          });
+            var select = "<select>"+subsystem+"</select>";
+           $("#subsystem").html(select);
+           $("#selLRUType").prop('selectedIndex',0);
+           $("#DefectID").prop('selectedIndex',0);
+         }
+     }); 
+});
+
+// $("#subsystem").change(function () {                            
+//    var system= $('select[name=pbs_system]').val()
+//    var sub_system = $('select[name=pbs_subsystem]').val()
+//    $.ajax({
+//      url: "/reports/product/",
+//      method: 'GET',
+//      dataType: 'json',
+//      headers: {'X-CSRFToken': '{{ csrf_token }}'},
+//      data : {
+//        'system' : system,
+//        'sub_system': sub_system
+//      },
+//      success: function (response) {
+//            console.log(response);
+//            var product = "<option value="+"all"+">"+"--All--"+"</options>";
+//             $.each(response, function (i,value) {
+//               if (value.product_id != ''){
+//               product = product + "<option value="+value.product_id+">"+value.product_id+"</options>";
+//             }
+//           });
+//             var select = "<select>"+product+"</select>";
+//            $("#productId").html(select);
+           
+//          }
+//      }); 
+// });
+
+
+$("#subsystem").change(function () {                            
+   var subsystem = $('select[name=subsystem]').val()
+   $.ajax({
+     url: "/reports/asset_type/",
+     method: 'GET',
+     dataType: 'json',
+     headers: {'X-CSRFToken': '{{ csrf_token }}'},
+     data : {
+       'subsystem': subsystem
+     },
+     success: function (response) {
+           console.log(response);
+           var asset_type = "<option value="+"all"+">"+"--All--"+"</options>";
+            $.each(response, function (i,value) {
+              if (value.asset_type != ''){
+              asset_type = asset_type + "<option value="+value.id+">"+value.asset_type+"</options>";
+            }
+          });
+            var select = "<select>"+asset_type+"</select>";
+           $("#selLRUType").html(select);
+           $("#DefectID").prop('selectedIndex',0);
+         }
+     }); 
+});
+
+
+$("#selLRUType").change(function () {                            
+   var LRUType= $('select[name=selLRUType]').val()
+   $.ajax({
+     url: "/reports/defect/",
+     method: 'GET',
+     dataType: 'json',
+     headers: {'X-CSRFToken': '{{ csrf_token }}'},
+     data : {
+       'LRUType' : LRUType,
+     },
+     success: function (response) {
+           console.log(response);
+           var defect_id = "<option value="+"all"+">"+"--All--"+"</options>";
+            $.each(response, function (i,value) {
+              if (value.defect_id != ''){
+              defect_id = defect_id + "<option value="+value.defect_id+">"+value.defect_id+": "+value.des+"</options>";
+            }
+          });
+            var select = "<select>"+defect_id+"</select>";
+           $("#DefectID").html(select);
+           
+         }
+     }); 
+});
+
+// $("#selLRUType").change(function () {                            
+//    var system= $('select[name=pbs_system]').val()
+//    var sub_system = $('select[name=pbs_subsystem]').val()
+//    var asset_type = $('select[name=LRUType] option').filter(':selected').text()
+//    $.ajax({
+//      url: "/reports/product/",
+//      method: 'GET',
+//      dataType: 'json',
+//      headers: {'X-CSRFToken': '{{ csrf_token }}'},
+//      data : {
+//        'system' : system,
+//        'sub_system': sub_system,
+//        'asset_type': asset_type
+//      },
+//      success: function (response) {
+//            console.log(response);
+//            var product = "<option value="+"all"+">"+"--All--"+"</options>";
+//             $.each(response, function (i,value) {
+//               if (value.product_id != ''){
+//               product = product + "<option value="+value.product_id+">"+value.product_id+"</options>";
+//             }
+//           });
+//             var select = "<select>"+product+"</select>";
+//            $("#productId").html(select);
+           
+//          }
+//      }); 
+// });
+
+
+</script>
+{% endblock sb_admin_js %}

@@ -1,0 +1,93 @@
+<fieldset class="module aligned {{ fieldset.classes }}">
+    <div class="row mt-2 mb-2">
+    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    {% for line in fieldset %}
+        <!-- <div class="table-responsive form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}"> -->
+            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            {% for field in line %}
+                <!-- <div{% if not line.fields|length_is:'1' %} class="fieldBox{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}> -->
+                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+                    {% if field.is_checkbox %}
+                        {{ field.field }}{{ field.label_tag }}
+                    {% else %}
+                        {% if field.is_readonly %}
+                            <div class="readonly">{{ field.contents }}</div>
+                        {% endif %}
+                        {% if field.field.field.queryset %}
+                            {% with forloop.counter0 as outer_counter0 %}
+                            <div class="table-responsive mb-5 col-sm-12 form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+                                
+                                <table class="table table-striped table-bordered">
+                                <tbody>
+                                    <th>Defect</th>
+                                    <th></th>
+                                    <th>Failure ID</th>
+                                    <th>Asset Config ID</th>
+                                    <th>Event Description</th>
+                                    <th>Mode ID</th>
+                                    <th>Mode Description</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Service Delay</th>
+                                    <th>Immediate Investigation</th>
+                                    <th>Type</th>
+                                    <th></th>
+                                    <th>Safety Failure</th>
+                                    <th>Hazard Id</th> 
+                                    <th>CM Description</th> 
+                                    <th>Replaced Asset Config ID</th> 
+                                    <th>CM Start Date</th> 
+                                    <th>CM Start Time</th> 
+                                    <th>CM End Date</th> 
+                                    <th>CM End Time</th> 
+                                    <th>OEM Failure Reference</th>
+                                    <th>Defect ID</th>
+                                    {% for pl in field.field.field.queryset.values_list %}
+                                    
+                                        <tr>
+                                        <td>
+                                            {% if outer_counter0 == forloop.parentloop.counter0 %}
+                                                {% for widget in field.field %}
+                                                    {% if forloop.parentloop.counter0 == forloop.counter0 %}
+                                                        {% if pl.21 %}
+                                                            {% for defect in field.field.field.defect_queryset %}
+                                                                {% if pl.21 == forloop.counter %}
+                                                                    {{ defect }}
+                                                                {% endif %}
+                                                            {% endfor %}         
+                                                        {% endif %}
+                                                        {{ widget }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </td>
+
+                                        {% for l in pl %}
+                                            <td> {{l}}</td>
+                                        {% endfor %} 
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                            </div>
+                            {% endwith %}
+                        {% else %}
+
+                        <div class="col-sm-3 mt-3 mb-4">
+                            {{ field.label_tag }}
+                            {{ field.field }}
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                    {% if field.field.help_text %}
+                        <div class="help">{{ field.field.help_text|safe }}</div>
+                    {% endif %}
+                <!-- </div> -->
+            {% endfor %}
+        <!-- </div> -->
+    {% endfor %}
+    </div>
+</fieldset>
