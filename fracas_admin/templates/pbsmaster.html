@@ -140,9 +140,6 @@
            
             </div>
              
-             
-
-
 
 
           <div class="row">
@@ -160,6 +157,7 @@
                             <th>Asset name</th>
                             <th>Asset description</th>
                             <th>MTBF ({{MTBFMTBSAF}})</th>
+                            <th>MDBF ({{MTBFMTBSAF}})</th>
                             <th>MTBSAF ({{MTBFMTBSAF}})</th>
                             <th>MTTR ({{MTTR}})</th>
                             <th>MART</th>
@@ -176,6 +174,12 @@
 {% endblock sb_admin_content %}
 {% block sb_admin_js %}
 <script>
+
+
+var display_val = '{{display_val}}';
+var average_speed = '{{average_speed}}';
+
+
     $(document).ready(function() {
         $("#deleteAll").click(function () {
             $(".deleteAll").attr('checked', this.checked);
@@ -277,6 +281,13 @@
         var subsystem= $('select[name=selSubsystem] option').filter(':selected').val()
         var product_id= $('select[name=selProduct] option').filter(':selected').val()
         var asset_type= $('select[name=selasset_type] option').filter(':selected').val()
+        var visible = true;
+        if(display_val == 'MTBF'){
+            visible = false;
+        }
+
+
+
         $('#example').DataTable().destroy();
         $('#example').DataTable({
                   dom: 'Bfrtip',
@@ -285,6 +296,13 @@
                     { extend: 'pdf', className: 'btn-outline-primary' },
                     { extend: 'print', className: 'btn-outline-primary' }
                   ],
+                  "columnDefs": [
+                        {
+                        "targets": 10,  // 0-based index, so 9 is the 10th column
+                        "visible": visible,
+                        "searchable": false
+                        }
+                    ],
                   scrollY:        "400px",
                   scrollX:        true,
                   scrollCollapse: true,
@@ -326,6 +344,11 @@
                       {"data" : "asset_type"},
                       {"data" : "asset_description"},
                       {"data" : "MTBF"},
+                        {"data":null,"render":function(item){
+                            return parseFloat(item.MTBF)*parseFloat(average_speed);
+                        }
+                        },
+
                       {"data" : "MTBSAF"},
                       {"data" : "MTTR"},
                       {"data" : "MART"},

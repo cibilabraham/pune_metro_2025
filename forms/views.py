@@ -168,7 +168,10 @@ class AddAsset(View):
             asset_types = PBSMaster.objects.filter(is_active=0).order_by('asset_type')
         else:
             asset_types = PBSMaster.objects.filter(is_active=0,project_id=P_id).order_by('asset_type')
-        return render(request, self.template_name,{'data':data,'asset_types':asset_types})
+
+        train_set_options = [f"TS#{i:02d}" for i in range(1, 35)]  # 01 to 34
+
+        return render(request, self.template_name,{'data':data,'asset_types':asset_types,'train_set_options':train_set_options})
 
     def post(self, request, *args, **kwargs):
         P_id = request.session['P_id']
@@ -185,10 +188,11 @@ class AddAsset(View):
         asset_status = req.get('asset_status')
         asset_config_id = req.get('asset_config_id')
         location_description = req.get('location_description')
+        sub_location = req.get('sub_location')
         Action = req.get('Action')
         ids = req.get('id')
         DATA = []
-        HEAD = ["asset_config_id",'asset_serial_number','location_id','location_description','asset_type','software_version','asset_description','software_description','asset_status']
+        HEAD = ["asset_config_id",'asset_serial_number','location_id','location_description','asset_type','software_version','asset_description','software_description','asset_status','sub_location']
         asst =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
         for f in HEAD:
             if f == 'asset_type':
@@ -208,7 +212,7 @@ class AddAsset(View):
             else:
                 Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
                 for Find_Pid in Find_Pids:
-                    r=Asset(P_id=Find_Pid.project_id,asset_config_id=asset_config_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status)
+                    r=Asset(P_id=Find_Pid.project_id,asset_config_id=asset_config_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status,sub_location=sub_location)
                     r.save()
                     FindUser = UserProfile.objects.filter(user_id=user_ID)
                     now = datetime.datetime.now()
@@ -236,7 +240,7 @@ class AddAsset(View):
                 if Asset.objects.filter(asset_config_id=asset_config_id, id=ids,is_active=0).exists():
                     Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
                     for Find_Pid in Find_Pids:
-                        Asset.objects.filter(id=ids).update(P_id=Find_Pid.project_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status)
+                        Asset.objects.filter(id=ids).update(P_id=Find_Pid.project_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status,sub_location=sub_location)
                         if meg !='':
                             FindUser = UserProfile.objects.filter(user_id=user_ID)
                             now = datetime.datetime.now()
@@ -254,7 +258,7 @@ class AddAsset(View):
                 else:
                     Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
                     for Find_Pid in Find_Pids:
-                        Asset.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id=asset_config_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status)
+                        Asset.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id=asset_config_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status,sub_location=sub_location)
                         if meg !='':
                             FindUser = UserProfile.objects.filter(user_id=user_ID)
                             now = datetime.datetime.now()

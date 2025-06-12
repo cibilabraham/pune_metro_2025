@@ -48,24 +48,42 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="asset_config_id">*LRU config ID:</label>
+                        <label for="asset_config_id">*Asset config ID:</label>
                         <input type="hidden" id="id" name="id" value="{{data.id}}">
                         <input type="text" class="form-control" required="required" id="asset_config_id" name="asset_config_id" value="{{data.asset_config_id}}">
                         <div class="invalid-feedback">
-                         Please enter LRU config ID.
+                         Please enter Asset config ID.
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4 ">
                     <div class="form-group">
-                        <label for="asset_serial_number">*Train set no:</label>
-                        <input type="text" class="form-control" required="required" id="location_id" name="location_id" value="{{data.location_id}}">
+                        <label for="software_version">*Sub Location:</label>
+                        <input type="text" class="form-control" id="sub_location" name="sub_location" value="{{data.sub_location}}">
                         <div class="invalid-feedback">
-                         Please enter Train set no.
+                         Please enter Sub Location.
                         </div>
                     </div>
                 </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="location_id">*Train set no:</label>
+                        <select class="form-control" required="required" id="location_id" name="location_id">
+                            <option value="">Select Train set no.</option>
+                            {% for val in train_set_options %}
+                                <option value="{{ val }}" {% if data.location_id == val %}selected{% endif %}>{{ val }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select Train set no.
+                        </div>
+                    </div>
+                </div>
+
+
 
           
 
@@ -139,7 +157,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 ">
+                <div class="col-md-4 hide d-none">
                     <div class="form-group">
                         <label for="software_version">Software version:</label>
                         <input type="text" class="form-control" id="software_version" name="software_version" value="{{data.software_version}}">
@@ -191,15 +209,7 @@
 
 
 
-                <div class="col-md-4 ">
-                    <div class="form-group">
-                        <label for="software_version">Sub-Location:</label>
-                        <input type="text" class="form-control" id="sub_location" name="sub_location" value="{{data.software_version}}">
-                        <div class="invalid-feedback">
-                         Please enter Sub-Location.
-                        </div>
-                    </div>
-                </div>
+              
 
 
 
@@ -258,6 +268,7 @@
         var asset_config_id= $('#asset_config_id').val()
         var location_description= $('#location_description').val()
         var id= $('#id').val()
+        var sub_location= $('#sub_location').val()
 
         asset_description = asset_description.replace(/['"`]/g, '');
         location_description = location_description.replace(/['"`]/g, '');
@@ -279,6 +290,7 @@
                 'asset_status' : asset_status,
                 'asset_config_id':asset_config_id,
                 'location_description':location_description,
+                'sub_location':sub_location,
                 'id':id,
                 'Action':'1',
             },

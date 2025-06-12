@@ -494,7 +494,16 @@ class PBSMasterView(View):
         units = PBSUnit.objects.all()
         MTBFMTBSAF = units[0].MTBFMTBSAF
         MTTR = units[0].MTTR
-        return render(request, self.template_name,{'MTBFMTBSAF':MTBFMTBSAF,'MTTR':MTTR,'asset_type':asset_type,'project':project,'system':system,'subsystem':subsystem,'product_id':product_id})
+
+        findUnit = PBSUnit.objects.filter()
+        if findUnit[0].chk_average_speed == 1:
+            display_val = 'MDBF'
+            average_speed = findUnit[0].average_speed
+        else:
+            display_val = 'MTBF'
+            average_speed = findUnit[0].average_speed
+
+        return render(request, self.template_name,{'MTBFMTBSAF':MTBFMTBSAF,'MTTR':MTTR,'asset_type':asset_type,'project':project,'system':system,'subsystem':subsystem,'product_id':product_id,'display_val':display_val,'average_speed':average_speed})
     
     def post(self, request, *args, **kwargs):
         P_id = request.session['P_id']

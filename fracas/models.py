@@ -97,6 +97,7 @@ class Asset(models.Model):
     asset_status = models.CharField(max_length=550)
     is_active = models.IntegerField(default=0)
     P_id = models.IntegerField(default=0)
+    sub_location = models.TextField()
 
     class Meta:
         verbose_name_plural = 'Asset Register'

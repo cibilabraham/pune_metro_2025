@@ -104,7 +104,7 @@ WSGI_APPLICATION = 'fracas_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'asset-optima_update1',
+        'NAME': 'pune_metron_db',
         'USER': 'postgres',
         'PASSWORD': 'password',
         'HOST': 'localhost',
