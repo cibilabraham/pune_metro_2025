@@ -2417,12 +2417,12 @@ class ImportAssetForm(View):
                     else:
                         Asset_status1 = Asset_status.translate({ord(c): None for c in string.whitespace})
 
-                        if Asset_status1.lower() =="online":
-                            Asset_status = "Online"
-                        elif Asset_status1.lower() =="under repair":
-                            Asset_status = "Under Repair"
-                        elif Asset_status1.lower() =="spare":
-                            Asset_status = "Spare"
+                        if Asset_status1.lower() =="active":
+                            Asset_status = "ACTIVE"
+                        elif Asset_status1.lower() =="under maintenance":
+                            Asset_status = "UNDER MAINTENANCE"
+                        elif Asset_status1.lower() =="idel/standby":
+                            Asset_status = "IDEL/STANDBY"
                         else:
                             Asset_status_err = 'Invalid asset status'
 

@@ -17,7 +17,7 @@
             <div class="row mb-3">
                 <div class="col-lg-12">
                     <h3 class="page-header"  style="margin-left:-15px">
-                      Failure data collection form
+                      Failure data collection
                     </h3>
                     <!--ol class="breadcrumb">
                         <li>
@@ -61,7 +61,7 @@
             <div class="row mb-4">
                 <div class="col-md-3">     
                     <div class="form-group">
-                        <label for="asset_type">By asset type</label>
+                        <label for="asset_type">By asset name</label>
                         {% if request.session.user_Role == 1 %}
                             <select class="form-control" id="asset_type" name="asset_type" required="required">
                                 <option value="all">--All--</option>
@@ -131,7 +131,7 @@
            
             </div>
 
-            <div class="row mb-4">
+            <div class="row mb-4 hide d-none">
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="mode_id">By mode id</label>
@@ -160,27 +160,27 @@
                     <thead>
                         <tr>
                             <th class="bg-white"><input type="checkbox" id="deleteAll" /></th>
-                            <th class="bg-white">Failure id</th>
-                            <th>Asset type</th>
+                            <th class="bg-white">Job Card Number</th>
+                            <th>Asset Name</th>
                             <th>Asset config id</th>
                             <th>Event description </th>
-                            <th>Mode id</th>
-                            <th>Date</th>
-                            <th>Time</th>
+                            <!-- <th>Mode id</th> -->
+                            <th>Date (DD-MM-YYYY)</th>
+                            <th>Time (HH:MM:SS)</th>
                             <th>Detection</th>
                             <th>Service delay (mins)</th>
                             <th>Immediate investigation</th>
                             <th>Failure type</th>
                             <th>Safety failure</th>
-                            <th>Hazard id</th>
+                            <!-- <th>Hazard id</th> -->
                             <th>Cm description</th>
-                            <th>Replaced asset config id</th>
-                            <th>Cm start date</th>
-                            <th>Cm start time</th>
-                            <th>Cm end date</th>
-                            <th>Cm end time</th>
-                            <th>Oem failure reference</th>
-                            <th>defect</th>
+                            <!-- <th>Replaced asset config id</th> -->
+                            <th>Cm start date (DD-MM-YYYY)</th>
+                            <th>Cm start time (HH:MM:SS)</th>
+                            <th>Cm end date (DD-MM-YYYY)</th>
+                            <th>Cm end time (HH:MM:SS)</th>
+                            <!-- <th>Oem failure reference</th> -->
+                            <!-- <th>defect</th> -->
                             <th class="bg-white"></th>
                         </tr>
                     </thead>
@@ -352,7 +352,7 @@
                         {"data" : "asset_type"},
                         {"data" : "asset_config_id"},
                         {"data" : "event_description"},
-                        {"data" : "mode_id"},
+                        // {"data" : "mode_id"},
                         //{"data" : "date"},
                         {"data":null,"render":function(item){
 
@@ -369,9 +369,9 @@
                         {"data" : "immediate_investigation"},
                         {"data" : "failure_type"},
                         {"data" : "safety_failure"},
-                        {"data" : "hazard_id"},
+                        // {"data" : "hazard_id"},
                         {"data" : "cm_description"},
-                        {"data" : "replaced_asset_config_id"},
+                        // {"data" : "replaced_asset_config_id"},
                         //{"data" : "cm_start_date"},
                         {"data":null,"render":function(item){
 
@@ -394,8 +394,8 @@
                             }
                         },
                         {"data" : "cm_end_time"},
-                        {"data" : "oem_failure_reference"},
-                        {"data" : "defect"},
+                        // {"data" : "oem_failure_reference"},
+                        // {"data" : "defect"},
                         {"data":null,"render":function(item){
                             if(item.user_Role != 4 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleteFailure('+ item.id +')">';
                             else return '';

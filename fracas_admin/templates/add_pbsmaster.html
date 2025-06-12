@@ -13,9 +13,9 @@
                 <div class="col-lg-12">
                     <h3 class="page-header">
                     {% if data.id != '' %}
-                        Update Record
+                        Update PBS Master Record
                         {% else %}
-                        Add Record
+                        Add PBS Master Record
                         {% endif %}
                     </h3>
                   
@@ -85,10 +85,7 @@
                         </div>
                     </div>
     
-               
-                </div>
-    
-                <div class="row mb-4">
+              
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="product_description">Product description:</label><br>
@@ -98,7 +95,7 @@
                     
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="asset_type">Asset type:</label><br>
+                            <label for="asset_type">Asset name:</label><br>
                             <label >{{data.asset_type}}</label>
                         </div>
                     </div>
@@ -111,9 +108,7 @@
                     </div>
     
                
-                </div>
-    
-                <div class="row mb-4">
+              
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="MTBF">*MTBF ({{MTBFMTBSAF}}):</label>
@@ -135,9 +130,6 @@
                     </div>
     
                
-                </div>
-    
-                <div class="row mb-4">
     
                     <div class="col-md-4">
                         <div class="form-group">
@@ -214,10 +206,7 @@
                 
                
 
-           
-            </div>
-
-            <div class="row mb-4">
+          
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="product_id">*Product id:</label>
@@ -233,17 +222,14 @@
                 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="asset_type">*Asset type:</label>
+                        <label for="asset_type">*Asset name:</label>
                         <input type="text" class="form-control" id="asset_type" name="asset_type" value="{{data.asset_type}}" required="required">
                     </div>
                 </div>
                 
                
 
-           
-            </div>
-
-            <div class="row mb-4">
+         
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="asset_description">*Asset description:</label>
@@ -266,10 +252,7 @@
                 </div>
                 
 
-           
-            </div>
-
-            <div class="row mb-4">
+          
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="MTTR">MTTR ({{MTTR}}):</label>
@@ -291,10 +274,7 @@
                     </div>
                 </div>
                 
-               
-            </div>
-
-            <div class="row mb-4">
+          
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="availability_target">Availability target:</label>

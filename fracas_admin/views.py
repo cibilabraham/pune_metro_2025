@@ -732,7 +732,7 @@ class PBSMasterAdd(View):
 
         if id == "":
             if PBSMaster.objects.filter(asset_type=asset_type,is_active=0).exists():
-                message = 'Asset type already exists..!'
+                message = 'Asset name already exists..!'
                 return JsonResponse({'message': message,'status':'0'})
             else:
                 u = PBSMaster(availability_target=availability_target,project_id=project,system=system,subsystem=subsystem,product_id=product_id,product_description=product_description,asset_type=asset_type,asset_description=asset_description,MTBF=MTBF,MTBSAF=MTBSAF,MTTR=MTTR,MART=MART,asset_quantity=asset_quantity)
@@ -786,7 +786,7 @@ class PBSMasterAdd(View):
                 return JsonResponse({'message': message,'status':'1','id':id})
             else:
                 if PBSMaster.objects.filter(asset_type=asset_type,is_active=0).exists():
-                    message = 'Asset type already exists..!'
+                    message = 'Asset name already exists..!'
                     return JsonResponse({'message': message,'status':'0'})
                 else:
                     PBSMaster.objects.filter(id=id).update(availability_target=availability_target,project_id=project,product_id=product_id,asset_type=asset_type,system=system,subsystem=subsystem,product_description=product_description,asset_description=asset_description,MTBF=MTBF,MTBSAF=MTBSAF,MTTR=MTTR,MART=MART,asset_quantity=asset_quantity)
@@ -865,7 +865,7 @@ class PBSMasterImport(View):
 
             asset_type_array=[]
 
-            if(B1=='Project' and C1=='System'  and D1=='Subsystem' and E1=='Product id' and F1=='Product description' and G1=='Asset type' and H1=='Asset description' and I1=='MTBF' and J1=='MTBSAF' and K1=='MTTR' and L1=='MART' and M1=='Asset quantity' and N1=='Availability target' ):
+            if(B1=='Project' and C1=='System'  and D1=='Subsystem' and E1=='Product id' and F1=='Product description' and G1=='Asset name' and H1=='Asset description' and I1=='MTBF' and J1=='MTBSAF' and K1=='MTTR' and L1=='MART' and M1=='Asset quantity' and N1=='Availability target' ):
                 # return render(request, self.template_name, {"message": 'required format'})
                 for row in range(1, row_count):
                     project=sheet.cell_value(row,1)
@@ -1046,7 +1046,7 @@ class PBSMasterImport(View):
 
     #             asset_type_array=[]
 
-    #             if(B1=='System' and C1=='Subsystem'  and D1=='Product id' and E1=='Product description' and F1=='Asset type' and G1=='Asset description' and H1=='MTBF' and I1=='MTBSAF' and J1=='MTTR' and K1=='MART' and L1=='Asset quantity' ):
+    #             if(B1=='System' and C1=='Subsystem'  and D1=='Product id' and E1=='Product description' and F1=='Asset name' and G1=='Asset description' and H1=='MTBF' and I1=='MTBSAF' and J1=='MTTR' and K1=='MART' and L1=='Asset quantity' ):
     #                 # return render(request, self.template_name, {"message": 'required format'})
     #                 for row in range(1, row_count):
     #                     system= sheet.cell_value(row,1)

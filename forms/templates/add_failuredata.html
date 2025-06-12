@@ -46,13 +46,25 @@
             <!-- /.row -->
           <form id="FailureForm"> 
             <div class="row mb-4">
+
+
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="asset_type">*Asset type:</label>
+                        <label for="failure_id">*Job Card ID:</label>
+                        <input type="text" class="form-control" required="required" id="failure_id" name="failure_id" value="{{data.failure_id}}">
+                        <div class="invalid-feedback">
+                         Please enter Job Card ID.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_type">*Asset Name:</label>
                         <input type="hidden" value="{{ data.id }}" id="id" name="id">
                         {% if request.session.user_Role == 1 %}
                         <select class="form-control" id="asset_type" name="asset_type" required="required">
-                        <option value="">--  Select Asset type  --</option>
+                        <option value="">--  Select Asset Name  --</option>
                         {% for asset_type in asset_type %}
                         {% if asset_type.asset_type != '' %}
                             {% if asset_type.id == data.asset_type %}
@@ -66,7 +78,7 @@
                         </select>
                         {% else %}  
                         <select class="form-control" id="asset_type" name="asset_type" required="required">
-                        <option value="">--  Select Asset type  --</option>
+                        <option value="">--  Select Asset Name  --</option>
                         {% for asset_type in asset_type %}
                         {% if asset_type.asset_type != '' %}
                             {% if asset_type.id == data.asset_type %}
@@ -80,37 +92,35 @@
                         </select>
                         {% endif %}  
                         <div class="invalid-feedback">
-                         Please enter Asset type.
+                         Please enter Asset Name.
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="failure_id">*Failure id:</label>
-                        <input type="text" class="form-control" required="required" id="failure_id" name="failure_id" value="{{data.failure_id}}">
-                        <div class="invalid-feedback">
-                         Please enter Failure id.
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="asset_config_id">*Asset config id:</label>
+                        <label for="asset_config_id">*LRU Config ID:</label>
                         <select class="form-control" id="asset_config_id" name="asset_config_id" required="required">
                         </select>
                         {% comment %} <input type="text" class="form-control" id="asset_config_id" name="asset_config_id" value="{{data.asset_config_id}}"> {% endcomment %}
                         <div class="invalid-feedback">
-                         Please enter Asset config id.
+                         Please enter LRU Config ID.
                         </div>
                     </div>
                 </div>
 
-           
-            </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_config_id">*Train Set No:</label>
+                        <select class="form-control" id="asset_config_id" name="asset_config_id" required="required">
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="asset_config_id" name="asset_config_id" value="{{data.asset_config_id}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter Train Set No.
+                        </div>
+                    </div>
+                </div>
 
-            <div class="row mb-4">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="event_description">*Event description:</label>
@@ -120,12 +130,12 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="mode_id">Mode id:</label>
+                        <label for="mode_id">Failure mode ID:</label>
                         <select class="form-control" id="mode_id" name="mode_id" >
-                        <option value="">--  Select Mode id  --</option>
+                        <option value="">--  Select Failure mode ID  --</option>
                         {% for mode_id in mode_id %}
                           {% if mode_id.mode_id != '' %}
                             {% if mode_id.mode_id == data.mode_id.mode_id %}
@@ -138,45 +148,74 @@
                         </select>
                         {% comment %} <input type="text" class="form-control" id="mode_id" name="mode_id" value="{{data.mode_id}}"> {% endcomment %}
                         <div class="invalid-feedback">
-                         Please enter Mode id.
+                         Please select Failure mode ID.
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="date">*Date:</label>
+                        <label for="cm_description">Failure mode description:</label>
+                        <textarea class="form-control" required="required" id="failure_mode_description" name="failure_mode_description">{{data.cm_description}}</textarea>
+                         <div class="invalid-feedback">
+                         Please enter Failure mode description.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="date">*Failure  Date (DD/MM/YYYY):</label>
                         <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" value="{{data.date|date:'d/m/Y'}}">
                         <div class="invalid-feedback">
-                         Please enter Date.
+                         Please enter Failure  Date.
                         </div>
                     </div>
                 </div>
 
-           
-            </div>
-
-            <div class="row mb-4">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="time">*Time:</label>
+                        <label for="time">*Failure Time:</label>
                         <input type="time" class="form-control" id="time" required="required" name="time" value="{{data.time|date:"H:i:s"}}">
                         <div class="invalid-feedback">
-                         Please enter Time.
+                         Please enter Failure Time.
                         </div>
                     </div>
                 </div>
-                
-                <div class="col-md-4">
+
+
+
+                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="detection">*Detection:</label>
-                        <input type="text" class="form-control" id="detection" required="required" name="detection" value="{{data.detection}}">
+                        <label for="detection">*Failure detection:</label>
+                        <select class="form-control" id="detection" name="detection" required="required">
+                        
+                        {% if 'Inspection' == data.detection %}
+                            <option value="Inspection" selected>Inspection</option>
+                        {% else %}
+                            <option value="Inspection">Inspection</option>
+                        {% endif %}
+                        {% if 'Failure Alarm' == data.detection %}
+                            <option value="Failure Alarm" selected>Failure Alarm</option>
+                        {% else %}
+                            <option value="Failure Alarm">Failure Alarm</option>
+                        {% endif %}
+                        {% if 'Service Disruption Diagnosis' == data.detection %}
+                            <option value="Service Disruption Diagnosis" selected>Service Disruption Diagnosis</option>
+                        {% else %}
+                            <option value="Service Disruption Diagnosis">Service Disruption Diagnosis</option>
+                        {% endif %}
+                        
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="detection" name="detection" value="{{data.detection}}"> {% endcomment %}
+                       
                          <div class="invalid-feedback">
-                         Please enter Detection.
+                         Please select Failure detection.
                         </div>
                     </div>
                 </div>
-                
+
+
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="service_delay">*Service delay (mins):</label>
@@ -187,13 +226,18 @@
                     </div>
                 </div>
 
-           
-            </div>
-
-            <div class="row mb-4">
-                
-                
                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="immediate_investigation">*Immediate investigation:</label>
+                        <textarea class="form-control" required="required" id="immediate_investigation" name="immediate_investigation">{{data.immediate_investigation}}</textarea>
+                        <div class="invalid-feedback">
+                         Please enter Immediate investigation.
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="failure_type">*Failure type:</label>
                         <select class="form-control" id="failure_type" name="failure_type" required="required">
@@ -225,7 +269,68 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="cm_description">*Cm description:</label>
+                        <textarea class="form-control" required="required" id="cm_description" name="cm_description">{{data.cm_description}}</textarea>
+                         <div class="invalid-feedback">
+                         Please enter Cm description.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="replaced_asset_config_id">Replaced asset config id:</label>
+                        <input type="text" class="form-control" id="replaced_asset_config_id" name="replaced_asset_config_id" value="{{data.replaced_asset_config_id}}">
+                        <div class="invalid-feedback">
+                         Please enter Replaced asset config id.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="cm_start_date">*Cm start date (DD/MM/YYYY):</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="cm_start_date" name="cm_start_date" value="{{data.cm_start_date|date:'d/m/Y'}}">
+                        <div class="invalid-feedback">
+                         Please enter Cm start date.
+                        </div>
+                    </div>
+                </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="cm_start_time">*Cm start time:</label>
+                        <input type="time" class="form-control" required="required" id="cm_start_time" name="cm_start_time" value="{{data.cm_start_time|date:"H:i:s"}}">
+                         <div class="invalid-feedback">
+                         Please enter Cm start time.
+                        </div>
+                    </div>
+                </div>
+
+                     
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="cm_end_date">Cm end date (DD/MM/YYYY):</label>
+                        <input type="text" autocomplete="off" class="form-control date-time" id="cm_end_date" name="cm_end_date" value="{{data.cm_end_date|date:'d/m/Y'}}">
+                        <div class="invalid-feedback">
+                         Please enter Cm end date.
+                        </div>
+                    </div>
+                </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="cm_end_time">Cm end time:</label>
+                        <input type="time" class="form-control" id="cm_end_time" name="cm_end_time" value="{{ data.cm_end_time|date:"H:i:s" }}">
+                        <div class="invalid-feedback">
+                         Please enter Cm end time.
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="safety_failure">*Safety failure:</label>
@@ -248,6 +353,7 @@
                     </div>
                 </div>
 
+
                  <div class="col-md-4">
                     <div class="form-group">
                         <label for="hazard_id">Hazard id:</label>
@@ -258,71 +364,57 @@
                     </div>
                 </div>
 
-           
-            </div>
-
-            <div class="row mb-4">
-               
-                
-                
-                <div class="col-md-4">
+                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="replaced_asset_config_id">Replaced asset config id:</label>
-                        <input type="text" class="form-control" id="replaced_asset_config_id" name="replaced_asset_config_id" value="{{data.replaced_asset_config_id}}">
-                        <div class="invalid-feedback">
-                         Please enter Replaced asset config id.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="cm_start_date">*Cm start date:</label>
-                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="cm_start_date" name="cm_start_date" value="{{data.cm_start_date|date:'d/m/Y'}}">
-                        <div class="invalid-feedback">
-                         Please enter Cm start date.
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="cm_start_time">*Cm start time:</label>
-                        <input type="time" class="form-control" required="required" id="cm_start_time" name="cm_start_time" value="{{data.cm_start_time|date:"H:i:s"}}">
+                        <label for="oem_failure_reference">Oem failure reference:</label>
+                        <textarea class="form-control" id="oem_failure_reference" name="oem_failure_reference">{{data.oem_failure_reference}}</textarea>
                          <div class="invalid-feedback">
-                         Please enter Cm start time.
+                         Please enter Oem failure reference.
                         </div>
                     </div>
                 </div>
 
            
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="safety_failure">*Systematic failure :</label>
+                        <select class="form-control" id="systematic_failure " name="systematic_failure" required="required">
+                            {% if 'Yes' == data.safety_failure %}
+                            <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if 'No' == data.safety_failure %}
+                            <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="systematic_failure" name="systematic_failure" value="{{data.safety_failure}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter Systematic failure .
+                        </div>
+                    </div>
+                </div>
+
+
+
+                
+
+           
             </div>
+
+         
 
             <div class="row mb-4">
                 
-                
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="cm_end_date">Cm end date:</label>
-                        <input type="text" autocomplete="off" class="form-control date-time" id="cm_end_date" name="cm_end_date" value="{{data.cm_end_date|date:'d/m/Y'}}">
-                        <div class="invalid-feedback">
-                         Please enter Cm end date.
-                        </div>
-                    </div>
-                </div>
+           
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="cm_end_time">Cm end time:</label>
-                        <input type="time" class="form-control" id="cm_end_time" name="cm_end_time" value="{{ data.cm_end_time|date:"H:i:s" }}">
-                        <div class="invalid-feedback">
-                         Please enter Cm end time.
-                        </div>
-                    </div>
-                </div>
+              
                 
                 
-                <div class="col-md-4">
+                <div class="col-md-4 hide d-none">
                     <div class="form-group">
                         <label for="defect">Defect:</label>
                         <select class="form-control" id="defect" name="defect">
@@ -344,44 +436,18 @@
                     </div>
                 </div>
 
+               
+
+
+               
+
+                
+
            
             </div>
 
             
 
-            <div class="row mb-4">
-               <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="immediate_investigation">*Immediate investigation:</label>
-                        <textarea class="form-control" required="required" id="immediate_investigation" name="immediate_investigation">{{data.immediate_investigation}}</textarea>
-                        <div class="invalid-feedback">
-                         Please enter Immediate investigation.
-                        </div>
-                    </div>
-                </div>
-
-                 <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="cm_description">*Cm description:</label>
-                        <textarea class="form-control" required="required" id="cm_description" name="cm_description">{{data.cm_description}}</textarea>
-                         <div class="invalid-feedback">
-                         Please enter Cm description.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="oem_failure_reference">Oem failure reference:</label>
-                        <textarea class="form-control" id="oem_failure_reference" name="oem_failure_reference">{{data.oem_failure_reference}}</textarea>
-                         <div class="invalid-feedback">
-                         Please enter Oem failure reference.
-                        </div>
-                    </div>
-                </div>
-
-           
-            </div>
 
             <div class="row ">
                 <div class="alert alert-warning col-12 d-none" id="message">

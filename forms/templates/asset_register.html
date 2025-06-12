@@ -60,7 +60,7 @@
             <div class="row mb-4">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="location_id">By location id</label>
+                        <label for="location_id">By train set no</label>
                         <select class="form-control" id="location_id" name="location_id">
                         <option value="all">--All--</option>
                         {% for location_id in location_id %}
@@ -88,7 +88,7 @@
                 
                 <div class="col-md-3">     
                     <div class="form-group">
-                        <label for="asset_type">By asset type</label>
+                        <label for="asset_type">By asset name</label>
                         {% if request.session.user_Role == 1 %}
                             <select class="form-control" id="asset_type" name="asset_type" required="required">
                                 <option value="all">--All--</option>
@@ -127,7 +127,7 @@
            
             </div>
 
-            <div class="row mb-4">
+            <div class="row mb-4 hide d-none">
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="software_version">By software version</label>
@@ -189,14 +189,14 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="deleteAll" /></th>
-                            <th>Asset config id</th>
-                            <th>Location id</th>
+                            <th>LRU config ID</th>
+                            <th>Train Set No</th>
                             <th>Location description</th>
                             <th>Asset serial number </th>
-                            <th>Asset type</th>
+                            <th>Asset Name</th>
                             <th>Asset description</th>
-                            <th>Software version</th>
-                            <th>Software description</th>
+                            <!-- <th>Software version</th> -->
+                            <!-- <th>Software description</th> -->
                             <th>Asset status</th>
                             <th></th>
                         </tr>
@@ -366,8 +366,8 @@ function getDefectData(){
                       {"data" : "asset_serial_number"},
                       {"data" : "asset_type"},
                       {"data" : "asset_description"},
-                      {"data" : "software_version"},
-                      {"data" : "software_description"},
+                    //   {"data" : "software_version"},
+                    //   {"data" : "software_description"},
                       {"data" : "asset_status"},
                       {"data":null,"render":function(item){
                             if(item.user_Role != 4) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleteAsset('+ item.id +')">';

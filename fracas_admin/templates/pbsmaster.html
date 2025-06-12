@@ -119,9 +119,9 @@
 
                 <div class="col-md-3">   
                     <div class="form-group">
-                        <label for="selasset_type">Asset type:</label>
+                        <label for="selasset_type">Asset name:</label>
                         <select class="form-control" id="selasset_type" name="selasset_type">
-                        <option value="all">--  Select Asset type  --</option>
+                        <option value="all">--  Select Asset name  --</option>
                         {% for asset_type in asset_type %}
                         {% if asset_type.asset_type != '' %}
                                 <option value="{{asset_type.asset_type}}">{{asset_type.asset_type}}</option>
@@ -157,7 +157,7 @@
                             <th>Subsystem</th>
                             <th>Product id</th>
                             <th>Product description</th>
-                            <th>Asset type</th>
+                            <th>Asset name</th>
                             <th>Asset description</th>
                             <th>MTBF ({{MTBFMTBSAF}})</th>
                             <th>MTBSAF ({{MTBFMTBSAF}})</th>
