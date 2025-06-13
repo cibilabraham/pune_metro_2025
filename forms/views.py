@@ -145,6 +145,7 @@ class AddAsset(View):
             'asset_description' : '',
             'software_version' : '',
             'software_description' : '',
+            'sub_location' : '',
             'asset_status':'',
             'id':'',
             }
@@ -160,6 +161,7 @@ class AddAsset(View):
                     'asset_description' : Asset_data.asset_description,
                     'software_version' : Asset_data.software_version,
                     'software_description' : Asset_data.software_description,
+                    'sub_location' : Asset_data.sub_location,
                     'asset_status':Asset_data.asset_status,
                     'id':id,
                 }
@@ -449,6 +451,31 @@ class SystemAssetconfig(View):
         # response = {'data' : data}
         return JsonResponse(data, safe=False)
         # return render(request, self.template_name, {'sub_systems' : sub_systems, 'systems':systems})
+
+
+class SystemLocationId(View):
+    template_name = 'add_failuredata.html'
+
+    def get(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_Role = request.session.get('user_Role')
+        req = request.GET
+        data=[]
+        asset_config_id = req.get('asset_config_id')
+        if asset_config_id == "":
+            return JsonResponse(data, safe=False)
+        if user_Role == 1:
+            # print(asset_config_id)
+            location_id = Asset.objects.filter(is_active=0,id=asset_config_id).distinct('location_id')
+        else:
+            location_id = Asset.objects.filter(is_active=0,id=asset_config_id).distinct('location_id')
+        for k in location_id:
+            data.append({'location_id':k.location_id,
+                         'id':k.id})
+        # response = {'data' : data}
+        return JsonResponse(data, safe=False)
+        # return render(request, self.template_name, {'sub_systems' : sub_systems, 'systems':systems})
+
 
 
 class AddFailureData(View):
@@ -4000,5 +4027,259 @@ class CheckCorrectivedata(View):
                 return JsonResponse({'status':'1'})
             else:
                 return JsonResponse({'status':'0'})
+
+
+
+class jobcardRegister(View):
+    template_name = 'jobcard_register.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+        if user_Role == 1:
+            location_id = Asset.objects.filter(is_active=0).distinct('location_id')
+            asset_serial_number = Asset.objects.filter(is_active=0).distinct('asset_serial_number')
+            asset_type = PBSMaster.objects.filter(is_active=0).order_by('asset_type') 
+            asset_description = Asset.objects.filter(is_active=0).distinct('asset_description')
+            software_version = Asset.objects.filter(is_active=0).distinct('software_version')
+            software_description = Asset.objects.filter(is_active=0).distinct('software_description')
+            asset_status = Asset.objects.filter(is_active=0).distinct('asset_status')
+        else:
+            location_id = Asset.objects.filter(is_active=0,P_id=P_id).distinct('location_id')
+            asset_serial_number = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_serial_number')
+            asset_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_description')
+            software_version = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_version')
+            software_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_description')
+            asset_status = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_status')
+            asset_type = PBSMaster.objects.filter(is_active=0,project_id=P_id).order_by('asset_type') 
+        return render(request, self.template_name, {'asset_status':asset_status,'software_description':software_description, 'software_version':software_version, 'asset_description':asset_description, 'location_id' : location_id, 'asset_serial_number':asset_serial_number,'asset_type':asset_type})
+
+    def post(self, request, *args, **kwargs):
+        
+        data=[]
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+        req = request.POST
+        # print(req)
+        location_id = req.get('location_id')
+        asset_serial_number = req.get('asset_serial_number')
+        asset_type = req.get('asset_type')
+        asset_description = req.get('asset_description')
+        software_version = req.get('software_version')
+        software_description = req.get('software_description')
+        asset_status = req.get('asset_status')
+        
+        Asset_data =Asset.objects.filter(is_active=0)
+        print(Asset_data)
+
+        if location_id != "all":
+            Asset_data=Asset_data.filter(location_id=location_id)
+        if asset_serial_number != "all":
+            Asset_data=Asset_data.filter(asset_serial_number=asset_serial_number)
+        if asset_type != "all":
+            Asset_data=Asset_data.filter(asset_type=asset_type)
+        if asset_description != "all":
+            Asset_data=Asset_data.filter(asset_description=asset_description)
+        if software_version != "all":
+            Asset_data=Asset_data.filter(software_version=software_version)
+        if software_description != "all":
+            Asset_data=Asset_data.filter(software_description=software_description)
+        if asset_status != "all":
+            Asset_data=Asset_data.filter(asset_status=asset_status)
+    
+        # Asset_data = Asset.objects.all()
+        for Assets in Asset_data:
+            print(Assets.asset_type)
+            if PBSMaster.objects.filter(id=Assets.asset_type,is_active=0).exists():
+                print('uuuuuuuu')
+                if user_Role == 1:
+                    PBSMaster_datas=PBSMaster.objects.filter(id=Assets.asset_type,is_active=0)
+                    for PBSMaster_data in PBSMaster_datas:
+                        data.append({ 
+                            'asset_config_id' :  Assets.asset_config_id,
+                            'location_id' : Assets.location_id,
+                            'location_description' : Assets.location_description,
+                            'asset_serial_number' : Assets.asset_serial_number,
+                            'asset_type' : PBSMaster_data.asset_type,
+                            'asset_description' : Assets.asset_description,
+                            'software_version' : Assets.software_version,
+                            'software_description' : Assets.software_description,
+                            'asset_status':Assets.asset_status,
+                            'id':Assets.id,
+                            'user_Role':user_Role,
+                        }) 
+                else:
+                    if PBSMaster.objects.filter(id=Assets.asset_type,project_id=P_id,is_active=0).exists():
+                        PBSMaster_datas=PBSMaster.objects.filter(id=Assets.asset_type,is_active=0)
+                        for PBSMaster_data in PBSMaster_datas:
+                            data.append({ 
+                                'asset_config_id' :  Assets.asset_config_id,
+                                'location_id' : Assets.location_id,
+                                'location_description' : Assets.location_description,
+                                'asset_serial_number' : Assets.asset_serial_number,
+                                'asset_type' : PBSMaster_data.asset_type,
+                                'asset_description' : Assets.asset_description,
+                                'software_version' : Assets.software_version,
+                                'software_description' : Assets.software_description,
+                                'asset_status':Assets.asset_status,
+                                'id':Assets.id,
+                                'user_Role':user_Role
+                            }) 
+        print(data)
+        return JsonResponse({'data':data})
+
+    
+
+class AddJobcard(View):
+    template_name = 'add_jobcard.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        user_Role = request.session.get('user_Role')
+        P_id = request.session['P_id']
+        if user_Role == 4:
+            return redirect('/dashboard/')
+        id = kwargs.get("id")
+        data=[]
+        if id==None:
+            data={ 
+            'asset_config_id' : '',
+            'location_id' : '',
+            'location_description' : '',
+            'asset_serial_number' : '',
+            'asset_type' : '',
+            'asset_description' : '',
+            'software_version' : '',
+            'software_description' : '',
+            'sub_location' : '',
+            'asset_status':'',
+            'id':'',
+            }
+        else:
+            Asset_datas =Asset.objects.filter(id=id)
+            for Asset_data in Asset_datas:
+                data={ 
+                    'asset_config_id' : Asset_data.asset_config_id,
+                    'location_id' : Asset_data.location_id,
+                    'location_description' : Asset_data.location_description,
+                    'asset_serial_number' : Asset_data.asset_serial_number,
+                    'asset_type' : Asset_data.asset_type,
+                    'asset_description' : Asset_data.asset_description,
+                    'software_version' : Asset_data.software_version,
+                    'software_description' : Asset_data.software_description,
+                    'sub_location' : Asset_data.sub_location,
+                    'asset_status':Asset_data.asset_status,
+                    'id':id,
+                }
+            #print(data)
+        if user_Role == 1:
+            asset_types = PBSMaster.objects.filter(is_active=0).order_by('asset_type')
+        else:
+            asset_types = PBSMaster.objects.filter(is_active=0,project_id=P_id).order_by('asset_type')
+
+        train_set_options = [f"TS#{i:02d}" for i in range(1, 35)]  # 01 to 34
+
+        return render(request, self.template_name,{'data':data,'asset_types':asset_types,'train_set_options':train_set_options})
+
+    def post(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        req = request.POST
+        cursor = connection.cursor()
+        # print(req)
+        location_id = req.get('location_id')
+        asset_serial_number = req.get('asset_serial_number')
+        asset_type = req.get('asset_type')
+        asset_description = req.get('asset_description')
+        software_version = req.get('software_version')
+        software_description = req.get('software_description')
+        asset_status = req.get('asset_status')
+        asset_config_id = req.get('asset_config_id')
+        location_description = req.get('location_description')
+        sub_location = req.get('sub_location')
+        Action = req.get('Action')
+        ids = req.get('id')
+        DATA = []
+        HEAD = ["asset_config_id",'asset_serial_number','location_id','location_description','asset_type','software_version','asset_description','software_description','asset_status','sub_location']
+        asst =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
+        for f in HEAD:
+            if f == 'asset_type':
+                DATA.append({
+                    'field':f,
+                    'value':asst[0].id
+                })
+            else:
+                DATA.append({
+                    'field':f,
+                    'value':req.get(f)
+                })
+        # print(DATA)
+        if ids =="":
+            if Asset.objects.filter(asset_config_id=asset_config_id,is_active=0).exists():
+                return JsonResponse({'status':'0'})
+            else:
+                Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
+                for Find_Pid in Find_Pids:
+                    r=Asset(P_id=Find_Pid.project_id,asset_config_id=asset_config_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status,sub_location=sub_location)
+                    r.save()
+                    FindUser = UserProfile.objects.filter(user_id=user_ID)
+                    now = datetime.datetime.now()
+                    current_time = now.strftime("%H:%M:%S")
+                    meg ="Add new Asset  "
+                    meg ="ID: "+str(r.id) +"=> "+meg
+                    h = history(user_id=FindUser[0].id,P_id=P_id,date=datetime.date.today(),time=current_time,message=meg,function_name="Asset Register")
+                    h.save()
+                    return JsonResponse({'status':'1','id':r.id})
+        else:
+            meg =''
+            for i in DATA:
+                cursor.execute("SELECT * FROM fracas_asset WHERE id='{0}' and {1}='{2}'".format(ids,i['field'],i['value']))
+                row = cursor.fetchone()
+                if row == None:
+                    cursor.execute("SELECT {0} FROM fracas_asset WHERE id='{1}'".format(i['field'],ids))
+                    row1 = cursor.fetchone()
+                    if i['field'] == 'asset_type':
+                        asst1 =PBSMaster.objects.filter(id=row1[0])
+                        meg = meg +i['field']+': '+ str(asst1[0].asset_type) +' to '+str(asset_type)+', '
+                    else:
+                        meg = meg +i['field']+': '+ str(row1[0]) +' to '+str(i['value'])+', '
+                    
+            if Asset.objects.filter(asset_config_id=asset_config_id,is_active=0).exists():
+                if Asset.objects.filter(asset_config_id=asset_config_id, id=ids,is_active=0).exists():
+                    Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
+                    for Find_Pid in Find_Pids:
+                        Asset.objects.filter(id=ids).update(P_id=Find_Pid.project_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status,sub_location=sub_location)
+                        if meg !='':
+                            FindUser = UserProfile.objects.filter(user_id=user_ID)
+                            now = datetime.datetime.now()
+                            current_time = now.strftime("%H:%M:%S")
+                            meg ="ID: "+ids +"=> "+meg
+                            h = history(user_id=FindUser[0].id,P_id=P_id,date=datetime.date.today(),time=current_time,message=meg,function_name="Asset Register")
+                            h.save()
+                        return JsonResponse({'status':'1','id':ids})
+                else:
+                    return JsonResponse({'status':'0'})
+            else:
+                AFTER = Asset.objects.filter(id=ids)
+                if FailureData.objects.filter(asset_config_id=AFTER[0].asset_config_id,is_active=0).exists():
+                    return JsonResponse({'status':'2'})
+                else:
+                    Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
+                    for Find_Pid in Find_Pids:
+                        Asset.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id=asset_config_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status,sub_location=sub_location)
+                        if meg !='':
+                            FindUser = UserProfile.objects.filter(user_id=user_ID)
+                            now = datetime.datetime.now()
+                            current_time = now.strftime("%H:%M:%S")
+                            meg ="ID: "+ids +"=> "+meg
+                            h = history(user_id=FindUser[0].id,P_id=P_id,date=datetime.date.today(),time=current_time,message=meg,function_name="Asset Register")
+                            h.save()
+                        return JsonResponse({'status':'1','id':ids})
+                
             
  

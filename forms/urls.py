@@ -21,6 +21,7 @@ urlpatterns = [
     path('failuredata/importfailuredata/',ImportFailureData.as_view(),name='import_failure_data'),
     path('failuredata/addimportfailuredata/',AddImportFailureData.as_view(),name='import_addfailure_data'),
     path('system/',SystemAssetconfig.as_view(),name='system'),
+    path('location_id/',SystemLocationId.as_view(),name='location_id'),
     
     path('failuremode/', Failuremode.as_view(), name='failuremode'),
     path('failuremode/import/',ImportFailuremode.as_view(),name='import_failuremode'),
@@ -62,5 +63,9 @@ urlpatterns = [
     path('review_board/delete/',DeleteReviewBoardView.as_view(),name='delete_review_board'),
     path('review_board/deleteAll/',DeleteAllReviewBoardView.as_view(),name='deleteAll_review_board'),
     path('review_board/add/',AddReviewBoardView.as_view(),name='add_review_board'),
+
+
+    path('jobcard_register/', jobcardRegister.as_view(), name='job_register'),
+    path('jobcard_register/addjobcard/',AddJobcard.as_view(),name='add_jobcard'),
     
 ]

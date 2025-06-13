@@ -30,20 +30,20 @@
                 </div>
             </div>
             <!-- /.row -->
-             {% if request.session.user_Role == 1 %}
+             {% if request.session.user_Role < 4 %}
             <div class="row ">
             <div class="col-lg-12 mb-5">
 
                 <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
 
-
+                {% comment %} {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}        {% endcomment %}
                 <a href="/PBSMaster/import/"><button class="btn btn-primary btn-icon-split float-right m-2 "  >            
                     <span class="text">Import Record</span>
                     <span class="icon text-white-50">
                     <i class="fas fa-file-import"></i>
                     </span>
                 </button></a>
-            
+                 {% comment %} {% endif %} {% endcomment %}
                 
                 <a href="/PBSMaster/add/"><button class="btn btn-success btn-icon-split float-right m-2" >              
                 <span class="text">Add New Record</span>
@@ -327,12 +327,12 @@ var average_speed = '{{average_speed}}';
                   },
                   "columns" : [
                     {"data":null,"render":function(item){
-                        if(item.user_Role != 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                        if(item.user_Role < 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
                             else return '';
                         }
                     },
                     {"data":null,"render":function(item){
-                            if(item.user_Role == 4 ) return item.id;
+                            if(item.user_Role > 4 ) return item.id;
                             return '<a href="/PBSMaster/add/'+ item.id +'" >'+ item.id +'</a>';
                         }
                     },
@@ -355,7 +355,7 @@ var average_speed = '{{average_speed}}';
                       {"data" : "asset_quantity"},
                       {"data" : "availability_target"},
                       {"data":null,"render":function(item){
-                            if(item.user_Role == 1 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="deletePBSMaster('+ item.id +')">';
+                            if(item.user_Role < 4 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="deletePBSMaster('+ item.id +')">';
                             else return '';
                         }
                     },

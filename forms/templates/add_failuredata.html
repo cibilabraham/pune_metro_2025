@@ -50,13 +50,78 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="failure_id">*Job Card ID:</label>
+                        <label for="failure_id">*Failure ID:</label>
                         <input type="text" class="form-control" required="required" id="failure_id" name="failure_id" value="{{data.failure_id}}">
                         <div class="invalid-feedback">
-                         Please enter Job Card ID.
+                         Please enter Failure ID.
                         </div>
                     </div>
                 </div>
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="date">*Failure  Date (DD/MM/YYYY):</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" value="{{data.date|date:'d/m/Y'}}">
+                        <div class="invalid-feedback">
+                         Please enter Failure  Date.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="time">*Failure Time:</label>
+                        <input type="time" class="form-control" id="time" required="required" name="time" value="{{data.time|date:"H:i:s"}}">
+                        <div class="invalid-feedback">
+                         Please enter Failure Time.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="event_description">*Failure description:</label>
+                        <input type="text" class="form-control" id="event_description" required="required" name="event_description" value="{{data.event_description}}">
+                        <div class="invalid-feedback">
+                         Please enter Failure description.
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="failure_type">*Failure type:</label>
+                        <select class="form-control" id="failure_type" name="failure_type" required="required">
+                        
+                        {% if 'Software' == data.failure_type %}
+                            <option value="Software" selected>Software</option>
+                        {% else %}
+                            <option value="Software">Software</option>
+                        {% endif %}
+                        {% if 'Hardware' == data.failure_type %}
+                            <option value="Hardware" selected>Hardware</option>
+                        {% else %}
+                            <option value="Hardware">Hardware</option>
+                        {% endif %}
+                        {% if 'Random' == data.failure_type %}
+                            <option value="Random" selected>Random</option>
+                        {% else %}
+                            <option value="Random">Random</option>
+                        {% endif %}
+                        {% if 'Other' == data.failure_type %}
+                            <option value="Other" selected>Other</option>
+                        {% else %}
+                            <option value="Other">Other</option>
+                        {% endif %}
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="failure_type" name="failure_type" value="{{data.failure_type}}"> {% endcomment %}
+                         <div class="invalid-feedback">
+                         Please enter Failure type.
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="col-md-4">
                     <div class="form-group">
@@ -99,34 +164,149 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="asset_config_id">*LRU Config ID:</label>
+                        <label for="asset_config_id">*Asset Config ID:</label>
                         <select class="form-control" id="asset_config_id" name="asset_config_id" required="required">
                         </select>
                         {% comment %} <input type="text" class="form-control" id="asset_config_id" name="asset_config_id" value="{{data.asset_config_id}}"> {% endcomment %}
                         <div class="invalid-feedback">
-                         Please enter LRU Config ID.
+                         Please enter Asset Config ID.
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="asset_config_id">*Train Set No:</label>
-                        <select class="form-control" id="asset_config_id" name="asset_config_id" required="required">
+                        <label for="location_id">*Train Set No:</label>
+                        <select class="form-control" id="location_id" name="location_id" required="required">
                         </select>
-                        {% comment %} <input type="text" class="form-control" id="asset_config_id" name="asset_config_id" value="{{data.asset_config_id}}"> {% endcomment %}
+                        {% comment %} <input type="text" class="form-control" id="location_id" name="location_id" value="{{data.location_id}}"> {% endcomment %}
                         <div class="invalid-feedback">
                          Please enter Train Set No.
                         </div>
                     </div>
                 </div>
 
+
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="event_description">*Event description:</label>
-                        <input type="text" class="form-control" id="event_description" required="required" name="event_description" value="{{data.event_description}}">
+                        <label for="kilometre_reading">*Kilometre Reading:</label>
+                        <input type="text" class="form-control" id="kilometre_reading" required="required" name="kilometre_reading" value="{{data.kilometre_reading}}">
                         <div class="invalid-feedback">
-                         Please enter Event description.
+                         Please enter Kilometre Reading.
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="sel_car">*CAR:</label>
+                        <select class="form-control" id="sel_car" name="sel_car" required="required" multiple>
+                            <option value="DMA">DMA</option>
+                            <option value="TC">TC</option>
+                            <option value="DMB">DMB</option>
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="sel_car" name="sel_car" value="{{data.sel_car}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter CAR.
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="equipment">*Equipment:</label>
+                        <input type="text" class="form-control" id="equipment" required="required" name="equipment" value="{{data.equipment}}">
+                        <div class="invalid-feedback">
+                         Please enter Equipment.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="location">*Location:</label>
+                        <input type="text" class="form-control" id="location" required="required" name="location" value="{{data.location}}">
+                        <div class="invalid-feedback">
+                         Please enter Location.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="direction">*Direction:</label>
+                        <select class="form-control" id="direction" name="direction" required="required" >
+                            <option value="Up">Up</option>
+                            <option value="Down">Down</option>
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="direction" name="direction" value="{{data.direction}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter Direction.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="no_of_trip_cancel">*No. of Trips Cancelled:</label>
+                        <input type="number" class="form-control" id="no_of_trip_cancel" required="required" name="no_of_trip_cancel" value="{{data.no_of_trip_cancel}}">
+                        <div class="invalid-feedback">
+                         Please enter No. of Trips Cancelled.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="deboarding">*Deboarding:</label>
+                        <select class="form-control" id="deboarding" name="deboarding" required="required" >
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="deboarding" name="deboarding" value="{{data.deboarding}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter Deboarding.
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="department">*Department:</label>
+                        <select class="form-control" id="department" name="department" required="required" >
+                            <option value="Operator">Operator</option>
+                            <option value="Maintainer">Maintainer</option>
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="department" name="department" value="{{data.department}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter Department.
+                        </div>
+                    </div>
+                </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="reported_to_PPIO">*Reported to PPIO:</label>
+                        <select class="form-control" id="reported_to_PPIO" name="reported_to_PPIO" required="required" >
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="reported_to_PPIO" name="reported_to_PPIO" value="{{data.reported_to_PPIO}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter Reported to PPIO.
+                        </div>
+                    </div>
+                </div>
+
+                   <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="TO_name">*T.O. Name / Reported By:</label>
+                        <input type="text" class="form-control" id="TO_name" required="required" name="TO_name" value="{{data.TO_name}}">
+                        <div class="invalid-feedback">
+                         Please enter T.O. Name / Reported By.
                         </div>
                     </div>
                 </div>
@@ -153,39 +333,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="cm_description">Failure mode description:</label>
-                        <textarea class="form-control" required="required" id="failure_mode_description" name="failure_mode_description">{{data.cm_description}}</textarea>
-                         <div class="invalid-feedback">
-                         Please enter Failure mode description.
-                        </div>
-                    </div>
-                </div>
-
-                 <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="date">*Failure  Date (DD/MM/YYYY):</label>
-                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" value="{{data.date|date:'d/m/Y'}}">
-                        <div class="invalid-feedback">
-                         Please enter Failure  Date.
-                        </div>
-                    </div>
-                </div>
 
                 <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="time">*Failure Time:</label>
-                        <input type="time" class="form-control" id="time" required="required" name="time" value="{{data.time|date:"H:i:s"}}">
-                        <div class="invalid-feedback">
-                         Please enter Failure Time.
-                        </div>
-                    </div>
-                </div>
-
-
-
-                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="detection">*Failure detection:</label>
                         <select class="form-control" id="detection" name="detection" required="required">
@@ -215,77 +364,44 @@
                     </div>
                 </div>
 
-
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="service_delay">*Service delay (mins):</label>
+                        <label for="service_delay">*Delay Time (mins):</label>
                         <input type="number" class="form-control" id="service_delay" required="required" name="service_delay" value="{{data.service_delay}}">
                         <div class="invalid-feedback">
-                         Please enter Service delay.
+                         Please enter Delay Time.
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="immediate_investigation">*Immediate investigation:</label>
-                        <textarea class="form-control" required="required" id="immediate_investigation" name="immediate_investigation">{{data.immediate_investigation}}</textarea>
-                        <div class="invalid-feedback">
-                         Please enter Immediate investigation.
-                        </div>
-                    </div>
-                </div>
-
-
-                 <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="failure_type">*Failure type:</label>
-                        <select class="form-control" id="failure_type" name="failure_type" required="required">
-                        
-                        {% if 'Software' == data.failure_type %}
-                            <option value="Software" selected>Software</option>
-                        {% else %}
-                            <option value="Software">Software</option>
-                        {% endif %}
-                        {% if 'Hardware' == data.failure_type %}
-                            <option value="Hardware" selected>Hardware</option>
-                        {% else %}
-                            <option value="Hardware">Hardware</option>
-                        {% endif %}
-                        {% if 'Random' == data.failure_type %}
-                            <option value="Random" selected>Random</option>
-                        {% else %}
-                            <option value="Random">Random</option>
-                        {% endif %}
-                        {% if 'Other' == data.failure_type %}
-                            <option value="Other" selected>Other</option>
-                        {% else %}
-                            <option value="Other">Other</option>
-                        {% endif %}
+                        <label for="safety_failure">*Safety failure:</label>
+                        <select class="form-control" id="safety_failure" name="safety_failure" required="required">
+                            {% if 'Yes' == data.safety_failure %}
+                            <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if 'No' == data.safety_failure %}
+                            <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
                         </select>
-                        {% comment %} <input type="text" class="form-control" id="failure_type" name="failure_type" value="{{data.failure_type}}"> {% endcomment %}
-                         <div class="invalid-feedback">
-                         Please enter Failure type.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="cm_description">*Cm description:</label>
-                        <textarea class="form-control" required="required" id="cm_description" name="cm_description">{{data.cm_description}}</textarea>
-                         <div class="invalid-feedback">
-                         Please enter Cm description.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="replaced_asset_config_id">Replaced asset config id:</label>
-                        <input type="text" class="form-control" id="replaced_asset_config_id" name="replaced_asset_config_id" value="{{data.replaced_asset_config_id}}">
+                        {% comment %} <input type="text" class="form-control" id="safety_failure" name="safety_failure" value="{{data.safety_failure}}"> {% endcomment %}
                         <div class="invalid-feedback">
-                         Please enter Replaced asset config id.
+                         Please enter Safety failure.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hazard_id">Hazard id:</label>
+                        <input type="text" class="form-control" id="hazard_id" name="hazard_id" value="{{data.hazard_id}}">
+                        <div class="invalid-feedback">
+                         Please enter Hazard id.
                         </div>
                     </div>
                 </div>
@@ -331,40 +447,49 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="safety_failure">*Safety failure:</label>
-                        <select class="form-control" id="safety_failure" name="safety_failure" required="required">
-                            {% if 'Yes' == data.safety_failure %}
-                            <option value="Yes" selected>Yes</option>
+                        <label for="cm_description">*Cm description:</label>
+                        <textarea class="form-control" required="required" id="cm_description" name="cm_description">{{data.cm_description}}</textarea>
+                         <div class="invalid-feedback">
+                         Please enter Cm description.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 ">
+                    <div class="form-group">
+                        <label for="defect">Defect:</label>
+                        <select class="form-control" id="defect" name="defect">
+                        <option value="">--  Select Defect  --</option>
+                        {% for defect in defect %}
+                          {% if defect.defect_id != '' %}
+                           {% if defect.defect_id == data.defect.defect_id %}
+                            <option value="{{defect.defect_id}}" selected>{{defect.defect_id}}: {{defect.defect_description}}</option>
                             {% else %}
-                                <option value="Yes">Yes</option>
+                            <option value="{{defect.defect_id}}">{{defect.defect_id}}: {{defect.defect_description}}</option>
                             {% endif %}
-                            {% if 'No' == data.safety_failure %}
-                            <option value="No" selected>No</option>
-                            {% else %}
-                                <option value="No">No</option>
-                            {% endif %}
+                        {% endif %}
+                        {% endfor %}
                         </select>
-                        {% comment %} <input type="text" class="form-control" id="safety_failure" name="safety_failure" value="{{data.safety_failure}}"> {% endcomment %}
+                        {% comment %} <input type="text" class="form-control" id="defect" name="defect" value="{{data.defect}}"> {% endcomment %}
                         <div class="invalid-feedback">
-                         Please enter Safety failure.
+                         Please enter Defect.
                         </div>
                     </div>
                 </div>
-
 
                  <div class="col-md-4">
                     <div class="form-group">
-                        <label for="hazard_id">Hazard id:</label>
-                        <input type="text" class="form-control" id="hazard_id" name="hazard_id" value="{{data.hazard_id}}">
+                        <label for="immediate_investigation">*Immediate Action Taken:</label>
+                        <textarea class="form-control" required="required" id="immediate_investigation" name="immediate_investigation">{{data.immediate_investigation}}</textarea>
                         <div class="invalid-feedback">
-                         Please enter Hazard id.
+                         Please enter Immediate Action Taken.
                         </div>
                     </div>
                 </div>
 
-                 <div class="col-md-4">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="oem_failure_reference">Oem failure reference:</label>
                         <textarea class="form-control" id="oem_failure_reference" name="oem_failure_reference">{{data.oem_failure_reference}}</textarea>
@@ -374,6 +499,68 @@
                     </div>
                 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               
+
+            
+                
+
+
+                 
+
+
+               
+
+               
+
+
+                
+
+               
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="replaced_asset_config_id">Replaced asset config id:</label>
+                        <input type="text" class="form-control" id="replaced_asset_config_id" name="replaced_asset_config_id" value="{{data.replaced_asset_config_id}}">
+                        <div class="invalid-feedback">
+                         Please enter Replaced asset config id.
+                        </div>
+                    </div>
+                </div>
+
+                
+                 
            
 
                 <div class="col-md-4">
@@ -406,47 +593,6 @@
             </div>
 
          
-
-            <div class="row mb-4">
-                
-           
-
-              
-                
-                
-                <div class="col-md-4 hide d-none">
-                    <div class="form-group">
-                        <label for="defect">Defect:</label>
-                        <select class="form-control" id="defect" name="defect">
-                        <option value="">--  Select Defect  --</option>
-                        {% for defect in defect %}
-                          {% if defect.defect_id != '' %}
-                           {% if defect.defect_id == data.defect.defect_id %}
-                            <option value="{{defect.defect_id}}" selected>{{defect.defect_id}}: {{defect.defect_description}}</option>
-                            {% else %}
-                            <option value="{{defect.defect_id}}">{{defect.defect_id}}: {{defect.defect_description}}</option>
-                            {% endif %}
-                        {% endif %}
-                        {% endfor %}
-                        </select>
-                        {% comment %} <input type="text" class="form-control" id="defect" name="defect" value="{{data.defect}}"> {% endcomment %}
-                        <div class="invalid-feedback">
-                         Please enter Defect.
-                        </div>
-                    </div>
-                </div>
-
-               
-
-
-               
-
-                
-
-           
-            </div>
-
-            
 
 
             <div class="row ">
@@ -544,6 +690,32 @@
             });
                 var select = "<select>"+asset_config_id+"</select>";
             $("#asset_config_id").html(select);
+            
+            }
+        }); 
+    });
+
+
+     $("#asset_config_id").change(function () {                            
+    var asset_config_id= $('select[name=asset_config_id]').val()
+    $.ajax({
+        url: "/forms/location_id/",
+        method: 'GET',
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data : {
+        'asset_config_id' : asset_config_id
+        },
+        success: function (response) {
+            //console.log(response);
+            var location_id = "<option value="+""+">"+"--  Select Train Set No  --"+"</options>";
+                $.each(response, function (i,value) {
+                if (value.location_id != ''){
+                location_id = location_id + "<option value="+value.id+">"+value.location_id+"</options>";
+                }
+            });
+                var select = "<select>"+location_id+"</select>";
+            $("#location_id").html(select);
             
             }
         }); 

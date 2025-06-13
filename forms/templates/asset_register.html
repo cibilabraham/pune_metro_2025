@@ -30,13 +30,13 @@
                 </div>
             </div>
             <!-- /.row -->
-             {% if request.session.user_Role != 4 %}
+             {% if request.session.user_Role < 4  %}
             <div class="row ">
             <div class="col-lg-12 mb-5">
 
                 <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
 
-                {% comment %} {% if request.session.user_Role == 1 %}        {% endcomment %}
+                {% comment %} {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}        {% endcomment %}
                 <a href="/forms/asset_register/importasset/">  
                     <button class="btn btn-primary btn-icon-split float-right m-2" >            
                     <span class="text">Import asset </span>
@@ -60,7 +60,7 @@
             <div class="row mb-4">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="location_id">By train set no</label>
+                        <label for="location_id">Train set no</label>
                         <select class="form-control" id="location_id" name="location_id">
                         <option value="all">--All--</option>
                         {% for location_id in location_id %}
@@ -74,7 +74,7 @@
                 
                 <div class="col-md-3">     
                     <div class="form-group">
-                        <label for="asset_serial_number">By asset serial number</label>
+                        <label for="asset_serial_number">Asset serial number</label>
                         <select class="form-control" class="form-control" id="asset_serial_number" name="asset_serial_number">
                         <option value="all">--All--</option>
                         {% for asset_serial_number in asset_serial_number %}
@@ -88,7 +88,7 @@
                 
                 <div class="col-md-3">     
                     <div class="form-group">
-                        <label for="asset_type">By asset name</label>
+                        <label for="asset_type">Asset Name</label>
                         {% if request.session.user_Role == 1 %}
                             <select class="form-control" id="asset_type" name="asset_type" required="required">
                                 <option value="all">--All--</option>
@@ -113,7 +113,7 @@
 
                 <div class="col-md-3">     
                     <div class="form-group">
-                        <label for="asset_description">By asset description</label>
+                        <label for="asset_description">Asset description</label>
                         <select class="form-control" id="asset_description" name="asset_description">
                         <option value="all">--All--</option>
                         {% for asset_description in asset_description %}
@@ -123,6 +123,10 @@
                         {% endfor %}
                         </select>
                     </div>
+                </div>
+
+                <div class="col-md-3 ">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter Now</button>
                 </div>
            
             </div>
@@ -175,9 +179,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 pt-4">     
-                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter</button>
-                </div>
+               
                
             </div>
             
@@ -352,12 +354,12 @@ function getDefectData(){
                   },
                   "columns" : [
                     {"data":null,"render":function(item){
-                        if(item.user_Role != 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                        if(item.user_Role < 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
                             else return '';
                         }
                     },
                     {"data":null,"render":function(item){
-                            if(item.user_Role != 4) return '<a href="/forms/asset_register/addasset/'+ item.id +'" >'+ item.asset_config_id +'</a>';
+                            if(item.user_Role < 4) return '<a href="/forms/asset_register/addasset/'+ item.id +'" >'+ item.asset_config_id +'</a>';
                             else return item.asset_config_id;
                         }
                     },
@@ -370,7 +372,7 @@ function getDefectData(){
                     //   {"data" : "software_description"},
                       {"data" : "asset_status"},
                       {"data":null,"render":function(item){
-                            if(item.user_Role != 4) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleteAsset('+ item.id +')">';
+                            if(item.user_Role < 4) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleteAsset('+ item.id +')">';
                             else return '';
                         }
                     },

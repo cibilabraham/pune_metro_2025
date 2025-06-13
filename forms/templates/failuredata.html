@@ -30,13 +30,13 @@
                 </div>
             </div>
             <!-- /.row -->
-            {% if request.session.user_Role != 4 %}
+            {% if request.session.user_Role < 4 %}
             <div class="row ">
             <div class="col-lg-12 mb-5">
-                {% comment %} {% if request.session.user_Role == 1 %}   {% endcomment %}
+                
                 <button type="button" onclick="DELETEALL()" class="btn btn-danger float-right m-2" >Delete all</button>
 
-
+                {% comment %} {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}        {% endcomment %}
                 <a href="/forms/failuredata/importfailuredata/">  
                     <button class="btn btn-primary btn-icon-split float-right m-2" >            
                     <span class="text">Import failure data</span>

@@ -192,7 +192,7 @@
               <span>Failure Data Collection</span>
             </a>
 
-             <a class="dropdown-item" href="/forms/asset_register/">            
+             <a class="dropdown-item" href="/forms/jobcard_register/">            
               <!-- <i class="fa fa-registered" aria-hidden="true"></i>             -->
               <span>Job Card</span>
             </a>
@@ -257,12 +257,16 @@
           </a>
         </li> 
         {% endif %}     
+
+
         <li class="nav-item">
           <a class="nav-link" href="/PBSMaster/">            
               <i class="fa fa-list"></i> 
             <span>PBS Master</span>
           </a>
         </li>
+
+      {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown6" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -287,6 +291,8 @@
           </a>
         </li> 
 
+      {% endif %} 
+
         {% comment %} <li class="nav-item">
           <a class="nav-link" href="/config/">            
               <i class="fa fa-cog"></i>            
@@ -299,6 +305,9 @@
             <span>Add Project RAM Targets</span>
           </a>
         </li> {% endcomment %}
+
+
+       
         
         <!-- <li class="nav-item">
           <a class="nav-link" href="/admin/fracas/failuredata/">            
