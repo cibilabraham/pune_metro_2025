@@ -79,6 +79,16 @@ class FailureData(models.Model):
     P_id = models.IntegerField(default=0)
     is_active = models.IntegerField(default=0)
     # root_cause = models.ForeignKey('RootCause', on_delete=models.SET_NULL, null=True, blank=True)
+    location_id = models.CharField(max_length=550, null=True, blank=True)
+    kilometre_reading = models.CharField(max_length=550, null=True, blank=True)
+    sel_car = models.TextField(null=True, blank=True)
+    location = models.TextField(null=True, blank=True)
+    equipment = models.TextField(null=True, blank=True)
+    direction = models.TextField(null=True, blank=True)
+    no_of_trip_cancel = models.IntegerField(default=0)
+    department = models.CharField(max_length=550, null=True, blank=True)
+    reported_to_PPIO = models.CharField(max_length=550, null=True, blank=True)
+    TO_name = models.TextField(null=True, blank=True)
     def __str__(self):
         return ' '
 
