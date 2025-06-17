@@ -1,0 +1,225 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                    <h3 class="page-header">
+                       Job Card
+                    </h3>
+                  
+                </div>
+
+                 <div class="col-lg-6 mb-3">
+    
+    
+                    <a href="/forms/jobcard_register/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+
+            </div>
+            <div class="row " style="padding: 20px;">
+
+                <div class="col-lg-6">
+                    <span>Job Card No: <b>{{data.job_card_no}}</b></span><br>
+                    <span>Train Set No: <b>{{data.train_set_no}}</b></span><br>
+                    <span>Department: <b>{{data.department}}</b></span><br>
+                    <span>Nature of Job: <b>{{ data.nature_of_job|default_if_none:"" }}</b></span><br>
+                    <span>SIC Required: <b>{{ data.sic_required|default_if_none:"" }}</b></span><br>
+                    <span>Assigned To: <b>{{ data.assigned_to|default_if_none:"" }}</b></span><br>
+                 
+                  
+                </div>
+                <div class="col-lg-6">
+                    <span>Date Issued <b>{{data.date}}</b></span>,
+                    <span>Time <b>{{data.time}}</b></span><br>
+
+                    {% if data.status == 0 %}
+                        <h3 class="text-success"> Open </h3>
+                    {% else %}
+                        <h3> Closed </h3>
+                    {% endif %}
+
+                    <span>Last Update On <b>{{data.last_update}}</b></span>
+
+
+                    
+                </div>
+
+               
+
+               
+            </div>
+             <hr>
+             <div class="row " style="padding: 20px;">
+                <div class="col-lg-12"><h3>Failure Data</h3></div>
+                
+                <div class="col-lg-4">
+                    <span>Failure ID: <b>{{data.failure_id}}</b></span><br>
+                    <span>Failure description: <b>{{data.event_description}}</b></span><br>
+                    <span>Failure type: <b>{{data.failure_type}}</b></span><br><br>
+
+                    <span>Kilometre Reading: <b>{{data.kilometre_reading}}</b></span><br>
+                    <span>CAR: <b>{{data.sel_car}}</b></span><br>
+                    <span>Equipment: <b>{{data.equipment}}</b></span><br>
+                    <span>Location: <b>{{data.location}}</b></span><br>
+                    <span>Direction: <b>{{data.direction}}</b></span><br>
+
+                </div>
+
+                <div class="col-lg-4">
+                    <span>Asset Name: <b>{{data.asset_type}}</b></span><br>
+                    <span>Asset Config ID: <b>{{data.asset_config_id}}</b></span><br>
+                    <span>Train Set No: <b>{{data.train_set_no}}</b></span><br><br>
+                    
+                    <span>Incident: <b>{{data.incident}}</b></span><br>
+                    <span>No. of Trips Cancelled: <b>{{data.no_of_trip_cancel}}</b></span><br>
+                    <span>Deboarding: <b>{{data.deboarding}}</b></span><br>
+                    <span>Reported to PPIO: <b>{{data.reported_to_PPIO}}</b></span><br>
+                    <span>T.O. Name / Reported By: <b>{{data.TO_name}}</b></span><br>
+
+                </div>
+                <div class="col-lg-4">
+                    <span>Failure detection: <b>{{data.detection}}</b></span><br>
+                    <span>Delay Time (mins): <b>{{data.service_delay}}</b></span><br>
+                    <span>Safety failure: <b>{{data.safety_failure}}</b></span><br><br>
+
+                    <span>Cm start date : <b>{{data.cm_start_date}}</b></span><br>
+                    <span>Cm start time: <b>{{data.cm_start_time}}</b></span><br>
+                    <span>Cm end date : <b>{{data.cm_end_date}}</b></span><br>
+                    <span>Cm end time: <b>{{data.cm_end_time}}</b></span><br>
+                    <span>Cm description: <b>{{data.cm_description}}</b></span><br>
+
+                </div>
+                <div class="col-lg-12"><br>
+                    <span>Immediate Action Taken: <b>{{data.immediate_investigation}}</b></span><br>
+                </div>
+
+
+
+             </div>
+
+
+             {% if data.run_status == 0 %}
+
+                <div class="row " style="padding: 20px;text-align: center;">
+                    <div class="col-lg-12 border p-2 text-danger" >
+                        <span class="text-muted">
+                            <i class="fas fa-spinner fa-spin"></i> Waiting for LEVEL 1 Job Card Details (To be filled by PPIO) (Pune Metro) 
+                        </span>
+
+
+                        {% if request.session.user_Role == 5 %}        
+                        <br>
+                        <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
+
+                        {% endif %} 
+
+
+
+
+                    </div>
+
+                </div>
+                
+
+
+            {% else %}
+
+                <hr>
+
+                <div class="row " style="padding: 20px;">
+                    <div class="col-lg-12"><h3>LEVEL 1 Job Card Details (To be filled by PPIO) (Pune Metro)</h3></div>
+
+                     <div class="col-lg-4">
+                        <span>OHE Required: <b>{{data.ohe_required}}</b></span><br>
+                        <span>Issued to: <b>{{data.issued_to}}</b></span><br>
+                        <span>Expected Time of Completion: <b>{{data.completion_time}}</b></span><br><br>
+
+                        <span>Train Withdrawn from Revenue Service: <b>{{data.from_revenue_service}}</b></span><br>
+
+                        {% if data.from_revenue_service == 'Yes' %}
+                            <span>Delay to Service: <b>{{data.delay_to_service}}</b></span><br>
+                            <span>Trip No: <b>{{data.trip_no}}</b></span><br>                 
+                        {% endif %}
+
+
+
+                    </div>
+                    <div class="col-lg-4">
+
+                        <span>Nature of Job: <b>{{data.nature_of_job}}</b></span><br>
+                        <span>Event Date: <b>{{data.event_date}}</b></span><br>
+                        <span>Event Time: <b>{{data.event_time}}</b></span><br>
+
+                    </div>
+
+
+                </div>
+
+
+                {% if data.run_status == 1 %}
+
+                        <div class="row " style="padding: 20px;text-align: center;">
+                            <div class="col-lg-12 border p-2 text-danger" >
+                                <span class="text-muted">
+                                    <i class="fas fa-spinner fa-spin"></i> Waiting for LEVEL 1 Details Of Job(s) to be carried out 
+                                </span>
+
+
+                                {% if request.session.user_Role == 5 %}        
+                                <br>
+                                <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
+
+                                {% endif %} 
+
+
+
+
+                            </div>
+
+                        </div>
+                        
+
+
+                    {% else %}
+
+
+                    <h1>here</h1>
+
+
+
+                    {% endif %}
+                
+
+
+            {% endif %}
+
+
+
+           
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+
+
+    });
+
+   
+</script>
+
+{% endblock sb_admin_js %}

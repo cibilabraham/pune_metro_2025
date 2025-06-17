@@ -160,27 +160,45 @@
                     <thead>
                         <tr>
                             <th class="bg-white"><input type="checkbox" id="deleteAll" /></th>
-                            <th class="bg-white">Job Card Number</th>
-                            <th>Asset Name</th>
-                            <th>Asset config id</th>
-                            <th>Event description </th>
-                            <!-- <th>Mode id</th> -->
+                            <th class="bg-white">Failure ID</th>
                             <th>Date (DD-MM-YYYY)</th>
                             <th>Time (HH:MM:SS)</th>
+                            <th>Failure description </th>
+                            <th>Failure type</th>
+                            <th>Asset Name</th>
+                            <th>Asset config id</th>
+                            <th>Train Set No</th>
+                            <th>Kilometre Reading</th>
+                            <th>CAR</th>
+                            <th>Equipment</th>
+                            <th>Location</th>
+                            <th>Direction</th>
+                            <th>Incident</th>
+                            <th>No. of Trips Cancelled</th>
+                            <th>Deboarding</th>
+                            <th>Department</th>
+                            <th>Reported to PPIO:</th>
+                            <th>T.O. Name / Reported By</th>
+
+                            
+                            <!-- <th>Mode id</th> -->
+                            
                             <th>Detection</th>
                             <th>Service delay (mins)</th>
-                            <th>Immediate investigation</th>
-                            <th>Failure type</th>
+                            
+                            
                             <th>Safety failure</th>
                             <!-- <th>Hazard id</th> -->
-                            <th>Cm description</th>
+                            
                             <!-- <th>Replaced asset config id</th> -->
                             <th>Cm start date (DD-MM-YYYY)</th>
                             <th>Cm start time (HH:MM:SS)</th>
                             <th>Cm end date (DD-MM-YYYY)</th>
                             <th>Cm end time (HH:MM:SS)</th>
+                            <th>Cm description</th>
                             <!-- <th>Oem failure reference</th> -->
                             <!-- <th>defect</th> -->
+                             <th>Immediate investigation</th>
                             <th class="bg-white"></th>
                         </tr>
                     </thead>
@@ -349,12 +367,7 @@
                             else return item.failure_id;
                             }
                         },
-                        {"data" : "asset_type"},
-                        {"data" : "asset_config_id"},
-                        {"data" : "event_description"},
-                        // {"data" : "mode_id"},
-                        //{"data" : "date"},
-                        {"data":null,"render":function(item){
+                         {"data":null,"render":function(item){
 
                                 if(item.date != null){
                                     return moment(item.date).format('DD-MM-YYYY');
@@ -364,16 +377,26 @@
                             }
                         },
                         {"data" : "time"},
-                        {"data" : "detection"},
-                        {"data" : "service_delay"},
-                        {"data" : "immediate_investigation"},
+                        {"data" : "event_description"},
                         {"data" : "failure_type"},
-                        {"data" : "safety_failure"},
-                        // {"data" : "hazard_id"},
-                        {"data" : "cm_description"},
-                        // {"data" : "replaced_asset_config_id"},
-                        //{"data" : "cm_start_date"},
-                        {"data":null,"render":function(item){
+                         {"data" : "asset_type"},
+                        {"data" : "asset_config_id"},
+                        {"data" : "location_id"},
+                        {"data" : "kilometre_reading"},
+                        {"data" : "sel_car"},
+                        {"data" : "equipment"},
+                        {"data" : "location"},
+                        {"data" : "direction"},
+                        {"data" : "incident"},
+                        {"data" : "no_of_trip_cancel"},
+                        {"data" : "deboarding"},
+                        {"data" : "department"},
+                        {"data" : "reported_to_PPIO"},
+                        {"data" : "TO_name"},
+                        {"data" : "detection"},
+                         {"data" : "service_delay"},
+                           {"data" : "safety_failure"},
+                            {"data":null,"render":function(item){
 
                             if(item.cm_start_date != null){
                                 return moment(item.cm_start_date).format('DD-MM-YYYY');
@@ -394,6 +417,25 @@
                             }
                         },
                         {"data" : "cm_end_time"},
+
+                        {"data" : "cm_description"},
+
+
+
+                        
+                        // {"data" : "mode_id"},
+                        //{"data" : "date"},
+                       
+                        
+                       
+                        {"data" : "immediate_investigation"},
+                        
+                      
+                        // {"data" : "hazard_id"},
+                       
+                        // {"data" : "replaced_asset_config_id"},
+                        //{"data" : "cm_start_date"},
+                       
                         // {"data" : "oem_failure_reference"},
                         // {"data" : "defect"},
                         {"data":null,"render":function(item){

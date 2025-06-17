@@ -18,6 +18,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.db import connection
 import string
+import sys
 
 class assetRegister(View):
     template_name = 'asset_register.html'
@@ -353,6 +354,10 @@ class Failuredata(View):
                     if FailureMode.objects.filter(id=FailureDatas.mode_id_id,is_active=0).exists():
                         FailureModes = FailureMode.objects.filter(id=FailureDatas.mode_id_id)
                         for FailureMode_id in FailureModes:
+
+                            ast_data = Asset.objects.filter(id=FailureDatas.location_id)
+
+
                             data.append({ 
                                 'failure_id' :  FailureDatas.failure_id,
                                 'asset_type' : PBSMaster_data.asset_type,
@@ -378,8 +383,25 @@ class Failuredata(View):
                                 'defect' : FailureDatas.defect_id,
                                 'id':FailureDatas.id,
                                 'user_Role':user_Role,
+
+                                 'location_id' : ast_data[0].location_id,
+                                    'kilometre_reading' : FailureDatas.kilometre_reading,
+                                    'sel_car' : FailureDatas.sel_car,
+                                    'equipment' : FailureDatas.equipment,
+                                    'location' : FailureDatas.location,
+                                    'direction':FailureDatas.direction,
+                                    'incident' : FailureDatas.incident,
+                                    'no_of_trip_cancel' : FailureDatas.no_of_trip_cancel,
+                                    'department' : FailureDatas.department,
+                                    'deboarding' : FailureDatas.deboarding,
+                                    'reported_to_PPIO' : FailureDatas.reported_to_PPIO,
+                                    'TO_name':FailureDatas.TO_name,
+
+
+
                             })  
                     else:
+                        ast_data = Asset.objects.filter(id=FailureDatas.location_id)
                         data.append({ 
                             'failure_id' :  FailureDatas.failure_id,
                             'asset_type' : PBSMaster_data.asset_type,
@@ -405,6 +427,21 @@ class Failuredata(View):
                             'defect' : FailureDatas.defect_id,
                             'id':FailureDatas.id,
                             'user_Role':user_Role,
+
+                            'location_id' : ast_data[0].location_id,
+                                    'kilometre_reading' : FailureDatas.kilometre_reading,
+                                    'sel_car' : FailureDatas.sel_car,
+                                    'equipment' : FailureDatas.equipment,
+                                    'location' : FailureDatas.location,
+                                    'direction':FailureDatas.direction,
+                                    'incident' : FailureDatas.incident,
+                                    'no_of_trip_cancel' : FailureDatas.no_of_trip_cancel,
+                                    'department' : FailureDatas.department,
+                                    'deboarding' : FailureDatas.deboarding,
+                                    'reported_to_PPIO' : FailureDatas.reported_to_PPIO,
+                                    'TO_name':FailureDatas.TO_name,
+
+
                         })         
         return JsonResponse({'data':data})
     
@@ -515,6 +552,21 @@ class AddFailureData(View):
             'cm_end_time' : '',
             'oem_failure_reference' : '',
             'defect':'',
+
+            'location_id' : '',
+            'kilometre_reading' : '',
+            'sel_car' : '',
+            'equipment' : '',
+            'location' : '',
+            'direction':'',
+            'incident' : '',
+            'no_of_trip_cancel' : '',
+            'department' : '',
+            'deboarding' : '',
+            'reported_to_PPIO' : '',
+            'TO_name':'',
+
+
             }
         else:
             FailureDatas=FailureData.objects.filter(id=id)
@@ -543,6 +595,23 @@ class AddFailureData(View):
                 'cm_end_time' : datas.cm_end_time,
                 'oem_failure_reference' : datas.oem_failure_reference,
                 'defect':datas.defect,
+
+
+                'location_id' : datas.location_id,
+                'kilometre_reading' : datas.kilometre_reading,
+                'sel_car' : datas.sel_car,
+                'equipment' : datas.equipment,
+                'location' : datas.location,
+                'direction': datas.direction,
+                'incident' : datas.incident,
+                'no_of_trip_cancel' : datas.no_of_trip_cancel,
+                'department' : datas.department,
+                'deboarding' : datas.deboarding,
+                'reported_to_PPIO' : datas.reported_to_PPIO,
+                'TO_name': datas.TO_name,
+
+
+
                 }
             #print(data)
         if user_Role == 1:
@@ -599,8 +668,22 @@ class AddFailureData(View):
         ACID = Asset.objects.filter(id=asset_config_ids)
         asset_config_id = ACID[0].asset_config_id
 
+
+        location_id = req.get('location_id')
+        kilometre_reading = req.get('kilometre_reading')
+        sel_car = req.get('sel_car')
+        equipment = req.get('equipment')
+        location = req.get('location')
+        direction = req.get('direction')
+        incident = req.get('incident')
+        no_of_trip_cancel = req.get('no_of_trip_cancel')
+        department = req.get('department')
+        deboarding = req.get('deboarding')
+        reported_to_PPIO = req.get('reported_to_PPIO')
+        TO_name = req.get('TO_name')
+
         DATA = []
-        HEAD = ["asset_type",'failure_id','asset_config_id_id','event_description','mode_id_id','date','time','detection','service_delay','immediate_investigation','failure_type','safety_failure','hazard_id','cm_description','replaced_asset_config_id','cm_start_date','cm_start_time','cm_end_date','cm_end_time','oem_failure_reference','defect_id']
+        HEAD = ["asset_type",'failure_id','asset_config_id_id','event_description','mode_id_id','date','time','detection','service_delay','immediate_investigation','failure_type','safety_failure','hazard_id','cm_description','replaced_asset_config_id','cm_start_date','cm_start_time','cm_end_date','cm_end_time','oem_failure_reference','defect_id','location_id','kilometre_reading','equipment','location','direction','incident','no_of_trip_cancel','department','deboarding']
         for f in HEAD:
             if f == 'asset_config_id_id':
                 DATA.append({
@@ -643,6 +726,7 @@ class AddFailureData(View):
                     'value':req.get(f)
                 })
         # print(DATA)
+        
 
         if ids =="":
             if FailureData.objects.filter(failure_id=failure_id,is_active=0).exists():
@@ -650,8 +734,36 @@ class AddFailureData(View):
             else:
                 Find_Pids =PBSMaster.objects.filter(id=asset_type)
                 for Find_Pid in Find_Pids:
-                    r=FailureData(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,service_delay=service_delay,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference)
+                    
+                    r=FailureData(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,service_delay=service_delay,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name)
                     r.save()
+
+                    jobcard_latest_id = 0
+                    current_year = datetime.datetime.now().year
+                    current_month = datetime.datetime.now().month
+
+                    if JobCardIDs.objects.filter(year=current_year,month=current_month).exists():
+                        JOBID = JobCardIDs.objects.filter(year=current_year,month=current_month)
+                        jobcard_latest_id = JOBID[0].last_id
+
+                    new_job_id = int(jobcard_latest_id) + 1
+
+                    job_card_no = f"RST/{current_month:02}-{current_year}/{new_job_id:04}"
+
+                    j = JobCard(job_card_no=job_card_no,failure_id=r,train_set_no=location_id,date=date,time=time,department=department,equipment=equipment)
+                    j.save()
+
+                    print('----here------')
+
+                    if JobCardIDs.objects.filter(year=current_year,month=current_month).exists():
+                        print('----update------')
+                        JobCardIDs.objects.filter(year=current_year,month=current_month).update(last_id=new_job_id)
+                    else:
+                        print('----add------')
+                        ju = JobCardIDs(year=current_year,month=current_month,last_id=new_job_id)
+                        ju.save()
+
+
                     FindUser = UserProfile.objects.filter(user_id=user_ID)
                     now = datetime.datetime.now()
                     current_time = now.strftime("%H:%M:%S")
@@ -690,7 +802,7 @@ class AddFailureData(View):
                 if FailureData.objects.filter(failure_id=failure_id,id=ids,is_active=0).exists():
                     Find_Pids =PBSMaster.objects.filter(id=asset_type)
                     for Find_Pid in Find_Pids:
-                        FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,event_description=event_description,date=date,time=time,detection=detection,service_delay=service_delay,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference)
+                        FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,event_description=event_description,date=date,time=time,detection=detection,service_delay=service_delay,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name)
                         if meg !='':
                             FindUser = UserProfile.objects.filter(user_id=user_ID)
                             now = datetime.datetime.now()
@@ -705,7 +817,7 @@ class AddFailureData(View):
                 print('---------------2222222222222-----------')
                 Find_Pids =PBSMaster.objects.filter(id=asset_type)
                 for Find_Pid in Find_Pids:
-                    FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,service_delay=service_delay,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference)
+                    FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,service_delay=service_delay,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name)
                     if meg !='':
                         FindUser = UserProfile.objects.filter(user_id=user_ID)
                         now = datetime.datetime.now()
@@ -4039,95 +4151,75 @@ class jobcardRegister(View):
         P_id = request.session['P_id']
         user_ID = request.session['user_ID']
         user_Role = request.session.get('user_Role')
-        if user_Role == 1:
-            location_id = Asset.objects.filter(is_active=0).distinct('location_id')
-            asset_serial_number = Asset.objects.filter(is_active=0).distinct('asset_serial_number')
-            asset_type = PBSMaster.objects.filter(is_active=0).order_by('asset_type') 
-            asset_description = Asset.objects.filter(is_active=0).distinct('asset_description')
-            software_version = Asset.objects.filter(is_active=0).distinct('software_version')
-            software_description = Asset.objects.filter(is_active=0).distinct('software_description')
-            asset_status = Asset.objects.filter(is_active=0).distinct('asset_status')
-        else:
-            location_id = Asset.objects.filter(is_active=0,P_id=P_id).distinct('location_id')
-            asset_serial_number = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_serial_number')
-            asset_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_description')
-            software_version = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_version')
-            software_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_description')
-            asset_status = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_status')
-            asset_type = PBSMaster.objects.filter(is_active=0,project_id=P_id).order_by('asset_type') 
-        return render(request, self.template_name, {'asset_status':asset_status,'software_description':software_description, 'software_version':software_version, 'asset_description':asset_description, 'location_id' : location_id, 'asset_serial_number':asset_serial_number,'asset_type':asset_type})
+        # if user_Role == 1:
+        #     location_id = Asset.objects.filter(is_active=0).distinct('location_id')
+        #     asset_serial_number = Asset.objects.filter(is_active=0).distinct('asset_serial_number')
+        #     asset_type = PBSMaster.objects.filter(is_active=0).order_by('asset_type') 
+        #     asset_description = Asset.objects.filter(is_active=0).distinct('asset_description')
+        #     software_version = Asset.objects.filter(is_active=0).distinct('software_version')
+        #     software_description = Asset.objects.filter(is_active=0).distinct('software_description')
+        #     asset_status = Asset.objects.filter(is_active=0).distinct('asset_status')
+        # else:
+        #     location_id = Asset.objects.filter(is_active=0,P_id=P_id).distinct('location_id')
+        #     asset_serial_number = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_serial_number')
+        #     asset_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_description')
+        #     software_version = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_version')
+        #     software_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_description')
+        #     asset_status = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_status')
+        #     asset_type = PBSMaster.objects.filter(is_active=0,project_id=P_id).order_by('asset_type') 
+        return render(request, self.template_name, {})
 
     def post(self, request, *args, **kwargs):
-        
+
         data=[]
         P_id = request.session['P_id']
         user_ID = request.session['user_ID']
         user_Role = request.session.get('user_Role')
-        req = request.POST
+        # req = request.POST
         # print(req)
-        location_id = req.get('location_id')
-        asset_serial_number = req.get('asset_serial_number')
-        asset_type = req.get('asset_type')
-        asset_description = req.get('asset_description')
-        software_version = req.get('software_version')
-        software_description = req.get('software_description')
-        asset_status = req.get('asset_status')
-        
-        Asset_data =Asset.objects.filter(is_active=0)
-        print(Asset_data)
-
-        if location_id != "all":
-            Asset_data=Asset_data.filter(location_id=location_id)
-        if asset_serial_number != "all":
-            Asset_data=Asset_data.filter(asset_serial_number=asset_serial_number)
-        if asset_type != "all":
-            Asset_data=Asset_data.filter(asset_type=asset_type)
-        if asset_description != "all":
-            Asset_data=Asset_data.filter(asset_description=asset_description)
-        if software_version != "all":
-            Asset_data=Asset_data.filter(software_version=software_version)
-        if software_description != "all":
-            Asset_data=Asset_data.filter(software_description=software_description)
-        if asset_status != "all":
-            Asset_data=Asset_data.filter(asset_status=asset_status)
-    
-        # Asset_data = Asset.objects.all()
-        for Assets in Asset_data:
-            print(Assets.asset_type)
-            if PBSMaster.objects.filter(id=Assets.asset_type,is_active=0).exists():
-                print('uuuuuuuu')
+       
+        JobCardDatas = JobCard.objects.filter().order_by('-job_card_no')
+       
+        for jb in JobCardDatas:
+            asset_type_id = jb.failure_id.asset_type
+            if PBSMaster.objects.filter(id=asset_type_id,is_active=0).exists():
+                ast_data = Asset.objects.filter(id=jb.failure_id.location_id)
                 if user_Role == 1:
-                    PBSMaster_datas=PBSMaster.objects.filter(id=Assets.asset_type,is_active=0)
+                    PBSMaster_datas=PBSMaster.objects.filter(id=asset_type_id,is_active=0)
                     for PBSMaster_data in PBSMaster_datas:
                         data.append({ 
-                            'asset_config_id' :  Assets.asset_config_id,
-                            'location_id' : Assets.location_id,
-                            'location_description' : Assets.location_description,
-                            'asset_serial_number' : Assets.asset_serial_number,
-                            'asset_type' : PBSMaster_data.asset_type,
-                            'asset_description' : Assets.asset_description,
-                            'software_version' : Assets.software_version,
-                            'software_description' : Assets.software_description,
-                            'asset_status':Assets.asset_status,
-                            'id':Assets.id,
+                            'job_card_no' :  jb.job_card_no,
+                            'train_set_no' : ast_data[0].location_id,
+                            'date' : jb.failure_id.date,
+                            'time' : jb.failure_id.time,
+                            'department' : jb.failure_id.department,
+                            'nature_of_job' : jb.nature_of_job,
+                            'sic_required' : jb.sic_required,
+                            'assigned_to':jb.assigned_to,
+                            'last_update' : jb.last_update,
+                            'status':jb.status,
+                            'id':jb.job_id,
                             'user_Role':user_Role,
+                            'run_status' : jb.run_status,
                         }) 
                 else:
-                    if PBSMaster.objects.filter(id=Assets.asset_type,project_id=P_id,is_active=0).exists():
-                        PBSMaster_datas=PBSMaster.objects.filter(id=Assets.asset_type,is_active=0)
+                    if PBSMaster.objects.filter(id=asset_type_id,project_id=P_id,is_active=0).exists():
+                        PBSMaster_datas=PBSMaster.objects.filter(id=asset_type_id,is_active=0)
                         for PBSMaster_data in PBSMaster_datas:
                             data.append({ 
-                                'asset_config_id' :  Assets.asset_config_id,
-                                'location_id' : Assets.location_id,
-                                'location_description' : Assets.location_description,
-                                'asset_serial_number' : Assets.asset_serial_number,
-                                'asset_type' : PBSMaster_data.asset_type,
-                                'asset_description' : Assets.asset_description,
-                                'software_version' : Assets.software_version,
-                                'software_description' : Assets.software_description,
-                                'asset_status':Assets.asset_status,
-                                'id':Assets.id,
-                                'user_Role':user_Role
+                                'job_card_no' :  jb.job_card_no,
+                                'train_set_no' : ast_data[0].location_id,
+                                'date' : jb.failure_id.date,
+                                'time' : jb.failure_id.time,
+                                'department' : jb.failure_id.department,
+                                'nature_of_job' : jb.nature_of_job,
+                                'sic_required' : jb.sic_required,
+                                'assigned_to':jb.assigned_to,
+                                'last_update' : jb.last_update,
+                                'status':jb.status,
+                                'id':jb.job_id,
+                                'user_Role':user_Role,
+                                'run_status' : jb.run_status,
                             }) 
         print(data)
         return JsonResponse({'data':data})
@@ -4146,140 +4238,227 @@ class AddJobcard(View):
             return redirect('/dashboard/')
         id = kwargs.get("id")
         data=[]
-        if id==None:
-            data={ 
-            'asset_config_id' : '',
-            'location_id' : '',
-            'location_description' : '',
-            'asset_serial_number' : '',
-            'asset_type' : '',
-            'asset_description' : '',
-            'software_version' : '',
-            'software_description' : '',
-            'sub_location' : '',
-            'asset_status':'',
-            'id':'',
-            }
-        else:
-            Asset_datas =Asset.objects.filter(id=id)
-            for Asset_data in Asset_datas:
-                data={ 
-                    'asset_config_id' : Asset_data.asset_config_id,
-                    'location_id' : Asset_data.location_id,
-                    'location_description' : Asset_data.location_description,
-                    'asset_serial_number' : Asset_data.asset_serial_number,
-                    'asset_type' : Asset_data.asset_type,
-                    'asset_description' : Asset_data.asset_description,
-                    'software_version' : Asset_data.software_version,
-                    'software_description' : Asset_data.software_description,
-                    'sub_location' : Asset_data.sub_location,
-                    'asset_status':Asset_data.asset_status,
-                    'id':id,
-                }
-            #print(data)
-        if user_Role == 1:
-            asset_types = PBSMaster.objects.filter(is_active=0).order_by('asset_type')
-        else:
-            asset_types = PBSMaster.objects.filter(is_active=0,project_id=P_id).order_by('asset_type')
+        JobCard_datas =JobCard.objects.filter(job_id=id)
+        jb = JobCard_datas[0]
+        ast_data = Asset.objects.filter(id=jb.failure_id.location_id)
 
-        train_set_options = [f"TS#{i:02d}" for i in range(1, 35)]  # 01 to 34
+        FailureDatas=FailureData.objects.filter(id=jb.failure_id.id)
+        datas = FailureDatas[0]
 
-        return render(request, self.template_name,{'data':data,'asset_types':asset_types,'train_set_options':train_set_options})
+        PBSMaster_datas=PBSMaster.objects.filter(id=FailureDatas[0].asset_type)
 
+        job_details = JobDetails.objects.filter(job_card_id=jb.job_id,is_active=0)
+
+
+        data={ 
+            'job_card_no' :  jb.job_card_no,
+            'train_set_no' : ast_data[0].location_id,
+            'date' : jb.failure_id.date,
+            'time' : jb.failure_id.time,
+            'department' : jb.failure_id.department,
+            'nature_of_job' : jb.nature_of_job,
+            'sic_required' : jb.sic_required,
+            'assigned_to':jb.assigned_to,
+            'last_update' : jb.last_update,
+            'status':jb.status,
+            'id':jb.job_id,
+            'user_Role':user_Role,
+            'run_status' : jb.run_status,
+
+
+            'asset_type' : PBSMaster_datas[0].asset_type,
+            'subsystem' : PBSMaster_datas[0].subsystem,
+            'failure_id' : datas.failure_id,
+            'asset_config_id' : datas.asset_config_id,
+            'event_description' : datas.event_description,
+            'mode_id' :datas.mode_id,
+            'mode_description' : datas.mode_description,
+            'detection':datas.detection,
+            'service_delay' : datas.service_delay,
+            'immediate_investigation' : datas.immediate_investigation,
+            'failure_type' : datas.failure_type,
+            'safety_failure' : datas.safety_failure,
+            'hazard_id' : datas.hazard_id,
+            'cm_description' : datas.cm_description,
+            'replaced_asset_config_id':datas.replaced_asset_config_id,
+            'cm_start_date' : datas.cm_start_date,
+            'cm_start_time' : datas.cm_start_time,
+            'cm_end_date' : datas.cm_end_date,
+            'cm_end_time' : datas.cm_end_time,
+            'oem_failure_reference' : datas.oem_failure_reference,
+            'defect':datas.defect,
+
+
+            'location_id' : datas.location_id,
+            'kilometre_reading' : datas.kilometre_reading,
+            'sel_car' : datas.sel_car,
+            'equipment' : datas.equipment,
+            'location' : datas.location,
+            'direction': datas.direction,
+            'incident' : datas.incident,
+            'no_of_trip_cancel' : datas.no_of_trip_cancel,
+            'deboarding' : datas.deboarding,
+            'reported_to_PPIO' : datas.reported_to_PPIO,
+            'TO_name': datas.TO_name,
+
+            'ohe_required' : jb.ohe_required,
+            'issued_to' : jb.issued_to,
+            'completion_time' : jb.completion_time,
+            'from_revenue_service' : jb.from_revenue_service,
+            'delay_to_service' : jb.delay_to_service,
+            'trip_no':jb.trip_no,
+            'event_date' : jb.event_date,
+            'event_time':jb.event_time,
+            
+
+
+
+
+        }
+
+        return render(request, self.template_name,{'data':data,'job_details':job_details})
+      
+ 
     def post(self, request, *args, **kwargs):
         P_id = request.session['P_id']
         user_ID = request.session['user_ID']
         req = request.POST
         cursor = connection.cursor()
         # print(req)
-        location_id = req.get('location_id')
-        asset_serial_number = req.get('asset_serial_number')
-        asset_type = req.get('asset_type')
-        asset_description = req.get('asset_description')
-        software_version = req.get('software_version')
-        software_description = req.get('software_description')
-        asset_status = req.get('asset_status')
-        asset_config_id = req.get('asset_config_id')
-        location_description = req.get('location_description')
-        sub_location = req.get('sub_location')
-        Action = req.get('Action')
         ids = req.get('id')
-        DATA = []
-        HEAD = ["asset_config_id",'asset_serial_number','location_id','location_description','asset_type','software_version','asset_description','software_description','asset_status','sub_location']
-        asst =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
-        for f in HEAD:
-            if f == 'asset_type':
-                DATA.append({
-                    'field':f,
-                    'value':asst[0].id
-                })
+
+       
+        st = req.get('st')
+
+        if st == 1 or st == '1':
+
+            ohe_required = req.get('ohe_required')
+            issued_to = req.get('issued_to')
+            completion_time = req.get('completion_time')
+            from_revenue_service = req.get('from_revenue_service')
+            delay_to_service = req.get('delay_to_service')
+            trip_no = req.get('trip_no')
+            nature_of_job = req.get('nature_of_job')
+            event_date = datetime.datetime.strptime(req.get('event_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            event_time = req.get('event_time')
+
+            if from_revenue_service == 'Yes':
+                JobCard.objects.filter(job_id=ids).update(ohe_required=ohe_required,issued_to=issued_to,completion_time=completion_time,from_revenue_service=from_revenue_service,delay_to_service=delay_to_service,trip_no=trip_no,nature_of_job=nature_of_job,event_date=event_date,event_time=event_time,run_status=st)
             else:
-                DATA.append({
-                    'field':f,
-                    'value':req.get(f)
-                })
-        # print(DATA)
-        if ids =="":
-            if Asset.objects.filter(asset_config_id=asset_config_id,is_active=0).exists():
-                return JsonResponse({'status':'0'})
+                JobCard.objects.filter(job_id=ids).update(ohe_required=ohe_required,issued_to=issued_to,completion_time=completion_time,from_revenue_service=from_revenue_service,nature_of_job=nature_of_job,event_date=event_date,event_time=event_time,run_status=st)
+
+            return JsonResponse({'status':'1'})
+        elif st == 0 or st == '0':
+            JobCard.objects.filter(job_id=ids).update(run_status=st,status=0)
+            return JsonResponse({'status':'1'})
+
+        elif st == 15 or st == '15':
+            job_description = req.get('job_description')
+            s_no = req.get('s_no')
+            JobDetailsID = req.get('JobDetailsID')
+
+            if JobDetailsID == "":
+                job_dt = JobCard.objects.filter(job_id=ids)
+                j = JobDetails(job_card_id=job_dt[0],s_no=s_no,job_description=job_description)
+                j.save()
             else:
-                Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
-                for Find_Pid in Find_Pids:
-                    r=Asset(P_id=Find_Pid.project_id,asset_config_id=asset_config_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status,sub_location=sub_location)
-                    r.save()
-                    FindUser = UserProfile.objects.filter(user_id=user_ID)
-                    now = datetime.datetime.now()
-                    current_time = now.strftime("%H:%M:%S")
-                    meg ="Add new Asset  "
-                    meg ="ID: "+str(r.id) +"=> "+meg
-                    h = history(user_id=FindUser[0].id,P_id=P_id,date=datetime.date.today(),time=current_time,message=meg,function_name="Asset Register")
-                    h.save()
-                    return JsonResponse({'status':'1','id':r.id})
+                JobDetails.objects.filter(job_details_id=JobDetailsID).update(s_no=s_no,job_description=job_description)
+
+            return JsonResponse({'status':'1'})
+
+        elif st == 16 or st == '16':
+            JobDetails.objects.filter(job_details_id=ids).update(is_active=1)
+            return JsonResponse({'status':'1'})
+
         else:
-            meg =''
-            for i in DATA:
-                cursor.execute("SELECT * FROM fracas_asset WHERE id='{0}' and {1}='{2}'".format(ids,i['field'],i['value']))
-                row = cursor.fetchone()
-                if row == None:
-                    cursor.execute("SELECT {0} FROM fracas_asset WHERE id='{1}'".format(i['field'],ids))
-                    row1 = cursor.fetchone()
-                    if i['field'] == 'asset_type':
-                        asst1 =PBSMaster.objects.filter(id=row1[0])
-                        meg = meg +i['field']+': '+ str(asst1[0].asset_type) +' to '+str(asset_type)+', '
-                    else:
-                        meg = meg +i['field']+': '+ str(row1[0]) +' to '+str(i['value'])+', '
-                    
-            if Asset.objects.filter(asset_config_id=asset_config_id,is_active=0).exists():
-                if Asset.objects.filter(asset_config_id=asset_config_id, id=ids,is_active=0).exists():
-                    Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
-                    for Find_Pid in Find_Pids:
-                        Asset.objects.filter(id=ids).update(P_id=Find_Pid.project_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status,sub_location=sub_location)
-                        if meg !='':
-                            FindUser = UserProfile.objects.filter(user_id=user_ID)
-                            now = datetime.datetime.now()
-                            current_time = now.strftime("%H:%M:%S")
-                            meg ="ID: "+ids +"=> "+meg
-                            h = history(user_id=FindUser[0].id,P_id=P_id,date=datetime.date.today(),time=current_time,message=meg,function_name="Asset Register")
-                            h.save()
-                        return JsonResponse({'status':'1','id':ids})
-                else:
-                    return JsonResponse({'status':'0'})
-            else:
-                AFTER = Asset.objects.filter(id=ids)
-                if FailureData.objects.filter(asset_config_id=AFTER[0].asset_config_id,is_active=0).exists():
-                    return JsonResponse({'status':'2'})
-                else:
-                    Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
-                    for Find_Pid in Find_Pids:
-                        Asset.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id=asset_config_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status,sub_location=sub_location)
-                        if meg !='':
-                            FindUser = UserProfile.objects.filter(user_id=user_ID)
-                            now = datetime.datetime.now()
-                            current_time = now.strftime("%H:%M:%S")
-                            meg ="ID: "+ids +"=> "+meg
-                            h = history(user_id=FindUser[0].id,P_id=P_id,date=datetime.date.today(),time=current_time,message=meg,function_name="Asset Register")
-                            h.save()
-                        return JsonResponse({'status':'1','id':ids})
-                
-            
+            return JsonResponse({'status':'0'})
+
+
+class ViewJobcard(View):
+    template_name = 'view_jobcard.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        user_Role = request.session.get('user_Role')
+        P_id = request.session['P_id']
+        if user_Role == 4:
+            return redirect('/dashboard/')
+        id = kwargs.get("id")
+        data=[]
+        JobCard_datas =JobCard.objects.filter(job_id=id)
+        jb = JobCard_datas[0]
+        ast_data = Asset.objects.filter(id=jb.failure_id.location_id)
+
+        FailureDatas=FailureData.objects.filter(id=jb.failure_id.id)
+        datas = FailureDatas[0]
+
+        PBSMaster_datas=PBSMaster.objects.filter(id=FailureDatas[0].asset_type)
+
+
+        data={ 
+            'job_card_no' :  jb.job_card_no,
+            'train_set_no' : ast_data[0].location_id,
+            'date' : jb.failure_id.date,
+            'time' : jb.failure_id.time,
+            'department' : jb.failure_id.department,
+            'nature_of_job' : jb.nature_of_job,
+            'sic_required' : jb.sic_required,
+            'assigned_to':jb.assigned_to,
+            'last_update' : jb.last_update,
+            'status':jb.status,
+            'id':jb.job_id,
+            'user_Role':user_Role,
+            'run_status' : jb.run_status,
+
+
+            'asset_type' : PBSMaster_datas[0].asset_type,
+            'failure_id' : datas.failure_id,
+            'asset_config_id' : datas.asset_config_id,
+            'event_description' : datas.event_description,
+            'mode_id' :datas.mode_id,
+            'mode_description' : datas.mode_description,
+            'detection':datas.detection,
+            'service_delay' : datas.service_delay,
+            'immediate_investigation' : datas.immediate_investigation,
+            'failure_type' : datas.failure_type,
+            'safety_failure' : datas.safety_failure,
+            'hazard_id' : datas.hazard_id,
+            'cm_description' : datas.cm_description,
+            'replaced_asset_config_id':datas.replaced_asset_config_id,
+            'cm_start_date' : datas.cm_start_date,
+            'cm_start_time' : datas.cm_start_time,
+            'cm_end_date' : datas.cm_end_date,
+            'cm_end_time' : datas.cm_end_time,
+            'oem_failure_reference' : datas.oem_failure_reference,
+            'defect':datas.defect,
+
+
+            'location_id' : datas.location_id,
+            'kilometre_reading' : datas.kilometre_reading,
+            'sel_car' : datas.sel_car,
+            'equipment' : datas.equipment,
+            'location' : datas.location,
+            'direction': datas.direction,
+            'incident' : datas.incident,
+            'no_of_trip_cancel' : datas.no_of_trip_cancel,
+            'deboarding' : datas.deboarding,
+            'reported_to_PPIO' : datas.reported_to_PPIO,
+            'TO_name': datas.TO_name,
+
+            'ohe_required' : jb.ohe_required,
+            'issued_to' : jb.issued_to,
+            'completion_time' : jb.completion_time,
+            'from_revenue_service' : jb.from_revenue_service,
+            'delay_to_service' : jb.delay_to_service,
+            'trip_no':jb.trip_no,
+            'event_date' : jb.event_date,
+            'event_time':jb.event_time,
+
+
+
+        }
+
+        return render(request, self.template_name,{'data':data})
+      
  

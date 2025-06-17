@@ -67,5 +67,8 @@ urlpatterns = [
 
     path('jobcard_register/', jobcardRegister.as_view(), name='job_register'),
     path('jobcard_register/addjobcard/',AddJobcard.as_view(),name='add_jobcard'),
+    path('jobcard_register/viewjobcard/',ViewJobcard.as_view(),name='view_jobcard'),
+    path('jobcard_register/addjobcard/<int:id>/',AddJobcard.as_view(),name='add_jobcard'),
+    path('jobcard_register/viewjobcard/<int:id>/',ViewJobcard.as_view(),name='view_jobcard'),
     
 ]

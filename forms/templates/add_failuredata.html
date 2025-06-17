@@ -201,11 +201,15 @@
                  <div class="col-md-4">
                     <div class="form-group">
                         <label for="sel_car">*CAR:</label>
+                       
                         <select class="form-control" id="sel_car" name="sel_car" required="required" multiple>
                             <option value="DMA">DMA</option>
                             <option value="TC">TC</option>
                             <option value="DMB">DMB</option>
                         </select>
+
+
+
                         {% comment %} <input type="text" class="form-control" id="sel_car" name="sel_car" value="{{data.sel_car}}"> {% endcomment %}
                         <div class="invalid-feedback">
                          Please enter CAR.
@@ -237,13 +241,50 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="direction">*Direction:</label>
-                        <select class="form-control" id="direction" name="direction" required="required" >
-                            <option value="Up">Up</option>
-                            <option value="Down">Down</option>
+                      
+                        <select class="form-control" id="direction " name="direction" required="required">
+                            {% if 'Up' == data.direction %}
+                            <option value="Up" selected>Up</option>
+                            {% else %}
+                                <option value="Up">Up</option>
+                            {% endif %}
+                            {% if 'Down' == data.direction %}
+                            <option value="Down" selected>Down</option>
+                            {% else %}
+                                <option value="Down">Down</option>
+                            {% endif %}
+                           
                         </select>
+
+
+
+
                         {% comment %} <input type="text" class="form-control" id="direction" name="direction" value="{{data.direction}}"> {% endcomment %}
                         <div class="invalid-feedback">
                          Please enter Direction.
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="safety_failure">*Incident :</label>
+                        <select class="form-control" id="incident " name="incident" required="required">
+                            {% if 'Yes' == data.incident %}
+                            <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if 'No' == data.incident %}
+                            <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="incident" name="incident" value="{{data.safety_failure}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter Incident .
                         </div>
                     </div>
                 </div>
@@ -261,10 +302,23 @@
                  <div class="col-md-4">
                     <div class="form-group">
                         <label for="deboarding">*Deboarding:</label>
-                        <select class="form-control" id="deboarding" name="deboarding" required="required" >
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
+                       
+
+                         <select class="form-control" id="deboarding " name="deboarding" required="required">
+                            {% if 'Yes' == data.deboarding %}
+                            <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if 'No' == data.deboarding %}
+                            <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
                         </select>
+
+
+
                         {% comment %} <input type="text" class="form-control" id="deboarding" name="deboarding" value="{{data.deboarding}}"> {% endcomment %}
                         <div class="invalid-feedback">
                          Please enter Deboarding.
@@ -276,10 +330,23 @@
                  <div class="col-md-4">
                     <div class="form-group">
                         <label for="department">*Department:</label>
-                        <select class="form-control" id="department" name="department" required="required" >
-                            <option value="Operator">Operator</option>
-                            <option value="Maintainer">Maintainer</option>
+                      
+                        <select class="form-control" id="department " name="department" required="required">
+                            {% if 'Operator' == data.department %}
+                            <option value="Operator" selected>Operator</option>
+                            {% else %}
+                                <option value="Operator">Operator</option>
+                            {% endif %}
+                            {% if 'Maintainer' == data.department %}
+                            <option value="Maintainer" selected>Maintainer</option>
+                            {% else %}
+                                <option value="Maintainer">Maintainer</option>
+                            {% endif %}
                         </select>
+
+
+
+
                         {% comment %} <input type="text" class="form-control" id="department" name="department" value="{{data.department}}"> {% endcomment %}
                         <div class="invalid-feedback">
                          Please enter Department.
@@ -290,10 +357,23 @@
                   <div class="col-md-4">
                     <div class="form-group">
                         <label for="reported_to_PPIO">*Reported to PPIO:</label>
-                        <select class="form-control" id="reported_to_PPIO" name="reported_to_PPIO" required="required" >
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
+                      
+
+                         <select class="form-control" id="reported_to_PPIO " name="reported_to_PPIO" required="required">
+                            {% if 'Yes' == data.reported_to_PPIO %}
+                            <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if 'No' == data.reported_to_PPIO %}
+                            <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
                         </select>
+
+
+
                         {% comment %} <input type="text" class="form-control" id="reported_to_PPIO" name="reported_to_PPIO" value="{{data.reported_to_PPIO}}"> {% endcomment %}
                         <div class="invalid-feedback">
                          Please enter Reported to PPIO.
@@ -561,33 +641,6 @@
 
                 
                  
-           
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="safety_failure">*Systematic failure :</label>
-                        <select class="form-control" id="systematic_failure " name="systematic_failure" required="required">
-                            {% if 'Yes' == data.safety_failure %}
-                            <option value="Yes" selected>Yes</option>
-                            {% else %}
-                                <option value="Yes">Yes</option>
-                            {% endif %}
-                            {% if 'No' == data.safety_failure %}
-                            <option value="No" selected>No</option>
-                            {% else %}
-                                <option value="No">No</option>
-                            {% endif %}
-                        </select>
-                        {% comment %} <input type="text" class="form-control" id="systematic_failure" name="systematic_failure" value="{{data.safety_failure}}"> {% endcomment %}
-                        <div class="invalid-feedback">
-                         Please enter Systematic failure .
-                        </div>
-                    </div>
-                </div>
-
-
-
-                
 
            
             </div>
@@ -633,6 +686,15 @@
         $('#asset_type').val('{{ data.asset_type }}');
         var id= $('#id').val();
         if(id != ""){
+
+
+            var input = '{{ data.sel_car }}';
+           const resultArray = input.split(",").map(item => item.trim());
+
+           console.log(resultArray)
+            $('#sel_car').val(resultArray);
+
+
             $.ajax({
             url: "/forms/system/",
             method: 'GET',
@@ -654,16 +716,74 @@
                 });
                     var select = "<Select>"+asset_config_id+"</Select>";
                 $("#asset_config_id").html(asset_config_id);
+
+
+
+
+
+
+                 $.ajax({
+                    url: "/forms/location_id/",
+                    method: 'GET',
+                    dataType: 'json',
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    data : {
+                    'asset_config_id' : $('select[name=asset_config_id]').val()
+                    },
+                    success: function (response) {
+                        //console.log(response);
+                        var location_id = "<option value="+""+">"+"--  Select Train Set No  --"+"</options>";
+                            $.each(response, function (i,value) {
+                            if (value.location_id != ''){
+
+                                var sel = '';
+                                if(value.id == '{{ data.location_id }}') sel = 'selected';
+
+                              
+                                    location_id = location_id + "<option "+sel+" value="+value.id+">"+value.location_id+"</options>";
+
+
+                            }
+                        });
+                            var select = "<select>"+location_id+"</select>";
+                        $("#location_id").html(select);
+                        
+                        }
+                    }); 
+
+
+
+
+
+
+
+
+
                 
                 }
+
             }); 
+
+               
+
+
+
+
+
+
         }else{
             var d1 = new Date(new Date());
             $('#date').val(moment(d1).format('DD/MM/YYYY'))
         }
 
 
+
+
+
+
 });
+
+
 
    function SetButton(id){
         $('#buttonClick').val(id);
@@ -723,27 +843,49 @@
 
     $( "#FailureForm" ).submit(function(e) {
         e.preventDefault();
-        var asset_type= $('select[name=asset_type] option').filter(':selected').val()
-        var asset_config_id= $('select[name=asset_config_id] option').filter(':selected').val()
-        var failure_type= $('select[name=failure_type] option').filter(':selected').val()
-        var safety_failure= $('select[name=safety_failure] option').filter(':selected').val()
-        var mode_id= $('select[name=mode_id] option').filter(':selected').val()
-        var defect= $('select[name=defect] option').filter(':selected').val()
         var failure_id= $('#failure_id').val()
-        var event_description= $('#event_description').val()
         var date= $('#date').val()
         var time= $('#time').val()
+        var event_description= $('#event_description').val()
+        var failure_type= $('select[name=failure_type] option').filter(':selected').val()
+        var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+        var asset_config_id= $('select[name=asset_config_id] option').filter(':selected').val()
+        var mode_id= $('select[name=mode_id] option').filter(':selected').val()
         var detection= $('#detection').val()
-        var service_delay= $('#service_delay').val()
-        var immediate_investigation= $('#immediate_investigation').val()
+        var safety_failure= $('select[name=safety_failure] option').filter(':selected').val()
         var hazard_id= $('#hazard_id').val()
-        var cm_description= $('#cm_description').val()
-        var replaced_asset_config_id= $('#replaced_asset_config_id').val()
         var cm_start_date= $('#cm_start_date').val()
         var cm_start_time= $('#cm_start_time').val()
         var cm_end_date= $('#cm_end_date').val()
         var cm_end_time= $('#cm_end_time').val()
+        var cm_description= $('#cm_description').val()
+        var defect= $('select[name=defect] option').filter(':selected').val()
+        var immediate_investigation= $('#immediate_investigation').val()
         var oem_failure_reference= $('#oem_failure_reference').val()
+        var replaced_asset_config_id= $('#replaced_asset_config_id').val()
+        var service_delay= $('#service_delay').val()
+
+
+        var location_id= $('select[name=location_id] option').filter(':selected').val()
+        var kilometre_reading= $('#kilometre_reading').val()
+        var sel_car= $('#sel_car').val()
+        var equipment= $('#equipment').val()
+        var location= $('#location').val()
+        var direction= $('select[name=direction] option').filter(':selected').val()
+        var incident= $('select[name=incident] option').filter(':selected').val()
+        var no_of_trip_cancel= $('#no_of_trip_cancel').val()
+        var department= $('select[name=department] option').filter(':selected').val()
+        var deboarding= $('select[name=deboarding] option').filter(':selected').val()
+        var reported_to_PPIO= $('select[name=reported_to_PPIO] option').filter(':selected').val()
+        var TO_name= $('#TO_name').val()
+
+        const select = document.getElementById("sel_car");
+        const selectedValues = Array.from(select.selectedOptions).map(opt => opt.value);
+        sel_car = selectedValues.join(", ");
+        console.log(sel_car); // Logs: BMW, Audi, etc.
+        
+
+
         var id= $('#id').val()
         var buttonClick= $('#buttonClick').val()
 
@@ -751,8 +893,6 @@
         immediate_investigation = immediate_investigation.replace(/['"`]/g, '');
         oem_failure_reference = oem_failure_reference.replace(/['"`]/g, '');
         cm_description = cm_description.replace(/['"`]/g, '');
-
-
 
 
         $.ajax({
@@ -783,6 +923,21 @@
                 'cm_end_time' : cm_end_time,
                 'oem_failure_reference':oem_failure_reference,
                 'defect':defect,
+
+                'location_id':location_id,
+                'kilometre_reading':kilometre_reading,
+                'sel_car':sel_car,
+                'equipment':equipment,
+                'location':location,
+                'direction':direction,
+                'incident':incident,
+                'no_of_trip_cancel':no_of_trip_cancel,
+                'department':department,
+                'deboarding':deboarding,
+                'reported_to_PPIO':reported_to_PPIO,
+                'TO_name':TO_name,
+
+
             },
 
             success: function (response) {
