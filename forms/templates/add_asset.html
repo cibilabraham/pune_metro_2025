@@ -70,7 +70,21 @@
                 <div class="col-md-4 ">
                     <div class="form-group">
                         <label for="software_version">*Train set no:</label>
-                        <input type="text" class="form-control" id="location_id" name="location_id" value="{{data.location_id}}" required="required">
+
+                         <select class="form-control" id="location_id" name="location_id" required="required">
+                        <option value="">--  Select Train set no  --</option>
+                        {% for train_set_options in train_set_options %}
+                            {% if train_set_options == data.location_id %}
+                                <option value="{{train_set_options}}" selected>{{train_set_options}} </option>
+                            {% else %}
+                                <option value="{{train_set_options}}">{{train_set_options}} </option>
+                            {% endif %}
+                                
+                        {% endfor %}
+                        </select>
+
+
+                        <!-- <input type="text" class="form-control" id="location_id" name="location_id" value="{{data.location_id}}" required="required"> -->
                         <div class="invalid-feedback">
                          Please enter Train set no.
                         </div>

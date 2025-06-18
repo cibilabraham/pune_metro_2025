@@ -19,6 +19,7 @@ from django.core.files.storage import FileSystemStorage
 from django.db import connection
 import string
 import sys
+import random
 
 class assetRegister(View):
     template_name = 'asset_register.html'
@@ -527,10 +528,22 @@ class AddFailureData(View):
             return redirect('/dashboard/')
         id = kwargs.get("id")
         data=[]
+
+        current_year = datetime.datetime.now().year
+        current_month = datetime.datetime.now().month
+
+        timestamp = datetime.datetime.now().strftime("%d%H%M%S")
+        random_suffix = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+        unique_string = f"{timestamp}{random_suffix}"
+
+        failure_unique_id = f"RST/{current_month:02}-{current_year}/{unique_string}"
+
+
+
         if id==None:
             data={ 
             'asset_type' : '',
-            'failure_id' : '',
+            'failure_id' : failure_unique_id,
             'asset_config_id' : '',
             'event_description' : '',
             'mode_id' : '',
@@ -624,6 +637,7 @@ class AddFailureData(View):
             asset_config_id = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_config_id')
             mode_id = FailureMode.objects.filter(is_active=0,P_id=P_id).distinct('mode_id')
             defect = Defect.objects.filter(is_active=0,P_id=P_id).distinct('defect_id')
+
         return render(request, self.template_name,{'data':data,'defect':defect,'asset_type':asset_types
                                                    ,'asset_config_id':asset_config_id,'mode_id':mode_id})
 
@@ -4247,7 +4261,38 @@ class AddJobcard(View):
 
         PBSMaster_datas=PBSMaster.objects.filter(id=FailureDatas[0].asset_type)
 
-        job_details = JobDetails.objects.filter(job_card_id=jb.job_id,is_active=0)
+        job_details = []
+        job_detailsArr = JobDetails.objects.filter(job_card_id=jb.job_id,is_active=0)
+        st = 0
+        for jdar in job_detailsArr:
+            st = st + 1
+            job_details.append({ 
+                'job_details_id' :  jdar.job_details_id,
+                'job_description' : jdar.job_description,
+                's_no' : st,
+            })
+
+        full_path = jb.signature_img
+
+        # Find the index of /static
+        index = full_path.find("/static")
+        if index != -1:
+            relative_path = full_path[index + len("/static"):]  # remove /static as well
+            # optionally remove leading slash
+            relative_path = relative_path.lstrip("/")
+        else:
+            relative_path = full_path  # fallback if /static not found
+
+        full_path2 = jb.signature_img2
+
+        # Find the index of /static
+        index2 = full_path2.find("/static")
+        if index2 != -1:
+            relative_path2 = full_path2[index2 + len("/static"):]  # remove /static as well
+            # optionally remove leading slash
+            relative_path2 = relative_path2.lstrip("/")
+        else:
+            relative_path2 = full_path2  # fallback if /static not found
 
 
         data={ 
@@ -4309,6 +4354,17 @@ class AddJobcard(View):
             'trip_no':jb.trip_no,
             'event_date' : jb.event_date,
             'event_time':jb.event_time,
+            'sic_no':jb.sic_no,
+
+            'signature_img':relative_path,
+            'issued_by' : jb.issued_by,
+            'l1_time':jb.l1_time,
+            'l1_date':jb.l1_date,
+
+            'signature_img2':relative_path2,
+            'received_by' : jb.received_by,
+            'l2_time':jb.l2_time,
+            'l2_date':jb.l2_date,
             
 
 
@@ -4316,7 +4372,36 @@ class AddJobcard(View):
 
         }
 
-        return render(request, self.template_name,{'data':data,'job_details':job_details})
+        prv_data = []
+        JobCard_prvdatas =JobCard.objects.filter(train_set_no=jb.train_set_no,event_date=jb.event_date).exclude(job_id=id)
+        st_gen = 0
+        for jbr in JobCard_prvdatas:
+            st_gen = st_gen + 1
+            FailureDatasprv=FailureData.objects.filter(id=jbr.failure_id.id)
+            datasprv = FailureDatasprv[0]
+            sts = 'Open'
+            if jbr.status == 1 or jbr.status == '1':
+                sts = 'Close'
+
+            wrk = ''
+            job_detailsArrLoop = JobDetails.objects.filter(job_card_id=jbr.job_id,is_active=0)
+            for jdar in job_detailsArrLoop:
+                if wrk == '':
+                    wrk = jdar.job_description
+                else:
+                    wrk = f"{wrk}, {jdar.job_description}"
+
+            prv_data.append({ 
+                'st_gen':st_gen,
+                'job_card_no' :  jbr.job_card_no,
+                'issued_to' : jbr.issued_to,
+                'immediate_investigation' : wrk,
+                'completion_time' : jbr.completion_time,
+                'status':sts,
+            })
+
+        # print(prv_data)
+        return render(request, self.template_name,{'data':data,'job_details':job_details,'prv_data':prv_data})
       
  
     def post(self, request, *args, **kwargs):
@@ -4350,6 +4435,57 @@ class AddJobcard(View):
             return JsonResponse({'status':'1'})
         elif st == 0 or st == '0':
             JobCard.objects.filter(job_id=ids).update(run_status=st,status=0)
+            return JsonResponse({'status':'1'})
+
+        elif st == 17 or st == '17':
+            JobCard.objects.filter(job_id=ids).update(run_status=1,status=0)
+            return JsonResponse({'status':'1'})
+
+        elif st == 2 or st == '2':
+            sic_required = req.get('sic_required')
+            assigned_to = req.get('assigned_to')
+            sic_no = req.get('sic_no')
+            JobCard.objects.filter(job_id=ids).update(run_status=st,sic_required=sic_required,assigned_to=assigned_to,sic_no=sic_no)
+            return JsonResponse({'status':'1'})
+
+        elif st == 3 or st == '3':
+            issued_by = req.get('issued_by')
+            l1_date = datetime.datetime.strptime(req.get('l1_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            l1_time = req.get('l1_time')
+
+            uploaded_file = request.FILES['signature_img']
+            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+
+            # Create folder if it doesn't exist
+            os.makedirs(static_path, exist_ok=True)
+
+            # Save file
+            file_path = os.path.join(static_path, uploaded_file.name)
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+
+            JobCard.objects.filter(job_id=ids).update(run_status=st,issued_by=issued_by,l1_date=l1_date,l1_time=l1_time,signature_img=file_path)
+            return JsonResponse({'status':'1'})
+
+        elif st == 4 or st == '4':
+            received_by = req.get('received_by')
+            l2_date = datetime.datetime.strptime(req.get('l2_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            l2_time = req.get('l2_time')
+
+            uploaded_file = request.FILES['signature_img2']
+            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+
+            # Create folder if it doesn't exist
+            os.makedirs(static_path, exist_ok=True)
+
+            # Save file
+            file_path = os.path.join(static_path, uploaded_file.name)
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+
+            JobCard.objects.filter(job_id=ids).update(run_status=st,received_by=received_by,l2_date=l2_date,l2_time=l2_time,signature_img2=file_path)
             return JsonResponse({'status':'1'})
 
         elif st == 15 or st == '15':
@@ -4395,6 +4531,41 @@ class ViewJobcard(View):
 
         PBSMaster_datas=PBSMaster.objects.filter(id=FailureDatas[0].asset_type)
 
+        job_details = []
+        job_detailsArr = JobDetails.objects.filter(job_card_id=jb.job_id,is_active=0)
+        st = 0
+        for jdar in job_detailsArr:
+            st = st + 1
+            job_details.append({ 
+                'job_details_id' :  jdar.job_details_id,
+                'job_description' : jdar.job_description,
+                's_no' : st,
+            })
+
+
+        full_path = jb.signature_img
+
+        # Find the index of /static
+        index = full_path.find("/static")
+        if index != -1:
+            relative_path = full_path[index + len("/static"):]  # remove /static as well
+            # optionally remove leading slash
+            relative_path = relative_path.lstrip("/")
+        else:
+            relative_path = full_path  # fallback if /static not found
+
+        full_path2 = jb.signature_img2
+
+        # Find the index of /static
+        index2 = full_path2.find("/static")
+        if index2 != -1:
+            relative_path2 = full_path2[index2 + len("/static"):]  # remove /static as well
+            # optionally remove leading slash
+            relative_path2 = relative_path2.lstrip("/")
+        else:
+            relative_path2 = full_path2  # fallback if /static not found
+
+
 
         data={ 
             'job_card_no' :  jb.job_card_no,
@@ -4413,6 +4584,7 @@ class ViewJobcard(View):
 
 
             'asset_type' : PBSMaster_datas[0].asset_type,
+            'subsystem' : PBSMaster_datas[0].subsystem,
             'failure_id' : datas.failure_id,
             'asset_config_id' : datas.asset_config_id,
             'event_description' : datas.event_description,
@@ -4455,10 +4627,52 @@ class ViewJobcard(View):
             'event_date' : jb.event_date,
             'event_time':jb.event_time,
 
+            'sic_no':jb.sic_no,
+
+            'signature_img':relative_path,
+            'issued_by' : jb.issued_by,
+            'l1_time':jb.l1_time,
+            'l1_date':jb.l1_date,
+
+            'signature_img2':relative_path2,
+            'received_by' : jb.received_by,
+            'l2_time':jb.l2_time,
+            'l2_date':jb.l2_date,
+            
+
 
 
         }
 
-        return render(request, self.template_name,{'data':data})
+        prv_data = []
+        JobCard_prvdatas =JobCard.objects.filter(train_set_no=jb.train_set_no,event_date=jb.event_date).exclude(job_id=id)
+        st_gen = 0
+        for jbr in JobCard_prvdatas:
+            st_gen = st_gen + 1
+            FailureDatasprv=FailureData.objects.filter(id=jbr.failure_id.id)
+            datasprv = FailureDatasprv[0]
+            sts = 'Open'
+            if jbr.status == 1 or jbr.status == '1':
+                sts = 'Close'
+
+            wrk = ''
+            job_detailsArrLoop = JobDetails.objects.filter(job_card_id=jbr.job_id,is_active=0)
+            for jdar in job_detailsArrLoop:
+                if wrk == '':
+                    wrk = jdar.job_description
+                else:
+                    wrk = f"{wrk}, {jdar.job_description}"
+
+            prv_data.append({ 
+                'st_gen':st_gen,
+                'job_card_no' :  jbr.job_card_no,
+                'issued_to' : jbr.issued_to,
+                'immediate_investigation' : wrk,
+                'completion_time' : jbr.completion_time,
+                'status':sts,
+            })
+
+
+        return render(request, self.template_name,{'data':data,'job_details':job_details, 'prv_data':prv_data })
       
  

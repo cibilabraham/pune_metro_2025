@@ -159,6 +159,7 @@
                             <th>MTBF ({{MTBFMTBSAF}})</th>
                             <th>MDBF ({{MTBFMTBSAF}})</th>
                             <th>MTBSAF ({{MTBFMTBSAF}})</th>
+                            <th>MDBSAF ({{MTBFMTBSAF}})</th>
                             <th>MTTR ({{MTTR}})</th>
                             <th>MART</th>
                             <th>Asset quantity</th>
@@ -298,7 +299,7 @@ var average_speed = '{{average_speed}}';
                   ],
                   "columnDefs": [
                         {
-                        "targets": 10,  // 0-based index, so 9 is the 10th column
+                        "targets": [10,12],  // 0-based index, so 9 is the 10th column
                         "visible": visible,
                         "searchable": false
                         }
@@ -350,6 +351,10 @@ var average_speed = '{{average_speed}}';
                         },
 
                       {"data" : "MTBSAF"},
+                       {"data":null,"render":function(item){
+                            return parseFloat(item.MTBSAF)*parseFloat(average_speed);
+                        }
+                        },
                       {"data" : "MTTR"},
                       {"data" : "MART"},
                       {"data" : "asset_quantity"},

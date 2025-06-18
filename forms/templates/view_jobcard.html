@@ -170,7 +170,7 @@
                 </div>
 
 
-                {% if data.run_status == 1 %}
+                    {% if data.run_status == 1 %}
 
                         <div class="row " style="padding: 20px;text-align: center;">
                             <div class="col-lg-12 border p-2 text-danger" >
@@ -197,9 +197,262 @@
                     {% else %}
 
 
-                    <h1>here</h1>
+                        <div class="row " style="padding: 20px;">
+                             <div class="col-lg-12"><h3>LEVEL 1 Details Of Job(s) to be carried out</h3></div>
+                            
+
+                        </div>
+
+                         <div class="row " style="padding: 20px;text-align: center;">
+                            <div class="col-md-12">
+                                <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                           
+                                            <th>S. No</th>
+                                            <th>Car No</th>
+                                            <th>Sub System</th>
+                                            <th>Equipment</th>
+                                            <th>Job Details</th>
+                                         
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
 
+                                     {% for job_details in job_details %}
+                                            <tr>
+                                                <td>{{ job_details.s_no }}</td>
+                                                <td>{{ data.sel_car }}</td>
+                                                <td>{{ data.subsystem }}</td>
+                                                <td>{{ data.equipment }}</td>
+                                                <td>{{ job_details.job_description }}</td>
+
+                                                
+                                              
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="5" class="text-center text-muted">No job details available</td>
+                                            </tr>
+                                        {% endfor %}
+
+                                        
+
+
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row " style="padding: 20px;">
+
+
+                            <div class="col-lg-4">
+
+                                <span>Safety Independent Check Required: <b>{{data.sic_required}}</b></span><br>
+                                <span>SIC No: <b>{{data.sic_no}}</b></span><br>
+                                <span>SIC Assigned: <b>{{data.assigned_to}}</b></span><br>
+
+                            </div>
+
+                        </div>
+
+
+
+
+                        {% if data.run_status == 2 %}
+
+                            <div class="row " style="padding: 20px;text-align: center;">
+                                <div class="col-lg-12 border p-2 text-danger" >
+                                    <span class="text-muted">
+                                        <i class="fas fa-spinner fa-spin"></i> Waiting for LEVEL 1 Previous Failure History (To be filled by PPIO) (Pune Metro)
+                                    </span>
+
+
+                                    {% if request.session.user_Role == 5 %}        
+                                    <br>
+                                    <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
+
+                                    {% endif %} 
+
+
+
+
+                                </div>
+
+                            </div>
+
+                        {% else %}
+
+                         <div class="row " style="padding: 20px;">
+                             <div class="col-lg-12"><h3>LEVEL 1 Previous Failure History (To be filled by PPIO) (Pune Metro)</h3></div>
+                            
+
+                        </div>
+
+
+
+
+                         <div class="row " style="padding: 20px;text-align: center;">
+                            <div class="col-md-12">
+                                <table  class="table stripe row-border order-column table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                           
+                                            <th>S. No</th>
+                                            <th>Job Card No</th>
+                                            <th>Job Card Issue To</th>
+                                            <th>Activity</th>
+                                            <th>Expected Completion Time</th>
+                                            <th>Status</th>
+                                         
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                     {% for prv_dts in prv_data %}
+                                            <tr>
+                                                <td>{{ prv_dts.st_gen }}</td>
+                                                <td>{{ prv_dts.job_card_no }}</td>
+                                                <td>{{ prv_dts.issued_to }}</td>
+                                                <td>{{ prv_dts.immediate_investigation }}</td>
+                                                <td>{{ prv_dts.completion_time }}</td>
+                                                 <td>{{ prv_dts.status }}</td>
+
+                                                
+                                              
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="6" class="text-center text-muted">No job card available</td>
+                                            </tr>
+                                        {% endfor %}
+
+                                        
+
+
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                         <div class="row " style="padding: 20px;">
+
+
+                            <div class="col-lg-4">
+
+                                <span>Issued by (Name): <b>{{data.issued_by}}</b></span><br>
+                                <span>Date: <b>{{data.l1_date}}</b></span><br>
+                                <span>Time: <b>{{data.l1_time}}</b></span><br>
+
+                            </div>
+
+                            <div class="col-lg-4">
+                                <img src="/static/{{data.signature_img}}" style="width: 60px;">
+
+                            </div>
+
+                        </div>
+
+
+                        <hr>
+
+
+
+                        {% if data.run_status == 3 %}
+
+                            <div class="row " style="padding: 20px;text-align: center;">
+                                <div class="col-lg-12 border p-2 text-danger" >
+                                    <span class="text-muted">
+                                        <i class="fas fa-spinner fa-spin"></i> Waiting for LEVEL 2  Acceptance of Job Card (To be filled by nominated work supervisor)
+                                    </span>
+
+
+                                    {% if request.session.user_Role == 6 %}        
+                                    <br>
+                                    <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
+
+                                    {% endif %} 
+
+
+
+
+                                </div>
+
+                            </div>
+
+                        {% else %}
+
+                          <div class="row " style="padding: 20px;">
+                             <div class="col-lg-12"><h3>LEVEL 2  Acceptance of Job Card (To be filled by nominated work supervisor)</h3></div>
+                            
+
+                        </div>
+
+
+                         <div class="row " style="padding: 20px;">
+
+
+                            <div class="col-lg-4">
+
+                                <span>Received by (Name): <b>{{data.received_by}}</b></span><br>
+                                <span>Date: <b>{{data.l2_date}}</b></span><br>
+                                <span>Time: <b>{{data.l2_time}}</b></span><br>
+
+                            </div>
+
+                            <div class="col-lg-4">
+                                <img src="/static/{{data.signature_img2}}" style="width: 60px;">
+
+                            </div>
+
+                        </div>
+
+
+
+
+                         {% if data.run_status == 4 %}
+
+                            <div class="row " style="padding: 20px;text-align: center;">
+                                <div class="col-lg-12 border p-2 text-danger" >
+                                    <span class="text-muted">
+                                        <i class="fas fa-spinner fa-spin"></i> Waiting for LEVEL 2 Allotment of work to Maintainers
+                                    </span>
+
+
+                                    {% if request.session.user_Role == 6 %}        
+                                    <br>
+                                    <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
+
+                                    {% endif %} 
+
+
+
+
+                                </div>
+
+                            </div>
+
+                        {% else %}
+
+<h2>here</h2>
+
+
+                        {% endif %}
+
+                        {% endif %}
+
+
+                        {% endif %}
 
                     {% endif %}
                 
