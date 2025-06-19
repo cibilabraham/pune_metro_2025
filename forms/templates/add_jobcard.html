@@ -910,19 +910,604 @@
                                          {% if data.run_status == 4 and request.session.user_Role == 6 %}
 
 
-                                            <div class="row " style="padding: 20px;text-align: center;">
-                                                <div class="col-lg-12 " >
-                                                    <h5>LEVEL 2 Allotment of work to Maintainers</h5>
+
+                                               <div class="row " style="padding: 20px;text-align: center;">
+                                                    <div class="col-lg-12 " >
+                                                        <h5>LEVEL 2 Allotment of work to Maintainers</h5>
+                                                        
+                                                    </div>
+
                                                     
+                                                        {% if request.session.user_Role == 6 %}
+
+                                                            <div class="col-lg-12 " align="right">
+                                                                <input type="button" value="Add new Work to Maintainers" class="btn btn-primary" onClick="createNewWork();">
+                                                            </div>
+
+                                                        {% endif %}
+                                                
+
                                                 </div>
 
-                                            </div>
+
+
+                                                <div class="row " style="padding: 20px;text-align: center;">
+                                                    <div class="col-md-12">
+                                                        <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                                                            <thead>
+                                                                <tr>
+                                                                
+                                                                    <th>S. No</th>
+                                                                    <th>Name</th>
+                                                                    <th>Work</th>
+                                                                    <th>Signature</th>
+                                                                   
+                                                                    <th class="bg-white">
+                                                                        
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+
+                                                            {% for job_works in job_works %}
+                                                                    <tr>
+                                                                        <td>{{ job_works.s_no }}</td>
+                                                                        <td>{{ job_works.jobwork_name }}</td>
+                                                                        <td>{{ job_works.jobwork_work }}</td>
+                                                                        <td>{{ job_works.jobwork_signature }}</td>
+                                                                       
+                                                                        
+                                                                        <td class="bg-white">
+
+                                                                            {% if request.session.user_Role == 6 %}
+
+                                                                <input type="button" value="Edit" onClick="editJobWork('{{ job_works.job_work_id }}',`{{ job_works.jobwork_name }}`,`{{ job_works.jobwork_work }}`,`{{ job_works.jobwork_signature }}`);">
+
+                                                                <input type="button" value="Delete" onClick="deleteJobWork('{{ job_works.job_work_id }}');">
+
+
+                                                                            {% endif %}
+
+                                                                        </td>
+                                                                    </tr>
+                                                                {% empty %}
+                                                                    <tr>
+                                                                        <td colspan="6" class="text-center text-muted">No work available</td>
+                                                                    </tr>
+                                                                {% endfor %}
+
+                                                                
+
+
+
+
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+
+
+                                                  <form id="Level2WorkForm">
+                                                    <div class="row " style="padding: 20px;">
+
+
+                                                    
+
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="follow_up_details">*Follow Up Details:</label>
+                                                                    <textarea class="form-control" id="follow_up_details" name="follow_up_details">{{data.follow_up_details}}</textarea>
+                                                                    <div class="invalid-feedback">
+                                                                    Please enter Follow Up Details.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                             <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="handed_over">Job Card Handed over to the next supervisor, if work is not completed in your shift:</label>
+                                                                        <select class="form-control" id="handed_over" name="handed_over" >
+                                                                             {% if 'No' == data.handed_over %}
+                                                                            <option value="No" selected>No</option>
+                                                                            {% else %}
+                                                                                <option value="No">No</option>
+                                                                            {% endif %}
+                                                                            {% if 'Yes' == data.handed_over %}
+                                                                            <option value="Yes" selected>Yes</option>
+                                                                            {% else %}
+                                                                                <option value="Yes">Yes</option>
+                                                                            {% endif %}
+                                                                           
+                                                                        </select>
+                                                                        {% comment %} <input type="text" class="form-control" id="handed_over" name="handed_over" value="{{data.handed_over}}"> {% endcomment %}
+                                                                        <div class="invalid-feedback">
+                                                                        Please enter Job Card Handed over.
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label for="new_supervisor">Name of the New Supervisor:</label>
+                                                                            <input type="text" class="form-control" id="new_supervisor" name="new_supervisor" value="{{data.new_supervisor}}">
+                                                                            <div class="invalid-feedback">
+                                                                            Please enter Name of the New Supervisor.
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                        <div class="col-md-4">
+                                                                            <div class="form-group">
+                                                                                <label for="signature_img3">Sign. of the New Supervisor: </label>
+                                                                                <input type="file" class="form-control" id="signature_img3"  name="signature_img3" accept="image/*">
+                                                                                <div class="invalid-feedback">
+                                                                                Please upload Sign. of the New Supervisor.
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+
+                                                            <div class="col-12">  
+                                                                <button type="submit" class="btn btn-primary mt-2" >Update</button>
+
+                                                            </div>
+                                                            
+
+
+                                                    </div>
+
+                                                    </form>
+
+
 
 
                                         {% else %}
 
-                                        <h1>hhhh</h1>
 
+                                        {% if data.run_status > 4 %}
+
+                                          <div class="row " style="padding: 20px;">
+                                            <div class="col-lg-12"><h3>LEVEL 2 Allotment of work to Maintainers</h3></div>
+                                            
+
+                                        </div>
+
+
+                                         <div class="row " style="padding: 20px;text-align: center;">
+                                            <div class="col-md-12">
+                                                <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                        
+                                                            <th>S. No</th>
+                                                            <th>Name</th>
+                                                            <th>Work</th>
+                                                            <th>Signature</th>
+                                                    
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+
+                                                    {% for job_works in job_works %}
+                                                            <tr>
+                                                                <td>{{ job_works.s_no }}</td>
+                                                                <td>{{ job_works.jobwork_name }}</td>
+                                                                <td>{{ job_works.jobwork_work }}</td>
+                                                                <td>{{ job_works.jobwork_signature }}</td>
+                                                                
+                                                            
+                                                            </tr>
+                                                        {% empty %}
+                                                            <tr>
+                                                                <td colspan="6" class="text-center text-muted">No work available</td>
+                                                            </tr>
+                                                        {% endfor %}
+
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row " style="padding: 20px;">
+
+
+                                            <div class="col-lg-12">
+
+                                                <span>Follow Up Details: <b>{{data.follow_up_details}}</b></span><br>
+                                                <span>Job Card Handed over to the next supervisor, if work is not completed in your shift: <b>{{data.handed_over}}</b></span><br>
+                                                <span>Name of the New Supervisor: <b>{{data.new_supervisor}}</b></span><br>
+
+                                            </div>
+
+                                        {% if data.signature_img3 %}
+                                            <div class="col-lg-4">
+                                                <img src="/static/{{ data.signature_img3 }}" style="width: 60px;">
+                                            </div>
+                                        {% endif %}
+
+
+                                        </div>
+
+
+
+                                          {% if request.session.user_Role == 6 %}
+
+                                            <div class="col-lg-4">
+                                                <input type="button" value="Edit LEVEL 2 Allotment of work to Maintainers" class="btn btn-primary" onClick="editLevel2Work()">
+                                            </div>
+
+                                            {% endif %}
+
+
+
+                                            {% if data.run_status == 5 and request.session.user_Role == 6 %}
+
+
+
+                                                <div class="row " style="padding: 20px;text-align: center;">
+                                                    <div class="col-lg-12 " >
+                                                        <h5>LEVEL 2 Details of the Equipment Replaced</h5>
+                                                        
+                                                    </div>
+
+                                                    {% if request.session.user_Role == 6 %}
+
+                                                        <div class="col-lg-12 " align="right">
+                                                            <input type="button" value="Add new Replaced Equipment" class="btn btn-primary" onClick="createNewEquipment();">
+                                                        </div>
+
+                                                    {% endif %}
+
+                                                    
+
+                                                </div>
+
+
+                                                 <div class="row " style="padding: 20px;text-align: center;">
+                                                    <div class="col-md-12">
+                                                        <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                                                            <thead>
+                                                                <tr>
+                                                                
+                                                                    <th>S. No</th>
+                                                                    <th>Name of Equipment</th>
+                                                                    <th>In Sr.No.(New)</th>
+                                                                    <th>Out Sr.No.(Old)</th>
+                                                                   
+                                                                    <th class="bg-white">
+                                                                        
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+
+                                                            {% for job_equipment in job_equipment %}
+                                                                    <tr>
+                                                                        <td>{{ job_equipment.s_no }}</td>
+                                                                        <td>{{ job_equipment.jobequipment_name }}</td>
+                                                                        <td>{{ job_equipment.jobequipment_new_no }}</td>
+                                                                        <td>{{ job_equipment.jobequipment_old_no }}</td>
+                                                                       
+                                                                        
+                                                                        <td class="bg-white">
+
+                                                                            {% if request.session.user_Role == 6 %}
+
+                                                                <input type="button" value="Edit" onClick="editJobEquipment('{{ job_equipment.job_equipment_id }}',`{{ job_equipment.jobequipment_name }}`,`{{ job_equipment.jobequipment_new_no }}`,`{{ job_equipment.jobequipment_old_no }}`);">
+
+                                                                <input type="button" value="Delete" onClick="deleteJobEquipment('{{ job_equipment.job_equipment_id }}');">
+
+
+                                                                            {% endif %}
+
+                                                                        </td>
+                                                                    </tr>
+                                                                {% empty %}
+                                                                    <tr>
+                                                                        <td colspan="6" class="text-center text-muted">No Equipment Replaced</td>
+                                                                    </tr>
+                                                                {% endfor %}
+
+                                                                
+
+
+
+
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row " style="padding: 20px;text-align: center;">
+                                                    <div class="col-lg-12 " >
+                                                        <h5>LEVEL 2 Job Completion Report</h5>
+                                                        
+                                                    </div>
+
+                                               
+
+                                                </div>
+
+
+                                                 <form id="Level2EquipmentForm">
+                                                    <div class="row " style="padding: 20px;">
+
+                                                             <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>
+                                                                        <input type="checkbox" name="agree_terms2" required="required">
+                                                                        I hereby declare that; all persons have been withdrawn and all the equipment affected as detailed in Part A above have been restored to normal.
+                                                                        </label>
+                                                                </div>
+                                                            </div>
+
+                                                              <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="train_can_be_energized">*Train can be energized:</label>
+                                                                    <select class="form-control" id="train_can_be_energized" name="train_can_be_energized" required="required">
+                                                                        {% if 'Yes' == data.train_can_be_energized %}
+                                                                        <option value="Yes" selected>Yes</option>
+                                                                        {% else %}
+                                                                            <option value="Yes">Yes</option>
+                                                                        {% endif %}
+                                                                        {% if 'No' == data.train_can_be_energized %}
+                                                                        <option value="No" selected>No</option>
+                                                                        {% else %}
+                                                                            <option value="No">No</option>
+                                                                        {% endif %}
+                                                                    </select>
+                                                                    {% comment %} <input type="text" class="form-control" id="train_can_be_energized" name="train_can_be_energized" value="{{data.train_can_be_energized}}"> {% endcomment %}
+                                                                    <div class="invalid-feedback">
+                                                                    Please enter Train can be energized.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="completion_name">*Name:</label>
+                                                                    <input type="text" class="form-control" id="completion_name" name="completion_name" value="{{data.completion_name}}" required="required">
+                                                                    <div class="invalid-feedback">
+                                                                    Please enter Name.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="down_time">Down Time(HH:MM):</label>
+                                                                    <input type="text" class="form-control" id="down_time" name="down_time" value="{{data.down_time}}">
+                                                                    <div class="invalid-feedback">
+                                                                    Please enter Down Time.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                              <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="train_can_be_moved">*Train can be moved:</label>
+                                                                    <select class="form-control" id="train_can_be_moved" name="train_can_be_moved" required="required">
+                                                                        {% if 'Yes' == data.train_can_be_moved %}
+                                                                        <option value="Yes" selected>Yes</option>
+                                                                        {% else %}
+                                                                            <option value="Yes">Yes</option>
+                                                                        {% endif %}
+                                                                        {% if 'No' == data.train_can_be_moved %}
+                                                                        <option value="No" selected>No</option>
+                                                                        {% else %}
+                                                                            <option value="No">No</option>
+                                                                        {% endif %}
+                                                                    </select>
+                                                                    {% comment %} <input type="text" class="form-control" id="train_can_be_moved" name="train_can_be_moved" value="{{data.train_can_be_moved}}"> {% endcomment %}
+                                                                    <div class="invalid-feedback">
+                                                                    Please enter Train can be moved.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                              <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="completion_date">*Date (DD/MM/YYYY):</label>
+                                                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="completion_date" name="completion_date" value="{{data.completion_date|date:'d/m/Y'}}">
+                                                                    <div class="invalid-feedback">
+                                                                    Please enter Date.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="completion_date_time">*Time:</label>
+                                                                    <input type="time" class="form-control" id="completion_date_time" required="required" name="completion_date_time" value="{{data.completion_date_time|date:"H:i:s"}}">
+                                                                    <div class="invalid-feedback">
+                                                                    Please enter Time.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label for="signature_img4">*Signature: </label>
+                                                                        <input type="file" class="form-control" id="signature_img4"  name="signature_img4" required="required" accept="image/*">
+                                                                        <div class="invalid-feedback">
+                                                                        Please upload Signature.
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+
+
+                                                            <div class="col-12">  
+                                                                <button type="submit" class="btn btn-primary mt-2" >Update</button>
+
+                                                            </div>
+                                                            
+
+
+                                                    </div>
+
+                                                </form>
+
+
+
+
+                                            {% else %}
+
+                                                {% if data.run_status > 5 %}
+
+
+
+                                                    <div class="row " style="padding: 20px;">
+                                                        <div class="col-lg-12"><h3>LEVEL 2 Details of the Equipment Replaced</h3></div>
+                                                        
+
+                                                        </div>
+
+
+                                                        <div class="row " style="padding: 20px;text-align: center;">
+                                                                                <div class="col-md-12">
+                                                                                    <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                            
+                                                                                                <th>S. No</th>
+                                                                                                <th>Name of Equipment</th>
+                                                                                                <th>In Sr.No.(New)</th>
+                                                                                                <th>Out Sr.No.(Old)</th>
+                                                                                            
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+
+
+                                                                                        {% for job_equipment in job_equipment %}
+                                                                                                <tr>
+                                                                                                    <td>{{ job_equipment.s_no }}</td>
+                                                                                                    <td>{{ job_equipment.jobequipment_name }}</td>
+                                                                                                    <td>{{ job_equipment.jobequipment_new_no }}</td>
+                                                                                                    <td>{{ job_equipment.jobequipment_old_no }}</td>
+                                                                                                
+                                                                                                
+                                                                                                </tr>
+                                                                                            {% empty %}
+                                                                                                <tr>
+                                                                                                    <td colspan="6" class="text-center text-muted">No Equipment Replaced</td>
+                                                                                                </tr>
+                                                                                            {% endfor %}
+
+                                                                                            
+
+
+
+
+
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+
+
+
+                                                        {% if request.session.user_Role == 6 %}
+
+                                                        <div class="col-lg-4">
+                                                            <input type="button" value="Edit LEVEL 2 Details of the Equipment Replaced" class="btn btn-primary" onClick="editLevel2Equipment()">
+                                                        </div>
+
+                                                        {% endif %}
+
+
+                                                        <div class="row " style="padding: 20px;">
+                                                        <div class="col-lg-12"><h3>LEVEL 2 Job Completion Report</h3></div>
+                                                        
+
+                                                        </div>
+
+
+                                                            <div class="row " style="padding: 20px;">
+
+
+                                                                    <div class="col-lg-4">
+
+                                                                        <span>Train can be energized: <b>{{data.train_can_be_energized}}</b></span><br>
+                                                                        <span>Name: <b>{{data.completion_name}}</b></span><br>
+                                                                        <span>Down Time(HH:MM): <b>{{data.down_time}}</b></span><br>
+                                                                    
+                                                                    </div>
+
+
+                                                                    <div class="col-lg-4">
+
+                                                                
+                                                                        <span>Train can be moved: <b>{{data.train_can_be_moved}}</b></span><br>
+                                                                        <span>Date : <b>{{data.completion_date}}</b></span><br>
+                                                                        <span>Time: <b>{{data.completion_date_time}}</b></span><br>
+
+                                                                    </div>
+
+                                                                {% if data.signature_img3 %}
+                                                                    <div class="col-lg-4">
+                                                                        <img src="/static/{{ data.signature_img4 }}" style="width: 60px;">
+                                                                    </div>
+                                                                {% endif %}
+
+
+                                                            </div>
+
+
+
+                                                    {% if data.run_status == 6 and request.session.user_Role == 6 %}
+
+
+
+                                                            <div class="row " style="padding: 20px;text-align: center;">
+                                                                <div class="col-lg-12 " >
+                                                                    <h5>LEVEL 2 SIC Completion Report</h5>
+                                                                    
+                                                                </div>
+
+                                                        
+
+                                                            </div>
+
+
+                                                    {% else %}
+
+                                                        <h1>hhhh</h1>
+
+                                                    {% endif %}
+                                                        
+
+
+
+
+
+
+                                                    
+                                                {% endif %}
+
+                                            {% endif %}
+
+
+                                        {% endif %}
 
 
 
@@ -1046,13 +1631,155 @@
   </div>
 </div>
 
-           
+ <div class="modal fade" id="myModal2" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- modal-lg makes it large -->
+    <div class="modal-content">
+
+         <form id="JobWorkForm"> 
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Allotment of work to Maintainers</h5>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+        <div class="row mb-4">
+
+            <div class="col-sm-6 ">
+                <div class="form-group">
+                    <label for="jobwork_name">*Name:</label>
+                    <input type="text" class="form-control" id="jobwork_name" name="jobwork_name" value="" required="required">
+                    <div class="invalid-feedback">
+                        Please enter Name.
+                    </div>
+                </div>
+            </div>
+
+        
+
+             <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="jobwork_work">*Work:</label>
+                        <textarea class="form-control" required="required" id="jobwork_work" name="jobwork_work"></textarea>
+                         <div class="invalid-feedback">
+                         Please enter Work.
+                        </div>
+                    </div>
+                </div>
+
+                   <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="jobwork_signature">*Signature:</label>
+                        <textarea class="form-control" required="required" id="jobwork_signature" name="jobwork_signature"></textarea>
+                         <div class="invalid-feedback">
+                         Please enter Signature.
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+        </div>
+
+
+        
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal2();">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <input type="hidden" value="" id="JobWorkID" name="JobWorkID">
+      </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>  
+
+<div class="modal fade" id="myModal3" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- modal-lg makes it large -->
+    <div class="modal-content">
+
+         <form id="JobEquipmentForm"> 
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Details of the Equipment Replaced</h5>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+        <div class="row mb-4">
+
+            <div class="col-sm-6 ">
+                <div class="form-group">
+                    <label for="jobequipment_name">*Name of Equipment:</label>
+                    <input type="text" class="form-control" id="jobequipment_name" name="jobequipment_name" value="" required="required">
+                    <div class="invalid-feedback">
+                        Please enter Name of Equipment.
+                    </div>
+                </div>
+            </div>
+
+
+
+             <div class="col-sm-6 ">
+                <div class="form-group">
+                    <label for="jobequipment_new_no">*In Sr.No.(New):</label>
+                    <input type="text" class="form-control" id="jobequipment_new_no" name="jobequipment_new_no" value="" required="required">
+                    <div class="invalid-feedback">
+                        Please enter In Sr.No.(New).
+                    </div>
+                </div>
+            </div>
+
+              <div class="col-sm-6 ">
+                <div class="form-group">
+                    <label for="jobequipment_old_no">*Out Sr.No.(Old):</label>
+                    <input type="text" class="form-control" id="jobequipment_old_no" name="jobequipment_old_no" value="" required="required">
+                    <div class="invalid-feedback">
+                        Please enter Out Sr.No.(Old).
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+        
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal2();">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <input type="hidden" value="" id="JobEquipmentID" name="JobEquipmentID">
+      </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>  
             
 {% endblock sb_admin_content %}
 {% block sb_admin_js %}
 <script>
 
      var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+      var myModal2 = new bootstrap.Modal(document.getElementById('myModal2'));
+      var myModal3 = new bootstrap.Modal(document.getElementById('myModal3'));
 
     $(document).ready(function() {
 
@@ -1065,6 +1792,10 @@
           format: 'dd/mm/yyyy',});
 
            $('#l2_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
+           $('#completion_date').datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy',});
 
@@ -1110,11 +1841,118 @@
 
     });
 
+    
+     $( "#JobWorkForm" ).submit(function(e) {
+        e.preventDefault();
+
+
+
+        var jobwork_name= $('#jobwork_name').val()
+        var jobwork_work= $('#jobwork_work').val()
+        var jobwork_signature= $('#jobwork_signature').val()
+        var JobWorkID= $('#JobWorkID').val()
+
+        jobwork_signature = jobwork_signature.replace(/['"`]/g, '');
+        jobwork_work = jobwork_work.replace(/['"`]/g, '');
+
+        var id= '{{data.id}}';
+
+      
+
+        $.ajax({
+            url: "/forms/jobcard_register/addjobcard/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'id':id,
+                'jobwork_name' : jobwork_name,
+                'jobwork_work':jobwork_work,
+                'jobwork_signature':jobwork_signature,
+                'JobWorkID':JobWorkID,
+                'st':18,
+            },
+
+            success: function (response) {
+                if(response.status == '1') {
+                    window.location.reload(); 
+                }
+                else{
+                    swal('Failed to save Allotment of work to Maintainers')
+                    
+                }
+            }
+        });
+        
+
+
+    });
+
+     $( "#JobEquipmentForm" ).submit(function(e) {
+        e.preventDefault();
+
+
+        var jobequipment_name= $('#jobequipment_name').val()
+        var jobequipment_new_no= $('#jobequipment_new_no').val()
+        var jobequipment_old_no= $('#jobequipment_old_no').val()
+        var JobEquipmentID= $('#JobEquipmentID').val()
+
+        var id= '{{data.id}}';
+
+      
+
+        $.ajax({
+            url: "/forms/jobcard_register/addjobcard/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'id':id,
+                'jobequipment_name' : jobequipment_name,
+                'jobequipment_new_no':jobequipment_new_no,
+                'jobequipment_old_no':jobequipment_old_no,
+                'JobEquipmentID':JobEquipmentID,
+                'st':21,
+            },
+
+            success: function (response) {
+                if(response.status == '1') {
+                    window.location.reload(); 
+                }
+                else{
+                    swal('Failed to save Details of the Equipment Replaced')
+                    
+                }
+            }
+        });
+        
+
+
+    });
+
+    
     function createNewJobDetails(){
        $('#JobDetailsID').val('');
        $('#job_description').val('');
        $('#s_no').val('');
         myModal.show();
+    }
+
+    
+    function createNewEquipment(){
+        $('#JobEquipmentID').val('');
+       $('#jobequipment_name').val('');
+       $('#jobequipment_new_no').val('');
+       $('#jobequipment_old_no').val('');
+        myModal3.show();
+    }
+
+    function createNewWork(){
+        $('#JobWorkID').val('');
+       $('#jobwork_name').val('');
+       $('#jobwork_work').val('');
+       $('#jobwork_signature').val('');
+        myModal2.show();
     }
 
     function editJobDetails(id,s_no,job_description){
@@ -1125,6 +1963,87 @@
         myModal.show();
 
     }
+
+    function editJobEquipment(id,jobequipment_name,jobequipment_new_no,jobequipment_old_no){
+
+        $('#JobEquipmentID').val(id);
+       $('#jobequipment_name').val(jobequipment_name);
+       $('#jobequipment_new_no').val(jobequipment_new_no);
+       $('#jobequipment_old_no').val(jobequipment_old_no);
+        myModal3.show();
+
+    }
+
+    function editJobWork(id,jobwork_name,jobwork_work,jobwork_signature){
+
+        $('#JobWorkID').val(id);
+       $('#jobwork_name').val(jobwork_name);
+       $('#jobwork_work').val(jobwork_work);
+       $('#jobwork_signature').val(jobwork_signature);
+
+        myModal2.show();
+
+    }
+
+    function deleteJobEquipment(id){
+
+          swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/jobcard_register/addjobcard/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':22,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+
+    }
+
+    
+    function deleteJobWork(id){
+
+         swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/jobcard_register/addjobcard/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':19,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+
+    }
+
 
     function deleteJobDetails(id){
 
@@ -1159,6 +2078,14 @@
        myModal.hide();
     }
 
+     function closeModal2(){
+       myModal2.hide();
+    }
+
+      function closeModal3(){
+       myModal3.hide();
+    }
+
     function editJobCardDetails(){
         var id= '{{data.id}}';
 
@@ -1189,6 +2116,67 @@
         });
     }
 
+    
+    function editLevel2Equipment(){
+        var id= '{{data.id}}';
+
+         swal({
+            title: "Are you sure?",
+            text:"If you update LEVEL 2 Details of the Equipment Replaced, the status of this job card will be reset.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Ok, update it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/jobcard_register/addjobcard/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':23,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+    }
+    
+    function editLevel2Work(){
+        var id= '{{data.id}}';
+
+         swal({
+            title: "Are you sure?",
+            text:"If you update LEVEL 2 Allotment of work to Maintainers, the status of this job card will be reset.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Ok, update it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/jobcard_register/addjobcard/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':20,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+    }
+    
     function editDetailsOfJob(){
         var id= '{{data.id}}';
 
@@ -1321,6 +2309,38 @@
         
     });
 
+    
+     $("#Level2WorkForm").submit(function(e) {
+        e.preventDefault();
+
+        var form = $('#Level2WorkForm')[0];  // Get the raw DOM form element
+        var formData = new FormData(form);    // Create FormData object
+
+        formData.append('id', '{{ data.id }}');
+        formData.append('st', 5);
+
+        $.ajax({
+            url: "/forms/jobcard_register/addjobcard/",
+            method: 'POST',
+            data: formData,
+            dataType: 'json',
+            processData: false,     // Prevent jQuery from processing data
+            contentType: false,     // Let browser set content type including boundaries
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+
+            success: function (response) {
+                if (response.status == '1') {
+                    window.location.reload();
+                } else {
+                    swal('Failed to update LEVEL 2 Details of the activities carried out');
+                }
+            },
+            error: function () {
+                swal('An error occurred while submitting the data.');
+            }
+        });
+    });
+
 
 
     $("#Level1FinalForm").submit(function(e) {
@@ -1379,6 +2399,38 @@
                     window.location.reload();
                 } else {
                     swal('Failed to update LEVEL 2 Acceptance of Job Card (To be filled by nominated work supervisor)');
+                }
+            },
+            error: function () {
+                swal('An error occurred while submitting the data.');
+            }
+        });
+    });
+
+
+     $("#Level2EquipmentForm").submit(function(e) {
+        e.preventDefault();
+
+        var form = $('#Level2EquipmentForm')[0];  // Get the raw DOM form element
+        var formData = new FormData(form);    // Create FormData object
+
+        formData.append('id', '{{ data.id }}');
+        formData.append('st', 6);
+
+        $.ajax({
+            url: "/forms/jobcard_register/addjobcard/",
+            method: 'POST',
+            data: formData,
+            dataType: 'json',
+            processData: false,     // Prevent jQuery from processing data
+            contentType: false,     // Let browser set content type including boundaries
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+
+            success: function (response) {
+                if (response.status == '1') {
+                    window.location.reload();
+                } else {
+                    swal('Failed to update LEVEL 2 Job Completion Report');
                 }
             },
             error: function () {

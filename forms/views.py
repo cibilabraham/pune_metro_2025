@@ -4273,26 +4273,57 @@ class AddJobcard(View):
             })
 
         full_path = jb.signature_img
-
-        # Find the index of /static
-        index = full_path.find("/static")
-        if index != -1:
-            relative_path = full_path[index + len("/static"):]  # remove /static as well
-            # optionally remove leading slash
-            relative_path = relative_path.lstrip("/")
+        if full_path == None:
+            relative_path = None
         else:
-            relative_path = full_path  # fallback if /static not found
+            # Find the index of /static
+            index = full_path.find("/static")
+            if index != -1:
+                relative_path = full_path[index + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path = relative_path.lstrip("/")
+            else:
+                relative_path = full_path  # fallback if /static not found
 
         full_path2 = jb.signature_img2
-
-        # Find the index of /static
-        index2 = full_path2.find("/static")
-        if index2 != -1:
-            relative_path2 = full_path2[index2 + len("/static"):]  # remove /static as well
-            # optionally remove leading slash
-            relative_path2 = relative_path2.lstrip("/")
+        if full_path2 == None:
+            relative_path2 = None
         else:
-            relative_path2 = full_path2  # fallback if /static not found
+            # Find the index of /static
+            index2 = full_path2.find("/static")
+            if index2 != -1:
+                relative_path2 = full_path2[index2 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path2 = relative_path2.lstrip("/")
+            else:
+                relative_path2 = full_path2  # fallback if /static not found
+
+
+        full_path3 = jb.signature_img3
+        if full_path3 == None:
+            relative_path3 = None
+        else:
+            # Find the index of /static
+            index3 = full_path3.find("/static")
+            if index3 != -1:
+                relative_path3 = full_path3[index3 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path3 = relative_path3.lstrip("/")
+            else:
+                relative_path3 = full_path3  # fallback if /static not found
+
+        full_path4 = jb.signature_img4
+        if full_path4 == None:
+            relative_path4 = None
+        else:
+            # Find the index of /static
+            index4 = full_path4.find("/static")
+            if index4 != -1:
+                relative_path4 = full_path4[index4 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path4 = relative_path4.lstrip("/")
+            else:
+                relative_path4 = full_path4  # fallback if /static not found
 
 
         data={ 
@@ -4365,9 +4396,20 @@ class AddJobcard(View):
             'received_by' : jb.received_by,
             'l2_time':jb.l2_time,
             'l2_date':jb.l2_date,
-            
 
 
+            'signature_img3':relative_path3,
+            'follow_up_details' : jb.follow_up_details,
+            'handed_over':jb.handed_over,
+            'new_supervisor':jb.new_supervisor,
+
+            'signature_img4':relative_path4,
+            'completion_date_time' : jb.completion_date_time,
+            'completion_date':jb.completion_date,
+            'train_can_be_moved':jb.train_can_be_moved,
+            'down_time':jb.down_time,
+            'completion_name':jb.completion_name,
+            'train_can_be_energized':jb.train_can_be_energized,
 
 
         }
@@ -4400,8 +4442,34 @@ class AddJobcard(View):
                 'status':sts,
             })
 
+        job_works = []
+        job_worksArr = JobWorkToMaintainers.objects.filter(job_card_id=jb.job_id,is_active=0)
+        st = 0
+        for jdar in job_worksArr:
+            st = st + 1
+            job_works.append({ 
+                'job_work_id' :  jdar.job_work_id,
+                'jobwork_name' :  jdar.jobwork_name,
+                'jobwork_work' :  jdar.jobwork_work,
+                'jobwork_signature' : jdar.jobwork_signature,
+                's_no' : st,
+            })
+
+        job_equipment = []
+        job_equipmentArr = JobReplacedEquipment.objects.filter(job_card_id=jb.job_id,is_active=0)
+        st = 0
+        for jdar in job_equipmentArr:
+            st = st + 1
+            job_equipment.append({ 
+                'job_equipment_id' :  jdar.job_equipment_id,
+                'jobequipment_name' :  jdar.jobequipment_name,
+                'jobequipment_new_no' :  jdar.jobequipment_new_no,
+                'jobequipment_old_no' : jdar.jobequipment_old_no,
+                's_no' : st,
+            })
+
         # print(prv_data)
-        return render(request, self.template_name,{'data':data,'job_details':job_details,'prv_data':prv_data})
+        return render(request, self.template_name,{'data':data,'job_details':job_details,'prv_data':prv_data, 'job_works':job_works, 'job_equipment':job_equipment  })
       
  
     def post(self, request, *args, **kwargs):
@@ -4411,9 +4479,9 @@ class AddJobcard(View):
         cursor = connection.cursor()
         # print(req)
         ids = req.get('id')
-
-       
         st = req.get('st')
+
+        print(st)
 
         if st == 1 or st == '1':
 
@@ -4439,6 +4507,10 @@ class AddJobcard(View):
 
         elif st == 17 or st == '17':
             JobCard.objects.filter(job_id=ids).update(run_status=1,status=0)
+            return JsonResponse({'status':'1'})
+
+        elif st == 20 or st == '20':
+            JobCard.objects.filter(job_id=ids).update(run_status=4,status=0)
             return JsonResponse({'status':'1'})
 
         elif st == 2 or st == '2':
@@ -4488,6 +4560,53 @@ class AddJobcard(View):
             JobCard.objects.filter(job_id=ids).update(run_status=st,received_by=received_by,l2_date=l2_date,l2_time=l2_time,signature_img2=file_path)
             return JsonResponse({'status':'1'})
 
+        elif st == 5 or st == '5':
+            follow_up_details = req.get('follow_up_details')
+            handed_over = req.get('handed_over')
+            new_supervisor = req.get('new_supervisor')
+
+            if 'signature_img3' in request.FILES:
+                uploaded_file = request.FILES['signature_img3']
+                static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+
+                # Create folder if it doesn't exist
+                os.makedirs(static_path, exist_ok=True)
+
+                # Save file
+                file_path = os.path.join(static_path, uploaded_file.name)
+                with open(file_path, 'wb+') as destination:
+                    for chunk in uploaded_file.chunks():
+                        destination.write(chunk)
+            else:
+                file_path = ''
+
+            JobCard.objects.filter(job_id=ids).update(run_status=st,follow_up_details=follow_up_details,handed_over=handed_over,new_supervisor=new_supervisor,signature_img3=file_path)
+            return JsonResponse({'status':'1'})
+
+        elif st == 6 or st == '6':
+            train_can_be_energized = req.get('train_can_be_energized')
+            completion_name = req.get('completion_name')
+            down_time = req.get('down_time')
+            train_can_be_moved = req.get('train_can_be_moved')
+            completion_date_time = req.get('completion_date_time')
+            completion_date = datetime.datetime.strptime(req.get('completion_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
+            uploaded_file = request.FILES['signature_img4']
+            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+
+            # Create folder if it doesn't exist
+            os.makedirs(static_path, exist_ok=True)
+
+            # Save file
+            file_path = os.path.join(static_path, uploaded_file.name)
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+         
+            JobCard.objects.filter(job_id=ids).update(run_status=st,train_can_be_energized=train_can_be_energized,completion_name=completion_name,down_time=down_time,train_can_be_moved=train_can_be_moved,completion_date_time=completion_date_time,completion_date=completion_date,signature_img4=file_path)
+
+            return JsonResponse({'status':'1'})
+
         elif st == 15 or st == '15':
             job_description = req.get('job_description')
             s_no = req.get('s_no')
@@ -4502,10 +4621,62 @@ class AddJobcard(View):
 
             return JsonResponse({'status':'1'})
 
+
         elif st == 16 or st == '16':
             JobDetails.objects.filter(job_details_id=ids).update(is_active=1)
             return JsonResponse({'status':'1'})
 
+        elif st == 18 or st == '18':
+            # print('here')
+            jobwork_name = req.get('jobwork_name')
+            jobwork_work = req.get('jobwork_work')
+            jobwork_signature = req.get('jobwork_signature')
+            JobWorkID = req.get('JobWorkID')
+
+            # print('here')
+
+            if JobWorkID == "":
+                job_dt = JobCard.objects.filter(job_id=ids)
+                j = JobWorkToMaintainers(job_card_id=job_dt[0],jobwork_name=jobwork_name,jobwork_work=jobwork_work,jobwork_signature=jobwork_signature)
+                j.save()
+            else:
+                JobWorkToMaintainers.objects.filter(job_work_id=JobWorkID).update(jobwork_name=jobwork_name,jobwork_work=jobwork_work,jobwork_signature=jobwork_signature)
+
+            return JsonResponse({'status':'1'})
+
+        
+        elif st == 19 or st == '19':
+            JobWorkToMaintainers.objects.filter(job_work_id=ids).update(is_active=1)
+            return JsonResponse({'status':'1'})
+
+        elif st == 21 or st == '21':
+            # print('here')
+            jobequipment_name = req.get('jobequipment_name')
+            jobequipment_new_no = req.get('jobequipment_new_no')
+            jobequipment_old_no = req.get('jobequipment_old_no')
+            JobEquipmentID = req.get('JobEquipmentID')
+
+            # print('here')
+
+            if JobEquipmentID == "":
+                job_dt = JobCard.objects.filter(job_id=ids)
+                j = JobReplacedEquipment(job_card_id=job_dt[0],jobequipment_name=jobequipment_name,jobequipment_new_no=jobequipment_new_no,jobequipment_old_no=jobequipment_old_no)
+                j.save()
+            else:
+                JobReplacedEquipment.objects.filter(job_equipment_id=JobEquipmentID).update(jobequipment_name=jobequipment_name,jobequipment_new_no=jobequipment_new_no,jobequipment_old_no=jobequipment_old_no)
+
+            return JsonResponse({'status':'1'})
+
+        elif st == 22 or st == '22':
+            JobReplacedEquipment.objects.filter(job_equipment_id=ids).update(is_active=1)
+            return JsonResponse({'status':'1'})
+
+        elif st == 23 or st == '23':
+            JobCard.objects.filter(job_id=ids).update(run_status=5,status=0)
+            return JsonResponse({'status':'1'})
+
+        
+        
         else:
             return JsonResponse({'status':'0'})
 
@@ -4544,26 +4715,59 @@ class ViewJobcard(View):
 
 
         full_path = jb.signature_img
-
-        # Find the index of /static
-        index = full_path.find("/static")
-        if index != -1:
-            relative_path = full_path[index + len("/static"):]  # remove /static as well
-            # optionally remove leading slash
-            relative_path = relative_path.lstrip("/")
+        if full_path == None:
+            relative_path = None
         else:
-            relative_path = full_path  # fallback if /static not found
+            # Find the index of /static
+            index = full_path.find("/static")
+            if index != -1:
+                relative_path = full_path[index + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path = relative_path.lstrip("/")
+            else:
+                relative_path = full_path  # fallback if /static not found
 
         full_path2 = jb.signature_img2
-
-        # Find the index of /static
-        index2 = full_path2.find("/static")
-        if index2 != -1:
-            relative_path2 = full_path2[index2 + len("/static"):]  # remove /static as well
-            # optionally remove leading slash
-            relative_path2 = relative_path2.lstrip("/")
+        if full_path2 == None:
+            relative_path2 = None
         else:
-            relative_path2 = full_path2  # fallback if /static not found
+            # Find the index of /static
+            index2 = full_path2.find("/static")
+            if index2 != -1:
+                relative_path2 = full_path2[index2 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path2 = relative_path2.lstrip("/")
+            else:
+                relative_path2 = full_path2  # fallback if /static not found
+
+
+        full_path3 = jb.signature_img3
+        if full_path3 == None:
+            relative_path3 = None
+        else:
+            # Find the index of /static
+            index3 = full_path3.find("/static")
+            if index3 != -1:
+                relative_path3 = full_path3[index3 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path3 = relative_path3.lstrip("/")
+            else:
+                relative_path3 = full_path3  # fallback if /static not found
+
+
+        full_path4 = jb.signature_img4
+        if full_path4 == None:
+            relative_path4 = None
+        else:
+            # Find the index of /static
+            index4 = full_path4.find("/static")
+            if index4 != -1:
+                relative_path4 = full_path4[index4 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path4 = relative_path4.lstrip("/")
+            else:
+                relative_path4 = full_path4  # fallback if /static not found
+
 
 
 
@@ -4638,6 +4842,21 @@ class ViewJobcard(View):
             'received_by' : jb.received_by,
             'l2_time':jb.l2_time,
             'l2_date':jb.l2_date,
+
+
+            'signature_img3':relative_path3,
+            'follow_up_details' : jb.follow_up_details,
+            'handed_over':jb.handed_over,
+            'new_supervisor':jb.new_supervisor,
+
+
+            'signature_img4':relative_path4,
+            'completion_date_time' : jb.completion_date_time,
+            'completion_date':jb.completion_date,
+            'train_can_be_moved':jb.train_can_be_moved,
+            'down_time':jb.down_time,
+            'completion_name':jb.completion_name,
+            'train_can_be_energized':jb.train_can_be_energized,
             
 
 
@@ -4672,7 +4891,33 @@ class ViewJobcard(View):
                 'status':sts,
             })
 
+        job_works = []
+        job_worksArr = JobWorkToMaintainers.objects.filter(job_card_id=jb.job_id,is_active=0)
+        st = 0
+        for jdar in job_worksArr:
+            st = st + 1
+            job_works.append({ 
+                'job_work_id' :  jdar.job_work_id,
+                'jobwork_name' :  jdar.jobwork_name,
+                'jobwork_work' :  jdar.jobwork_work,
+                'jobwork_signature' : jdar.jobwork_signature,
+                's_no' : st,
+            })
 
-        return render(request, self.template_name,{'data':data,'job_details':job_details, 'prv_data':prv_data })
+        job_equipment = []
+        job_equipmentArr = JobReplacedEquipment.objects.filter(job_card_id=jb.job_id,is_active=0)
+        st = 0
+        for jdar in job_equipmentArr:
+            st = st + 1
+            job_equipment.append({ 
+                'job_equipment_id' :  jdar.job_equipment_id,
+                'jobequipment_name' :  jdar.jobequipment_name,
+                'jobequipment_new_no' :  jdar.jobequipment_new_no,
+                'jobequipment_old_no' : jdar.jobequipment_old_no,
+                's_no' : st,
+            })
+
+
+        return render(request, self.template_name,{'data':data,'job_details':job_details, 'prv_data':prv_data, 'job_works':job_works, 'job_equipment':job_equipment  })
       
  

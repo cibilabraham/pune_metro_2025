@@ -444,8 +444,222 @@
 
                         {% else %}
 
-<h2>here</h2>
 
+                          <div class="row " style="padding: 20px;">
+                             <div class="col-lg-12"><h3>LEVEL 2 Allotment of work to Maintainers</h3></div>
+                            
+
+                        </div>
+
+
+                        <div class="row " style="padding: 20px;text-align: center;">
+                            <div class="col-md-12">
+                                <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                        
+                                            <th>S. No</th>
+                                            <th>Name</th>
+                                            <th>Work</th>
+                                            <th>Signature</th>
+                                       
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                    {% for job_works in job_works %}
+                                            <tr>
+                                                <td>{{ job_works.s_no }}</td>
+                                                <td>{{ job_works.jobwork_name }}</td>
+                                                <td>{{ job_works.jobwork_work }}</td>
+                                                <td>{{ job_works.jobwork_signature }}</td>
+                                                
+                                             
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="6" class="text-center text-muted">No work available</td>
+                                            </tr>
+                                        {% endfor %}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="row " style="padding: 20px;">
+
+
+                            <div class="col-lg-12">
+
+                                <span>Follow Up Details: <b>{{data.follow_up_details}}</b></span><br>
+                                <span>Job Card Handed over to the next supervisor, if work is not completed in your shift: <b>{{data.handed_over}}</b></span><br>
+                                <span>Name of the New Supervisor: <b>{{data.new_supervisor}}</b></span><br>
+
+                            </div>
+
+                          {% if data.signature_img3 %}
+                            <div class="col-lg-4">
+                                <img src="/static/{{ data.signature_img3 }}" style="width: 60px;">
+                            </div>
+                        {% endif %}
+
+
+                        </div>
+
+
+                        {% if data.run_status == 5 %}
+
+                            <div class="row " style="padding: 20px;text-align: center;">
+                                <div class="col-lg-12 border p-2 text-danger" >
+                                    <span class="text-muted">
+                                        <i class="fas fa-spinner fa-spin"></i> Waiting for LEVEL 2 Details of the Equipment Replaced
+                                    </span>
+
+
+                                    {% if request.session.user_Role == 6 %}        
+                                    <br>
+                                    <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
+
+                                    {% endif %} 
+
+
+
+
+                                </div>
+
+                            </div>
+
+                        {% else %}
+
+
+
+                          <div class="row " style="padding: 20px;">
+                             <div class="col-lg-12"><h3>LEVEL 2 Details of the Equipment Replaced</h3></div>
+                            
+
+                            </div>
+
+
+                             <div class="row " style="padding: 20px;text-align: center;">
+                                                    <div class="col-md-12">
+                                                        <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                                                            <thead>
+                                                                <tr>
+                                                                
+                                                                    <th>S. No</th>
+                                                                    <th>Name of Equipment</th>
+                                                                    <th>In Sr.No.(New)</th>
+                                                                    <th>Out Sr.No.(Old)</th>
+                                                                 
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+
+                                                            {% for job_equipment in job_equipment %}
+                                                                    <tr>
+                                                                        <td>{{ job_equipment.s_no }}</td>
+                                                                        <td>{{ job_equipment.jobequipment_name }}</td>
+                                                                        <td>{{ job_equipment.jobequipment_new_no }}</td>
+                                                                        <td>{{ job_equipment.jobequipment_old_no }}</td>
+                                                                       
+                                                                     
+                                                                    </tr>
+                                                                {% empty %}
+                                                                    <tr>
+                                                                        <td colspan="6" class="text-center text-muted">No Equipment Replaced</td>
+                                                                    </tr>
+                                                                {% endfor %}
+
+                                                                
+
+
+
+
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+
+                            <div class="row " style="padding: 20px;">
+                             <div class="col-lg-12"><h3>LEVEL 2 Job Completion Report</h3></div>
+                            
+
+                            </div>
+
+
+                                <div class="row " style="padding: 20px;">
+
+
+                                        <div class="col-lg-4">
+
+                                            <span>Train can be energized: <b>{{data.train_can_be_energized}}</b></span><br>
+                                            <span>Name: <b>{{data.completion_name}}</b></span><br>
+                                            <span>Down Time(HH:MM): <b>{{data.down_time}}</b></span><br>
+                                          
+                                        </div>
+
+
+                                        <div class="col-lg-4">
+
+                                       
+                                            <span>Train can be moved: <b>{{data.train_can_be_moved}}</b></span><br>
+                                            <span>Date : <b>{{data.completion_date}}</b></span><br>
+                                            <span>Time: <b>{{data.completion_date_time}}</b></span><br>
+
+                                        </div>
+
+                                    {% if data.signature_img3 %}
+                                        <div class="col-lg-4">
+                                            <img src="/static/{{ data.signature_img4 }}" style="width: 60px;">
+                                        </div>
+                                    {% endif %}
+
+
+                                </div>
+
+
+
+                                 {% if data.run_status == 6 %}
+
+                                        <div class="row " style="padding: 20px;text-align: center;">
+                                            <div class="col-lg-12 border p-2 text-danger" >
+                                                <span class="text-muted">
+                                                    <i class="fas fa-spinner fa-spin"></i> Waiting for LEVEL 2 SIC Completion Report
+
+                                                </span>
+
+
+                                                {% if request.session.user_Role == 6 %}        
+                                                <br>
+                                                <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
+
+                                                {% endif %} 
+
+
+
+
+                                            </div>
+
+                                        </div>
+
+                                    {% else %}
+
+
+
+                                        <h2>here</h2>
+
+                                    {% endif %}
+
+
+
+                        {% endif %}
 
                         {% endif %}
 
