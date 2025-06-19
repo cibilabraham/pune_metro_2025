@@ -131,7 +131,7 @@ function getDefectData(){
                             tbl += '<a href="/forms/jobcard_register/viewjobcard/'+ item.id +'" >View</a> | ';
 
                             
-                            if( (item.user_Role == 5 && item.run_status < 3) || (item.user_Role == 6 && item.run_status >= 3) ){
+                            if( (item.user_Role == 5 && item.run_status < 3) || ((item.user_Role == 6 && item.run_status >= 3) && (item.user_Role == 6 && item.run_status <= 6) ) || (item.user_Role == 5 && item.run_status >= 7) ){
                                 tbl += '<a href="/forms/jobcard_register/addjobcard/'+ item.id +'" >Edit</a> | ';
                             }
 

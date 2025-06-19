@@ -4325,6 +4325,19 @@ class AddJobcard(View):
             else:
                 relative_path4 = full_path4  # fallback if /static not found
 
+        full_path5 = jb.signature_img5
+        if full_path5 == None:
+            relative_path5 = None
+        else:
+            # Find the index of /static
+            index5 = full_path5.find("/static")
+            if index5 != -1:
+                relative_path5 = full_path5[index5 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path5 = relative_path5.lstrip("/")
+            else:
+                relative_path5 = full_path5  # fallback if /static not found
+
 
         data={ 
             'job_card_no' :  jb.job_card_no,
@@ -4400,6 +4413,7 @@ class AddJobcard(View):
 
             'signature_img3':relative_path3,
             'follow_up_details' : jb.follow_up_details,
+            'details_of_the_activitues' : jb.details_of_the_activitues,
             'handed_over':jb.handed_over,
             'new_supervisor':jb.new_supervisor,
 
@@ -4410,6 +4424,17 @@ class AddJobcard(View):
             'down_time':jb.down_time,
             'completion_name':jb.completion_name,
             'train_can_be_energized':jb.train_can_be_energized,
+
+            'signature_img5':relative_path5,
+            'completion_date_time2' : jb.completion_date_time2,
+            'completion_date2':jb.completion_date2,
+            'train_can_be_moved2':jb.train_can_be_moved2,
+            'down_time2':jb.down_time2,
+            'completion_name2':jb.completion_name2,
+            'train_can_be_energized2':jb.train_can_be_energized2,
+            'corrective_action':jb.corrective_action,
+            'sic_start_time':jb.sic_start_time,
+            'sic_has_performed':jb.sic_has_performed,
 
 
         }
@@ -4562,6 +4587,7 @@ class AddJobcard(View):
 
         elif st == 5 or st == '5':
             follow_up_details = req.get('follow_up_details')
+            details_of_the_activitues = req.get('details_of_the_activitues')
             handed_over = req.get('handed_over')
             new_supervisor = req.get('new_supervisor')
 
@@ -4580,7 +4606,7 @@ class AddJobcard(View):
             else:
                 file_path = ''
 
-            JobCard.objects.filter(job_id=ids).update(run_status=st,follow_up_details=follow_up_details,handed_over=handed_over,new_supervisor=new_supervisor,signature_img3=file_path)
+            JobCard.objects.filter(job_id=ids).update(run_status=st,follow_up_details=follow_up_details,handed_over=handed_over,new_supervisor=new_supervisor,signature_img3=file_path,details_of_the_activitues=details_of_the_activitues)
             return JsonResponse({'status':'1'})
 
         elif st == 6 or st == '6':
@@ -4604,6 +4630,34 @@ class AddJobcard(View):
                     destination.write(chunk)
          
             JobCard.objects.filter(job_id=ids).update(run_status=st,train_can_be_energized=train_can_be_energized,completion_name=completion_name,down_time=down_time,train_can_be_moved=train_can_be_moved,completion_date_time=completion_date_time,completion_date=completion_date,signature_img4=file_path)
+
+            return JsonResponse({'status':'1'})
+
+        elif st == 7 or st == '7':
+            corrective_action = req.get('corrective_action')
+            sic_start_time = req.get('sic_start_time')
+            sic_has_performed = 1 if request.POST.get('sic_has_performed') == 'on' else 0
+
+            train_can_be_energized2 = req.get('train_can_be_energized2')
+            completion_name2 = req.get('completion_name2')
+            down_time2 = req.get('down_time2')
+            train_can_be_moved2 = req.get('train_can_be_moved2')
+            completion_date_time2 = req.get('completion_date_time2')
+            completion_date2 = datetime.datetime.strptime(req.get('completion_date2'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
+            uploaded_file = request.FILES['signature_img5']
+            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+
+            # Create folder if it doesn't exist
+            os.makedirs(static_path, exist_ok=True)
+
+            # Save file
+            file_path = os.path.join(static_path, uploaded_file.name)
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+         
+            JobCard.objects.filter(job_id=ids).update(run_status=st,train_can_be_energized2=train_can_be_energized2,completion_name2=completion_name2,down_time2=down_time2,train_can_be_moved2=train_can_be_moved2,completion_date_time2=completion_date_time2,completion_date2=completion_date2,signature_img5=file_path,corrective_action=corrective_action,sic_start_time=sic_start_time,sic_has_performed=sic_has_performed)
 
             return JsonResponse({'status':'1'})
 
@@ -4768,6 +4822,18 @@ class ViewJobcard(View):
             else:
                 relative_path4 = full_path4  # fallback if /static not found
 
+        full_path5 = jb.signature_img5
+        if full_path5 == None:
+            relative_path5 = None
+        else:
+            # Find the index of /static
+            index5 = full_path5.find("/static")
+            if index5 != -1:
+                relative_path5 = full_path5[index5 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path5 = relative_path5.lstrip("/")
+            else:
+                relative_path5 = full_path5  # fallback if /static not found
 
 
 
@@ -4846,6 +4912,7 @@ class ViewJobcard(View):
 
             'signature_img3':relative_path3,
             'follow_up_details' : jb.follow_up_details,
+            'details_of_the_activitues' : jb.details_of_the_activitues,
             'handed_over':jb.handed_over,
             'new_supervisor':jb.new_supervisor,
 
@@ -4857,6 +4924,18 @@ class ViewJobcard(View):
             'down_time':jb.down_time,
             'completion_name':jb.completion_name,
             'train_can_be_energized':jb.train_can_be_energized,
+
+
+            'signature_img5':relative_path5,
+            'completion_date_time2' : jb.completion_date_time2,
+            'completion_date2':jb.completion_date2,
+            'train_can_be_moved2':jb.train_can_be_moved2,
+            'down_time2':jb.down_time2,
+            'completion_name2':jb.completion_name2,
+            'train_can_be_energized2':jb.train_can_be_energized2,
+            'corrective_action':jb.corrective_action,
+            'sic_start_time':jb.sic_start_time,
+            'sic_has_performed':jb.sic_has_performed,
             
 
 

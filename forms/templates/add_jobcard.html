@@ -889,6 +889,17 @@
 
                                         <div class="row " style="padding: 20px;">
 
+                                             <div class="col-lg-12">
+                                        <span>
+
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-check text-success" viewBox="0 0 16 16">
+                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                        </svg>
+                                                                                
+                                                                                
+                                                                                <b>I hereby declare that, I accept the responsibility to carry out the work on the equipment detailed on this Job Card only, and no attempt shall be made by me or any person under my control, to carry out work on any other equipment. </b></span>
+                                     </div>
+
 
                                             <div class="col-lg-4">
 
@@ -994,11 +1005,19 @@
                                                     <div class="row " style="padding: 20px;">
 
 
-                                                    
+                                                             <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="details_of_the_activitues">Details of the activities carried out:</label>
+                                                                    <textarea class="form-control" id="details_of_the_activitues" name="details_of_the_activitues">{{data.details_of_the_activitues}}</textarea>
+                                                                    <div class="invalid-feedback">
+                                                                    Please enter Details of the activities carried out.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label for="follow_up_details">*Follow Up Details:</label>
+                                                                    <label for="follow_up_details">Follow Up Details:</label>
                                                                     <textarea class="form-control" id="follow_up_details" name="follow_up_details">{{data.follow_up_details}}</textarea>
                                                                     <div class="invalid-feedback">
                                                                     Please enter Follow Up Details.
@@ -1122,7 +1141,7 @@
 
 
                                             <div class="col-lg-12">
-
+                                                <span>Details of the activities carried out: <b>{{data.details_of_the_activitues}}</b></span><br>
                                                 <span>Follow Up Details: <b>{{data.follow_up_details}}</b></span><br>
                                                 <span>Job Card Handed over to the next supervisor, if work is not completed in your shift: <b>{{data.handed_over}}</b></span><br>
                                                 <span>Name of the New Supervisor: <b>{{data.new_supervisor}}</b></span><br>
@@ -1140,7 +1159,7 @@
 
 
 
-                                          {% if request.session.user_Role == 6 %}
+                                          {% if request.session.user_Role == 6 and data.run_status < 6 %}
 
                                             <div class="col-lg-4">
                                                 <input type="button" value="Edit LEVEL 2 Allotment of work to Maintainers" class="btn btn-primary" onClick="editLevel2Work()">
@@ -1426,7 +1445,7 @@
 
 
 
-                                                        {% if request.session.user_Role == 6 %}
+                                                        {% if request.session.user_Role == 6 and data.run_status < 6 %}
 
                                                         <div class="col-lg-4">
                                                             <input type="button" value="Edit LEVEL 2 Details of the Equipment Replaced" class="btn btn-primary" onClick="editLevel2Equipment()">
@@ -1443,6 +1462,17 @@
 
 
                                                             <div class="row " style="padding: 20px;">
+
+                                                                  <div class="col-lg-12">
+                                        <span>
+
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-check text-success" viewBox="0 0 16 16">
+                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                        </svg>
+                                                                                
+                                                                                
+                                                                                <b>I hereby declare that; all persons have been withdrawn and all the equipment affected as detailed in Part A above have been restored to normal.</b></span>
+                                     </div>
 
 
                                                                     <div class="col-lg-4">
@@ -1489,9 +1519,281 @@
                                                             </div>
 
 
+                                                             <form id="Level2CompletionForm">
+                                                                    <div class="row " style="padding: 20px;">
+
+
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group">
+                                                                                    <label for="corrective_action">Corrective action required to be carried out (if any):</label>
+                                                                                    <textarea class="form-control" id="corrective_action" name="corrective_action">{{data.corrective_action}}</textarea>
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter Corrective action required to be carried out (if any).
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="sic_start_time">SIC Start Time(HH:MM):</label>
+                                                                                    <input type="time" class="form-control" id="sic_start_time" name="sic_start_time" value="{{data.sic_start_time}}">
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter SIC Start Time.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+
+
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group">
+
+                                                                                    <label>I hereby declare that, </label><br>
+
+                                                                                    <label>
+                                                                                        <input type="checkbox" name="sic_has_performed" name="sic_has_performed"  >
+                                                                                        SIC has been performed on concerned equipment.
+                                                                                        </label><br>
+
+                                                                                         <label>
+                                                                                        <input type="checkbox" name="agree_terms4" name="agree_terms3" required="required">
+                                                                                        All the necessary follow up action as described in Part F above and final inspection, including SIC (if any), have been completed. 
+                                                                                        </label>
+
+
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="train_can_be_energized2">*Train can be energized:</label>
+                                                                                    <select class="form-control" id="train_can_be_energized2" name="train_can_be_energized2" required="required">
+                                                                                        {% if 'Yes' == data.train_can_be_energized2 %}
+                                                                                        <option value="Yes" selected>Yes</option>
+                                                                                        {% else %}
+                                                                                            <option value="Yes">Yes</option>
+                                                                                        {% endif %}
+                                                                                        {% if 'No' == data.train_can_be_energized2 %}
+                                                                                        <option value="No" selected>No</option>
+                                                                                        {% else %}
+                                                                                            <option value="No">No</option>
+                                                                                        {% endif %}
+                                                                                    </select>
+                                                                                    {% comment %} <input type="text" class="form-control" id="train_can_be_energized2" name="train_can_be_energized2" value="{{data.train_can_be_energized2}}"> {% endcomment %}
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter Train can be energized.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="completion_name2">*Name:</label>
+                                                                                    <input type="text" class="form-control" id="completion_name2" name="completion_name2" value="{{data.completion_name2}}" required="required">
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter Name.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="down_time2">Down Time(HH:MM):</label>
+                                                                                    <input type="text" class="form-control" id="down_time2" name="down_time2" value="{{data.down_time2}}">
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter Down Time.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="train_can_be_moved2">*Train can be moved:</label>
+                                                                                    <select class="form-control" id="train_can_be_moved2" name="train_can_be_moved2" required="required">
+                                                                                        {% if 'Yes' == data.train_can_be_moved2 %}
+                                                                                        <option value="Yes" selected>Yes</option>
+                                                                                        {% else %}
+                                                                                            <option value="Yes">Yes</option>
+                                                                                        {% endif %}
+                                                                                        {% if 'No' == data.train_can_be_moved2 %}
+                                                                                        <option value="No" selected>No</option>
+                                                                                        {% else %}
+                                                                                            <option value="No">No</option>
+                                                                                        {% endif %}
+                                                                                    </select>
+                                                                                    {% comment %} <input type="text" class="form-control" id="train_can_be_moved2" name="train_can_be_moved2" value="{{data.train_can_be_moved2}}"> {% endcomment %}
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter Train can be moved.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="completion_date2">*Date (DD/MM/YYYY):</label>
+                                                                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="completion_date2" name="completion_date2" value="{{data.completion_date2|date:'d/m/Y'}}">
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter Date.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="completion_date_time2">*Time:</label>
+                                                                                    <input type="time" class="form-control" id="completion_date_time2" required="required" name="completion_date_time2" value="{{data.completion_date_time2|date:"H:i:s"}}">
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter Time.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                                <div class="col-md-4">
+                                                                                    <div class="form-group">
+                                                                                        <label for="signature_img5">*Signature: </label>
+                                                                                        <input type="file" class="form-control" id="signature_img5"  name="signature_img5" required="required" accept="image/*">
+                                                                                        <div class="invalid-feedback">
+                                                                                        Please upload Signature.
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+
+
+
+
+                                                                            <div class="col-12">  
+                                                                                <button type="submit" class="btn btn-primary mt-2" >Update</button>
+
+                                                                            </div>
+                                                                            
+
+
+                                                                    </div>
+
+                                                                </form>
+
+
+
+
+
+
+
                                                     {% else %}
 
-                                                        <h1>hhhh</h1>
+                                                        {% if data.run_status > 6 %}
+
+
+                                                                <div class="row " style="padding: 20px;">
+                                                                    <div class="col-lg-12"><h3>LEVEL 2 SIC Completion Report</h3></div>
+                                                                    
+
+                                                                </div>
+
+
+                                                                <div class="row " style="padding: 20px;">
+
+                                                                        <div class="col-lg-12">
+
+                                                                            <span>Corrective action required to be carried out (if any): <b>{{data.corrective_action}}</b></span><br>
+                                                                            <span>SIC Start Time: <b>{{data.sic_start_time}}</b></span><br>
+
+                                                                            {% if data.sic_has_performed == 1 or data.sic_has_performed == '1' %}
+
+                                                                            <span>
+
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-check text-success" viewBox="0 0 16 16">
+                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                        </svg>
+                                                                                
+                                                                                
+                                                                                <b>SIC has been performed on concerned equipment.</b></span>
+
+                                                                            {% else %}
+
+                                                                            <span>
+
+
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-x text-danger" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                                                                                
+                                                                                
+                                                                                <b>SIC has been performed on concerned equipment.</b></span>
+
+                                                                            {% endif %}
+
+                        <br>
+                                                                            <span>
+
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-check text-success" viewBox="0 0 16 16">
+                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                        </svg>
+                                                                                
+                                                                                
+                                                                                <b>All the necessary follow up action as described in Part F above and final inspection, including SIC (if any), have been completed. </b></span>
+
+
+
+                                                                            
+                                                                        </div>
+
+
+                                                                        <div class="col-lg-4">
+
+                                                                            <span>Train can be energized: <b>{{data.train_can_be_energized2}}</b></span><br>
+                                                                            <span>Name: <b>{{data.completion_name2}}</b></span><br>
+                                                                            <span>Down Time(HH:MM): <b>{{data.down_time2}}</b></span><br>
+                                                                        
+                                                                        </div>
+
+
+                                                                        <div class="col-lg-4">
+
+                                                                    
+                                                                            <span>Train can be moved: <b>{{data.train_can_be_moved2}}</b></span><br>
+                                                                            <span>Date : <b>{{data.completion_date2}}</b></span><br>
+                                                                            <span>Time: <b>{{data.completion_date_time2}}</b></span><br>
+
+                                                                        </div>
+
+                                                                    {% if data.signature_img3 %}
+                                                                        <div class="col-lg-4">
+                                                                            <img src="/static/{{ data.signature_img5 }}" style="width: 60px;">
+                                                                        </div>
+                                                                    {% endif %}
+
+
+                                                                </div>
+
+
+                                                                {% if data.run_status == 7 and request.session.user_Role == 5 %}
+
+
+                                                                    <div class="row " style="padding: 20px;text-align: center;">
+                                                                        <div class="col-lg-12 " >
+                                                                            <h5>LEVEL 3 Acknowledgement of returned Job Card (To be filled by PPIO)</h5>
+                                                                            
+                                                                        </div>
+
+                                                                
+
+                                                                    </div>
+
+
+                                                                {% else %}
+
+                                                                        <h1>hhhh</h1>
+
+                                                                {% endif %}
+
+
+
+                                                        {% endif %}
+
 
                                                     {% endif %}
                                                         
@@ -1796,6 +2098,10 @@
           format: 'dd/mm/yyyy',});
 
            $('#completion_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
+          $('#completion_date2').datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy',});
 
@@ -2416,6 +2722,38 @@
 
         formData.append('id', '{{ data.id }}');
         formData.append('st', 6);
+
+        $.ajax({
+            url: "/forms/jobcard_register/addjobcard/",
+            method: 'POST',
+            data: formData,
+            dataType: 'json',
+            processData: false,     // Prevent jQuery from processing data
+            contentType: false,     // Let browser set content type including boundaries
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+
+            success: function (response) {
+                if (response.status == '1') {
+                    window.location.reload();
+                } else {
+                    swal('Failed to update LEVEL 2 Job Completion Report');
+                }
+            },
+            error: function () {
+                swal('An error occurred while submitting the data.');
+            }
+        });
+    });
+
+
+     $("#Level2CompletionForm").submit(function(e) {
+        e.preventDefault();
+
+        var form = $('#Level2CompletionForm')[0];  // Get the raw DOM form element
+        var formData = new FormData(form);    // Create FormData object
+
+        formData.append('id', '{{ data.id }}');
+        formData.append('st', 7);
 
         $.ajax({
             url: "/forms/jobcard_register/addjobcard/",
