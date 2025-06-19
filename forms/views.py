@@ -4338,6 +4338,19 @@ class AddJobcard(View):
             else:
                 relative_path5 = full_path5  # fallback if /static not found
 
+        full_path6 = jb.signature_img6
+        if full_path6 == None:
+            relative_path6 = None
+        else:
+            # Find the index of /static
+            index6 = full_path6.find("/static")
+            if index6 != -1:
+                relative_path6 = full_path6[index6 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path6 = relative_path6.lstrip("/")
+            else:
+                relative_path6 = full_path6  # fallback if /static not found
+
 
         data={ 
             'job_card_no' :  jb.job_card_no,
@@ -4435,6 +4448,13 @@ class AddJobcard(View):
             'corrective_action':jb.corrective_action,
             'sic_start_time':jb.sic_start_time,
             'sic_has_performed':jb.sic_has_performed,
+
+            'signature_img6':relative_path6,
+            'close_name' : jb.close_name,
+            'close_date':jb.close_date,
+            'close_time':jb.close_time,
+            
+
 
 
         }
@@ -4661,6 +4681,27 @@ class AddJobcard(View):
 
             return JsonResponse({'status':'1'})
 
+        elif st == 8 or st == '8':
+            close_name = req.get('close_name')
+            close_time = req.get('close_time')
+            close_date = datetime.datetime.strptime(req.get('close_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
+            uploaded_file = request.FILES['signature_img6']
+            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+
+            # Create folder if it doesn't exist
+            os.makedirs(static_path, exist_ok=True)
+
+            # Save file
+            file_path = os.path.join(static_path, uploaded_file.name)
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+         
+            JobCard.objects.filter(job_id=ids).update(run_status=st,signature_img6=file_path,close_name=close_name,close_time=close_time,close_date=close_date,status=1)
+
+            return JsonResponse({'status':'1'})
+
         elif st == 15 or st == '15':
             job_description = req.get('job_description')
             s_no = req.get('s_no')
@@ -4835,6 +4876,19 @@ class ViewJobcard(View):
             else:
                 relative_path5 = full_path5  # fallback if /static not found
 
+        full_path6 = jb.signature_img6
+        if full_path6 == None:
+            relative_path6 = None
+        else:
+            # Find the index of /static
+            index6 = full_path6.find("/static")
+            if index6 != -1:
+                relative_path6 = full_path6[index6 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path6 = relative_path6.lstrip("/")
+            else:
+                relative_path6 = full_path6  # fallback if /static not found
+
 
 
         data={ 
@@ -4936,6 +4990,11 @@ class ViewJobcard(View):
             'corrective_action':jb.corrective_action,
             'sic_start_time':jb.sic_start_time,
             'sic_has_performed':jb.sic_has_performed,
+
+            'signature_img6':relative_path6,
+            'close_name' : jb.close_name,
+            'close_date':jb.close_date,
+            'close_time':jb.close_time,
             
 
 

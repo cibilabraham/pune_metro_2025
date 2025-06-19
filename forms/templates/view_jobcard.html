@@ -784,10 +784,32 @@
                                             {% else %}
 
 
+                                                <div class="row " style="padding: 20px;">
+                                                    <div class="col-lg-12"><h3>LEVEL 3 Acknowledgement of returned Job Card (To be filled by PPIO)</h3></div>
+                                                    
+
+                                                    </div>
 
 
+                                                    <div class="row " style="padding: 20px;">
 
-                                                <h2>here</h2>
+
+                                                        <div class="col-lg-4">
+                                                            <span>Name: <b>{{data.close_name}}</b></span><br>
+                                                            <span>Date: <b>{{data.close_date}}</b></span><br>
+                                                            <span>Time: <b>{{data.close_time}}</b></span><br>
+
+                                                        </div>
+
+                                                    {% if data.signature_img3 %}
+                                                        <div class="col-lg-4">
+                                                            <img src="/static/{{ data.signature_img6 }}" style="width: 60px;">
+                                                        </div>
+                                                    {% endif %}
+
+
+                                                    </div>
+
 
                                             {% endif %}
 
