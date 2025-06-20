@@ -89,6 +89,8 @@ class FailureData(models.Model):
     department = models.CharField(max_length=550, null=True, blank=True)
     reported_to_PPIO = models.CharField(max_length=550, null=True, blank=True)
     TO_name = models.TextField(null=True, blank=True)
+    incident = models.CharField(max_length=550, null=True, blank=True)
+    deboarding = models.CharField(max_length=550, null=True, blank=True)
     def __str__(self):
         return ' '
 
@@ -107,7 +109,7 @@ class Asset(models.Model):
     asset_status = models.CharField(max_length=550)
     is_active = models.IntegerField(default=0)
     P_id = models.IntegerField(default=0)
-    sub_location = models.TextField()
+    sub_location = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Asset Register'
@@ -423,4 +425,129 @@ class Systems(models.Model):
 
     def __str__(self):
         return self.System
+
+class JobCardIDs(models.Model):
+    uid_id = models.AutoField(primary_key=True)
+    year = models.CharField(max_length=550, null=True, blank=True)
+    month = models.CharField(max_length=550, null=True, blank=True)
+    last_id = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'Job Card IDs'
+
+    def __str__(self):
+        return ''
+
+class JobCard(models.Model):
+    job_id = models.AutoField(primary_key=True)
+    train_set_no = models.CharField(max_length=550, null=True, blank=True)
+    date = models.DateField(null=True)
+    time = models.TimeField(max_length=15, null=True)
+    department = models.CharField(max_length=550, null=True, blank=True)
+    subsystem = models.CharField(max_length=550, blank=True)
+    equipment = models.TextField(null=True, blank=True)
+    job_description = models.TextField(null=True, blank=True)
+    nature_of_job = models.TextField(null=True, blank=True)
+    sic_required = models.TextField(null=True, blank=True)
+    assigned_to = models.TextField(null=True, blank=True)
+    last_update = models.DateField(auto_now=True, null=True, blank=True)
+    status = models.IntegerField(default=0)
+    job_card_no = models.CharField(max_length=550, blank=True)
+    failure_id = models.ForeignKey('FailureData', on_delete=models.SET_NULL, null=True, blank=True)
+    run_status = models.IntegerField(default=0)
+    ohe_required = models.CharField(max_length=550, blank=True)
+    issued_to = models.TextField(null=True, blank=True)
+    completion_time = models.CharField(max_length=550, blank=True)
+    from_revenue_service = models.CharField(max_length=550, blank=True)
+    delay_to_service = models.CharField(max_length=550, blank=True)
+    trip_no = models.CharField(max_length=550, blank=True)
+    event_date = models.DateField(null=True)
+    event_time = models.TimeField(max_length=15, null=True)
+    sic_no = models.CharField(max_length=550, blank=True)
+    l1_date = models.DateField(null=True)
+    l1_time = models.TimeField(max_length=15, null=True)
+    issued_by = models.CharField(max_length=550, blank=True)
+    signature_img = models.TextField(null=True, blank=True)
+    l2_date = models.DateField(null=True)
+    l2_time = models.TimeField(max_length=15, null=True)
+    received_by = models.CharField(max_length=550, blank=True)
+    signature_img2 = models.TextField(null=True, blank=True)
+    signature_img3 = models.TextField(null=True, blank=True)
+    follow_up_details = models.TextField(null=True, blank=True)
+    details_of_the_activitues = models.TextField(null=True, blank=True)
+    handed_over = models.CharField(max_length=550, blank=True)
+    new_supervisor = models.CharField(max_length=550, blank=True)
+
+    train_can_be_energized = models.CharField(max_length=550, blank=True)
+    completion_name = models.CharField(max_length=550, blank=True)
+    down_time = models.CharField(max_length=550, blank=True)
+    train_can_be_moved = models.CharField(max_length=550, blank=True)
+    completion_date = models.DateField(null=True)
+    completion_date_time = models.TimeField(max_length=15, null=True)
+    signature_img4 = models.TextField(null=True, blank=True)
+
+    train_can_be_energized2 = models.CharField(max_length=550, blank=True)
+    completion_name2 = models.CharField(max_length=550, blank=True)
+    down_time2 = models.CharField(max_length=550, blank=True)
+    train_can_be_moved2 = models.CharField(max_length=550, blank=True)
+    completion_date2 = models.DateField(null=True)
+    completion_date_time2 = models.TimeField(max_length=15, null=True)
+    signature_img5 = models.TextField(null=True, blank=True)
+
+    corrective_action = models.TextField(null=True, blank=True)
+    sic_start_time = models.CharField(max_length=550, blank=True)
+    sic_has_performed = models.CharField(max_length=550, blank=True)
+
+    close_name = models.CharField(max_length=550, blank=True)
+    close_date = models.DateField(null=True)
+    close_time = models.TimeField(max_length=15, null=True)
+    signature_img6 = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = 'Job Card'
+
+    def __str__(self):
+        return ''
+
+
+class JobDetails(models.Model):
+    job_details_id = models.AutoField(primary_key=True)
+    job_card_id = models.ForeignKey('JobCard', on_delete=models.SET_NULL, null=True, blank=True)
+    s_no = models.CharField(max_length=550, null=True, blank=True)
+    job_description = models.TextField(null=True, blank=True)
+    is_active = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'Job details'
+
+    def __str__(self):
+        return ''
+    
+class JobWorkToMaintainers(models.Model):
+    job_work_id = models.AutoField(primary_key=True)
+    job_card_id = models.ForeignKey('JobCard', on_delete=models.SET_NULL, null=True, blank=True)
+    jobwork_name = models.CharField(max_length=550, null=True, blank=True)
+    jobwork_work = models.TextField(null=True, blank=True)
+    jobwork_signature = models.TextField(null=True, blank=True)
+    is_active = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'Job work'
+
+    def __str__(self):
+        return ''
+
+class JobReplacedEquipment(models.Model):
+    job_equipment_id = models.AutoField(primary_key=True)
+    job_card_id = models.ForeignKey('JobCard', on_delete=models.SET_NULL, null=True, blank=True)
+    jobequipment_name = models.CharField(max_length=550, null=True, blank=True)
+    jobequipment_new_no = models.CharField(max_length=550, null=True, blank=True)
+    jobequipment_old_no = models.CharField(max_length=550, null=True, blank=True)
+    is_active = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'Job Replaced Equipment'
+
+    def __str__(self):
+        return ''
     
