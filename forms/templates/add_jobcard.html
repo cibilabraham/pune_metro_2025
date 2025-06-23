@@ -116,7 +116,9 @@
              <hr>
              
 
-             {% if data.run_status == 0 and request.session.user_Role == 5 %}
+             {% if data.run_status == 0  %}
+
+                {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
                 <div class="row " style="padding: 20px;text-align: center;">
                     <div class="col-lg-12 " >
@@ -309,7 +311,7 @@
 
                 </form>
                 
-
+                {% endif %}
 
             {% else %}
 
@@ -342,11 +344,15 @@
 
                         </div>
 
-                        {% if request.session.user_Role == 5 and data.run_status < 3 %}
+                        {% if data.run_status < 3 %}
+
+                        {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
                         <div class="col-lg-4">
                             <input type="button" value="Edit LEVEL 1 Job Card Details" class="btn btn-primary" onClick="editJobCardDetails()">
                         </div>
+
+                        {% endif %}
 
                         {% endif %}
 
@@ -355,7 +361,11 @@
 
 
 
-                    {% if data.run_status == 1 and request.session.user_Role == 5 %}
+                    {% if data.run_status == 1  %}
+
+                        {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
+
+                    
 
                         <div class="row " style="padding: 20px;text-align: center;">
                             <div class="col-lg-12 " >
@@ -364,7 +374,7 @@
                             </div>
 
                             
-                                {% if request.session.user_Role == 5 %}
+                                {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
                                     <div class="col-lg-12 " align="right">
                                         <input type="button" value="Add new Job Details" class="btn btn-primary" onClick="createNewJobDetails();">
@@ -408,7 +418,7 @@
                                                 
                                                 <td class="bg-white">
 
-                                                    {% if request.session.user_Role == 5 %}
+                                                    {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
                                         <input type="button" value="Edit" onClick="editJobDetails('{{ job_details.job_details_id }}',`{{ job_details.s_no }}`,`{{ job_details.job_description }}`);">
 
@@ -496,6 +506,7 @@
 
                         </form>
 
+                        {% endif %}
 
 
                     {% else %}
@@ -565,12 +576,14 @@
                                 </div>
 
 
-                            {% if request.session.user_Role == 5 and data.run_status < 3 %}
+                            {% if  data.run_status < 3 %}
+
+                            {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
                             <div class="col-lg-4">
                                 <input type="button" value="Edit LEVEL 1 Details Of Job" class="btn btn-primary" onClick="editDetailsOfJob()">
                             </div>
-
+                            {% endif %}
                             {% endif %}
 
 
@@ -578,7 +591,9 @@
 
 
 
-                        {% if data.run_status == 2 and request.session.user_Role == 5 %}
+                        {% if data.run_status == 2  %}
+
+                        {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
 
                          <div class="row " style="padding: 20px;text-align: center;">
@@ -700,7 +715,7 @@
                          </div>
 
                         </form>
-
+                        {% endif %}
 
                         {% else %}
 
@@ -709,6 +724,20 @@
 
                               <div class="row " style="padding: 20px;">
                                     <div class="col-lg-12"><h3>LEVEL 1 Previous Failure History (To be filled by PPIO) (Pune Metro)</h3></div>
+
+
+                                    {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}   
+
+                                    <div class="col-lg-4">
+                                        <input type="button" value="Edit LEVEL 1 Previous Failure History" class="btn btn-primary" onClick="Level1FinalFormRelease()">
+                                    </div>
+
+                                    {% endif %}
+
+
+
+
+
                                     
 
                                 </div>
@@ -788,7 +817,9 @@
 
 
 
-                                {% if data.run_status == 3 and request.session.user_Role == 6 %}
+                                {% if data.run_status == 3  %}
+
+                                {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}     
 
 
                                     <div class="row " style="padding: 20px;text-align: center;">
@@ -873,7 +904,7 @@
 
                                         </form>
 
-
+                                {% endif %} 
 
 
                                 {% else %}
@@ -882,6 +913,14 @@
 
                                         <div class="row " style="padding: 20px;">
                                             <div class="col-lg-12"><h3>LEVEL 2  Acceptance of Job Card (To be filled by nominated work supervisor)</h3></div>
+
+                                            {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}   
+
+                                            <div class="col-lg-4">
+                                                <input type="button" value="Edit LEVEL 2  Acceptance of Job Card" class="btn btn-primary" onClick="Level2FinalFormRelease()">
+                                            </div>
+
+                                            {% endif %}
                                             
 
                                         </div>
@@ -918,7 +957,9 @@
 
 
 
-                                         {% if data.run_status == 4 and request.session.user_Role == 6 %}
+                                         {% if data.run_status == 4 %}
+
+                                         {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}     
 
 
 
@@ -929,7 +970,7 @@
                                                     </div>
 
                                                     
-                                                        {% if request.session.user_Role == 6 %}
+                                                        {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
                                                             <div class="col-lg-12 " align="right">
                                                                 <input type="button" value="Add new Work to Maintainers" class="btn btn-primary" onClick="createNewWork();">
@@ -971,7 +1012,7 @@
                                                                         
                                                                         <td class="bg-white">
 
-                                                                            {% if request.session.user_Role == 6 %}
+                                                                            {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
                                                                 <input type="button" value="Edit" onClick="editJobWork('{{ job_works.job_work_id }}',`{{ job_works.jobwork_name }}`,`{{ job_works.jobwork_work }}`,`{{ job_works.jobwork_signature }}`);">
 
@@ -1084,7 +1125,7 @@
 
                                                     </form>
 
-
+                                            {% endif %} 
 
 
                                         {% else %}
@@ -1159,7 +1200,9 @@
 
 
 
-                                          {% if request.session.user_Role == 6 and data.run_status < 6 %}
+                                          {% if data.run_status < 6 %}
+
+                                          {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}   
 
                                             <div class="col-lg-4">
                                                 <input type="button" value="Edit LEVEL 2 Allotment of work to Maintainers" class="btn btn-primary" onClick="editLevel2Work()">
@@ -1167,9 +1210,13 @@
 
                                             {% endif %}
 
+                                            {% endif %}
 
 
-                                            {% if data.run_status == 5 and request.session.user_Role == 6 %}
+
+                                            {% if data.run_status == 5 %}
+
+                                            {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %} 
 
 
 
@@ -1179,7 +1226,7 @@
                                                         
                                                     </div>
 
-                                                    {% if request.session.user_Role == 6 %}
+                                                    {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
                                                         <div class="col-lg-12 " align="right">
                                                             <input type="button" value="Add new Replaced Equipment" class="btn btn-primary" onClick="createNewEquipment();">
@@ -1221,7 +1268,7 @@
                                                                         
                                                                         <td class="bg-white">
 
-                                                                            {% if request.session.user_Role == 6 %}
+                                                                            {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
                                                                 <input type="button" value="Edit" onClick="editJobEquipment('{{ job_equipment.job_equipment_id }}',`{{ job_equipment.jobequipment_name }}`,`{{ job_equipment.jobequipment_new_no }}`,`{{ job_equipment.jobequipment_old_no }}`);">
 
@@ -1386,7 +1433,7 @@
                                                 </form>
 
 
-
+                                                {% endif %}
 
                                             {% else %}
 
@@ -1445,7 +1492,9 @@
 
 
 
-                                                        {% if request.session.user_Role == 6 and data.run_status < 6 %}
+                                                        {% if data.run_status < 6 %}
+
+                                                        {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}   
 
                                                         <div class="col-lg-4">
                                                             <input type="button" value="Edit LEVEL 2 Details of the Equipment Replaced" class="btn btn-primary" onClick="editLevel2Equipment()">
@@ -1453,9 +1502,30 @@
 
                                                         {% endif %}
 
+                                                        {% endif %}
+
 
                                                         <div class="row " style="padding: 20px;">
-                                                        <div class="col-lg-12"><h3>LEVEL 2 Job Completion Report</h3></div>
+                                                        <div class="col-lg-12"><h3>LEVEL 2 Job Completion Report</h3>
+
+
+                                                            {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}   
+
+                                                            <div class="col-lg-12">
+
+                                                                <input class="btn btn-primary mt-2" type="button" value="Edit LEVEL 2 Job Completion Report" class="btn btn-primary" onClick="editLevel2Completion()">
+
+                                                            </div>
+
+                                                            
+    
+                                                            {% endif %}
+                                                            
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        </div>
                                                         
 
                                                         </div>
@@ -1493,7 +1563,7 @@
 
                                                                     </div>
 
-                                                                {% if data.signature_img3 %}
+                                                                {% if data.signature_img4 %}
                                                                     <div class="col-lg-4">
                                                                         <img src="/static/{{ data.signature_img4 }}" style="width: 60px;">
                                                                     </div>
@@ -1504,7 +1574,9 @@
 
 
 
-                                                    {% if data.run_status == 6 and request.session.user_Role == 6 %}
+                                                    {% if data.run_status == 6  %}
+
+                                                    {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}   
 
 
 
@@ -1513,6 +1585,8 @@
                                                                     <h5>LEVEL 2 SIC Completion Report</h5>
                                                                     
                                                                 </div>
+
+                                                                
 
                                                         
 
@@ -1680,7 +1754,7 @@
 
 
 
-
+                                                                {% endif %}
 
                                                     {% else %}
 
@@ -1689,7 +1763,21 @@
 
                                                                 <div class="row " style="padding: 20px;">
                                                                     <div class="col-lg-12"><h3>LEVEL 2 SIC Completion Report</h3></div>
-                                                                    
+
+
+                                                                    {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}   
+
+                                                                    <div class="col-lg-12">
+                                                                        <input  type="button" value="Edit LEVEL 2 SIC Completion Report" class="btn btn-primary" onClick="editLevel2Close()">
+                                                                    </div>
+
+                                                                   
+            
+                                                                    {% endif %}
+
+
+
+                                                                  
 
                                                                 </div>
 
@@ -1760,7 +1848,7 @@
 
                                                                         </div>
 
-                                                                    {% if data.signature_img3 %}
+                                                                    {% if data.signature_img5 %}
                                                                         <div class="col-lg-4">
                                                                             <img src="/static/{{ data.signature_img5 }}" style="width: 60px;">
                                                                         </div>
@@ -1770,7 +1858,9 @@
                                                                 </div>
 
 
-                                                                {% if data.run_status == 7 and request.session.user_Role == 5 %}
+                                                                {% if data.run_status == 7  %}
+
+                                                                {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
 
                                                                     <div class="row " style="padding: 20px;text-align: center;">
@@ -1791,7 +1881,7 @@
                                                                             <div class="col-md-4">
                                                                                 <div class="form-group">
                                                                                     <label for="close_name">*Name :</label>
-                                                                                    <input type="text" class="form-control" id="close_name" name="close_name" value="" required="required">
+                                                                                    <input type="text" class="form-control" id="close_name" name="close_name" value="{{data.close_name }}" required="required">
                                                                                     <div class="invalid-feedback">
                                                                                         Please enter Name .
                                                                                     </div>
@@ -1837,6 +1927,10 @@
                                                                             <div class="col-12">  
                                                                                 <button type="submit" class="btn btn-primary mt-2" >Close Job Card</button>
 
+
+                                                                              
+
+
                                                                             </div>
                                                                             
 
@@ -1845,7 +1939,7 @@
 
                                                                 </form>
 
-
+                                                                {% endif %}
 
                                                                 {% else %}
 
@@ -1856,6 +1950,11 @@
 
                                                                          <div class="row " style="padding: 20px;">
                                                                             <div class="col-lg-12"><h3>LEVEL 3 Acknowledgement of returned Job Card (To be filled by PPIO)</h3></div>
+
+
+
+
+
                                                                             
 
                                                                             </div>
@@ -1871,10 +1970,19 @@
 
                                                                                 </div>
 
-                                                                            {% if data.signature_img3 %}
+                                                                            {% if data.signature_img6 %}
                                                                                 <div class="col-lg-4">
                                                                                     <img src="/static/{{ data.signature_img6 }}" style="width: 60px;">
                                                                                 </div>
+                                                                            {% endif %}
+
+                                                                            
+                                                                            {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}   
+
+                                                                            <div class="col-lg-4">
+                                                                                <input type="button" value="Edit Closed Job Card" class="btn btn-primary" onClick="editLevel3CloseCard()">
+                                                                            </div>
+                    
                                                                             {% endif %}
 
 
@@ -2526,6 +2634,68 @@
     }
 
     
+    function Level1FinalFormRelease(){
+        var id= '{{data.id}}';
+
+         swal({
+            title: "Are you sure?",
+            text:"If you update LEVEL 1 Previous Failure History, the status of this job card will be reset.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Ok, update it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/jobcard_register/addjobcard/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':28,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+    }
+
+
+    function Level2FinalFormRelease(){
+        var id= '{{data.id}}';
+
+         swal({
+            title: "Are you sure?",
+            text:"If you update LEVEL 2 Acceptance of Job Card, the status of this job card will be reset.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Ok, update it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/jobcard_register/addjobcard/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':27,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+    }
+
+    
     function editLevel2Equipment(){
         var id= '{{data.id}}';
 
@@ -2554,6 +2724,99 @@
                 }
             });     
         });
+    }
+
+    function editLevel2Completion(){
+        var id= '{{data.id}}';
+
+         swal({
+            title: "Are you sure?",
+            text:"If you update LEVEL 2 Job Completion Report, the status of this job card will be reset.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Ok, update it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/jobcard_register/addjobcard/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':26,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+    }
+
+
+    function editLevel2Close(){
+        var id= '{{data.id}}';
+
+         swal({
+            title: "Are you sure?",
+            text:"If you update LEVEL 2 SIC Completion Report, the status of this job card will be reset.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Ok, update it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/jobcard_register/addjobcard/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':25,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+    }
+
+    function editLevel3CloseCard(){
+
+        var id= '{{data.id}}';
+
+        swal({
+        title: "Are you sure?",
+        text:"If you edit this job card, its status will change from 'Closed' to 'Open'.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Ok, update it!",
+        closeOnConfirm: false,
+        width: '300px'
+        },
+        function(){
+            $.ajax({
+            url: "/forms/jobcard_register/addjobcard/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'id':id,
+                'st':24,
+            },
+            success: function (response) {
+                window.location.reload(); 
+            }
+        });     
+        });
+
     }
     
     function editLevel2Work(){

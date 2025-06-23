@@ -121,7 +121,7 @@
                         </span>
 
 
-                        {% if request.session.user_Role == 5 %}        
+                        {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}        
                         <br>
                         <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
 
@@ -179,7 +179,7 @@
                                 </span>
 
 
-                                {% if request.session.user_Role == 5 %}        
+                                {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}        
                                 <br>
                                 <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
 
@@ -273,7 +273,7 @@
                                     </span>
 
 
-                                    {% if request.session.user_Role == 5 %}        
+                                    {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}        
                                     <br>
                                     <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
 
@@ -377,7 +377,7 @@
                                     </span>
 
 
-                                    {% if request.session.user_Role == 6 %}        
+                                    {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}        
                                     <br>
                                     <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
 
@@ -441,7 +441,7 @@
                                     </span>
 
 
-                                    {% if request.session.user_Role == 6 %}        
+                                    {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}        
                                     <br>
                                     <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
 
@@ -532,7 +532,7 @@
                                     </span>
 
 
-                                    {% if request.session.user_Role == 6 %}        
+                                    {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}        
                                     <br>
                                     <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
 
@@ -638,7 +638,7 @@
 
                                         </div>
 
-                                    {% if data.signature_img3 %}
+                                    {% if data.signature_img4 %}
                                         <div class="col-lg-4">
                                             <img src="/static/{{ data.signature_img4 }}" style="width: 60px;">
                                         </div>
@@ -659,7 +659,7 @@
                                                 </span>
 
 
-                                                {% if request.session.user_Role == 6 %}        
+                                                {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}        
                                                 <br>
                                                 <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
 
@@ -747,7 +747,7 @@
 
                                                 </div>
 
-                                            {% if data.signature_img3 %}
+                                            {% if data.signature_img5 %}
                                                 <div class="col-lg-4">
                                                     <img src="/static/{{ data.signature_img5 }}" style="width: 60px;">
                                                 </div>
@@ -768,7 +768,7 @@
                                                         </span>
 
 
-                                                        {% if request.session.user_Role == 5 %}        
+                                                        {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}        
                                                         <br>
                                                         <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
 
@@ -801,7 +801,7 @@
 
                                                         </div>
 
-                                                    {% if data.signature_img3 %}
+                                                    {% if data.signature_img6 %}
                                                         <div class="col-lg-4">
                                                             <img src="/static/{{ data.signature_img6 }}" style="width: 60px;">
                                                         </div>

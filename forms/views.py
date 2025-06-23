@@ -4460,7 +4460,7 @@ class AddJobcard(View):
         }
 
         prv_data = []
-        JobCard_prvdatas =JobCard.objects.filter(train_set_no=jb.train_set_no,event_date=jb.event_date).exclude(job_id=id)
+        JobCard_prvdatas =JobCard.objects.filter(train_set_no=jb.train_set_no,failure_id__date=jb.failure_id.date).exclude(job_id=id)
         st_gen = 0
         for jbr in JobCard_prvdatas:
             st_gen = st_gen + 1
@@ -4770,6 +4770,26 @@ class AddJobcard(View):
             JobCard.objects.filter(job_id=ids).update(run_status=5,status=0)
             return JsonResponse({'status':'1'})
 
+        elif st == 24 or st == '24':
+            JobCard.objects.filter(job_id=ids).update(run_status=7,status=0)
+            return JsonResponse({'status':'1'})
+
+        elif st == 25 or st == '25':
+            JobCard.objects.filter(job_id=ids).update(run_status=6,status=0)
+            return JsonResponse({'status':'1'})
+        
+        elif st == 26 or st == '26':
+            JobCard.objects.filter(job_id=ids).update(run_status=5,status=0)
+            return JsonResponse({'status':'1'})
+
+        elif st == 27 or st == '27':
+            JobCard.objects.filter(job_id=ids).update(run_status=3,status=0)
+            return JsonResponse({'status':'1'})
+
+        elif st == 28 or st == '28':
+            JobCard.objects.filter(job_id=ids).update(run_status=2,status=0)
+            return JsonResponse({'status':'1'})
+
         
         
         else:
@@ -5002,7 +5022,7 @@ class ViewJobcard(View):
         }
 
         prv_data = []
-        JobCard_prvdatas =JobCard.objects.filter(train_set_no=jb.train_set_no,event_date=jb.event_date).exclude(job_id=id)
+        JobCard_prvdatas =JobCard.objects.filter(train_set_no=jb.train_set_no,failure_id__date=jb.failure_id.date).exclude(job_id=id)
         st_gen = 0
         for jbr in JobCard_prvdatas:
             st_gen = st_gen + 1
