@@ -563,3 +563,31 @@ class FailureDataIDs(models.Model):
 
     def __str__(self):
         return ''
+
+class EIRIDs(models.Model):
+    uid_id = models.AutoField(primary_key=True)
+    year = models.CharField(max_length=550, null=True, blank=True)
+    last_id = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'EIR IDs'
+
+    def __str__(self):
+        return ''
+
+
+class RIRGeneration(models.Model):
+    eir_id = models.AutoField(primary_key=True)
+    failure_id = models.ForeignKey('FailureData', on_delete=models.SET_NULL, null=True, blank=True)
+    depot = models.CharField(max_length=550, null=True, blank=True)
+    addressed_by = models.TextField(null=True, blank=True)
+    incident_details = models.TextField(null=True, blank=True)
+    repercussion = models.TextField(null=True, blank=True)
+    incident_location = models.CharField(max_length=550, null=True, blank=True)
+    incident_time = models.CharField(max_length=550, null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = 'EIR'
+
+    def __str__(self):
+        return ''
