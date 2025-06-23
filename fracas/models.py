@@ -551,3 +551,15 @@ class JobReplacedEquipment(models.Model):
     def __str__(self):
         return ''
     
+
+class FailureDataIDs(models.Model):
+    uid_id = models.AutoField(primary_key=True)
+    year = models.CharField(max_length=550, null=True, blank=True)
+    month = models.CharField(max_length=550, null=True, blank=True)
+    last_id = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'Failure Data IDs'
+
+    def __str__(self):
+        return ''
