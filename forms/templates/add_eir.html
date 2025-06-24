@@ -412,6 +412,20 @@
 
                 </div>
 
+                <div class="row " style="padding: 20px;">
+                    {% for images in images %}
+                        <div class="col-lg-2">
+                            <img src="/static/{{images.file_path}}" style="width: 100%;">
+
+                            <input type="button" value="Delete" onClick="deleteImage('{{ images.img_id }}');">
+
+                        </div>
+              
+                    {% endfor %}
+                </div>
+
+                
+
 
 
 
@@ -569,6 +583,36 @@
 
     function closeModal(){
        myModal.hide();
+    }
+
+    
+    function deleteImage(id){
+
+         swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/eir_register/addeir/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':5,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+
     }
 
 

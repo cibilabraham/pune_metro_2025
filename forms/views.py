@@ -5295,9 +5295,31 @@ class AddEIR(View):
                 's_no' : st,
             })
 
+        images = []
+        imgArr = EIRImages.objects.filter(eir_dt_id=jb.eir_id,is_active=0)
+        for jdar in imgArr:
+
+            full_path6 = jdar.file_path
+            if full_path6 == None:
+                relative_path6 = None
+            else:
+                # Find the index of /static
+                index6 = full_path6.find("/static")
+                if index6 != -1:
+                    relative_path6 = full_path6[index6 + len("/static"):]  # remove /static as well
+                    # optionally remove leading slash
+                    relative_path6 = relative_path6.lstrip("/")
+                else:
+                    relative_path6 = full_path6  # fallback if /static not found
+
+            images.append({ 
+                'img_id' :  jdar.img_id,
+                'file_path' : relative_path6,
+            })
+
 
         # print(prv_data)
-        return render(request, self.template_name,{'data':data ,'prv_data':prv_data , 'job_details':job_details })
+        return render(request, self.template_name,{'data':data ,'prv_data':prv_data , 'job_details':job_details, 'images':images })
       
  
     def post(self, request, *args, **kwargs):
@@ -5370,6 +5392,10 @@ class AddEIR(View):
                     j.save()
 
             EIRGeneration.objects.filter(eir_id=ids).update(action_taken_in_depot=action_taken_in_depot,concern=concern,further_action=further_action)
+            return JsonResponse({'status':'1'})
+
+        elif st == 5 or st == '5':
+            EIRImages.objects.filter(img_id=ids).update(is_active=1)
             return JsonResponse({'status':'1'})
 
         
