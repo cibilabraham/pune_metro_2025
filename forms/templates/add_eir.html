@@ -1,0 +1,700 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                    <h3 class="page-header">
+                       Engineering Incident Report(EIR) 
+                    </h3>
+                  
+                </div>
+
+                 <div class="col-lg-6 mb-3">
+    
+    
+                    <a href="/forms/eir_register/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+
+            </div>
+
+             <div class="row " style="padding: 20px;text-align: center;">
+                <div class="col-lg-12 " >
+                    <h5>Incident Details</h5>
+                    
+                </div>
+            </div>
+
+
+            <form id="addEIRForm"> 
+
+            <div class="row " style="padding: 20px;">
+
+            
+                <div class="col-lg-4 " id="revenue_service_div2">
+                    <div class="form-group">
+                        <label for="eir_gen_id">Trip No:</label>
+                        <input type="text" class="form-control" id="eir_gen_id"  name="eir_gen_id" value="{{data.eir_gen_id}}" readonly>
+                        <div class="invalid-feedback" >
+                        Please enter Trip No.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="date">* Date (DD/MM/YYYY):</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" value="{{data.date|date:'d/m/Y'}}" readonly>
+                        <div class="invalid-feedback">
+                        Please enter  Date.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4"></div>
+
+         
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="depot">*Depot:</label>
+                    
+                        <select class="form-control" id="depot" name="depot" required>
+                            <option value="" selected>Select Depot</option>
+                            {% if 'RHD' == data.depot %}
+                            <option value="RHD" selected>Range Hill Depot (RHD)</option>
+                            {% else %}
+                                <option value="RHD">Range Hill Depot (RHD)</option>
+                            {% endif %}
+                            {% if 'HVPCD' == data.depot %}
+                            <option value="HVPCD" selected>Hill View Park Car Depot (HVPCD)</option>
+                            {% else %}
+                                <option value="HVPCD">Hill View Park Car Depot (HVPCD)</option>
+                            {% endif %}
+
+                        
+                        </select>
+
+                        {% comment %} <input type="text" class="form-control" id="nature_of_job" name="nature_of_job" value="{{data.nature_of_job}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                        Please enter Depot.
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-lg-4 " id="revenue_service_div2">
+                    <div class="form-group">
+                        <label for="train_set_no">TS# No:</label>
+                        <input type="text" class="form-control" id="train_set_no"  name="train_set_no" value="{{data.train_set_no}}" readonly>
+                        <div class="invalid-feedback" >
+                        Please enter TS# No.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 " id="revenue_service_div2">
+                    <div class="form-group">
+                        <label for="sel_car">Car ID:</label>
+                        <input type="text" class="form-control" id="sel_car"  name="sel_car" value="{{data.sel_car}}" readonly>
+                        <div class="invalid-feedback" >
+                        Please enter Car ID.
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-lg-4 " id="revenue_service_div2">
+                    <div class="form-group">
+                        <label for="equipment">Equipment:</label>
+                        <input type="text" class="form-control" id="equipment"  name="equipment" value="{{data.equipment}}" readonly>
+                        <div class="invalid-feedback" >
+                        Please enter Equipment.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 " id="revenue_service_div2">
+                    <div class="form-group">
+                        <label for="component">*Component:</label>
+                        <input type="text" class="form-control" id="component"  name="component" value="{{data.component}}" required>
+                        <div class="invalid-feedback" >
+                        Please enter Component.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-lg-4 " id="revenue_service_div2">
+                    <div class="form-group">
+                        <label for="addressed_by">Addressed By:</label>
+                        <input type="text" class="form-control" id="addressed_by"  name="addressed_by" value="{{data.addressed_by}}" >
+                        <div class="invalid-feedback" >
+                        Please enter Addressed By.
+                        </div>
+                    </div>
+                </div>
+
+
+                 <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="immediate_investigation">Action Taken:</label>
+                        <textarea class="form-control" id="immediate_investigation" name="immediate_investigation" readonly>{{data.immediate_investigation}}</textarea>
+                        <div class="invalid-feedback">
+                        Please enter Action Taken.
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="incident_details">Incident Details:</label>
+                        <textarea class="form-control" id="incident_details" name="incident_details" >{{data.incident_details}}</textarea>
+                        <div class="invalid-feedback">
+                        Please enter Incident Details.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="repercussion">Repercussion:</label>
+                        <textarea class="form-control" id="repercussion" name="repercussion" >{{data.repercussion}}</textarea>
+                        <div class="invalid-feedback">
+                        Please enter Repercussion.
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <div class="col-md-12">
+                    <h5>History (if any)</h5>
+                    <table  class="table stripe row-border order-column table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                            
+                                <th>S. No</th>
+                                <th>EIR No</th>
+                                <th>Date</th>
+                                <th>Depot</th>
+                                <th>Train Set No</th>
+                                <th>Car ID</th>
+                                <th>Incident Location</th>
+                                <th>Incident Time</th>
+                                <th></th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                        {% for prv_dts in prv_data %}
+                                <tr>
+                                    <td>{{ prv_dts.st_gen }}</td>
+                                    <td>{{ prv_dts.eir_gen_id }}</td>
+                                    <td>{{ prv_dts.date }}</td>
+                                    <td>{{ prv_dts.depot }}</td>
+                                    <td>{{ prv_dts.train_set_no }}</td>
+                                    <td>{{ prv_dts.sel_car }}</td>
+                                    <td>{{ prv_dts.incident_location }}</td>
+                                    <td>{{ prv_dts.incident_time }}</td>
+                                    
+                                    <td class="bg-white">
+
+                                        {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
+
+                                        <a target="_blank" href="/forms/eir_register/vieweir/{{ prv_dts.id }}" >View</a>
+
+
+                                                    {% endif %}
+
+                                    </td>
+
+                                    
+                                
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted">No history available for similar Equipment and Component</td>
+                                </tr>
+                            {% endfor %}
+
+                            
+
+
+                        </tbody>
+                    </table>
+                </div>
+
+                
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="incident_location">Incident Location :</label>
+                        <select class="form-control" id="incident_location " name="incident_location" >
+                            {% if 'Depot' == data.incident_location %}
+                            <option value="Depot" selected>Depot</option>
+                            {% else %}
+                                <option value="Depot">Depot</option>
+                            {% endif %}
+                            {% if 'Main line' == data.incident_location %}
+                            <option value="Main line" selected>Main line</option>
+                            {% else %}
+                                <option value="Main line">Main line</option>
+                            {% endif %}
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="incident_location" name="incident_location" value="{{data.incident_location}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                        Please select Incident Location .
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="incident_time">Incident Time:</label>
+                        <input type="text" class="form-control" id="incident_time" required="required" name="incident_time" value="{{data.incident_time}}">
+                        <div class="invalid-feedback">
+                        Please enter Incident Time.
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+             </div>
+             <div class="row " style="padding: 20px;">
+                <div class="col-12">  
+                    <button type="submit" class="btn btn-primary mt-2" >Update Incident Details</button>
+
+                </div>
+            </div>
+            </form>
+
+
+
+            <div class="row " style="padding: 20px;text-align: center;">
+                <div class="col-lg-12 " >
+                    <h5>INVESTIGATION DETAILS:</h5>
+                    
+                </div>
+
+                
+                    {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
+
+                        <div class="col-lg-12 " align="right">
+                            <input type="button" value="Add new Investigation Details" class="btn btn-primary" onClick="createNewJobDetails();">
+                        </div>
+
+                    {% endif %}
+                
+
+            </div>
+
+
+             <div class="row " style="padding: 20px;text-align: center;">
+            <div class="col-md-12">
+                <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            
+                            <th>S. No</th>
+                            <th>Non- compliance details</th>
+                            <th>Investigation Details</th>
+                            <th>Relevant ERTS clause</th>
+                           
+                            <th class="bg-white">
+                                
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        {% for job_details in job_details %}
+                            <tr>
+                                <td>{{ job_details.s_no }}</td>
+                                <td>{{ job_details.non_compliance_details }}</td>
+                                <td>{{ job_details.onvestigation_details }}</td>
+                                <td>{{ job_details.relevant_ERTS_clause }}</td>
+                             
+                                <td class="bg-white">
+
+                                    {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
+
+                        <input type="button" value="Edit" onClick="editJobDetails('{{ job_details.details_id }}',`{{ job_details.non_compliance_details }}`,`{{ job_details.onvestigation_details }}`,`{{ job_details.relevant_ERTS_clause }}`);">
+
+                        <input type="button" value="Delete" onClick="deleteJobDetails('{{ job_details.details_id }}');">
+
+
+                                    {% endif %}
+
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">No investigation details available</td>
+                            </tr>
+                        {% endfor %}
+
+                        
+
+
+
+
+
+                    </tbody>
+                </table>
+            </div>
+            </div>
+
+
+
+            <form id="addEIRForm2"> 
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-lg-12 " >
+                        <div class="form-group">
+                            <label for="action_taken_in_depot">Action Taken in Depot:</label>
+                            <textarea class="form-control"  id="action_taken_in_depot" name="action_taken_in_depot" >{{data.action_taken_in_depot}}</textarea>
+                            <div class="invalid-feedback" >
+                            Please enter Action Taken in Depot.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 " >
+                        <div class="form-group">
+                            <label for="concern">Concern:</label>
+                            <input type="text" class="form-control" id="concern"  name="concern" value="{{data.concern}}">
+                            <div class="invalid-feedback" >
+                            Please enter Concern.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 " >
+                        <div class="form-group">
+                            <label for="further_action">Further Action Required:</label>
+                            <textarea class="form-control"  id="further_action" name="further_action" >{{data.further_action}}</textarea>
+                            <div class="invalid-feedback" >
+                            Please enter Further Action Required.
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="signature_img">Attachments (Upload multiple images): </label>
+                            <input type="file" class="form-control" id="signature_img"  name="signature_img" accept="image/*" multiple>
+                            <div class="invalid-feedback">
+                            Please upload Attachments.
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div class="row " style="padding: 20px;">
+                    <div class="col-12">  
+                        <button type="submit" class="btn btn-primary mt-2" >Update</button>
+
+                    </div>
+                </div>
+            </form>
+
+
+
+
+
+
+<!-- Large Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- modal-lg makes it large -->
+    <div class="modal-content">
+
+         <form id="JobDetailsForm"> 
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Investigation Details</h5>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+        <div class="row mb-4">
+
+           
+
+             <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="non_compliance_details">*Non- compliance details:</label>
+                        <textarea class="form-control"  id="non_compliance_details" name="non_compliance_details" required></textarea>
+                         <div class="invalid-feedback">
+                         Please enter Non- compliance details.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="onvestigation_details">*Investigation Details:</label>
+                        <textarea class="form-control"  id="onvestigation_details" name="onvestigation_details" required></textarea>
+                         <div class="invalid-feedback">
+                         Please enter Investigation Details.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="relevant_ERTS_clause">*Relevant ERTS clause:</label>
+                        <textarea class="form-control"  id="relevant_ERTS_clause" name="relevant_ERTS_clause" required></textarea>
+                         <div class="invalid-feedback">
+                         Please enter Relevant ERTS clause.
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+        </div>
+
+
+        
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal();">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <input type="hidden" value="" id="JobDetailsID" name="JobDetailsID">
+      </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+           
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+
+    var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+
+    $(document).ready(function() {
+
+
+    });
+
+
+     
+     $("#addEIRForm2").submit(function(e) {
+        e.preventDefault();
+
+        var form = $('#addEIRForm2')[0];  // Get the raw DOM form element
+        var formData = new FormData(form);    // Create FormData object
+
+        formData.append('id', '{{ data.id }}');
+        formData.append('st', 4);
+
+        $.ajax({
+            url: "/forms/eir_register/addeir/",
+            method: 'POST',
+            data: formData,
+            dataType: 'json',
+            processData: false,     // Prevent jQuery from processing data
+            contentType: false,     // Let browser set content type including boundaries
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+
+            success: function (response) {
+                if (response.status == '1') {
+                    window.location.reload();
+                } else {
+                    swal('Failed to update LEVEL 2 Details of the activities carried out');
+                }
+            },
+            error: function () {
+                swal('An error occurred while submitting the data.');
+            }
+        });
+    });
+
+
+
+     function createNewJobDetails(){
+       $('#JobDetailsID').val('');
+         $('#non_compliance_details').val('');
+       $('#onvestigation_details').val('');
+       $('#relevant_ERTS_clause').val('');
+
+        myModal.show();
+    }
+
+    function editJobDetails(id,non_compliance_details,onvestigation_details,relevant_ERTS_clause){
+
+         $('#JobDetailsID').val(id);
+       $('#non_compliance_details').val(non_compliance_details);
+       $('#onvestigation_details').val(onvestigation_details);
+       $('#relevant_ERTS_clause').val(relevant_ERTS_clause);
+
+        myModal.show();
+
+    }
+
+    function closeModal(){
+       myModal.hide();
+    }
+
+
+     function deleteJobDetails(id){
+
+         swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/eir_register/addeir/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':3,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+
+    }
+
+
+      $( "#JobDetailsForm" ).submit(function(e) {
+        e.preventDefault();
+
+         
+
+        var non_compliance_details= $('#non_compliance_details').val()
+        var onvestigation_details= $('#onvestigation_details').val()
+        var relevant_ERTS_clause= $('#relevant_ERTS_clause').val()
+        var JobDetailsID= $('#JobDetailsID').val()
+
+        non_compliance_details = non_compliance_details.replace(/['"`]/g, '');
+        onvestigation_details = onvestigation_details.replace(/['"`]/g, '');
+        relevant_ERTS_clause = relevant_ERTS_clause.replace(/['"`]/g, '');
+
+        var id= '{{data.id}}';
+
+        $.ajax({
+            url: "/forms/eir_register/addeir/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'id':id,
+                'non_compliance_details' : non_compliance_details,
+                'onvestigation_details':onvestigation_details,
+                'relevant_ERTS_clause':relevant_ERTS_clause,
+                'JobDetailsID':JobDetailsID,
+                'st':2,
+            },
+
+            success: function (response) {
+                if(response.status == '1') {
+                    window.location.reload(); 
+                }
+                else{
+                    swal('Failed to save Investigation Details')
+                    
+                }
+            }
+        });
+        
+
+
+    });
+
+
+
+    $( "#addEIRForm" ).submit(function(e) {
+        e.preventDefault();
+
+        var depot= $('select[name=depot] option').filter(':selected').val()
+        var component= $('#component').val()
+        var addressed_by= $('#addressed_by').val()
+        var incident_details= $('#incident_details').val()
+        var repercussion= $('#repercussion').val()
+        var incident_location= $('select[name=incident_location] option').filter(':selected').val()
+        var incident_time= $('#incident_time').val()
+
+        var id= '{{data.id}}';
+
+        $.ajax({
+            url: "/forms/eir_register/addeir/",
+            method: 'POST',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+                'id':id,
+                'depot' : depot,
+                'component':component,
+                'addressed_by':addressed_by,
+                'incident_details':incident_details,
+                'repercussion':repercussion,
+                'incident_location':incident_location,
+                'incident_time':incident_time,
+                'st':1,
+            },
+
+            success: function (response) {
+                if(response.status == '1') {
+                    window.location.reload(); 
+                }
+                else{
+                    swal('Failed to save Incident Details')
+                    
+                }
+            }
+        });
+        
+
+
+    });
+
+   
+</script>
+
+{% endblock sb_admin_js %}

@@ -71,7 +71,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="time">*Failure Time:</label>
-                        <input type="time" class="form-control" id="time" required="required" name="time" value="{{data.time|date:"H:i:s"}}">
+                        <input type="time" class="form-control" id="time" required="required" name="time" value="{{data.time|date:"H:i"}}">
                         <div class="invalid-feedback">
                          Please enter Failure Time.
                         </div>
@@ -200,7 +200,7 @@
 
                  <div class="col-md-4">
                     <div class="form-group">
-                        <label for="sel_car">*CAR:</label>
+                        <label for="sel_car">*CAR(Ctrl + left mouse click to select multiple options):</label>
                        
                         <select class="form-control" id="sel_car" name="sel_car" required="required" multiple>
                             <option value="DMA">DMA</option>
@@ -499,7 +499,7 @@
                   <div class="col-md-4">
                     <div class="form-group">
                         <label for="cm_start_time">*Cm start time:</label>
-                        <input type="time" class="form-control" required="required" id="cm_start_time" name="cm_start_time" value="{{data.cm_start_time|date:"H:i:s"}}">
+                        <input type="time" class="form-control" required="required" id="cm_start_time" name="cm_start_time" value="{{data.cm_start_time|date:"H:i"}}">
                          <div class="invalid-feedback">
                          Please enter Cm start time.
                         </div>
@@ -520,7 +520,7 @@
                   <div class="col-md-4">
                     <div class="form-group">
                         <label for="cm_end_time">Cm end time:</label>
-                        <input type="time" class="form-control" id="cm_end_time" name="cm_end_time" value="{{ data.cm_end_time|date:"H:i:s" }}">
+                        <input type="time" class="form-control" id="cm_end_time" name="cm_end_time" value="{{ data.cm_end_time|date:"H:i" }}">
                         <div class="invalid-feedback">
                          Please enter Cm end time.
                         </div>

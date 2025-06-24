@@ -576,8 +576,9 @@ class EIRIDs(models.Model):
         return ''
 
 
-class RIRGeneration(models.Model):
+class EIRGeneration(models.Model):
     eir_id = models.AutoField(primary_key=True)
+    eir_gen_id = models.CharField(max_length=550, null=True, blank=True)
     failure_id = models.ForeignKey('FailureData', on_delete=models.SET_NULL, null=True, blank=True)
     depot = models.CharField(max_length=550, null=True, blank=True)
     addressed_by = models.TextField(null=True, blank=True)
@@ -585,9 +586,39 @@ class RIRGeneration(models.Model):
     repercussion = models.TextField(null=True, blank=True)
     incident_location = models.CharField(max_length=550, null=True, blank=True)
     incident_time = models.CharField(max_length=550, null=True, blank=True)
+    component = models.TextField(null=True, blank=True)
+    action_taken_in_depot = models.TextField(null=True, blank=True)
+    concern = models.TextField(null=True, blank=True)
+    further_action = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'EIR'
+
+    def __str__(self):
+        return ''
+
+class InvestigationDetails(models.Model):
+    details_id = models.AutoField(primary_key=True)
+    eir_dt_id = models.ForeignKey('EIRGeneration', on_delete=models.SET_NULL, null=True, blank=True)
+    non_compliance_details = models.TextField(null=True, blank=True)
+    onvestigation_details = models.TextField(null=True, blank=True)
+    relevant_ERTS_clause = models.TextField(null=True, blank=True)
+    is_active = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'Job details'
+
+    def __str__(self):
+        return ''
+
+class EIRImages(models.Model):
+    img_id = models.AutoField(primary_key=True)
+    eir_dt_id = models.ForeignKey('EIRGeneration', on_delete=models.SET_NULL, null=True, blank=True)
+    file_path = models.TextField(null=True, blank=True)
+    is_active = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'EIR Images'
 
     def __str__(self):
         return ''

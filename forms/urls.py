@@ -72,9 +72,9 @@ urlpatterns = [
     path('jobcard_register/viewjobcard/<int:id>/',ViewJobcard.as_view(),name='view_jobcard'),
 
     path('eir_register/', EIRRegister.as_view(), name='eir_register'),
-    path('eir_register/addjobcard/',AddEIR.as_view(),name='add_eir'),
-    path('eir_register/viewjobcard/',ViewEIR.as_view(),name='view_eir'),
-    path('eir_register/addjobcard/<int:id>/',AddEIR.as_view(),name='add_eir'),
-    path('eir_register/viewjobcard/<int:id>/',ViewEIR.as_view(),name='view_eir'),
+    path('eir_register/addeir/',AddEIR.as_view(),name='add_eir'),
+    path('eir_register/vieweir/',ViewEIR.as_view(),name='view_eir'),
+    path('eir_register/addeir/<int:id>/',AddEIR.as_view(),name='add_eir'),
+    path('eir_register/vieweir/<int:id>/',ViewEIR.as_view(),name='view_eir'),
     
 ]

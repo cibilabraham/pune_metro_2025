@@ -91,55 +91,43 @@ function getDefectData(){
                   "order": [[ 1, "asc" ]],
                   "searching" : true,
                   'ajax' : {
-                      "url": "/forms/jobcard_register/",
+                      "url": "/forms/eir_register/",
                       "type": "POST",
                       "headers": {'X-CSRFToken': '{{ csrf_token }}'}
                   },
                   "columns" : [
                    
-                      {"data" : "job_card_no"},
+                      {"data" : "eir_gen_id"},
+                    {"data":null,"render":function(item){
+
+                            if(item.date != null){
+                                return moment(item.date).format('DD-MM-YYYY');
+                            }
+                            return item.date;
+                        
+                        }
+                    },
+                      {"data" : "depot"},
                       {"data" : "train_set_no"},
-                       {"data":null,"render":function(item){
-
-                                if(item.date != null){
-                                    return moment(item.date).format('DD-MM-YYYY');
-                                }
-                                return item.date;
-                            
-                            }
-                        },
-                      {"data" : "department"},
-                      {"data" : "nature_of_job"},
-                      {"data" : "sic_required"},
-                      {"data" : "assigned_to"},
-                      {"data" : "last_update"},
-                       {"data":null,"render":function(item){
-
-                                if(item.status == 0){
-                                    return '<h5 class="text-success"> Open </h5>';
-                                }else{
-                                    return '<h5 class="text-danger"> Closed </h5>';
-                                }
-                                
-                            
-                            }
-                        },
-
-
-
+                      {"data" : "sel_car"},
+                      {"data" : "equipment"},
+                      {"data" : "component"},
+                      {"data" : "incident_location"},
+                      {"data" : "incident_time"},
+                     
                       {"data":null,"render":function(item){
 
                             var tbl = '';
-                            tbl += '<a href="/forms/jobcard_register/viewjobcard/'+ item.id +'" >View</a> | ';
+                            tbl += '<a href="/forms/eir_register/vieweir/'+ item.id +'" >View</a> | ';
 
                             
-                            if( (item.user_Role == 5 && item.run_status < 3) || ((item.user_Role == 6 && item.run_status >= 3) && (item.user_Role == 6 && item.run_status <= 6) ) || (item.user_Role == 5 && item.run_status == 7) || (item.user_Role == 1 || item.user_Role == 2) ){
-                                tbl += '<a href="/forms/jobcard_register/addjobcard/'+ item.id +'" >Edit</a> | ';
+                            if( item.user_Role == 1 || item.user_Role == 2 || item.user_Role == 5 ){
+                                tbl += '<a href="/forms/eir_register/addeir/'+ item.id +'" >Edit</a> | ';
                             }
 
                          
 
-                            tbl += '<a href="/forms/jobcard_register/viewjobcard/'+ item.id +'" >PDF</a> ';
+                            tbl += '<a href="/forms/eir_register/vieweir/'+ item.id +'" >PDF</a> ';
                             
                             return tbl;
                         }
