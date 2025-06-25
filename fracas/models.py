@@ -590,6 +590,9 @@ class EIRGeneration(models.Model):
     action_taken_in_depot = models.TextField(null=True, blank=True)
     concern = models.TextField(null=True, blank=True)
     further_action = models.TextField(null=True, blank=True)
+    TRSL = models.CharField(max_length=550, null=True, blank=True)
+    signature_img2 = models.TextField(null=True, blank=True)
+    signature_img3 = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'EIR'

@@ -203,7 +203,7 @@
                             <div class="col-md-4 " id="revenue_service_div1">
                                 <div class="form-group">
                                     <label for="delay_to_service">Delay to Service:</label>
-                                    <input type="time" class="form-control" id="delay_to_service" name="delay_to_service" value="{{data.delay_to_service}}">
+                                    <input type="text" class="form-control" id="delay_to_service" name="delay_to_service" value="{{data.delay_to_service}}">
                                     <div class="invalid-feedback">
                                     Please enter Delay to Service.
                                     </div>
@@ -285,7 +285,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="event_time">*Event Time:</label>
-                                    <input type="time" class="form-control" id="event_time" required="required" name="event_time" value="{{data.event_time|date:"H:i:s"}}">
+                                    <input type="time" class="form-control" id="event_time" required="required" name="event_time" value="{{data.event_time|date:"H:i"}}">
                                     <div class="invalid-feedback">
                                     Please enter Event Time.
                                     </div>
@@ -452,7 +452,7 @@
 
                              <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="safety_failure">*Safety Independent Check Required :</label>
+                                        <label for="safety_failure">Safety Independent Check Required :</label>
                                         <select class="form-control" id="sic_required " name="sic_required" >
                                             {% if 'Yes' == data.sic_required %}
                                             <option value="Yes" selected>Yes</option>
@@ -475,7 +475,7 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="sic_no">*SIC No:</label>
+                                        <label for="sic_no">SIC No:</label>
                                         <input type="text" class="form-control" id="sic_no"  name="sic_no" value="{{data.sic_no}}">
                                         <div class="invalid-feedback">
                                         Please enter SIC No.
@@ -486,7 +486,7 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="assigned_to">*SIC Assigned:</label>
+                                        <label for="assigned_to">SIC Assigned:</label>
                                         <input type="text" class="form-control" id="assigned_to"  name="assigned_to" value="{{data.assigned_to}}">
                                         <div class="invalid-feedback">
                                         Please enter SIC Assigned.
@@ -697,7 +697,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="l1_time">*Time:</label>
-                                        <input type="time" class="form-control" id="l1_time" required="required" name="l1_time" value="{{data.l1_time|date:"H:i:s"}}">
+                                        <input type="time" class="form-control" id="l1_time" required="required" name="l1_time" value="{{data.l1_time|date:"H:i"}}">
                                         <div class="invalid-feedback">
                                         Please enter Time.
                                         </div>
@@ -875,7 +875,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="l2_time">*Time:</label>
-                                                        <input type="time" class="form-control" id="l2_time" required="required" name="l2_time" value="{{data.l2_time|date:"H:i:s"}}">
+                                                        <input type="time" class="form-control" id="l2_time" required="required" name="l2_time" value="{{data.l2_time|date:"H:i"}}">
                                                         <div class="invalid-feedback">
                                                         Please enter Time.
                                                         </div>
@@ -1400,7 +1400,7 @@
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="completion_date_time">*Time:</label>
-                                                                    <input type="time" class="form-control" id="completion_date_time" required="required" name="completion_date_time" value="{{data.completion_date_time|date:"H:i:s"}}">
+                                                                    <input type="time" class="form-control" id="completion_date_time" required="required" name="completion_date_time" value="{{data.completion_date_time|date:"H:i"}}">
                                                                     <div class="invalid-feedback">
                                                                     Please enter Time.
                                                                     </div>
@@ -1625,7 +1625,7 @@
                                                                                     <label>I hereby declare that, </label><br>
 
                                                                                     <label>
-                                                                                        <input type="checkbox" name="sic_has_performed" name="sic_has_performed"  >
+                                                                                        <input type="checkbox" name="sic_has_performed" name="sic_has_performed" required >
                                                                                         SIC has been performed on concerned equipment.
                                                                                         </label><br>
 
@@ -1718,7 +1718,7 @@
                                                                             <div class="col-md-4">
                                                                                 <div class="form-group">
                                                                                     <label for="completion_date_time2">*Time:</label>
-                                                                                    <input type="time" class="form-control" id="completion_date_time2" required="required" name="completion_date_time2" value="{{data.completion_date_time2|date:"H:i:s"}}">
+                                                                                    <input type="time" class="form-control" id="completion_date_time2" required="required" name="completion_date_time2" value="{{data.completion_date_time2|date:"H:i"}}">
                                                                                     <div class="invalid-feedback">
                                                                                     Please enter Time.
                                                                                     </div>
@@ -1904,7 +1904,7 @@
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <label for="close_time">*Time:</label>
-                                                                                <input type="time" class="form-control" id="close_time" required="required" name="close_time" value="{{data.close_time|date:"H:i:s"}}">
+                                                                                <input type="time" class="form-control" id="close_time" required="required" name="close_time" value="{{data.close_time|date:"H:i"}}">
                                                                                 <div class="invalid-feedback">
                                                                                 Please enter Time.
                                                                                 </div>
@@ -2271,7 +2271,7 @@
 
       <!-- Modal Footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal2();">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal3();">Close</button>
         <button type="submit" class="btn btn-primary">Save</button>
         <input type="hidden" value="" id="JobEquipmentID" name="JobEquipmentID">
       </div>

@@ -543,6 +543,7 @@ class AddFailureData(View):
         failure_unique_id = f"RST/{current_month:02}-{current_year}/FID_{new_job_id:04}"
 
         current_time = datetime.datetime.now()
+        today_date = date.today()
        
 
         if id==None:
@@ -4397,6 +4398,69 @@ class AddJobcard(View):
             else:
                 relative_path6 = full_path6  # fallback if /static not found
 
+        current_time = datetime.datetime.now()
+        today_date = date.today()
+
+        if jb.event_date == None or jb.event_date == "":
+            event_date = today_date
+        else:
+            event_date = jb.event_date
+
+        if jb.event_time == None or jb.event_time == "":
+            event_time = current_time
+        else:
+            event_time = jb.event_time
+
+        if jb.l2_date == None or jb.l2_date == "":
+            l2_date = today_date
+        else:
+            l2_date = jb.l2_date
+
+        if jb.l1_date == None or jb.l1_date == "":
+            l1_date = today_date
+        else:
+            l1_date = jb.l1_date
+
+        if jb.l2_time == None or jb.l2_time == "":
+            l2_time = current_time
+        else:
+            l2_time = jb.l2_time
+
+        if jb.l1_time == None or jb.l1_time == "":
+            l1_time = current_time
+        else:
+            l1_time = jb.l1_time
+
+        if jb.completion_date == None or jb.completion_date == "":
+            completion_date = today_date
+        else:
+            completion_date = jb.completion_date
+
+        if jb.completion_date_time == None or jb.completion_date_time == "":
+            completion_date_time = current_time
+        else:
+            completion_date_time = jb.completion_date_time
+
+        if jb.completion_date2 == None or jb.completion_date2 == "":
+            completion_date2 = today_date
+        else:
+            completion_date2 = jb.completion_date2
+
+        if jb.completion_date_time2 == None or jb.completion_date_time2 == "":
+            completion_date_time2 = current_time
+        else:
+            completion_date_time2 = jb.completion_date_time2
+
+        if jb.close_date == None or jb.close_date == "":
+            close_date = today_date
+        else:
+            close_date = jb.close_date
+
+        if jb.close_time == None or jb.close_time == "":
+            close_time = current_time
+        else:
+            close_time = jb.close_time
+
 
         data={ 
             'job_card_no' :  jb.job_card_no,
@@ -4455,19 +4519,19 @@ class AddJobcard(View):
             'from_revenue_service' : jb.from_revenue_service,
             'delay_to_service' : jb.delay_to_service,
             'trip_no':jb.trip_no,
-            'event_date' : jb.event_date,
-            'event_time':jb.event_time,
+            'event_date' : event_date,
+            'event_time':event_time,
             'sic_no':jb.sic_no,
 
             'signature_img':relative_path,
             'issued_by' : jb.issued_by,
-            'l1_time':jb.l1_time,
-            'l1_date':jb.l1_date,
+            'l1_time':l1_time,
+            'l1_date':l1_date,
 
             'signature_img2':relative_path2,
             'received_by' : jb.received_by,
-            'l2_time':jb.l2_time,
-            'l2_date':jb.l2_date,
+            'l2_time':l2_time,
+            'l2_date':l2_date,
 
 
             'signature_img3':relative_path3,
@@ -4477,16 +4541,16 @@ class AddJobcard(View):
             'new_supervisor':jb.new_supervisor,
 
             'signature_img4':relative_path4,
-            'completion_date_time' : jb.completion_date_time,
-            'completion_date':jb.completion_date,
+            'completion_date_time' : completion_date_time,
+            'completion_date':completion_date,
             'train_can_be_moved':jb.train_can_be_moved,
             'down_time':jb.down_time,
             'completion_name':jb.completion_name,
             'train_can_be_energized':jb.train_can_be_energized,
 
             'signature_img5':relative_path5,
-            'completion_date_time2' : jb.completion_date_time2,
-            'completion_date2':jb.completion_date2,
+            'completion_date_time2' : completion_date_time2,
+            'completion_date2': completion_date2,
             'train_can_be_moved2':jb.train_can_be_moved2,
             'down_time2':jb.down_time2,
             'completion_name2':jb.completion_name2,
@@ -4497,8 +4561,8 @@ class AddJobcard(View):
 
             'signature_img6':relative_path6,
             'close_name' : jb.close_name,
-            'close_date':jb.close_date,
-            'close_time':jb.close_time,
+            'close_date':close_date,
+            'close_time':close_time,
             
 
 
@@ -5233,6 +5297,34 @@ class AddEIR(View):
 
         PBSMaster_datas=PBSMaster.objects.filter(id=FailureDatas[0].asset_type)
 
+
+        full_path2 = jb.signature_img2
+        if full_path2 == None:
+            relative_path2 = None
+        else:
+            # Find the index of /static
+            index2 = full_path2.find("/static")
+            if index2 != -1:
+                relative_path2 = full_path2[index2 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path2 = relative_path2.lstrip("/")
+            else:
+                relative_path2 = full_path2  # fallback if /static not found
+
+
+        full_path3 = jb.signature_img3
+        if full_path3 == None:
+            relative_path3 = None
+        else:
+            # Find the index of /static
+            index3 = full_path3.find("/static")
+            if index3 != -1:
+                relative_path3 = full_path3[index3 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path3 = relative_path3.lstrip("/")
+            else:
+                relative_path3 = full_path3  # fallback if /static not found
+
        
         data={ 
             'eir_id' :  jb.eir_id,
@@ -5258,6 +5350,9 @@ class AddEIR(View):
             'action_taken_in_depot': jb.action_taken_in_depot,
             'concern': jb.concern,
             'further_action': jb.further_action,
+            'TRSL':jb.TRSL,
+            'signature_img2':relative_path2,
+            'signature_img3':relative_path3,
 
 
         }
@@ -5370,6 +5465,7 @@ class AddEIR(View):
             action_taken_in_depot = req.get('action_taken_in_depot')
             concern = req.get('concern')
             further_action = req.get('further_action')
+            TRSL = req.get('TRSL')
            
             if 'signature_img' in request.FILES:
 
@@ -5391,7 +5487,39 @@ class AddEIR(View):
                     j = EIRImages(eir_dt_id=eir_dt[0],file_path=file_path)
                     j.save()
 
-            EIRGeneration.objects.filter(eir_id=ids).update(action_taken_in_depot=action_taken_in_depot,concern=concern,further_action=further_action)
+            if 'signature_img2' in request.FILES:
+                uploaded_file = request.FILES['signature_img2']
+                static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+
+                # Create folder if it doesn't exist
+                os.makedirs(static_path, exist_ok=True)
+
+                # Save file
+                file_path = os.path.join(static_path, uploaded_file.name)
+                with open(file_path, 'wb+') as destination:
+                    for chunk in uploaded_file.chunks():
+                        destination.write(chunk)
+
+                EIRGeneration.objects.filter(eir_id=ids).update(signature_img2=file_path)
+
+            if 'signature_img3' in request.FILES:
+                uploaded_file = request.FILES['signature_img3']
+                static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+
+                # Create folder if it doesn't exist
+                os.makedirs(static_path, exist_ok=True)
+
+                # Save file
+                file_path = os.path.join(static_path, uploaded_file.name)
+                with open(file_path, 'wb+') as destination:
+                    for chunk in uploaded_file.chunks():
+                        destination.write(chunk)
+
+                EIRGeneration.objects.filter(eir_id=ids).update(signature_img3=file_path)
+
+
+           
+            EIRGeneration.objects.filter(eir_id=ids).update(action_taken_in_depot=action_taken_in_depot,concern=concern,further_action=further_action,TRSL=TRSL)
             return JsonResponse({'status':'1'})
 
         elif st == 5 or st == '5':
@@ -5425,6 +5553,34 @@ class ViewEIR(View):
 
         PBSMaster_datas=PBSMaster.objects.filter(id=FailureDatas[0].asset_type)
 
+
+        full_path2 = jb.signature_img2
+        if full_path2 == None:
+            relative_path2 = None
+        else:
+            # Find the index of /static
+            index2 = full_path2.find("/static")
+            if index2 != -1:
+                relative_path2 = full_path2[index2 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path2 = relative_path2.lstrip("/")
+            else:
+                relative_path2 = full_path2  # fallback if /static not found
+
+
+        full_path3 = jb.signature_img3
+        if full_path3 == None:
+            relative_path3 = None
+        else:
+            # Find the index of /static
+            index3 = full_path3.find("/static")
+            if index3 != -1:
+                relative_path3 = full_path3[index3 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path3 = relative_path3.lstrip("/")
+            else:
+                relative_path3 = full_path3  # fallback if /static not found
+
        
         data={ 
             'eir_id' :  jb.eir_id,
@@ -5447,11 +5603,73 @@ class ViewEIR(View):
             'location': jb.failure_id.location,
             'immediate_investigation':jb.failure_id.immediate_investigation,
 
+            'action_taken_in_depot': jb.action_taken_in_depot,
+            'concern': jb.concern,
+            'further_action': jb.further_action,
+            'TRSL':jb.TRSL,
+            'signature_img2':relative_path2,
+            'signature_img3':relative_path3,
+
 
         }
 
-       
 
-        return render(request, self.template_name,{'data':data })
-      
+        prv_data = []
+        EIRGeneration_datas_prvdatas = EIRGeneration.objects.filter(failure_id__equipment=jb.failure_id.equipment,component=jb.component).exclude(eir_id=id)
+        st_gen = 0
+        for jbr in EIRGeneration_datas_prvdatas:
+            st_gen = st_gen + 1
+            ast_data = Asset.objects.filter(id=jbr.failure_id.location_id)
+
+            prv_data.append({ 
+                'st_gen':st_gen,
+                'eir_gen_id' :  jbr.eir_gen_id,
+                'date' : jbr.failure_id.date,
+                'depot' : jbr.depot,
+                'train_set_no' : ast_data[0].location_id,
+                'sel_car' : jbr.failure_id.sel_car,
+                'incident_location' : jbr.incident_location,
+                'incident_time' : jbr.incident_time,
+                'id':jbr.eir_id,
+            })
+
+        job_details = []
+        job_detailsArr = InvestigationDetails.objects.filter(eir_dt_id=jb.eir_id,is_active=0)
+        st = 0
+        for jdar in job_detailsArr:
+            st = st + 1
+            job_details.append({ 
+                'details_id' :  jdar.details_id,
+                'non_compliance_details' : jdar.non_compliance_details,
+                'onvestigation_details' : jdar.onvestigation_details,
+                'relevant_ERTS_clause' : jdar.relevant_ERTS_clause,
+                's_no' : st,
+            })
+
+        images = []
+        imgArr = EIRImages.objects.filter(eir_dt_id=jb.eir_id,is_active=0)
+        for jdar in imgArr:
+
+            full_path6 = jdar.file_path
+            if full_path6 == None:
+                relative_path6 = None
+            else:
+                # Find the index of /static
+                index6 = full_path6.find("/static")
+                if index6 != -1:
+                    relative_path6 = full_path6[index6 + len("/static"):]  # remove /static as well
+                    # optionally remove leading slash
+                    relative_path6 = relative_path6.lstrip("/")
+                else:
+                    relative_path6 = full_path6  # fallback if /static not found
+
+            images.append({ 
+                'img_id' :  jdar.img_id,
+                'file_path' : relative_path6,
+            })
+
+
+        # print(prv_data)
+        return render(request, self.template_name,{'data':data ,'prv_data':prv_data , 'job_details':job_details, 'images':images })
+       
  

@@ -424,7 +424,56 @@
                     {% endfor %}
                 </div>
 
-                
+                <br>
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-lg-4 " >
+                        <div class="form-group">
+                            <label for="concern">TRSL:</label>
+                            <input type="text" class="form-control" id="TRSL"  name="TRSL" value="{{data.TRSL}}" >
+                            <div class="invalid-feedback" >
+                            Please enter TRSL.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="signature_img2">Sign of Supervisor : </label>
+                            <input type="file" class="form-control" id="signature_img2"  name="signature_img2" accept="image/*" >
+                            <div class="invalid-feedback">
+                            Please upload Sign of Supervisor.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="signature_img2">Sign of AM/DGM : </label>
+                            <input type="file" class="form-control" id="signature_img3"  name="signature_img3" accept="image/*" >
+                            <div class="invalid-feedback">
+                            Please upload Sign of AM/DGM.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                {% if data.signature_img2 %}
+                    <div class="col-lg-4">
+                        <label>Sign of Supervisor</label>
+                        <img src="/static/{{ data.signature_img2 }}" style="width: 60px;">
+                    </div>
+                {% endif %}
+
+                {% if data.signature_img3 %}
+                    <div class="col-lg-4">
+                        <label>Sign of AM/DGM</label>
+                        <img src="/static/{{ data.signature_img3 }}" style="width: 60px;">
+                    </div>
+                {% endif %}
+
 
 
 
