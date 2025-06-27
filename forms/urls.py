@@ -22,6 +22,7 @@ urlpatterns = [
     path('failuredata/addimportfailuredata/',AddImportFailureData.as_view(),name='import_addfailure_data'),
     path('system/',SystemAssetconfig.as_view(),name='system'),
     path('location_id/',SystemLocationId.as_view(),name='location_id'),
+    path('km_location_id/',KmSystemLocationId.as_view(),name='location_id'),
     
     path('failuremode/', Failuremode.as_view(), name='failuremode'),
     path('failuremode/import/',ImportFailuremode.as_view(),name='import_failuremode'),
@@ -76,5 +77,10 @@ urlpatterns = [
     path('eir_register/vieweir/',ViewEIR.as_view(),name='view_eir'),
     path('eir_register/addeir/<int:id>/',AddEIR.as_view(),name='add_eir'),
     path('eir_register/vieweir/<int:id>/',ViewEIR.as_view(),name='view_eir'),
+
+
+    path('kilometre_reading/', KilometreReadingReg.as_view(), name='kilometre_reading'),
+    path('kilometre_reading/add_kilometre_reading/',AddKilometreReading.as_view(),name='add_kilometre_reading'),
+    path('kilometre_reading/add_kilometre_reading/<int:id>/',AddKilometreReading.as_view(),name='add_kilometre_reading'),
     
 ]

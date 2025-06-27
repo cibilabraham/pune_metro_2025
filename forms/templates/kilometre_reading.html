@@ -1,0 +1,569 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <style>
+        th:first-child,td:first-child,th:last-child,td:last-child,th:nth-child(2),td:nth-child(2) {  
+        background-color:white;    
+        }
+    </style>
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header" style="margin-left:-15px">
+                      Daily Kilometre Reading
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <!-- /.row -->
+
+
+             {% if request.session.user_Role == 1 or request.session.user_Role == 2 or request.session.user_Role == 3 or request.session.user_Role == 5 %}
+            <div class="row ">
+            <div class="col-lg-12 mb-5">
+                
+               
+               
+                <a href="/forms/kilometre_reading/add_kilometre_reading/">  
+                    <button class="btn btn-success btn-icon-split float-right m-2" >            
+                    <span class="text">Add Kilometre Reading</span>
+                    <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                    </span>
+                    </button>
+                </a>
+            </div>
+            </div>
+             {% endif %}  
+          
+
+
+            
+          <div class="row">
+            <div class="col-md-12">
+                <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="bg-white"></th>
+                            <th colspan="2">TS#01</th>
+                            <th colspan="2">TS#02</th>
+                            <th colspan="2">TS#03</th>
+                            <th colspan="2">TS#04</th>
+                            <th colspan="2">TS#05</th>
+                            <th colspan="2">TS#06</th>
+                            <th colspan="2">TS#07</th>
+                            <th colspan="2">TS#08</th>
+                            <th colspan="2">TS#09</th>
+                            <th colspan="2">TS#10</th>
+
+
+                            <th colspan="2">TS#11</th>
+                            <th colspan="2">TS#12</th>
+                            <th colspan="2">TS#13</th>
+                            <th colspan="2">TS#14</th>
+                            <th colspan="2">TS#15</th>
+                            <th colspan="2">TS#16</th>
+                            <th colspan="2">TS#17</th>
+                            <th colspan="2">TS#18</th>
+                            <th colspan="2">TS#19</th>
+                            <th colspan="2">TS#20</th>
+
+                            <th colspan="2">TS#21</th>
+                            <th colspan="2">TS#22</th>
+                            <th colspan="2">TS#23</th>
+                            <th colspan="2">TS#24</th>
+                            <th colspan="2">TS#25</th>
+                            <th colspan="2">TS#26</th>
+                            <th colspan="2">TS#27</th>
+                            <th colspan="2">TS#28</th>
+                            <th colspan="2">TS#29</th>
+                            <th colspan="2">TS#30</th>
+
+                            <th colspan="2">TS#31</th>
+                            <th colspan="2">TS#32</th>
+                            <th colspan="2">TS#33</th>
+                            <th colspan="2">TS#34</th>
+
+
+                        </tr>
+                        <tr>
+                            <th class="bg-white">Date</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+                            <th>Total Km</th>
+                            <th>Daily Km</th>
+
+                          
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+       
+        $('#example').DataTable();
+        getDefectData();
+       
+    });
+
+   
+
+function getDefectData(){
+
+   
+
+        $('#example').DataTable().destroy();
+        $('#example').DataTable({
+                  dom: 'Bfrtip',
+                  buttons: [
+                    { extend: 'excel', className: 'btn-outline-primary' },
+                    { extend: 'pdf', className: 'btn-outline-primary' },
+                    { extend: 'print', className: 'btn-outline-primary' }
+                  ],
+                  scrollY:        "400px",
+                    scrollX:        true,
+                    scrollCollapse: true,
+                    paging:         true,
+                    fixedColumns:   {
+                        left: 1
+                    },
+                  "order": [[ 1, "desc" ]],
+                  "searching" : true,
+                  'ajax' : {
+                      "url": "/forms/kilometre_reading/",
+                      "type": "POST",
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'}
+                  },
+                  "columns" : [
+                   
+                    {"data":null,"render":function(item){
+
+                            if(item.date != null){
+                                
+                                if( item.user_Role == 1 || item.user_Role == 2 || item.user_Role == 5 ){
+                                    return '<a href="/forms/kilometre_reading/add_kilometre_reading/'+ item.id +'" >'+ moment(item.date).format('DD-MM-YYYY') +'</a> ';
+                                    
+                                }else{
+                                    return moment(item.date).format('DD-MM-YYYY');
+                                }
+
+                            }
+
+                            return item.date;
+                        
+                        }
+                    },
+                      {"data" : "ts01_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts01_tkm) - parseFloat(item.tsd01_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd01_tkm;
+
+                        }
+                        },
+
+
+                      {"data" : "ts02_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts02_tkm) - parseFloat(item.tsd02_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd02_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts03_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts03_tkm) - parseFloat(item.tsd03_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd03_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts04_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts04_tkm) - parseFloat(item.tsd04_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd04_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts05_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts05_tkm) - parseFloat(item.tsd05_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd05_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts06_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts06_tkm) - parseFloat(item.tsd06_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd06_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts07_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts07_tkm) - parseFloat(item.tsd07_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd07_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts08_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts08_tkm) - parseFloat(item.tsd08_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd08_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts09_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts09_tkm) - parseFloat(item.tsd09_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd09_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts10_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts10_tkm) - parseFloat(item.tsd10_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd10_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts11_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts11_tkm) - parseFloat(item.tsd11_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd11_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts12_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts12_tkm) - parseFloat(item.tsd12_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd12_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts13_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts13_tkm) - parseFloat(item.tsd13_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd13_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts14_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts14_tkm) - parseFloat(item.tsd14_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd14_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts15_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts15_tkm) - parseFloat(item.tsd15_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd15_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts16_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts16_tkm) - parseFloat(item.tsd16_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd16_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts17_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts17_tkm) - parseFloat(item.tsd17_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd17_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts18_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts18_tkm) - parseFloat(item.tsd18_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd18_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts19_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts19_tkm) - parseFloat(item.tsd19_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd19_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts20_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts20_tkm) - parseFloat(item.tsd20_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd20_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts21_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts21_tkm) - parseFloat(item.tsd21_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd21_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts22_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts22_tkm) - parseFloat(item.tsd22_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd22_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts23_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts23_tkm) - parseFloat(item.tsd23_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd23_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts24_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts24_tkm) - parseFloat(item.tsd24_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd24_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts25_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts25_tkm) - parseFloat(item.tsd25_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd25_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts26_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts26_tkm) - parseFloat(item.tsd26_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd26_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts27_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts27_tkm) - parseFloat(item.tsd27_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd27_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts28_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts28_tkm) - parseFloat(item.tsd28_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd28_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts29_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts29_tkm) - parseFloat(item.tsd29_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd29_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts30_tkm"},
+                      {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts30_tkm) - parseFloat(item.tsd30_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd30_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts31_tkm"},
+                       {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts31_tkm) - parseFloat(item.tsd31_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd31_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts32_tkm"},
+                       {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts32_tkm) - parseFloat(item.tsd32_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd32_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts33_tkm"},
+                       {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts33_tkm) - parseFloat(item.tsd33_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd33_tkm;
+
+                        }
+                        },
+
+                      {"data" : "ts34_tkm"},
+                       {"data":null,"render":function(item){
+                        var dkm = parseFloat(item.ts34_tkm) - parseFloat(item.tsd34_tkm);
+                        if(dkm != 0 && dkm != '0') return dkm;
+                        else return item.tsd34_tkm;
+
+                        }
+                        },
+
+
+
+                     
+                    //   {"data":null,"render":function(item){
+
+                    //         var tbl = "";
+                            
+                    //         if( item.user_Role == 1 || item.user_Role == 2 || item.user_Role == 5 ){
+                    //             tbl += '<a href="/forms/eir_register/addeir/'+ item.id +'" >Edit</a> | ';
+                    //         }
+
+                    //         return tbl;
+                    //     }
+                    // },
+                  ]
+        });
+    }
+
+</script>
+
+{% endblock sb_admin_js %}

@@ -841,6 +841,33 @@
         }); 
     });
 
+
+    $("#location_id").change(function () {                            
+    var location_id= $('select[name=location_id]').val()
+    var date= $('#date').val()
+    $.ajax({
+        url: "/forms/km_location_id/",
+        method: 'GET',
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data : {
+        'location_id' : location_id,
+        'date' : date
+        },
+        success: function (response) {
+            console.log(response);
+            if(response.length > 0){
+                $('#kilometre_reading').val(response[0]['value']);
+            }else{
+                $('#kilometre_reading').val('');
+            }
+            
+            
+            }
+        }); 
+    });
+
+
     $( "#FailureForm" ).submit(function(e) {
         e.preventDefault();
         var failure_id= $('#failure_id').val()

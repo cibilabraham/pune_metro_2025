@@ -514,6 +514,38 @@ class SystemLocationId(View):
         return JsonResponse(data, safe=False)
         # return render(request, self.template_name, {'sub_systems' : sub_systems, 'systems':systems})
 
+class KmSystemLocationId(View):
+    template_name = 'add_failuredata.html'
+
+    def get(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_Role = request.session.get('user_Role')
+        req = request.GET
+        data=[]
+
+        location_id = req.get('location_id')
+        
+        if location_id == "":
+            return JsonResponse(data, safe=False)
+        else:
+            date = datetime.datetime.strptime(req.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            assetDt = Asset.objects.filter(id=location_id)
+            print(assetDt[0].location_id)
+            TrainSetNo = assetDt[0].location_id
+            cleaned = TrainSetNo.replace('#', '').lower()
+            header_name = f"{cleaned}_tkm"
+
+            print(header_name)
+
+            kilometre_reading = KilometreReading.objects.filter(date=date)
+            if kilometre_reading:
+                value = getattr(kilometre_reading[0], header_name, None)
+                print(f"{header_name}: {value}")
+                data.append({'value':value})
+
+        return JsonResponse(data, safe=False)
+        # return render(request, self.template_name, {'sub_systems' : sub_systems, 'systems':systems})
+
 
 
 class AddFailureData(View):
@@ -5672,4 +5704,259 @@ class ViewEIR(View):
         # print(prv_data)
         return render(request, self.template_name,{'data':data ,'prv_data':prv_data , 'job_details':job_details, 'images':images })
        
+
+
+
+
+class KilometreReadingReg(View):
+    template_name = 'kilometre_reading.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+     
+        return render(request, self.template_name, {})
+
+    def post(self, request, *args, **kwargs):
+
+        data=[]
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+        # req = request.POST
+        # print(req)
+        print('==========HERE=========')
+       
+        KilometreReadingDatas = KilometreReading.objects.filter().order_by('-date')
+        print(KilometreReadingDatas)
+       
+        for jb in KilometreReadingDatas:
+            run_date = jb.date
+            previous_record = KilometreReading.objects.filter(date__lt=run_date).order_by('-date').first()
+
+            if previous_record:
+                print('Previous record exists:', previous_record)
+                record = KilometreReading.objects.filter(date__lt=run_date).order_by('-date').first()
+                if record:
+                    dail_jb = record
+                else:
+                    dail_jb = jb
+            else:
+                dail_jb = jb
+
+            data.append({
+                'id':jb.km_id,
+                'date':jb.date,
+                'ts01_tkm' : jb.ts01_tkm,
+                'ts02_tkm' : jb.ts02_tkm,
+                'ts03_tkm' : jb.ts03_tkm,
+                'ts04_tkm' : jb.ts04_tkm,
+                'ts05_tkm' : jb.ts05_tkm,
+                'ts06_tkm' : jb.ts06_tkm,
+                'ts07_tkm' : jb.ts07_tkm,
+                'ts08_tkm' : jb.ts08_tkm,
+                'ts09_tkm' : jb.ts09_tkm,
+                'ts10_tkm' : jb.ts10_tkm,
+                'ts11_tkm' : jb.ts11_tkm,
+                'ts12_tkm' : jb.ts12_tkm,
+                'ts13_tkm' : jb.ts13_tkm,
+                'ts14_tkm' : jb.ts14_tkm,
+                'ts15_tkm' : jb.ts15_tkm,
+                'ts16_tkm' : jb.ts16_tkm,
+                'ts17_tkm' : jb.ts17_tkm,
+                'ts18_tkm' : jb.ts18_tkm,
+                'ts19_tkm' : jb.ts19_tkm,
+                'ts20_tkm' : jb.ts20_tkm,
+                'ts21_tkm' : jb.ts21_tkm,
+                'ts22_tkm' : jb.ts22_tkm,
+                'ts23_tkm' : jb.ts23_tkm,
+                'ts24_tkm' : jb.ts24_tkm,
+                'ts25_tkm' : jb.ts25_tkm,
+                'ts26_tkm' : jb.ts26_tkm,
+                'ts27_tkm' : jb.ts27_tkm,
+                'ts28_tkm' : jb.ts28_tkm,
+                'ts29_tkm' : jb.ts29_tkm,
+                'ts30_tkm' : jb.ts30_tkm,
+                'ts31_tkm' : jb.ts31_tkm,
+                'ts32_tkm' : jb.ts32_tkm,
+                'ts33_tkm' : jb.ts33_tkm,
+                'ts34_tkm' : jb.ts34_tkm,
+
+                'tsd01_tkm' : dail_jb.ts01_tkm,
+                'tsd02_tkm' : dail_jb.ts02_tkm,
+                'tsd03_tkm' : dail_jb.ts03_tkm,
+                'tsd04_tkm' : dail_jb.ts04_tkm,
+                'tsd05_tkm' : dail_jb.ts05_tkm,
+                'tsd06_tkm' : dail_jb.ts06_tkm,
+                'tsd07_tkm' : dail_jb.ts07_tkm,
+                'tsd08_tkm' : dail_jb.ts08_tkm,
+                'tsd09_tkm' : dail_jb.ts09_tkm,
+                'tsd10_tkm' : dail_jb.ts10_tkm,
+                'tsd11_tkm' : dail_jb.ts11_tkm,
+                'tsd12_tkm' : dail_jb.ts12_tkm,
+                'tsd13_tkm' : dail_jb.ts13_tkm,
+                'tsd14_tkm' : dail_jb.ts14_tkm,
+                'tsd15_tkm' : dail_jb.ts15_tkm,
+                'tsd16_tkm' : dail_jb.ts16_tkm,
+                'tsd17_tkm' : dail_jb.ts17_tkm,
+                'tsd18_tkm' : dail_jb.ts18_tkm,
+                'tsd19_tkm' : dail_jb.ts19_tkm,
+                'tsd20_tkm' : dail_jb.ts20_tkm,
+                'tsd21_tkm' : dail_jb.ts21_tkm,
+                'tsd22_tkm' : dail_jb.ts22_tkm,
+                'tsd23_tkm' : dail_jb.ts23_tkm,
+                'tsd24_tkm' : dail_jb.ts24_tkm,
+                'tsd25_tkm' : dail_jb.ts25_tkm,
+                'tsd26_tkm' : dail_jb.ts26_tkm,
+                'tsd27_tkm' : dail_jb.ts27_tkm,
+                'tsd28_tkm' : dail_jb.ts28_tkm,
+                'tsd29_tkm' : dail_jb.ts29_tkm,
+                'tsd30_tkm' : dail_jb.ts30_tkm,
+                'tsd31_tkm' : dail_jb.ts31_tkm,
+                'tsd32_tkm' : dail_jb.ts32_tkm,
+                'tsd33_tkm' : dail_jb.ts33_tkm,
+                'tsd34_tkm' : dail_jb.ts34_tkm,
+
+                'user_Role':user_Role
+
+            })
+          
+        print(data)
+        return JsonResponse({'data':data, 'user_Role':user_Role })
+
+
+class AddKilometreReading(View):
+    template_name = 'add_kilometre_reading.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        user_Role = request.session.get('user_Role')
+        P_id = request.session['P_id']
+        if user_Role == 4:
+            return redirect('/dashboard/')
+        id = kwargs.get("id")
+        data=[]
+
+        today_date = date.today()
+        print(id)
+
+        if id == "" or id == None:
+            data={ 
+                'id' : '',
+                'date' : today_date,
+                'ts01_tkm' : 0,
+                'ts02_tkm' : 0,
+                'ts03_tkm' : 0,
+                'ts04_tkm' : 0,
+                'ts05_tkm' : 0,
+                'ts06_tkm' : 0,
+                'ts07_tkm' : 0,
+                'ts08_tkm' : 0,
+                'ts09_tkm' : 0,
+                'ts10_tkm' : 0,
+                'ts11_tkm' : 0,
+                'ts12_tkm' : 0,
+                'ts13_tkm' : 0,
+                'ts14_tkm' : 0,
+                'ts15_tkm' : 0,
+                'ts16_tkm' : 0,
+                'ts17_tkm' : 0,
+                'ts18_tkm' : 0,
+                'ts19_tkm' : 0,
+                'ts20_tkm' : 0,
+                'ts21_tkm' : 0,
+                'ts22_tkm' : 0,
+                'ts23_tkm' : 0,
+                'ts24_tkm' : 0,
+                'ts25_tkm' : 0,
+                'ts26_tkm' : 0,
+                'ts27_tkm' : 0,
+                'ts28_tkm' : 0,
+                'ts29_tkm' : 0,
+                'ts30_tkm' : 0,
+                'ts31_tkm' : 0,
+                'ts32_tkm' : 0,
+                'ts33_tkm' : 0,
+                'ts34_tkm' : 0,
+
+            }
+
+       
+        record = []
+        if id != "" and id != None:
+            record = KilometreReading.objects.filter(km_id=id).first()
+        else:
+            print(today_date)
+            record = KilometreReading.objects.filter(date__lte=today_date).order_by('-date').first()
+
+        if record:
+            jb = record
+            data={ 
+                'id':jb.km_id,
+                'date':jb.date,
+                'ts01_tkm' : jb.ts01_tkm,
+                'ts02_tkm' : jb.ts02_tkm,
+                'ts03_tkm' : jb.ts03_tkm,
+                'ts04_tkm' : jb.ts04_tkm,
+                'ts05_tkm' : jb.ts05_tkm,
+                'ts06_tkm' : jb.ts06_tkm,
+                'ts07_tkm' : jb.ts07_tkm,
+                'ts08_tkm' : jb.ts08_tkm,
+                'ts09_tkm' : jb.ts09_tkm,
+                'ts10_tkm' : jb.ts10_tkm,
+                'ts11_tkm' : jb.ts11_tkm,
+                'ts12_tkm' : jb.ts12_tkm,
+                'ts13_tkm' : jb.ts13_tkm,
+                'ts14_tkm' : jb.ts14_tkm,
+                'ts15_tkm' : jb.ts15_tkm,
+                'ts16_tkm' : jb.ts16_tkm,
+                'ts17_tkm' : jb.ts17_tkm,
+                'ts18_tkm' : jb.ts18_tkm,
+                'ts19_tkm' : jb.ts19_tkm,
+                'ts20_tkm' : jb.ts20_tkm,
+                'ts21_tkm' : jb.ts21_tkm,
+                'ts22_tkm' : jb.ts22_tkm,
+                'ts23_tkm' : jb.ts23_tkm,
+                'ts24_tkm' : jb.ts24_tkm,
+                'ts25_tkm' : jb.ts25_tkm,
+                'ts26_tkm' : jb.ts26_tkm,
+                'ts27_tkm' : jb.ts27_tkm,
+                'ts28_tkm' : jb.ts28_tkm,
+                'ts29_tkm' : jb.ts29_tkm,
+                'ts30_tkm' : jb.ts30_tkm,
+                'ts31_tkm' : jb.ts31_tkm,
+                'ts32_tkm' : jb.ts32_tkm,
+                'ts33_tkm' : jb.ts33_tkm,
+                'ts34_tkm' : jb.ts34_tkm,
+            }
+
+
+        # print(prv_data)
+        return render(request, self.template_name,{ 'data':data })
+      
  
+    def post(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        req = request.POST
+        cursor = connection.cursor()
+        # print(req)
+        ids = req.get('id')
+
+        date = datetime.datetime.strptime(req.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        if KilometreReading.objects.filter(date=date).exists(): 
+            KilometreReading.objects.filter(date=date).update(ts01_tkm=req.get('ts01_tkm'),ts02_tkm=req.get('ts02_tkm'),ts03_tkm=req.get('ts03_tkm'),ts04_tkm=req.get('ts04_tkm'),ts05_tkm=req.get('ts05_tkm'),ts06_tkm=req.get('ts06_tkm'),ts07_tkm=req.get('ts07_tkm'),ts08_tkm=req.get('ts08_tkm'),ts09_tkm=req.get('ts09_tkm'),ts10_tkm=req.get('ts10_tkm'),ts11_tkm=req.get('ts11_tkm'),ts12_tkm=req.get('ts12_tkm'),ts13_tkm=req.get('ts13_tkm'),ts14_tkm=req.get('ts14_tkm'),ts15_tkm=req.get('ts15_tkm'),ts16_tkm=req.get('ts16_tkm'),ts17_tkm=req.get('ts17_tkm'),ts18_tkm=req.get('ts18_tkm'),ts19_tkm=req.get('ts19_tkm'),ts20_tkm=req.get('ts20_tkm'),ts21_tkm=req.get('ts21_tkm'),ts22_tkm=req.get('ts22_tkm'),ts23_tkm=req.get('ts23_tkm'),ts24_tkm=req.get('ts24_tkm'),ts25_tkm=req.get('ts25_tkm'),ts26_tkm=req.get('ts26_tkm'),ts27_tkm=req.get('ts27_tkm'),ts28_tkm=req.get('ts28_tkm'),ts29_tkm=req.get('ts29_tkm'),ts30_tkm=req.get('ts30_tkm'),ts31_tkm=req.get('ts31_tkm'),ts32_tkm=req.get('ts32_tkm'),ts33_tkm=req.get('ts33_tkm'),ts34_tkm=req.get('ts34_tkm'))
+            return JsonResponse({'status':'1','message':'success'})
+
+        else:
+            j = KilometreReading(date=date,ts01_tkm=req.get('ts01_tkm'),ts02_tkm=req.get('ts02_tkm'),ts03_tkm=req.get('ts03_tkm'),ts04_tkm=req.get('ts04_tkm'),ts05_tkm=req.get('ts05_tkm'),ts06_tkm=req.get('ts06_tkm'),ts07_tkm=req.get('ts07_tkm'),ts08_tkm=req.get('ts08_tkm'),ts09_tkm=req.get('ts09_tkm'),ts10_tkm=req.get('ts10_tkm'),ts11_tkm=req.get('ts11_tkm'),ts12_tkm=req.get('ts12_tkm'),ts13_tkm=req.get('ts13_tkm'),ts14_tkm=req.get('ts14_tkm'),ts15_tkm=req.get('ts15_tkm'),ts16_tkm=req.get('ts16_tkm'),ts17_tkm=req.get('ts17_tkm'),ts18_tkm=req.get('ts18_tkm'),ts19_tkm=req.get('ts19_tkm'),ts20_tkm=req.get('ts20_tkm'),ts21_tkm=req.get('ts21_tkm'),ts22_tkm=req.get('ts22_tkm'),ts23_tkm=req.get('ts23_tkm'),ts24_tkm=req.get('ts24_tkm'),ts25_tkm=req.get('ts25_tkm'),ts26_tkm=req.get('ts26_tkm'),ts27_tkm=req.get('ts27_tkm'),ts28_tkm=req.get('ts28_tkm'),ts29_tkm=req.get('ts29_tkm'),ts30_tkm=req.get('ts30_tkm'),ts31_tkm=req.get('ts31_tkm'),ts32_tkm=req.get('ts32_tkm'),ts33_tkm=req.get('ts33_tkm'),ts34_tkm=req.get('ts34_tkm'))
+            j.save()
+
+            return JsonResponse({'status':'1','message':'success'})
+
+        return JsonResponse({'status':'0','message':'Failed to save Kilometre Reading'})
+

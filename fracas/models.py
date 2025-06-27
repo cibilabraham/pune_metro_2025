@@ -625,3 +625,47 @@ class EIRImages(models.Model):
 
     def __str__(self):
         return ''
+
+class KilometreReading(models.Model):
+    km_id = models.AutoField(primary_key=True)
+    date = models.DateField(null=True)
+    ts01_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts02_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts03_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts04_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts05_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts06_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts07_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts08_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts09_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts10_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts11_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts12_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts13_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts14_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts15_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts16_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts17_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts18_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts19_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts20_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts21_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts22_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts23_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts24_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts25_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts26_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts27_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts28_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts29_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts30_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts31_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts32_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts33_tkm = models.CharField(max_length=550, null=True, blank=True)
+    ts34_tkm = models.CharField(max_length=550, null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = 'Kilometre Reading'
+
+    def __str__(self):
+        return ''

@@ -1,0 +1,473 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                  
+                    <h3 class="page-header">
+                        {% if data.id != '' %}
+                        Update Kilometre Reading
+                        {% else %}
+                        Add Kilometre Reading
+                        {% endif %}
+                    </h3>
+                  
+                </div>
+
+                 <div class="col-lg-6 mb-3">
+    
+    
+                    <a href="/forms/kilometre_reading/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+
+            </div>
+
+
+            <form id="addKilometreReadingForm"> 
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="date">* Date (DD/MM/YYYY):</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" value="{{data.date|date:'d/m/Y'}}" >
+                            <div class="invalid-feedback">
+                            Please enter  Date.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#01 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts01_tkm" name="ts01_tkm" value="{{data.ts01_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#01 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#02 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts02_tkm" name="ts02_tkm" value="{{data.ts02_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#02 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#03 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts03_tkm" name="ts03_tkm" value="{{data.ts03_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#03 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#04 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts04_tkm" name="ts04_tkm" value="{{data.ts04_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#04 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#05 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts05_tkm" name="ts05_tkm" value="{{data.ts05_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#05 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#06 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts06_tkm" name="ts06_tkm" value="{{data.ts06_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#06 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#07 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts07_tkm" name="ts07_tkm" value="{{data.ts07_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#07 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#08 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts08_tkm" name="ts08_tkm" value="{{data.ts08_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#08 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#09 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts09_tkm" name="ts09_tkm" value="{{data.ts09_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#09 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#10 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts10_tkm" name="ts10_tkm" value="{{data.ts10_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#10 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#11 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts11_tkm" name="ts11_tkm" value="{{data.ts11_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#11 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#12 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts12_tkm" name="ts12_tkm" value="{{data.ts12_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#12 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#13 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts13_tkm" name="ts13_tkm" value="{{data.ts13_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#13 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#14 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts14_tkm" name="ts14_tkm" value="{{data.ts14_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#14 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#15 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts15_tkm" name="ts15_tkm" value="{{data.ts15_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#15 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#16 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts16_tkm" name="ts16_tkm" value="{{data.ts16_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#16 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#17 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts17_tkm" name="ts17_tkm" value="{{data.ts17_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#17 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#18 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts18_tkm" name="ts18_tkm" value="{{data.ts18_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#18 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#19 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts19_tkm" name="ts19_tkm" value="{{data.ts19_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#19 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#20 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts20_tkm" name="ts20_tkm" value="{{data.ts20_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#20 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#21 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts21_tkm" name="ts21_tkm" value="{{data.ts21_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#21 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#22 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts22_tkm" name="ts22_tkm" value="{{data.ts22_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#22 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#23 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts23_tkm" name="ts23_tkm" value="{{data.ts23_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#23 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#24 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts24_tkm" name="ts24_tkm" value="{{data.ts24_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#24 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#25 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts25_tkm" name="ts25_tkm" value="{{data.ts25_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#25 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#26 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts26_tkm" name="ts26_tkm" value="{{data.ts26_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#26 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#27 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts27_tkm" name="ts27_tkm" value="{{data.ts27_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#27 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#28 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts28_tkm" name="ts28_tkm" value="{{data.ts28_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#28 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#29 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts29_tkm" name="ts29_tkm" value="{{data.ts29_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#29 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#30 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts30_tkm" name="ts30_tkm" value="{{data.ts30_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#30 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#31 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts31_tkm" name="ts31_tkm" value="{{data.ts31_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#31 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#32 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts32_tkm" name="ts32_tkm" value="{{data.ts32_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#32 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#33 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts33_tkm" name="ts33_tkm" value="{{data.ts33_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#33 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="date">TS#34 - Total Km :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="ts34_tkm" name="ts34_tkm" value="{{data.ts34_tkm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  TS#34 - Total Km.
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+                <div class="row mb-4" align="right">
+                    <div class="col-12">  
+                        <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(1);">Save</button>
+
+                        <a href="/forms/kilometre_reading/"><button type="button" class="btn btn-primary btn-icon-split float-right m-2" >              
+                        <span class="text">Cancel</span>
+                        </button></a>
+                    
+                    </div>
+                </div>
+
+
+
+
+
+            </form>
+
+
+       
+
+
+           
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+
+    $(document).ready(function() {
+        $('#date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
+    });
+
+
+    $("#addKilometreReadingForm").submit(function(e) {
+        e.preventDefault();
+
+        var form = $('#addKilometreReadingForm')[0];  // Get the raw DOM form element
+        var formData = new FormData(form);    // Create FormData object
+
+        formData.append('id', '{{ data.id }}');
+
+        $.ajax({
+            url: "/forms/kilometre_reading/add_kilometre_reading/",
+            method: 'POST',
+            data: formData,
+            dataType: 'json',
+            processData: false,     // Prevent jQuery from processing data
+            contentType: false,     // Let browser set content type including boundaries
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+
+            success: function (response) {
+                if (response.status == '1') {
+                    window.location.href  = "/forms/kilometre_reading/";
+                } else {
+                    swal(response.message);
+                }
+            },
+            error: function () {
+                swal('An error occurred while submitting the data.');
+            }
+        });
+    });
+
+
+     
+</script>
+
+{% endblock sb_admin_js %}
