@@ -21,6 +21,9 @@ import string
 import sys
 import random
 
+from django.utils import timezone
+from datetime import timedelta
+
 class assetRegister(View):
     template_name = 'asset_register.html'
 
@@ -4602,7 +4605,7 @@ class AddJobcard(View):
         }
 
         prv_data = []
-        JobCard_prvdatas =JobCard.objects.filter(failure_id__location_id=jb.failure_id.location_id,failure_id__date=jb.failure_id.date).exclude(job_id=id)
+        JobCard_prvdatas =JobCard.objects.filter(failure_id__asset_config_id__location_id=jb.failure_id.asset_config_id.location_id,failure_id__date=jb.failure_id.date).exclude(job_id=id)
         st_gen = 0
         for jbr in JobCard_prvdatas:
             st_gen = st_gen + 1
@@ -4628,6 +4631,22 @@ class AddJobcard(View):
                 'completion_time' : jbr.completion_time,
                 'status':sts,
             })
+
+        prv_data2 = []
+        thirty_days_ago = timezone.now().date() - timedelta(days=30)
+        print(thirty_days_ago)
+        JobCard_prvdatas2 =JobCard.objects.filter(failure_id__asset_config_id__location_id=jb.failure_id.asset_config_id.location_id,failure_id__equipment=jb.failure_id.equipment,date__gte=thirty_days_ago).exclude(job_id=id)
+        st_gen = 0
+        for jbr in JobCard_prvdatas2:
+            st_gen = st_gen + 1
+            PBSMaster_datas2 =PBSMaster.objects.filter(id=jbr.failure_id.asset_type)
+            if PBSMaster_datas[0].system == PBSMaster_datas2[0].system:
+                prv_data2.append({ 
+                    'st_gen':st_gen,
+                    'job_card_no' :  jbr.job_card_no,
+                    'date' :  jbr.failure_id.date,
+                    'immediate_investigation' :  jbr.failure_id.immediate_investigation,
+                })
 
         job_works = []
         job_worksArr = JobWorkToMaintainers.objects.filter(job_card_id=jb.job_id,is_active=0)
@@ -4656,7 +4675,7 @@ class AddJobcard(View):
             })
 
         # print(prv_data)
-        return render(request, self.template_name,{'data':data,'job_details':job_details,'prv_data':prv_data, 'job_works':job_works, 'job_equipment':job_equipment  })
+        return render(request, self.template_name,{'data':data,'job_details':job_details,'prv_data':prv_data, 'job_works':job_works, 'job_equipment':job_equipment ,'prv_data2':prv_data2 })
       
  
     def post(self, request, *args, **kwargs):
@@ -5164,7 +5183,7 @@ class ViewJobcard(View):
         }
 
         prv_data = []
-        JobCard_prvdatas =JobCard.objects.filter(failure_id__location_id=jb.failure_id.location_id,failure_id__date=jb.failure_id.date).exclude(job_id=id)
+        JobCard_prvdatas =JobCard.objects.filter(failure_id__asset_config_id__location_id=jb.failure_id.asset_config_id.location_id,failure_id__date=jb.failure_id.date).exclude(job_id=id)
         st_gen = 0
         for jbr in JobCard_prvdatas:
             st_gen = st_gen + 1
@@ -5190,6 +5209,24 @@ class ViewJobcard(View):
                 'completion_time' : jbr.completion_time,
                 'status':sts,
             })
+
+
+        prv_data2 = []
+        thirty_days_ago = timezone.now().date() - timedelta(days=30)
+        print(thirty_days_ago)
+        JobCard_prvdatas2 =JobCard.objects.filter(failure_id__asset_config_id__location_id=jb.failure_id.asset_config_id.location_id,failure_id__equipment=jb.failure_id.equipment,date__gte=thirty_days_ago).exclude(job_id=id)
+        st_gen = 0
+        for jbr in JobCard_prvdatas2:
+            st_gen = st_gen + 1
+            PBSMaster_datas2 =PBSMaster.objects.filter(id=jbr.failure_id.asset_type)
+            if PBSMaster_datas[0].system == PBSMaster_datas2[0].system:
+                prv_data2.append({ 
+                    'st_gen':st_gen,
+                    'job_card_no' :  jbr.job_card_no,
+                    'date' :  jbr.failure_id.date,
+                    'immediate_investigation' :  jbr.failure_id.immediate_investigation,
+                })
+
 
         job_works = []
         job_worksArr = JobWorkToMaintainers.objects.filter(job_card_id=jb.job_id,is_active=0)
@@ -5218,7 +5255,7 @@ class ViewJobcard(View):
             })
 
 
-        return render(request, self.template_name,{'data':data,'job_details':job_details, 'prv_data':prv_data, 'job_works':job_works, 'job_equipment':job_equipment  })
+        return render(request, self.template_name,{'data':data,'job_details':job_details, 'prv_data':prv_data, 'job_works':job_works, 'job_equipment':job_equipment ,"prv_data2":prv_data2 })
       
 
 
