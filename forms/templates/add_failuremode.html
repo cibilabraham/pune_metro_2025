@@ -378,7 +378,7 @@
                                         <thead>
                                             <tr>
                                                 <th >Failure id</th>
-                                                <th>Asset type</th>
+                                                <th>Asset name</th>
                                                 <th>Asset config id</th>
                                                 <th>Event description </th>
                                                 <th>Date</th>
@@ -487,9 +487,9 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         {% if request.session.user_Role == 1 %}
-                        <label  for="cm_description">*Select asset type:</label>
+                        <label  for="cm_description">*Select asset name:</label>
                         <select class="form-control" id="asset_type" name="asset_type" required>
-                        <option value="">--  Select Asset type  --</option>
+                        <option value="">--  Select Asset name  --</option>
                         {% for asset_type in asset_types %}
                         {% if asset_type.asset_type != '' %}
                             
@@ -499,9 +499,9 @@
                         {% endfor %}
                         </select>
                         {% else %}  
-                        <label  for="cm_description">Select asset type:</label>
+                        <label  for="cm_description">Select asset name:</label>
                         <select class="form-control" id="asset_type" name="asset_type">
-                        <option value="">--  Select Asset type  --</option>
+                        <option value="">--  Select Asset name  --</option>
                         {% for asset_type in asset_types %}
                         {% if asset_type.asset_type != '' %}
                             
@@ -551,7 +551,7 @@
                         <tr>
                             <th class="bg-white"><input type="checkbox" id="deleteAll" /></th>
                             <th class="bg-white">Failure id</th>
-                            <th>Asset type</th>
+                            <th>Asset name</th>
                             <th>Asset config id</th>
                             <th>Event description </th>
                             <th>Date</th>

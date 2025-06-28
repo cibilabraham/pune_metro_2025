@@ -202,10 +202,22 @@ function getDefectData(){
         $('#example').DataTable({
                   dom: 'Bfrtip',
                   buttons: [
-                    { extend: 'excel', className: 'btn-outline-primary' },
-                    { extend: 'pdf', className: 'btn-outline-primary' },
-                    { extend: 'print', className: 'btn-outline-primary' }
-                  ],
+                        {
+                        extend: 'excel',
+                        title: 'Daily Kilometre Reading',
+                        className: 'btn-outline-primary'
+                        },
+                        {
+                        extend: 'pdf',
+                        title: 'Daily Kilometre Reading',
+                        className: 'btn-outline-primary'
+                        },
+                        {
+                        extend: 'print',
+                        title: 'Daily Kilometre Reading',
+                        className: 'btn-outline-primary'
+                        }
+                    ],
                   scrollY:        "400px",
                     scrollX:        true,
                     scrollCollapse: true,
@@ -213,7 +225,7 @@ function getDefectData(){
                     fixedColumns:   {
                         left: 1
                     },
-                  "order": [[ 1, "desc" ]],
+                  ordering: false,  // <-- disable all ordering here
                   "searching" : true,
                   'ajax' : {
                       "url": "/forms/kilometre_reading/",

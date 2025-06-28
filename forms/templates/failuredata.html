@@ -329,10 +329,22 @@
             $('#example').DataTable().destroy();
             $('#example').DataTable({
                     dom: 'Bfrtip',
-                    buttons: [
-                        { extend: 'excel', className: 'btn-outline-primary' },
-                        { extend: 'pdf', className: 'btn-outline-primary' },
-                        { extend: 'print', className: 'btn-outline-primary' }
+                     buttons: [
+                        {
+                        extend: 'excel',
+                        title: 'Failure data collection',
+                        className: 'btn-outline-primary'
+                        },
+                        {
+                        extend: 'pdf',
+                        title: 'Failure data collection',
+                        className: 'btn-outline-primary'
+                        },
+                        {
+                        extend: 'print',
+                        title: 'Failure data collection',
+                        className: 'btn-outline-primary'
+                        }
                     ],
                     scrollY:        "350px",
                     scrollX:        true,

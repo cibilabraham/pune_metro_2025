@@ -144,20 +144,32 @@
                     <div class="col-lg-12"><h3>LEVEL 1 Job Card Details (To be filled by PPIO) (Pune Metro)</h3></div>
 
                      <div class="col-lg-4">
-                        <span>OHE Required: <b>{{data.ohe_required}}</b></span><br>
-                        <span>Issued to: <b>{{data.issued_to}}</b></span><br>
-                        <span>Expected Time of Completion: <b>{{data.completion_time}}</b></span><br><br>
+                            <span>OHE Required: <b>{{data.ohe_required}}</b></span><br>
+                            <span>Issued to: <b>{{data.issued_to}}</b></span><br>
 
-                        <span>Train Withdrawn from Revenue Service: <b>{{data.from_revenue_service}}</b></span><br>
+                            {% if data.completion_time %}
+                            <span>Expected Time of Completion: <b>{{ data.completion_time }} hrs</b></span>
+                            {% else %}
+                            <span>Expected Time of Completion: <b>{{data.completion_time}} </b></span>
+                            {% endif %}
 
-                        {% if data.from_revenue_service == 'Yes' %}
-                            <span>Delay to Service: <b>{{data.delay_to_service}}</b></span><br>
+                            <br><br>
+
+                            <span>Train Withdrawn from Revenue Service: <b>{{data.from_revenue_service}}</b></span><br>
+
+                            {% if data.delay_to_service %}
+                            <span>Delay to Service: <b>{{ data.delay_to_service }} mins</b></span>
+                            {% else %}
+                            <span>Delay to Service: <b>{{data.delay_to_service}} </b></span>
+                            {% endif %}
+
+                            <br>
                             <span>Trip No: <b>{{data.trip_no}}</b></span><br>                 
-                        {% endif %}
+                           
 
 
 
-                    </div>
+                        </div>
                     <div class="col-lg-4">
 
                         <span>Nature of Job: <b>{{data.nature_of_job}}</b></span><br>
@@ -676,7 +688,15 @@
 
                                             <span>Train can be energized: <b>{{data.train_can_be_energized}}</b></span><br>
                                             <span>Name: <b>{{data.completion_name}}</b></span><br>
-                                            <span>Down Time(HH:MM): <b>{{data.down_time}}</b></span><br>
+
+                                            {% if data.down_time %}
+                                            <span>Down Time: <b>{{ data.down_time }} mins</b></span>
+                                            {% else %}
+                                            <span>Down Time: <b>{{data.down_time}} </b></span>
+                                            {% endif %}
+
+
+                                            <br>
                                           
                                         </div>
 
@@ -785,7 +805,15 @@
 
                                                     <span>Train can be energized: <b>{{data.train_can_be_energized2}}</b></span><br>
                                                     <span>Name: <b>{{data.completion_name2}}</b></span><br>
-                                                    <span>Down Time(HH:MM): <b>{{data.down_time2}}</b></span><br>
+
+                                                    {% if data.down_time2 %}
+                                                    <span>Down Time: <b>{{ data.down_time2 }} mins</b></span>
+                                                    {% else %}
+                                                    <span>Down Time: <b>{{data.down_time2}} </b></span>
+                                                    {% endif %}
+
+
+                                                    <br>
                                                 
                                                 </div>
 

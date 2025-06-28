@@ -167,8 +167,8 @@
 
                              <div class="col-md-4">
                             <div class="form-group">
-                                <label for="completion_time">*Expected Time of Completion:</label>
-                                <input type="text" class="form-control" required="required" id="completion_time" name="completion_time" value="{{data.completion_time}}">
+                                <label for="completion_time">*Expected Time of Completion (hrs):</label>
+                                <input type="number" class="form-control" required="required" id="completion_time" name="completion_time" value="{{data.completion_time}}">
                                 <div class="invalid-feedback">
                                 Please enter Expected Time of Completion.
                                 </div>
@@ -202,8 +202,8 @@
 
                             <div class="col-md-4 " id="revenue_service_div1">
                                 <div class="form-group">
-                                    <label for="delay_to_service">Delay to Service:</label>
-                                    <input type="text" class="form-control" id="delay_to_service" name="delay_to_service" value="{{data.delay_to_service}}">
+                                    <label for="delay_to_service">Delay to Service (mins):</label>
+                                    <input type="number" class="form-control" id="delay_to_service" name="delay_to_service" value="{{data.delay_to_service}}">
                                     <div class="invalid-feedback">
                                     Please enter Delay to Service.
                                     </div>
@@ -324,14 +324,26 @@
                         <div class="col-lg-4">
                             <span>OHE Required: <b>{{data.ohe_required}}</b></span><br>
                             <span>Issued to: <b>{{data.issued_to}}</b></span><br>
-                            <span>Expected Time of Completion: <b>{{data.completion_time}}</b></span><br><br>
+
+                            {% if data.completion_time %}
+                            <span>Expected Time of Completion: <b>{{ data.completion_time }} hrs</b></span>
+                            {% else %}
+                            <span>Expected Time of Completion: <b>{{data.completion_time}} </b></span>
+                            {% endif %}
+
+                            <br><br>
 
                             <span>Train Withdrawn from Revenue Service: <b>{{data.from_revenue_service}}</b></span><br>
 
-                            {% if data.from_revenue_service == 'Yes' %}
-                                <span>Delay to Service: <b>{{data.delay_to_service}}</b></span><br>
-                                <span>Trip No: <b>{{data.trip_no}}</b></span><br>                 
+                            {% if data.delay_to_service %}
+                            <span>Delay to Service: <b>{{ data.delay_to_service }} mins</b></span>
+                            {% else %}
+                            <span>Delay to Service: <b>{{data.delay_to_service}} </b></span>
                             {% endif %}
+
+                            <br>
+                            <span>Trip No: <b>{{data.trip_no}}</b></span><br>                 
+                           
 
 
 
@@ -1402,8 +1414,8 @@
 
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
-                                                                    <label for="down_time">Down Time(HH:MM):</label>
-                                                                    <input type="text" class="form-control" id="down_time" name="down_time" value="{{data.down_time}}">
+                                                                    <label for="down_time">Down Time (mins):</label>
+                                                                    <input type="number" class="form-control" id="down_time" name="down_time" value="{{data.down_time}}">
                                                                     <div class="invalid-feedback">
                                                                     Please enter Down Time.
                                                                     </div>
@@ -1596,7 +1608,13 @@
 
                                                                         <span>Train can be energized: <b>{{data.train_can_be_energized}}</b></span><br>
                                                                         <span>Name: <b>{{data.completion_name}}</b></span><br>
-                                                                        <span>Down Time(HH:MM): <b>{{data.down_time}}</b></span><br>
+
+                                                                        {% if data.down_time %}
+                                                                        <span>Down Time: <b>{{ data.down_time }} mins</b></span>
+                                                                        {% else %}
+                                                                        <span>Down Time: <b>{{data.down_time}} </b></span>
+                                                                        {% endif %}
+                                                                        <br>
                                                                     
                                                                     </div>
 
@@ -1720,8 +1738,8 @@
 
                                                                             <div class="col-md-4">
                                                                                 <div class="form-group">
-                                                                                    <label for="down_time2">Down Time(HH:MM):</label>
-                                                                                    <input type="text" class="form-control" id="down_time2" name="down_time2" value="{{data.down_time2}}">
+                                                                                    <label for="down_time2">Down Time(mins):</label>
+                                                                                    <input type="number" class="form-control" id="down_time2" name="down_time2" value="{{data.down_time2}}">
                                                                                     <div class="invalid-feedback">
                                                                                     Please enter Down Time.
                                                                                     </div>
@@ -1881,7 +1899,14 @@
 
                                                                             <span>Train can be energized: <b>{{data.train_can_be_energized2}}</b></span><br>
                                                                             <span>Name: <b>{{data.completion_name2}}</b></span><br>
-                                                                            <span>Down Time(HH:MM): <b>{{data.down_time2}}</b></span><br>
+
+                                                                            {% if data.down_time2 %}
+                                                                            <span>Down Time: <b>{{ data.down_time2 }} mins</b></span>
+                                                                            {% else %}
+                                                                            <span>Down Time: <b>{{data.down_time2}} </b></span>
+                                                                            {% endif %}
+
+                                                                            <br>
                                                                         
                                                                         </div>
 

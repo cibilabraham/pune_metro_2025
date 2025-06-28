@@ -161,11 +161,23 @@
         $('#example').DataTable().destroy();
         $('#example').DataTable({
                   dom: 'Bfrtip',
-                  buttons: [
-                    { extend: 'excel', className: 'btn-outline-primary' },
-                    { extend: 'pdf', className: 'btn-outline-primary' },
-                    { extend: 'print', className: 'btn-outline-primary' }
-                  ],
+                   buttons: [
+                        {
+                        extend: 'excel',
+                        title: 'Auditrail Report',
+                        className: 'btn-outline-primary'
+                        },
+                        {
+                        extend: 'pdf',
+                        title: 'Auditrail Report',
+                        className: 'btn-outline-primary'
+                        },
+                        {
+                        extend: 'print',
+                        title: 'Auditrail Report',
+                        className: 'btn-outline-primary'
+                        }
+                    ],
                   "order": [[ 4, "desc" ],[ 5, "desc" ]],
                   "searching" : false,
                   'ajax' : {

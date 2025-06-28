@@ -59,7 +59,7 @@
                 
                 <div class="col-md-3">     
                     <div class="form-group">
-                        <label for="asset_type">By asset type</label>
+                        <label for="asset_type">By asset name</label>
                         {% if request.session.user_Role == 1 %}
                             <select class="form-control" id="asset_type" name="asset_type" required="required">
                                 <option value="all">--All--</option>
@@ -99,7 +99,7 @@
                             <th><input type="checkbox" id="deleteAll" /></th>
                             <th>Mode id</th>
                             <th>Mode description</th>
-                            <th>Asset type</th>
+                            <th>Asset name</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -212,11 +212,23 @@ function getDefectData(){
         $('#example').DataTable().destroy();
         $('#example').DataTable({
                   dom: 'Bfrtip',
-                  buttons: [
-                    { extend: 'excel', className: 'btn-outline-primary' },
-                    { extend: 'pdf', className: 'btn-outline-primary' },
-                    { extend: 'print', className: 'btn-outline-primary' }
-                  ],
+                 buttons: [
+                    {
+                    extend: 'excel',
+                    title: 'Failure mode identification',
+                    className: 'btn-outline-primary'
+                    },
+                    {
+                    extend: 'pdf',
+                    title: 'Failure mode identification',
+                    className: 'btn-outline-primary'
+                    },
+                    {
+                    extend: 'print',
+                    title: 'Failure mode identification',
+                    className: 'btn-outline-primary'
+                    }
+                ],
                   "order": [[ 0, "asc" ]],
                   "searching" : true,
                   'ajax' : {

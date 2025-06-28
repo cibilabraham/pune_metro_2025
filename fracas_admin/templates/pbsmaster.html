@@ -292,11 +292,23 @@ var average_speed = '{{average_speed}}';
         $('#example').DataTable().destroy();
         $('#example').DataTable({
                   dom: 'Bfrtip',
-                  buttons: [
-                    { extend: 'excel', className: 'btn-outline-primary' },
-                    { extend: 'pdf', className: 'btn-outline-primary' },
-                    { extend: 'print', className: 'btn-outline-primary' }
-                  ],
+                   buttons: [
+                    {
+                    extend: 'excel',
+                    title: 'PBS Master',
+                    className: 'btn-outline-primary'
+                    },
+                    {
+                    extend: 'pdf',
+                    title: 'PBS Master',
+                    className: 'btn-outline-primary'
+                    },
+                    {
+                    extend: 'print',
+                    title: 'PBS Master',
+                    className: 'btn-outline-primary'
+                    }
+                ],
                   "columnDefs": [
                         {
                         "targets": [10,12],  // 0-based index, so 9 is the 10th column

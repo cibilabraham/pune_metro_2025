@@ -38,10 +38,10 @@
                     <div class="modal-body">
                         <form autocomplete="off">
                         <div class="form-group">
-                            <label for="asset_type">*Select asset type</label>
+                            <label for="asset_type">*Select asset name</label>
                             {% if request.session.user_Role == 1 %}
                                 <select class="form-control" id="asset_types" name="asset_types" required="required">
-                                    <option value="">-- Select asset type --</option>
+                                    <option value="">-- Select asset name --</option>
                                     {% for asset_type in asset_types %}
                                     {% if asset_type.asset_type != '' %}
                                         <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
@@ -50,7 +50,7 @@
                                 </select>
                             {% else %}  
                                 <select class="form-control" id="asset_types" name="asset_types" required="required">
-                                    <option value="">-- Select asset type --</option>
+                                    <option value="">-- Select asset name --</option>
                                     {% for asset_type in asset_types %}
                                     {% if asset_type.asset_type != '' %}
                                         <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
@@ -193,7 +193,7 @@
 
                 <div class="col-md-3">     
                     <div class="form-group">
-                        <label for="asset_type">By asset type</label>
+                        <label for="asset_type">By asset name</label>
                         {% if request.session.user_Role == 1 %}
                             <select class="form-control" id="asset_type" name="asset_type" required="required">
                                 <option value="all">--All--</option>
@@ -244,7 +244,7 @@
                             <th>Defect status</th>
                             <th>Defect status remarks</th>
                             <th>Oem defect reference</th>
-                            <th>Asset type</th>
+                            <th>Asset name</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -383,10 +383,22 @@ function getDefectData(){
         $('#example').DataTable({
                   dom: 'Bfrtip',
                   buttons: [
-                    { extend: 'excel', className: 'btn-outline-primary' },
-                    { extend: 'pdf', className: 'btn-outline-primary' },
-                    { extend: 'print', className: 'btn-outline-primary' }
-                  ],
+                    {
+                    extend: 'excel',
+                    title: 'FRACAS Defect Identification',
+                    className: 'btn-outline-primary'
+                    },
+                    {
+                    extend: 'pdf',
+                    title: 'FRACAS Defect Identification',
+                    className: 'btn-outline-primary'
+                    },
+                    {
+                    extend: 'print',
+                    title: 'FRACAS Defect Identification',
+                    className: 'btn-outline-primary'
+                    }
+                ],
                   "order": [[ 1, "asc" ]],
                   "searching" : true,
                   'ajax' : {

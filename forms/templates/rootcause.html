@@ -54,7 +54,7 @@
                         <tr>
                             <th><input type="checkbox" id="deleteAll" /></th>
                             <th>Root cause id</th>
-                            <th>Asset type</th>
+                            <th>Asset name</th>
                             <th>Defect</th>
                             <th>Rca workshop date </th>
                             <th>Immediate cause (Level 1)</th>
@@ -171,11 +171,23 @@ function getDefectData(){
         $('#example').DataTable().destroy();
         $('#example').DataTable({
                   dom: 'Bfrtip',
-                  buttons: [
-                    { extend: 'excel', className: 'btn-outline-primary' },
-                    { extend: 'pdf', className: 'btn-outline-primary' },
-                    { extend: 'print', className: 'btn-outline-primary' }
-                  ],
+                 buttons: [
+                        {
+                        extend: 'excel',
+                        title: 'Root cause analysis',
+                        className: 'btn-outline-primary'
+                        },
+                        {
+                        extend: 'pdf',
+                        title: 'Root cause analysis',
+                        className: 'btn-outline-primary'
+                        },
+                        {
+                        extend: 'print',
+                        title: 'Root cause analysis',
+                        className: 'btn-outline-primary'
+                        }
+                    ],
                   "order": [[ 1, "asc" ]],
                   "searching" : true,
                   'ajax' : {

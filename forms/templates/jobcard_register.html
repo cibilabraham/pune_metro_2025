@@ -75,11 +75,23 @@ function getDefectData(){
         $('#example').DataTable().destroy();
         $('#example').DataTable({
                   dom: 'Bfrtip',
-                  buttons: [
-                    { extend: 'excel', className: 'btn-outline-primary' },
-                    { extend: 'pdf', className: 'btn-outline-primary' },
-                    { extend: 'print', className: 'btn-outline-primary' }
-                  ],
+                   buttons: [
+                        {
+                        extend: 'excel',
+                        title: 'Job Cards',
+                        className: 'btn-outline-primary'
+                        },
+                        {
+                        extend: 'pdf',
+                        title: 'Job Cards',
+                        className: 'btn-outline-primary'
+                        },
+                        {
+                        extend: 'print',
+                        title: 'Job Cards',
+                        className: 'btn-outline-primary'
+                        }
+                    ],
                   scrollY:        "400px",
                     scrollX:        true,
                     scrollCollapse: true,
