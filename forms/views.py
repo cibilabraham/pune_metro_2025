@@ -2219,6 +2219,9 @@ class AddRootcauseView(View):
             'immediate_cause':'',
             'leading_reasons':'',
             'root_cause_description':'',
+            'systemic_cause':'',
+            'organistaional_management_cause':'',
+            'material_is_damaged':'',
             }
         else:
             if RootCause.objects.filter(root_cause_id=id,is_active=1).exists():

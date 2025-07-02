@@ -157,11 +157,14 @@ class RootCause(models.Model):
     rca_workshop_date = models.DateField(null=True, blank=True)
     root_cause_status = models.CharField(max_length=550, blank=True)
     defect = models.ForeignKey('Defect', on_delete=models.CASCADE, null=True, blank=True)
-    immediate_cause = ModelArrowCharField(max_length=100, blank=True)
-    leading_reasons = ModelArrowCharField(max_length=100, blank=True)
+    immediate_cause = models.TextField(blank=True)
+    leading_reasons = models.TextField(blank=True)
     root_cause_description = models.TextField()
     is_active = models.IntegerField(default=0)
     P_id = models.IntegerField(default=0)
+    systemic_cause = models.TextField(blank=True)
+    organistaional_management_cause = models.TextField(blank=True)
+    material_is_damaged = models.CharField(max_length=550, blank=True)
     
 
     class Meta:

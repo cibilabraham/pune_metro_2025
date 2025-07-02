@@ -78,11 +78,11 @@
             <div class="row mb-4">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="asset_type">*Asset type:</label>
+                        <label for="asset_type">*Asset name:</label>
                         <input type="hidden" value="{{ data.id }}" id="id" name="id">
                         {% if request.session.user_Role == 1 %}
                         <select class="form-control" id="asset_type" name="asset_type" required="required">
-                        <option value="">--  Select Asset type  --</option>
+                        <option value="">--  Select Asset name  --</option>
                         {% for asset_type in asset_types %}
                         {% if asset_type.asset_type != '' %}
                             {% if asset_type.id == data.asset_type %}
@@ -96,7 +96,7 @@
                         </select>
                         {% else %}  
                         <select class="form-control" id="asset_type" name="asset_type" required="required">
-                        <option value="">--  Select Asset type  --</option>
+                        <option value="">--  Select Asset name  --</option>
                         {% for asset_type in asset_types %}
                         {% if asset_type.asset_type != '' %}
                             {% if asset_type.id == data.asset_type %}
@@ -110,7 +110,7 @@
                         </select>
                         {% endif %}  
                         <div class="invalid-feedback">
-                         Please enter Asset type.
+                         Please enter Asset name.
                         </div>
                     </div>
                 </div>
@@ -181,7 +181,7 @@
             <div class="row mb-4">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="immediate_cause">*Immediate cause:</label>
+                        <label for="immediate_cause">*Immediate cause (1st Why):</label>
                         <input type="text" autocomplete="off" required="required" class="form-control" id="immediate_cause" name="immediate_cause" value="{{data.immediate_cause}}">
                         <div class="invalid-feedback">
                             Please enter Immediate cause.
@@ -190,7 +190,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="leading_reasons">*Leading reasons:</label>
+                        <label for="leading_reasons">*Leading reasons (2nd Why):</label>
                         <input type="text" autocomplete="off" required="required" class="form-control" id="leading_reasons" name="leading_reasons" value="{{data.leading_reasons}}">
                         <div class="invalid-feedback">
                             Please enter Rca workshop date.
@@ -200,10 +200,52 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="root_cause_description">*Root cause description:</label>
+                        <label for="root_cause_description">*Root cause description (3rd Why):</label>
                         <textarea autocomplete="off" class="form-control" required="required" id="root_cause_description" name="root_cause_description">{{data.root_cause_description}}</textarea>
                          <div class="invalid-feedback">
                          Please enter Root cause description.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="systemic_cause">Systemic Cause (4th Why):</label>
+                        <textarea autocomplete="off" class="form-control" id="systemic_cause" name="systemic_cause">{{data.systemic_cause}}</textarea>
+                         <div class="invalid-feedback">
+                         Please enter Systemic Cause.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="organistaional_management_cause">ORGANISTAIONAL/MANAGEMENT Cause (5th Why):</label>
+                        <textarea autocomplete="off" class="form-control" id="organistaional_management_cause" name="organistaional_management_cause">{{data.organistaional_management_cause}}</textarea>
+                         <div class="invalid-feedback">
+                         Please enter ORGANISTAIONAL/MANAGEMENT Cause.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="material_is_damaged">If the material is damaged or defective:</label>
+                        <select class="form-control" id="material_is_damaged " name="material_is_damaged" >
+                            {% if 'Yes' == data.material_is_damaged %}
+                            <option value="Yes" selected>Yes</option>
+                            {% else %}
+                                <option value="Yes">Yes</option>
+                            {% endif %}
+                            {% if 'No' == data.material_is_damaged %}
+                            <option value="No" selected>No</option>
+                            {% else %}
+                                <option value="No">No</option>
+                            {% endif %}
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="material_is_damaged" name="material_is_damaged" value="{{data.material_is_damaged}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                        Please select If the material is damaged or defective.
                         </div>
                     </div>
                 </div>
