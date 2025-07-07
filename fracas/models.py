@@ -672,3 +672,29 @@ class KilometreReading(models.Model):
 
     def __str__(self):
         return ''
+
+
+class NCRGeneration(models.Model):
+    rec_id = models.AutoField(primary_key=True)
+    ncr_gen_id = models.CharField(max_length=550, null=True, blank=True)
+    rootcause_id = models.ForeignKey('RootCause', on_delete=models.SET_NULL, null=True, blank=True)
+    date= models.TextField()
+    time= models.TextField()
+    is_active = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'NCR'
+
+    def __str__(self):
+        return ''
+
+class NCRIDs(models.Model):
+    uid_id = models.AutoField(primary_key=True)
+    year = models.CharField(max_length=550, null=True, blank=True)
+    last_id = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'NCR IDs'
+
+    def __str__(self):
+        return ''

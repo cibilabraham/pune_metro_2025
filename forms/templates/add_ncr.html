@@ -1,0 +1,983 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                    <h3 class="page-header">
+                       NCR (Non-Conformity Report) Generation
+                    </h3>
+                  
+                </div>
+
+                 <div class="col-lg-6 mb-3">
+    
+    
+                    <a href="/forms/ncr_register/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+
+            </div>
+
+            <form id="addNCRForm"> 
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-lg-6 " >
+                        <div class="row ">
+
+                             <div class="col-lg-12 " >
+                                <div class="form-group">
+                                    <label for="ncr_gen_id">NON-CONFORMITY REPORT No:</label>
+                                    <input type="text" class="form-control" id="ncr_gen_id"  name="ncr_gen_id" value="{{data.ncr_gen_id}}" readonly>
+                                    <div class="invalid-feedback" >
+                                    Please enter NON-CONFORMITY REPORT No.
+                                    </div>
+                                </div>
+                            </div>
+
+                             <div class="col-lg-12 " >
+                                <div class="form-group">
+                                    <label for="inspector_name">Name of the inspector (NCR Raised):</label>
+                                    <input type="text" class="form-control" id="inspector_name"  name="inspector_name" value="{{data.inspector_name}}">
+                                    <div class="invalid-feedback" >
+                                    Please enter Name of the inspector (NCR Raised).
+                                    </div>
+                                </div>
+                            </div>
+
+                              <div class="col-lg-12 " >
+                                <div class="form-group">
+                                    <label for="project_name">PROJECT NAME:</label>
+                                    <input type="text" class="form-control" id="project_name"  name="project_name" value="{{data.project_name}}" readonly>
+                                    <div class="invalid-feedback" >
+                                    Please enter PROJECT NAME.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 " >
+                                <div class="form-group">
+                                    <label for="assembly_name">PART Description /ASSEMBLY NAME:</label>
+                                    <input type="text" class="form-control" id="assembly_name"  name="assembly_name" value="{{data.assembly_name}}">
+                                    <div class="invalid-feedback" >
+                                    Please enter PART Description /ASSEMBLY NAME.
+                                    </div>
+                                </div>
+                            </div>
+
+                             <div class="col-lg-12 " >
+                                <div class="form-group">
+                                    <label for="assembly_no">PART or ASSEMBLY No:</label>
+                                    <input type="text" class="form-control" id="assembly_no"  name="assembly_no" value="{{data.assembly_no}}">
+                                    <div class="invalid-feedback" >
+                                    Please enter PART or ASSEMBLY No.
+                                    </div>
+                                </div>
+                            </div>
+
+                             <div class="col-lg-12 " >
+                                <div class="form-group">
+                                    <label for="drawing_no">Drawing No  NA:</label>
+                                    <input type="text" class="form-control" id="drawing_no"  name="drawing_no" value="{{data.drawing_no}}">
+                                    <div class="invalid-feedback" >
+                                    Please enter Drawing No  NA.
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6 " >
+
+                        <div class="row ">
+
+                             <div class="col-lg-12 " >
+                                <div class="form-group">
+                                    <label for="date">NCR opening date:</label>
+                                    <input type="text" class="form-control" id="date"  name="date" value="{{data.date}}" readonly>
+                                    <div class="invalid-feedback" >
+                                    Please enter NCR opening date.
+                                    </div>
+                                </div>
+                            </div>
+
+                              <div class="col-lg-12 " >
+                                <div class="form-group">
+                                    <label for="time">NCR opening Time:</label>
+                                    <input type="text" class="form-control" id="time"  name="time" value="{{data.time}}" readonly>
+                                    <div class="invalid-feedback" >
+                                    Please enter NCR opening Time.
+                                    </div>
+                                </div>
+                            </div>
+
+
+                               <div class="col-lg-12 " >
+                                    <div class="form-group">
+                                        <label for="detection_workstation">Detection workstation:</label>
+                                        <input type="text" class="form-control" id="detection_workstation"  name="detection_workstation" value="{{data.detection_workstation}}" >
+                                        <div class="invalid-feedback" >
+                                        Please enter Detection workstation.
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                 <div class="col-lg-12 ">
+                                    <div class="form-group">
+                                        <label for="software_version">*Train set no:</label>
+
+                                        <select class="form-control" id="location_id" name="location_id" required="required">
+                                        <option value="">--  Select Train set no  --</option>
+                                        {% for train_set_options in train_set_options %}
+                                            {% if train_set_options == data.location_id %}
+                                                <option value="{{train_set_options}}" selected>{{train_set_options}} </option>
+                                            {% else %}
+                                                <option value="{{train_set_options}}">{{train_set_options}} </option>
+                                            {% endif %}
+                                                
+                                        {% endfor %}
+                                        </select>
+
+
+                                        <!-- <input type="text" class="form-control" id="location_id" name="location_id" value="{{data.location_id}}" required="required"> -->
+                                        <div class="invalid-feedback">
+                                        Please enter Train set no.
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label for="sel_car">*CAR(Ctrl + left mouse click to select multiple options):</label>
+                                                
+                                                    <select class="form-control" id="sel_car" name="sel_car" required="required" multiple>
+                                                        <option value="DMA">DMA</option>
+                                                        <option value="TC">TC</option>
+                                                        <option value="DMB">DMB</option>
+                                                    </select>
+
+
+
+                                                    {% comment %} <input type="text" class="form-control" id="sel_car" name="sel_car" value="{{data.sel_car}}"> {% endcomment %}
+                                                    <div class="invalid-feedback">
+                                                    Please enter CAR.
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                 <div class="col-lg-12 " >
+                                    <div class="form-group">
+                                        <label for="serial_no">Serial no/Traceability:</label>
+                                        <input type="text" class="form-control" id="serial_no"  name="serial_no" value="{{data.serial_no}}" >
+                                        <div class="invalid-feedback" >
+                                        Please enter Serial no/Traceability.
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                 <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="green_red_channel">*Green/Red Channel :</label>
+                                    
+
+                                        <select class="form-control" id="green_red_channel " name="green_red_channel" required="required">
+                                            {% if 'Green' == data.green_red_channel %}
+                                            <option value="Green" selected>Green Channel Part</option>
+                                            {% else %}
+                                                <option value="Green">Green Channel Part</option>
+                                            {% endif %}
+                                            {% if 'Red' == data.green_red_channel %}
+                                            <option value="Red" selected>Red Channel Part</option>
+                                            {% else %}
+                                                <option value="Red">Red Channel Part</option>
+                                            {% endif %}
+                                        </select>
+
+
+
+                                        {% comment %} <input type="text" class="form-control" id="green_red_channel" name="green_red_channel" value="{{data.green_red_channel}}"> {% endcomment %}
+                                        <div class="invalid-feedback">
+                                        Please enter Green/Red Channel .
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                              
+
+
+
+
+
+
+
+                        </div>
+                        
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-3"> 
+                        <h2>Title</h2>
+                    </div>
+                    <div class="col-9">
+
+                        <b>Defect Criteria:</b><br><br>
+
+                        <label>
+                        <input type="checkbox" name="chkMinor" > Minor </label> <br>
+                        <label><input type="checkbox" name="chkMajor" > Major </label> <br>
+                        <label><input type="checkbox" name="chkCritical" > Critical </label> <br>
+                        
+                    </div>
+
+
+                </div>
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="specification">Specification: </label>
+                            <input type="text" class="form-control" id="specification"  name="specification" value="{{data.specification}}" >
+                            <div class="invalid-feedback">
+                            Specification.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="defect_description">Defect Description (Actual vs Specification):</label>
+                            <textarea class="form-control" id="defect_description" name="defect_description">{{data.defect_description}}</textarea>
+                            <div class="invalid-feedback">
+                            Please enter Defect Description (Actual vs Specification).
+                            </div>
+                        </div>
+                    </div>
+
+
+                     <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="defect_date">Defect  Date (DD/MM/YYYY):</label>
+                            <input type="text" autocomplete="off" class="form-control date-time" id="defect_date" name="defect_date" value="{{data.defect_date|date:'d/m/Y'}}">
+                            <div class="invalid-feedback">
+                            Please enter Defect  Date.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="defect_time">Defect Time:</label>
+                            <input type="time" class="form-control" id="defect_time" required="required" name="defect_time" value="{{data.defect_time|date:"H:i"}}">
+                            <div class="invalid-feedback">
+                            Please enter Defect Time.
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="defect_source">Defect Source (Work Station):</label>
+                                
+                                    <select class="form-control" id="defect_source" name="defect_source" >
+                                        <option value="" selected>Select Defect Source (Work Station)</option>
+                                        {% if 'Schedule Preventive Maintenance' == data.defect_source %}
+                                        <option value="Schedule Preventive Maintenance" selected>Schedule Preventive Maintenance</option>
+                                        {% else %}
+                                            <option value="Schedule Preventive Maintenance">Schedule Preventive Maintenance</option>
+                                        {% endif %}
+                                        {% if 'Main Line' == data.defect_source %}
+                                        <option value="Main Line" selected>Main Line</option>
+                                        {% else %}
+                                            <option value="Main Line">Main Line</option>
+                                        {% endif %}
+
+                                        {% if 'Depot Fault' == data.defect_source %}
+                                        <option value="Depot" selected>Depot</option>
+                                        {% else %}
+                                            <option value="Depot">Depot</option>
+                                        {% endif %}
+
+                                        {% if 'Cyclic Check' == data.defect_source %}
+                                        <option value="Cyclic Check" selected>Cyclic Check</option>
+                                        {% else %}
+                                            <option value="Cyclic Check">Cyclic Check</option>
+                                        {% endif %}
+
+                                        {% if 'Overhaul' == data.defect_source %}
+                                        <option value="Overhaul" selected>Overhaul</option>
+                                        {% else %}
+                                            <option value="Overhaul">Overhaul</option>
+                                        {% endif %}
+                                    
+                                    </select>
+
+
+
+
+                                    {% comment %} <input type="text" class="form-control" id="defect_source" name="defect_source" value="{{data.defect_source}}"> {% endcomment %}
+                                    <div class="invalid-feedback">
+                                    Please enter Defect Source (Work Station).
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                     <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="supplier_name">Supplier Name: </label>
+                            <input type="text" class="form-control" id="supplier_name"  name="supplier_name" value="{{data.supplier_name}}" >
+                            <div class="invalid-feedback">
+                            Supplier Name.
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+                     <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="defect_location">Defect location (on part/on assembly/location on the car): </label>
+                            <input type="text" class="form-control" id="defect_location"  name="defect_location" value="{{data.defect_location}}" >
+                            <div class="invalid-feedback">
+                            Defect location (on part/on assembly/location on the car).
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="defect_detected_by">Defect detected by (Name and Function): </label>
+                            <input type="text" class="form-control" id="defect_detected_by"  name="defect_detected_by" value="{{data.defect_detected_by}}" >
+                            <div class="invalid-feedback">
+                            Defect detected by (Name and Function)
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="defect_detected_workstation">Defect detected workstation
+:</label>
+                            <textarea class="form-control" id="defect_detected_workstation" name="defect_detected_workstation">{{data.defect_detected_workstation}}</textarea>
+                            <div class="invalid-feedback">
+                            Please enter Defect detected workstation.
+                            </div>
+                        </div>
+                    </div>
+
+
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="no_of_parts_deloverd">No of parts delivered to line/plant ?: </label>
+                            <input type="text" class="form-control" id="no_of_parts_deloverd"  name="no_of_parts_deloverd" value="{{data.no_of_parts_deloverd}}" >
+                            <div class="invalid-feedback">
+                            No of parts delivered to line/plant ?
+                            </div>
+                        </div>
+                    </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="no_of_defective_parts">No of defective parts identified in the line/plant?: </label>
+                            <input type="text" class="form-control" id="no_of_defective_parts"  name="no_of_defective_parts" value="{{data.no_of_defective_parts}}" >
+                            <div class="invalid-feedback">
+                            No of defective parts identified in the line/plant?
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <label>Active Deviations:- Manufacturer at fault?</label>
+                    </div>
+
+                    <div class="col-md-2">
+                        <input type="checkbox" name="chk_Internal" > Internal
+                    </div>
+
+                    <div class="col-md-2">
+                        <input type="checkbox" name="chk_Supplier" > Supplier
+                    </div>
+
+                    <div class="col-md-2">
+                        <input type="checkbox" name="chk_TWL" > Other TWL Shop or Area
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <input type="checkbox" name="chk_Transportation" > Transportation Damage
+
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-6"> 
+
+                        <h1>OK</h1>
+
+                            <div class="form-group">
+                                <input type="file" class="form-control" id="ok_img"  name="ok_img" required="required" accept="image/*">
+                               
+                            </div>
+                        
+                    </div>
+                    <div class="col-6"> 
+                        <h1>NOT OK</h1>
+
+                         <div class="form-group">
+                                <input type="file" class="form-control" id="notok_img"  name="notok_img" required="required" accept="image/*">
+                               
+                            </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="row " style="padding: 20px;">
+
+
+                     <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="initial_analysis">Initial analysis (Defective part, Contributing dimension / Characteristics/ Welding/ Visual/Process)- Characteristics:</label>
+                            <textarea class="form-control" id="initial_analysis" name="initial_analysis">{{data.initial_analysis}}</textarea>
+                            <div class="invalid-feedback">
+                            Please enter Initial analysis (Defective part, Contributing dimension / Characteristics/ Welding/ Visual/Process)- Characteristics.
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                     <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="attachments_files">Attachments (file/ppt/job cards):</label>
+                        
+
+                            <select class="form-control" id="attachments_files " name="attachments_files" required="required">
+                                {% if 'Yes' == data.attachments_files %}
+                                <option value="Yes" selected>Yes</option>
+                                {% else %}
+                                    <option value="Yes">Yes</option>
+                                {% endif %}
+                                {% if 'No' == data.attachments_files %}
+                                <option value="No" selected>No</option>
+                                {% else %}
+                                    <option value="No">No</option>
+                                {% endif %}
+                            </select>
+
+
+
+                            {% comment %} <input type="text" class="form-control" id="attachments_files" name="attachments_files" value="{{data.attachments_files}}"> {% endcomment %}
+                            <div class="invalid-feedback">
+                            Please enter Attachments.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8"></div>
+
+
+
+
+
+
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="responsibility">RESPONSIBILITY: </label>
+                            <input type="text" class="form-control" id="responsibility"  name="responsibility" value="{{data.responsibility}}" required="required">
+                            <div class="invalid-feedback">
+                            Please enter RESPONSIBILITY.
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="supplier_name">SUPPLIER NAME: </label>
+                            <input type="text" class="form-control" id="supplier_name"  name="supplier_name" value="{{data.supplier_name}}" required="required">
+                            <div class="invalid-feedback">
+                            Please enter SUPPLIER NAME.
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="invoice_number">INVOICE NUMBER: </label>
+                            <input type="text" class="form-control" id="invoice_number"  name="invoice_number" value="{{data.invoice_number}}" required="required">
+                            <div class="invalid-feedback">
+                            Please enter INVOICE NUMBER.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="non_conforming_part_disposition">NON CONFORMING PART DISPOSITION: </label>
+                            <input type="text" class="form-control" id="non_conforming_part_disposition"  name="non_conforming_part_disposition" value="{{data.non_conforming_part_disposition}}" required="required">
+                            <div class="invalid-feedback">
+                            Please enter NON CONFORMING PART DISPOSITION.
+                            </div>
+                        </div>
+                    </div>
+
+                      <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="responsible_for_execution">Responsible for execution of the disposition: </label>
+                            <input type="text" class="form-control" id="responsible_for_execution"  name="responsible_for_execution" value="{{data.responsible_for_execution}}" required="required">
+                            <div class="invalid-feedback">
+                            Please enter Responsible for execution of the disposition.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <b>REWORK-</b>This disposition is for non-conforming material that can be reworked without adverse effect on safety, performance, interchangeability, reliability, or quality
+                    </div>
+
+                    <div class="col-md-3">
+                        <b>RETURN TO VENDOR-</b> This disposition is applicable when the material discrepancy is the responsibility of the supplier and other dispositions are not recommended as material shall be sent to supplier for fault containment at supplier end
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <b>SCRAP- </b>The non-conforming material cannot be used for its intended purposes and cannot be reworked or used as is. The nonconforming product is discarded.
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <b>USE AS IT IS-</b> This disposition is to bring the nonconforming material to an acceptable condition but which may not totally conform to the applicable drawings or specifications
+
+                    </div>
+
+                    <div class="col-md-12">
+
+                    <br>
+                    <hr>
+
+                    </div>
+
+
+                    <div class="col-md-3">
+
+                        <b>Containment action</b><br>
+                        1. Store stock to be check<br>
+                        2. Line stock to be check<br>
+                        3. Green \ Red to be checked
+
+
+                    </div>
+
+                     <div class="col-md-9">
+                        <div class="form-group">
+                            <textarea class="form-control" id="containment_action" name="containment_action">{{data.containment_action}}</textarea>
+                           
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-6"> 
+
+                          <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="corrective_action_by">Corrective action by: </label>
+                                    <input type="text" class="form-control" id="corrective_action_by"  name="corrective_action_by" value="{{data.corrective_action_by}}" >
+                                    <div class="invalid-feedback">
+                                    Please enter Corrective action by.
+                                    </div>
+                                </div>
+                            </div>
+
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="corrective_action_designation">Designation: </label>
+                                    <input type="text" class="form-control" id="corrective_action_designation"  name="corrective_action_designation" value="{{data.corrective_action_designation}}" >
+                                    <div class="invalid-feedback">
+                                    Please enter Designation.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="corrective_action_date">*Date (DD/MM/YYYY):</label>
+                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="corrective_action_date" name="corrective_action_date" value="{{data.corrective_action_date|date:'d/m/Y'}}">
+                                    <div class="invalid-feedback">
+                                    Please enter Date.
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="signature_img">*Signature: </label>
+                                    <input type="file" class="form-control" id="signature_img"  name="signature_img" required="required" accept="image/*">
+                                    <div class="invalid-feedback">
+                                    Please upload Signature.
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+                    <div class="col-6"> 
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="approved_by">Approved by: </label>
+                                    <input type="text" class="form-control" id="approved_by"  name="approved_by" value="{{data.approved_by}}" >
+                                    <div class="invalid-feedback">
+                                    Please enter Corrective action by.
+                                    </div>
+                                </div>
+                            </div>
+
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="approved_designation">Designation: </label>
+                                    <input type="text" class="form-control" id="approved_designation"  name="approved_designation" value="{{data.approved_designation}}" >
+                                    <div class="invalid-feedback">
+                                    Please enter Designation.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="approved_date">*Date (DD/MM/YYYY):</label>
+                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="approved_date" name="approved_date" value="{{data.approved_date|date:'d/m/Y'}}">
+                                    <div class="invalid-feedback">
+                                    Please enter Date.
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="signature_img2">*Signature: </label>
+                                    <input type="file" class="form-control" id="signature_img2"  name="signature_img2" required="required" accept="image/*">
+                                    <div class="invalid-feedback">
+                                    Please upload Signature.
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-6"> 
+
+                        <h1>Corrective action Implementation</h1>
+                        <div class="row ">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="action_name">Name: </label>
+                                <input type="text" class="form-control" id="action_name"  name="action_name" value="{{data.action_name}}" >
+                                <div class="invalid-feedback">
+                                Please enter Name.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="action_date">*Date (DD/MM/YYYY):</label>
+                                <input type="text" autocomplete="off" required="required" class="form-control date-time" id="action_date" name="action_date" value="{{data.action_date|date:'d/m/Y'}}">
+                                <div class="invalid-feedback">
+                                Please enter Date.
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="signature_img3">*Signature: </label>
+                                <input type="file" class="form-control" id="signature_img3"  name="signature_img3" required="required" accept="image/*">
+                                <div class="invalid-feedback">
+                                Please upload Signature.
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+
+
+                        
+                    </div>
+
+                     <div class="col-6"> 
+
+                        <h1>Verification of implementation</h1>
+                        <div class="row ">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="verification_name">Name: </label>
+                                <input type="text" class="form-control" id="verification_name"  name="verification_name" value="{{data.verification_name}}" >
+                                <div class="invalid-feedback">
+                                Please enter Name.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="verification_date">*Date (DD/MM/YYYY):</label>
+                                <input type="text" autocomplete="off" required="required" class="form-control date-time" id="verification_date" name="verification_date" value="{{data.verification_date|date:'d/m/Y'}}">
+                                <div class="invalid-feedback">
+                                Please enter Date.
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="signature_img4">*Signature: </label>
+                                <input type="file" class="form-control" id="signature_img4"  name="signature_img4" required="required" accept="image/*">
+                                <div class="invalid-feedback">
+                                Please upload Signature.
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+
+
+                        
+                    </div>
+
+                </div>
+
+
+
+                <div class="row " style="padding: 20px;">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="inp_root_cause">ROOT CAUSE:</label>
+                                <textarea class="form-control" id="inp_root_cause" name="inp_root_cause">{{data.inp_root_cause}}</textarea>
+                                <div class="invalid-feedback">
+                                Please enter ROOT CAUSE.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="occurrence">Occurrence:</label>
+                                <textarea class="form-control" id="occurrence" name="occurrence">{{data.occurrence}}</textarea>
+                                <div class="invalid-feedback">
+                                Please enter Occurrence.
+                                </div>
+                            </div>
+                        </div>
+
+                         <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="detection">Detection:</label>
+                                <textarea class="form-control" id="detection" name="detection">{{data.detection}}</textarea>
+                                <div class="invalid-feedback">
+                                Please enter Detection.
+                                </div>
+                            </div>
+                        </div>
+
+
+                            <div class="col-md-12 ">
+                                <label for="">Corrective actions:</label>
+                                <table id="example2" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Corrective Action ID</th>
+                                            <th>Corrective Action Owner </th>
+                                            <th>Corrective Action Description</th>
+                                            <th>Corrective Action Update</th>
+                                            <th>Corrective Action Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        {% for Corrective_data in Corrective_data %}
+                                            <tr>
+                                                <td>{{ Corrective_data.corrective_action_id }}</td>
+                                                <td>{{ Corrective_data.corrective_action_owner }}</td>
+                                                <td>{{ Corrective_data.corrective_action_description }}</td>
+                                                <td>{{ Corrective_data.corrective_action_update }}</td>
+                                                <td>{{ Corrective_data.corrective_action_status }}</td>
+
+                                           
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="5" class="text-center text-muted">No corrective  actions available</td>
+                                            </tr>
+                                        {% endfor %}
+
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
+
+
+                         <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="effectiveness">EFFECTIVENESS:</label>
+                                <textarea class="form-control" id="effectiveness" name="effectiveness">{{data.effectiveness}}</textarea>
+                                <div class="invalid-feedback">
+                                Please enter EFFECTIVENESS.
+                                </div>
+                            </div>
+                        </div>
+
+                    
+
+
+                </div>
+
+
+
+
+
+
+
+
+            <div class="row " style="padding: 20px;">
+                <div class="col-12">  
+                    <button type="submit" class="btn btn-primary mt-2" >Update </button>
+
+                </div>
+            </div>
+
+
+
+
+            </form>
+
+
+
+
+
+
+
+
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+
+
+    $(document).ready(function() {
+
+
+         $('#defect_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
+             $('#corrective_action_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
+            $('#approved_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
+           $('#action_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
+           $('#verification_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
+
+    });
+
+
+
+   
+</script>
+
+{% endblock sb_admin_js %}

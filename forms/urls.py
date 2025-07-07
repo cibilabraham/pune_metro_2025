@@ -82,5 +82,9 @@ urlpatterns = [
     path('kilometre_reading/', KilometreReadingReg.as_view(), name='kilometre_reading'),
     path('kilometre_reading/add_kilometre_reading/',AddKilometreReading.as_view(),name='add_kilometre_reading'),
     path('kilometre_reading/add_kilometre_reading/<int:id>/',AddKilometreReading.as_view(),name='add_kilometre_reading'),
+
+    path('ncr_register/', NCRRegister.as_view(), name='ncr_register'),
+    path('ncr_register/addncr/',AddNCR.as_view(),name='add_ncr'),
+    path('ncr_register/addncr/<int:id>/',AddNCR.as_view(),name='add_ncr'),
     
 ]

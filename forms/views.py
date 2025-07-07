@@ -2086,6 +2086,9 @@ class RootcauseView(View):
                         'root_cause_id' : RootCauses.root_cause_id,
                         'id':RootCauses.root_cause_id,
                         'user_Role':user_Role,
+                        'systemic_cause' : RootCauses.systemic_cause,
+                        'organistaional_management_cause' : RootCauses.organistaional_management_cause,
+                        'material_is_damaged' : RootCauses.material_is_damaged,
                     }) 
         return JsonResponse({'data':data})
 
@@ -2130,7 +2133,7 @@ class ListfailuredataRootcauseView(View):
 
         if asset_type != "":
             FailureData_data=FailureData_data.filter(asset_type=asset_type)
-        if defect != "":
+        if defect != "" and defect != "all":
             FailureData_data=FailureData_data.filter(defect_id=defect)
         for FailureDatas in FailureData_data:
             if PBSMaster.objects.filter(id=FailureDatas.asset_type,is_active=0).exists():
@@ -2274,6 +2277,28 @@ class AddRootcauseView(View):
         organistaional_management_cause = req.get('organistaional_management_cause')
         material_is_damaged = req.get('material_is_damaged')
 
+        current_year = datetime.datetime.now().year
+        current_month = datetime.datetime.now().month
+
+        Faolure_count = 0
+        if asset_type == "" or defect == "all":
+            Faolure_count = 0
+        else:
+
+            if user_Role == 1:
+                FailureData_data =FailureData.objects.filter(is_active=0)
+            else:
+                FailureData_data =FailureData.objects.filter(is_active=0,P_id=P_id)
+
+            if asset_type != "":
+                FailureData_data=FailureData_data.filter(asset_type=asset_type)
+            if defect != "" and defect != "all":
+                FailureData_data=FailureData_data.filter(defect_id=defect)
+            for FailureDatas in FailureData_data:
+                if PBSMaster.objects.filter(id=FailureDatas.asset_type,is_active=0).exists():
+                    Faolure_count = Faolure_count + 1
+
+
         DATA = []
         HEAD = ["asset_type",'defect_id','rca_workshop_date','root_cause_status','immediate_cause','leading_reasons','root_cause_description','systemic_cause','organistaional_management_cause','material_is_damaged']
         for f in HEAD:
@@ -2325,6 +2350,34 @@ class AddRootcauseView(View):
                         meg ="ID: "+str(r.root_cause_id) +"=> "+meg
                         h = history(user_id=FindUser[0].id,P_id=P_id,date=datetime.date.today(),time=current_time,message=meg,function_name="Root Cause Analysis")
                         h.save()
+
+                        if Faolure_count > 1 and material_is_damaged == 'Yes':
+                            print('create')
+
+                            ncr_latest_id = 0
+                 
+                            if NCRIDs.objects.filter(year=current_year).exists():
+                                NCRID = NCRIDs.objects.filter(year=current_year)
+                                ncr_latest_id = NCRID[0].last_id
+
+                            new_ncr_id = int(ncr_latest_id) + 1
+
+                            ncr_rec_no = f"TWLPune-RS-ML-NCR-{current_year}/{new_ncr_id:03}"
+
+                            today_date = datetime.datetime.today().strftime('%Y-%m-%d')
+                            current_time = datetime.datetime.now().strftime('%H:%M:%S')
+
+                            e = NCRGeneration(ncr_gen_id=ncr_rec_no,rootcause_id=r,date=today_date,time=current_time)
+                            e.save()
+
+                            if NCRIDs.objects.filter(year=current_year).exists():
+                                print('----update------')
+                                NCRIDs.objects.filter(year=current_year).update(last_id=new_ncr_id)
+                            else:
+                                print('----add------')
+                                ju = NCRIDs(year=current_year,last_id=new_ncr_id)
+                                ju.save()
+
                         return JsonResponse({'status':'1','id':r.root_cause_id})
             else:
                 if RootCause.objects.filter(defect_id=defect,is_active=0).exists():
@@ -2364,6 +2417,37 @@ class AddRootcauseView(View):
                     for Find_Pid in Find_Pids:
                         r=RootCause(P_id=Find_Pid.project_id,asset_type=asset_type,defect_id=defect,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged)
                         r.save()
+
+
+                        if Faolure_count > 1 and material_is_damaged == 'Yes':
+                            print('create')
+
+                            ncr_latest_id = 0
+                 
+                            if NCRIDs.objects.filter(year=current_year).exists():
+                                NCRID = NCRIDs.objects.filter(year=current_year)
+                                ncr_latest_id = NCRID[0].last_id
+
+                            new_ncr_id = int(ncr_latest_id) + 1
+
+                            ncr_rec_no = f"TWLPune-RS-ML-NCR-{current_year}/{new_ncr_id:03}"
+
+                            today_date = datetime.datetime.today().strftime('%Y-%m-%d')
+                            current_time = datetime.datetime.now().strftime('%H:%M:%S')
+
+                            e = NCRGeneration(ncr_gen_id=ncr_rec_no,rootcause_id=r,date=today_date,time=current_time)
+                            e.save()
+
+                            if NCRIDs.objects.filter(year=current_year).exists():
+                                print('----update------')
+                                NCRIDs.objects.filter(year=current_year).update(last_id=new_ncr_id)
+                            else:
+                                print('----add------')
+                                ju = NCRIDs(year=current_year,last_id=new_ncr_id)
+                                ju.save()
+
+
+
                         FindUser = UserProfile.objects.filter(user_id=user_ID)
                         now = datetime.datetime.now()
                         current_time = now.strftime("%H:%M:%S")
@@ -2417,7 +2501,7 @@ class AddRootcauseView(View):
                             h.save()
                         if data !="":
                             for items in data:
-                                x= items['corrective_action_id'];
+                                x= items['corrective_action_id']
                                 if x !="":
                                     CorrectiveAction.objects.filter(corrective_action_id=x).update(is_active=0)
                                 else:
@@ -2437,7 +2521,7 @@ class ListgetCorrectivedatas(View):
         req = request.POST
         # print(req)
         defect = req.get('defect')
-        if defect == "":
+        if defect == "" or defect == "all":
             return JsonResponse({'data':data})
         if user_Role == 1:
             CorrectiveAction_data =CorrectiveAction.objects.filter(is_active=0,defect_id=defect)
@@ -6006,4 +6090,123 @@ class AddKilometreReading(View):
             return JsonResponse({'status':'1','message':'success'})
 
         return JsonResponse({'status':'0','message':'Failed to save Kilometre Reading'})
+
+
+
+
+
+class NCRRegister(View):
+    template_name = 'ncr_register.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+     
+        return render(request, self.template_name, {})
+
+    def post(self, request, *args, **kwargs):
+
+        data=[]
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+        # req = request.POST
+        # print(req)
+        print('==========HERE=========')
+       
+        NCRGenerationDatas = NCRGeneration.objects.filter().order_by('-ncr_gen_id')
+        print(NCRGenerationDatas)
+       
+        for jb in NCRGenerationDatas:
+            asset_type_id = jb.rootcause_id.asset_type
+            if PBSMaster.objects.filter(id=asset_type_id,is_active=0).exists():
+                if user_Role == 1:
+                    PBSMaster_datas=PBSMaster.objects.filter(id=asset_type_id,is_active=0)
+                    for PBSMaster_data in PBSMaster_datas:
+                        data.append({ 
+                            'ncr_gen_id' :  jb.ncr_gen_id,
+                            'date' : jb.date,
+                            'time' : jb.time,
+                            'id':jb.rec_id,
+                            'user_Role':user_Role,
+                        }) 
+                else:
+                    if PBSMaster.objects.filter(id=asset_type_id,project_id=P_id,is_active=0).exists():
+                        PBSMaster_datas=PBSMaster.objects.filter(id=asset_type_id,is_active=0)
+                        for PBSMaster_data in PBSMaster_datas:
+                            data.append({ 
+                                'ncr_gen_id' :  jb.ncr_gen_id,
+                                'date' : jb.date,
+                                'time' : jb.time,
+                                'id':jb.rec_id,
+                                'user_Role':user_Role,
+                            }) 
+        print(data)
+        return JsonResponse({'data':data})
+
+    
+
+
+class AddNCR(View):
+    template_name = 'add_ncr.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        user_Role = request.session.get('user_Role')
+        P_id = request.session['P_id']
+        if user_Role == 4:
+            return redirect('/dashboard/')
+        id = kwargs.get("id")
+        data=[]
+
+        NCRGeneration_datas =NCRGeneration.objects.filter(rec_id=id)
+        jb = NCRGeneration_datas[0]
+
+        data={ 
+            'ncr_gen_id' :  jb.ncr_gen_id,
+            'date' : jb.date,
+            'time' : jb.time,
+            'id':jb.rec_id,
+            'user_Role':user_Role,
+
+
+        }
+
+        train_set_options = [f"TS#{i:02d}" for i in range(1, 35)]  # 01 to 34
+
+
+        Corrective_data = []
+        if user_Role == 1:
+            CorrectiveAction_data =CorrectiveAction.objects.filter(is_active=0,defect_id=jb.rootcause_id.defect)
+        else:
+            CorrectiveAction_data =CorrectiveAction.objects.filter(is_active=0,P_id=P_id,defect_id=jb.rootcause_id.defect)
+
+        for CorrectiveActions in CorrectiveAction_data:
+            Corrective_data.append({ 
+                'corrective_action_id' : CorrectiveActions.corrective_action_id,
+                'corrective_action_owner' : CorrectiveActions.corrective_action_owner,
+                'corrective_action_description' : CorrectiveActions.corrective_action_description,
+                'corrective_action_update' : CorrectiveActions.corrective_action_update,
+                'corrective_action_status' : CorrectiveActions.corrective_action_status,
+            })     
+
+        return render(request, self.template_name,{'data':data ,'train_set_options':train_set_options,'Corrective_data':Corrective_data })
+      
+ 
+    def post(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        req = request.POST
+        cursor = connection.cursor()
+        # print(req)
+        ids = req.get('id')
+        st = req.get('st')
+
+        print(st)
+
+        return JsonResponse({'status':'0'})
 

@@ -57,9 +57,12 @@
                             <th>Asset name</th>
                             <th>Defect</th>
                             <th>Rca workshop date </th>
-                            <th>Immediate cause (Level 1)</th>
-                            <th>Leading reasons (Level 2)</th>
-                            <th>Root cause description (Level 3)</th>
+                            <th>Immediate cause (1st Why)</th>
+                            <th>Leading reasons (2nd Why)</th>
+                            <th>Root cause description (3rd Why)</th>
+                            <th>Systemic Cause (4th Why)</th>
+                            <th>ORGANISTAIONAL/MANAGEMENT Cause (5th Why)</th>
+                            <th>If the material is damaged or defective</th>
                             <th>Root cause status</th>
                             <th></th>
                         </tr>
@@ -73,6 +76,19 @@
 {% block sb_admin_js %}
 <script>
     $(document).ready(function() {
+
+        $('#example').DataTable({
+            scrollY:        "350px",
+            scrollX:        true,
+            scrollCollapse: true,
+            paging:         true,
+            fixedColumns:   {
+                left: 1,
+                right: 1
+            },
+        });
+
+
         $("#deleteAll").click(function () {
             $(".deleteAll").attr('checked', this.checked);
         });
@@ -190,6 +206,14 @@ function getDefectData(){
                     ],
                   "order": [[ 1, "asc" ]],
                   "searching" : true,
+                   scrollY:        "350px",
+                scrollX:        true,
+                scrollCollapse: true,
+                paging:         true,
+                fixedColumns:   {
+                    left: 1,
+                    right: 1
+                },
                   'ajax' : {
                       "url": "/forms/rootcause/",
                       "type": "POST",
@@ -222,6 +246,12 @@ function getDefectData(){
                       {"data" : "immediate_cause"},
                       {"data" : "leading_reasons"},
                       {"data" : "root_cause_description"},
+
+                      {"data" : "systemic_cause"},
+                      {"data" : "organistaional_management_cause"},
+                      {"data" : "material_is_damaged"},
+
+
                       {"data" : "root_cause_status"},
                       {"data":null,"render":function(item){
                             if(item.user_Role != 4 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleterootcause('+ item.id +')">';

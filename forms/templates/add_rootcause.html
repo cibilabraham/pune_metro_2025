@@ -231,7 +231,7 @@
                  <div class="col-md-4">
                     <div class="form-group">
                         <label for="material_is_damaged">If the material is damaged or defective:</label>
-                        <select class="form-control" id="material_is_damaged " name="material_is_damaged" >
+                        <select class="form-control" id="material_is_damaged" name="material_is_damaged" >
                             {% if 'Yes' == data.material_is_damaged %}
                             <option value="Yes" selected>Yes</option>
                             {% else %}
@@ -962,6 +962,12 @@
         var buttonClick= $('#buttonClick').val();
         var leading_reasons= $('#leading_reasons').val();
         var root_cause_description= $('#root_cause_description').val();
+
+        var systemic_cause= $('#systemic_cause').val();
+        var organistaional_management_cause= $('#organistaional_management_cause').val();
+        var material_is_damaged= $('#material_is_damaged').val();
+
+
         console.log(datas);
         if(buttonClick == 4) var action=1;
         else var action=2;
@@ -981,6 +987,9 @@
                 'leading_reasons':leading_reasons,
                 'root_cause_description':root_cause_description,
                 'datas': JSON.stringify(datas),
+                'systemic_cause':systemic_cause,
+                'organistaional_management_cause':organistaional_management_cause,
+                'material_is_damaged':material_is_damaged,
             },
             success: function (response) {
 
