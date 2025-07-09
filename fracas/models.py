@@ -682,6 +682,87 @@ class NCRGeneration(models.Model):
     time= models.TextField()
     is_active = models.IntegerField(default=0)
 
+    defect_date = models.CharField(max_length=550, null=True, blank=True)
+    corrective_action_date = models.CharField(max_length=550, null=True, blank=True)
+    approved_date = models.CharField(max_length=550, null=True, blank=True)
+    action_date = models.CharField(max_length=550, null=True, blank=True)
+    verification_date = models.CharField(max_length=550, null=True, blank=True)
+    fnl_date = models.CharField(max_length=550, null=True, blank=True)
+
+    defect_time = models.CharField(max_length=550, null=True, blank=True)
+    defect_description = models.TextField(null=True, blank=True)
+
+    inspector_name = models.TextField(blank=True)
+    assembly_name = models.TextField( blank=True)
+    assembly_no = models.TextField( blank=True)
+    drawing_no = models.TextField(blank=True)
+    detection_workstation = models.TextField(blank=True)
+    location_id = models.TextField( blank=True)
+    sel_car = models.TextField( blank=True)
+    serial_no = models.TextField( blank=True)
+    green_red_channel = models.TextField( blank=True)
+
+    chkMinor = models.IntegerField(default=0)
+    chkMajor = models.IntegerField(default=0)
+    chkCritical = models.IntegerField(default=0)
+
+    specification = models.TextField(blank=True)
+    defect_source = models.TextField( blank=True)
+    supplier_name = models.TextField(blank=True)
+    defect_location = models.TextField(blank=True)
+    defect_detected_by = models.TextField( blank=True)
+    defect_detected_workstation = models.TextField( blank=True)
+    no_of_parts_deloverd = models.TextField( blank=True)
+    no_of_defective_parts = models.TextField( blank=True)
+
+    active_deviations = models.TextField( blank=True)
+    chk_Internal = models.IntegerField(default=0)
+    chk_Supplier = models.IntegerField(default=0)
+    chk_TWL = models.IntegerField(default=0)
+    chk_Transportation = models.IntegerField(default=0)
+
+    ok_img = models.TextField(null=True, blank=True)
+    notok_img = models.TextField(null=True, blank=True)
+    signature_img = models.TextField(null=True, blank=True)
+    signature_img2 = models.TextField(null=True, blank=True)
+    signature_img3 = models.TextField(null=True, blank=True)
+    signature_img4 = models.TextField(null=True, blank=True)
+    signature_img5 = models.TextField(null=True, blank=True)
+
+
+    initial_analysis = models.TextField(blank=True)
+    attachments_files = models.CharField(max_length=550, null=True, blank=True)
+    responsibility = models.TextField(blank=True)
+    invoice_number = models.TextField(blank=True)
+    non_conforming_part_disposition = models.TextField( blank=True)
+    responsible_for_execution = models.TextField( blank=True)
+    containment_action = models.TextField( blank=True)
+    corrective_action_by = models.TextField( blank=True)
+    corrective_action_designation = models.TextField( blank=True)
+    approved_by = models.TextField( blank=True)
+    approved_designation = models.TextField( blank=True)
+    action_name = models.TextField( blank=True)
+    verification_name = models.TextField( blank=True)
+    inp_root_cause = models.TextField( blank=True)
+    occurrence = models.TextField( blank=True)
+    detection = models.TextField( blank=True)
+    effectiveness = models.TextField( blank=True)
+
+    cost_1 = models.CharField(max_length=550, default=0)
+    cost_2 = models.CharField(max_length=550, default=0)
+    cost_3 = models.CharField(max_length=550, default=0)
+    cost_4 = models.CharField(max_length=550, default=0)
+    cost_5 = models.CharField(max_length=550, default=0)
+    cost_6 = models.CharField(max_length=550, default=0)
+    total_cost = models.CharField(max_length=550, default=0)
+
+    no_of_day_open = models.TextField( blank=True)
+    physical_closure = models.TextField( blank=True)
+    physical_closure_rca_capa = models.TextField( blank=True)
+    fnl_name = models.TextField( blank=True)
+    fnl_designation = models.TextField( blank=True)
+
+
     class Meta:
         verbose_name_plural = 'NCR'
 

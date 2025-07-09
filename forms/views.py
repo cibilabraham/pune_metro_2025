@@ -577,7 +577,7 @@ class AddFailureData(View):
 
         failure_unique_id = f"RST/{current_month:02}-{current_year}/FID_{new_job_id:04}"
 
-        current_time = datetime.datetime.now()
+        current_time = datetime.datetime.now().strftime("%H:%M")
         today_date = date.today()
        
 
@@ -4527,7 +4527,7 @@ class AddJobcard(View):
             else:
                 relative_path6 = full_path6  # fallback if /static not found
 
-        current_time = datetime.datetime.now()
+        current_time = datetime.datetime.now().strftime("%H:%M")
         today_date = date.today()
 
         if jb.event_date == None or jb.event_date == "":
@@ -6166,17 +6166,152 @@ class AddNCR(View):
         NCRGeneration_datas =NCRGeneration.objects.filter(rec_id=id)
         jb = NCRGeneration_datas[0]
 
+        PBSMaster_datas=PBSMaster.objects.filter(id=jb.rootcause_id.asset_type)
+
+        Defect_datas=Defect.objects.filter(defect_id=jb.rootcause_id.defect.defect_id)
+
+        current_time = datetime.datetime.now().strftime("%H:%M")
+        today_date = date.today()
+
+        if jb.defect_time == None or jb.defect_time == "":
+            defect_time = current_time
+        else:
+            defect_time = jb.defect_time
+
+
+        if jb.defect_date == None or jb.defect_date == "":
+            defect_date = Defect_datas[0].defect_open_date
+        else:
+            defect_date = datetime.datetime.strptime(jb.defect_date, "%Y-%m-%d").date() 
+
+        if jb.corrective_action_date == None or jb.corrective_action_date == "":
+            corrective_action_date = today_date
+        else:
+            corrective_action_date = datetime.datetime.strptime(jb.corrective_action_date, "%Y-%m-%d").date() 
+
+
+        if jb.approved_date == None or jb.approved_date == "":
+            approved_date = today_date
+        else:
+            approved_date = datetime.datetime.strptime(jb.approved_date, "%Y-%m-%d").date() 
+
+        if jb.action_date == None or jb.action_date == "":
+            action_date = today_date
+        else:
+            action_date = datetime.datetime.strptime(jb.action_date, "%Y-%m-%d").date() 
+
+        if jb.verification_date == None or jb.verification_date == "":
+            verification_date = today_date
+        else:
+            verification_date = datetime.datetime.strptime(jb.verification_date, "%Y-%m-%d").date() 
+
+        if jb.fnl_date == None or jb.fnl_date == "":
+            fnl_date = today_date
+        else:
+            fnl_date = datetime.datetime.strptime(jb.fnl_date, "%Y-%m-%d").date() 
+
+        if jb.defect_description == None or jb.defect_description == "":
+            defect_description = Defect_datas[0].defect_description
+        else:
+            defect_description = jb.defect_description
+
+
+
         data={ 
             'ncr_gen_id' :  jb.ncr_gen_id,
-            'date' : jb.date,
+            'date' : datetime.datetime.strptime(jb.date, "%Y-%m-%d").date(),
             'time' : jb.time,
             'id':jb.rec_id,
             'user_Role':user_Role,
+            'defect_time':defect_time,
+            'defect_date':defect_date,
+            'corrective_action_date':corrective_action_date,
+            'approved_date':approved_date,
+            'action_date':action_date,
+            'verification_date':verification_date,
+            'fnl_date':fnl_date,
+            'project_name':PBSMaster_datas[0].project.product_name,
+            'defect_description':defect_description,
+
+            'inspector_name':jb.inspector_name,
+            'assembly_name':jb.assembly_name,
+            'assembly_no':jb.assembly_no,
+            'drawing_no':jb.drawing_no,
+            'detection_workstation':jb.detection_workstation,
+            'location_id':jb.location_id,
+            'sel_car':jb.sel_car,
+            'serial_no':jb.serial_no,
+            'green_red_channel':jb.green_red_channel,
+
+            'chkMinor':jb.chkMinor,
+            'chkMajor':jb.chkMajor,
+            'chkCritical':jb.chkCritical,
+
+            'specification':jb.specification,
+            'defect_source':jb.defect_source,
+            'supplier_name':jb.supplier_name,
+            'defect_location':jb.defect_location,
+            'defect_detected_by':jb.defect_detected_by,
+            'defect_detected_workstation':jb.defect_detected_workstation,
+            'no_of_parts_deloverd':jb.no_of_parts_deloverd,
+            'no_of_defective_parts':jb.no_of_defective_parts,
+
+            'active_deviations':jb.active_deviations,
+            'chk_Internal':jb.chk_Internal,
+            'chk_Supplier':jb.chk_Supplier,
+            'chk_TWL':jb.chk_TWL,
+            'chk_Transportation':jb.chk_Transportation,
+
+            'ok_img':jb.ok_img,
+            'notok_img':jb.notok_img,
+            'signature_img':jb.signature_img,
+            'signature_img2':jb.signature_img2,
+            'signature_img3':jb.signature_img3,
+            'signature_img4':jb.signature_img4,
+            'signature_img5':jb.signature_img5,
+
+
+            'initial_analysis':jb.initial_analysis,
+            'attachments_files':jb.attachments_files,
+            'responsibility':jb.responsibility,
+            'invoice_number':jb.invoice_number,
+            'non_conforming_part_disposition':jb.non_conforming_part_disposition,
+            'responsible_for_execution':jb.responsible_for_execution,
+            'containment_action':jb.containment_action,
+            'corrective_action_by':jb.corrective_action_by,
+            'corrective_action_designation':jb.corrective_action_designation,
+            'approved_by':jb.approved_by,
+            'approved_designation':jb.approved_designation,
+            'action_name':jb.action_name,
+            'verification_name':jb.verification_name,
+            'inp_root_cause':jb.inp_root_cause,
+            'occurrence':jb.occurrence,
+            'detection':jb.detection,
+            'effectiveness':jb.effectiveness,
+
+            'cost_1':jb.cost_1,
+            'cost_2':jb.cost_2,
+            'cost_3':jb.cost_3,
+            'cost_4':jb.cost_4,
+            'cost_5':jb.cost_5,
+            'cost_6':jb.cost_6,
+            'total_cost':jb.total_cost,
+
+
+            'no_of_day_open':jb.no_of_day_open,
+            'physical_closure':jb.physical_closure,
+            'physical_closure_rca_capa':jb.physical_closure_rca_capa,
+            'fnl_name':jb.fnl_name,
+            'fnl_designation':jb.fnl_designation,
 
 
         }
 
-        train_set_options = [f"TS#{i:02d}" for i in range(1, 35)]  # 01 to 34
+
+        if user_Role == 1:
+            train_set_options = Asset.objects.filter(is_active=0).distinct('location_id')
+        else:
+            train_set_options = Asset.objects.filter(is_active=0,P_id=P_id).distinct('location_id')
 
 
         Corrective_data = []
@@ -6206,7 +6341,157 @@ class AddNCR(View):
         ids = req.get('id')
         st = req.get('st')
 
-        print(st)
+        inspector_name = req.get('inspector_name')
+        assembly_name = req.get('assembly_name')
+        assembly_no = req.get('assembly_no')
+        drawing_no = req.get('drawing_no')
+        detection_workstation = req.get('detection_workstation')
+        location_id = req.get('location_id_val')
+        sel_car = req.get('sel_car_val')
+        serial_no = req.get('serial_no')
+        green_red_channel = req.get('green_red_channel')
 
-        return JsonResponse({'status':'0'})
+        chkMinor = req.get('chkMinorV')
+        chkMajor = req.get('chkMajorV')
+        chkCritical = req.get('chkCriticalV')
+
+        specification = req.get('specification')
+        defect_source = req.get('defect_source')
+        supplier_name = req.get('supplier_name')
+        defect_location = req.get('defect_location')
+        defect_detected_by = req.get('defect_detected_by')
+        defect_detected_workstation = req.get('defect_detected_workstation')
+        no_of_parts_deloverd = req.get('no_of_parts_deloverd')
+        no_of_defective_parts = req.get('no_of_defective_parts')
+        defect_description = req.get('defect_description')
+
+        defect_time = req.get('defect_time')
+        defect_date = datetime.datetime.strptime(req.get('defect_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
+
+        active_deviations = req.get('active_deviations')
+        chk_Internal = req.get('chk_InternalV')
+        chk_Supplier = req.get('chk_SupplierV')
+        chk_TWL = req.get('chk_TWLV')
+        chk_Transportation = req.get('chk_TransportationV')
+
+        static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+        # Create folder if it doesn't exist
+        os.makedirs(static_path, exist_ok=True)
+
+        if 'ok_img' in request.FILES:
+            uploaded_file = request.FILES['ok_img']
+            file_path = os.path.join(static_path, uploaded_file.name)
+            ok_img = uploaded_file.name
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+            NCRGeneration.objects.filter(rec_id=ids).update(ok_img=ok_img)
+
+
+        if 'notok_img' in request.FILES:
+            uploaded_file = request.FILES['notok_img']
+            file_path = os.path.join(static_path, uploaded_file.name)
+            notok_img = uploaded_file.name
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+
+            NCRGeneration.objects.filter(rec_id=ids).update(notok_img=notok_img)
+
+        if 'signature_img' in request.FILES:
+            uploaded_file = request.FILES['signature_img']
+            file_path = os.path.join(static_path, uploaded_file.name)
+            signature_img = uploaded_file.name
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+            NCRGeneration.objects.filter(rec_id=ids).update(signature_img=signature_img)
+     
+        if 'signature_img2' in request.FILES:
+            uploaded_file = request.FILES['signature_img2']
+            file_path = os.path.join(static_path, uploaded_file.name)
+            signature_img2 = uploaded_file.name
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+            NCRGeneration.objects.filter(rec_id=ids).update(signature_img2=signature_img2)
+     
+
+        if 'signature_img3' in request.FILES:
+            uploaded_file = request.FILES['signature_img3']
+            file_path = os.path.join(static_path, uploaded_file.name)
+            signature_img3 = uploaded_file.name
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+
+            NCRGeneration.objects.filter(rec_id=ids).update(signature_img3=signature_img3)
+
+
+        if 'signature_img4' in request.FILES:
+            uploaded_file = request.FILES['signature_img4']
+            file_path = os.path.join(static_path, uploaded_file.name)
+            signature_img4 = uploaded_file.name
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+
+            NCRGeneration.objects.filter(rec_id=ids).update(signature_img4=signature_img4)
+  
+        if 'signature_img5' in request.FILES:
+            uploaded_file = request.FILES['signature_img5']
+            file_path = os.path.join(static_path, uploaded_file.name)
+            signature_img5 = uploaded_file.name
+            with open(file_path, 'wb+') as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
+            NCRGeneration.objects.filter(rec_id=ids).update(signature_img5=signature_img5)
+
+
+        initial_analysis = req.get('initial_analysis')
+        attachments_files = req.get('attachments_files')
+        responsibility = req.get('responsibility')
+        invoice_number = req.get('invoice_number')
+        non_conforming_part_disposition = req.get('non_conforming_part_disposition')
+        responsible_for_execution = req.get('responsible_for_execution')
+        containment_action = req.get('containment_action')
+        corrective_action_by = req.get('corrective_action_by')
+        corrective_action_designation = req.get('corrective_action_designation')
+        approved_by = req.get('approved_by')
+        approved_designation = req.get('approved_designation')
+        action_name = req.get('action_name')
+        verification_name = req.get('verification_name')
+        inp_root_cause = req.get('inp_root_cause')
+        occurrence = req.get('occurrence')
+        detection = req.get('detection')
+        effectiveness = req.get('effectiveness')
+
+        corrective_action_date = datetime.datetime.strptime(req.get('corrective_action_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        approved_date = datetime.datetime.strptime(req.get('approved_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        action_date = datetime.datetime.strptime(req.get('action_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        verification_date = datetime.datetime.strptime(req.get('verification_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
+
+        cost_1 = req.get('cost_1')
+        cost_2 = req.get('cost_2')
+        cost_3 = req.get('cost_3')
+        cost_4 = req.get('cost_4')
+        cost_5 = req.get('cost_5')
+        cost_6 = req.get('cost_6')
+        total_cost = req.get('total_cost')
+
+        no_of_day_open = req.get('no_of_day_open')
+        physical_closure = req.get('physical_closure')
+        physical_closure_rca_capa = req.get('physical_closure_rca_capa')
+        fnl_name = req.get('fnl_name')
+        fnl_designation = req.get('fnl_designation')
+        fnl_date = datetime.datetime.strptime(req.get('fnl_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
+       
+
+        NCRGeneration.objects.filter(rec_id=ids).update(inspector_name=inspector_name,assembly_name=assembly_name,assembly_no=assembly_no,drawing_no=drawing_no,detection_workstation=detection_workstation,location_id=location_id,sel_car=sel_car,serial_no=serial_no,green_red_channel=green_red_channel,chkMinor=chkMinor,chkMajor=chkMajor,chkCritical=chkCritical,specification=specification,defect_source=defect_source,supplier_name=supplier_name,defect_location=defect_location,defect_detected_by=defect_detected_by,defect_detected_workstation=defect_detected_workstation,no_of_parts_deloverd=no_of_parts_deloverd,no_of_defective_parts=no_of_defective_parts,defect_description=defect_description,defect_time=defect_time,defect_date=defect_date,active_deviations=active_deviations,chk_Internal=chk_Internal,chk_Supplier=chk_Supplier,chk_TWL=chk_TWL,chk_Transportation=chk_Transportation,corrective_action_date=corrective_action_date,approved_date=approved_date,action_date=action_date,verification_date=verification_date,initial_analysis=initial_analysis,attachments_files=attachments_files,responsibility=responsibility,invoice_number=invoice_number,non_conforming_part_disposition=non_conforming_part_disposition,responsible_for_execution=responsible_for_execution,containment_action=containment_action,corrective_action_by=corrective_action_by,corrective_action_designation=corrective_action_designation,approved_by=approved_by,approved_designation=approved_designation,action_name=action_name,verification_name=verification_name,inp_root_cause=inp_root_cause,occurrence=occurrence,detection=detection,effectiveness=effectiveness,cost_1=cost_1,cost_2=cost_2,cost_3=cost_3,cost_4=cost_4,cost_5=cost_5,cost_6=cost_6,total_cost=total_cost,fnl_date=fnl_date,no_of_day_open=no_of_day_open,physical_closure=physical_closure,physical_closure_rca_capa=physical_closure_rca_capa,fnl_name=fnl_name,fnl_designation=fnl_designation)
+
+
+        return JsonResponse({'status':'1'})
 

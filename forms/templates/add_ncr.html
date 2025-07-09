@@ -143,22 +143,22 @@
 
                                  <div class="col-lg-12 ">
                                     <div class="form-group">
-                                        <label for="software_version">*Train set no:</label>
+                                        <label for="software_version">Train set no(Ctrl + left mouse click to select multiple options):</label>
 
-                                        <select class="form-control" id="location_id" name="location_id" required="required">
-                                        <option value="">--  Select Train set no  --</option>
+                                        <select class="form-control" id="location_id" name="location_id" multiple>
+                                        <!-- <option value="">--  Select Train set no  --</option> -->
                                         {% for train_set_options in train_set_options %}
-                                            {% if train_set_options == data.location_id %}
-                                                <option value="{{train_set_options}}" selected>{{train_set_options}} </option>
+                                            {% if train_set_options.location_id == data.location_id %}
+                                                <option value="{{train_set_options.location_id}}" selected>{{train_set_options.location_id}} </option>
                                             {% else %}
-                                                <option value="{{train_set_options}}">{{train_set_options}} </option>
+                                                <option value="{{train_set_options.location_id}}">{{train_set_options.location_id}} </option>
                                             {% endif %}
                                                 
                                         {% endfor %}
                                         </select>
 
 
-                                        <!-- <input type="text" class="form-control" id="location_id" name="location_id" value="{{data.location_id}}" required="required"> -->
+                                        <!-- <input type="text" class="form-control" id="location_id" name="location_id" value="{{data.location_id}}" > -->
                                         <div class="invalid-feedback">
                                         Please enter Train set no.
                                         </div>
@@ -170,9 +170,9 @@
 
                             <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <label for="sel_car">*CAR(Ctrl + left mouse click to select multiple options):</label>
+                                                    <label for="sel_car">CAR(Ctrl + left mouse click to select multiple options):</label>
                                                 
-                                                    <select class="form-control" id="sel_car" name="sel_car" required="required" multiple>
+                                                    <select class="form-control" id="sel_car" name="sel_car" multiple>
                                                         <option value="DMA">DMA</option>
                                                         <option value="TC">TC</option>
                                                         <option value="DMB">DMB</option>
@@ -202,10 +202,10 @@
 
                                  <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label for="green_red_channel">*Green/Red Channel :</label>
+                                        <label for="green_red_channel">Green/Red Channel :</label>
                                     
 
-                                        <select class="form-control" id="green_red_channel " name="green_red_channel" required="required">
+                                        <select class="form-control" id="green_red_channel " name="green_red_channel" >
                                             {% if 'Green' == data.green_red_channel %}
                                             <option value="Green" selected>Green Channel Part</option>
                                             {% else %}
@@ -257,10 +257,26 @@
 
                         <b>Defect Criteria:</b><br><br>
 
-                        <label>
-                        <input type="checkbox" name="chkMinor" > Minor </label> <br>
-                        <label><input type="checkbox" name="chkMajor" > Major </label> <br>
-                        <label><input type="checkbox" name="chkCritical" > Critical </label> <br>
+                        
+
+                            {% if 1 == data.chkMinor %}
+                                <label><input type="checkbox" name="chkMinor" id="chkMinor" checked> Minor </label><br>
+                            {% else %}
+                                <label><input type="checkbox" name="chkMinor" id="chkMinor"> Minor </label><br>
+                            {% endif %}
+
+                            {% if 1 == data.chkMajor %}
+                                <label><input type="checkbox" name="chkMajor" id="chkMajor" checked> Major </label><br>
+                            {% else %}
+                                <label><input type="checkbox" name="chkMajor" id="chkMajor"> Major </label><br>
+                            {% endif %}
+
+                            {% if 1 == data.chkCritical %}
+                                <label><input type="checkbox" name="chkCritical" id="chkCritical" checked> Critical </label><br>
+                            {% else %}
+                                <label><input type="checkbox" name="chkCritical" id="chkCritical"> Critical </label><br>
+                            {% endif %}
+
                         
                     </div>
 
@@ -304,7 +320,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="defect_time">Defect Time:</label>
-                            <input type="time" class="form-control" id="defect_time" required="required" name="defect_time" value="{{data.defect_time|date:"H:i"}}">
+                            <input type="time" class="form-control" id="defect_time"  name="defect_time" value="{{data.defect_time}}">
                             <div class="invalid-feedback">
                             Please enter Defect Time.
                             </div>
@@ -435,24 +451,55 @@
 
 
                     <div class="col-md-3">
-                        <label>Active Deviations:- Manufacturer at fault?</label>
+                        <div class="form-group">
+                            <label for="active_deviations">Active Deviations:</label>
+                            <input type="text" class="form-control" id="active_deviations" name="active_deviations" value="{{data.active_deviations}}" >
+                            <div class="invalid-feedback">
+                                Please enter Active Deviations.
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-2">
+
+                         {% if 1 == data.chk_Internal %}
+                                <label><input type="checkbox" name="chk_Internal" id="chk_Internal" checked> Internal </label>
+                            {% else %}
+                                <label><input type="checkbox" name="chk_Internal" id="chk_Internal"> Internal </label>
+                            {% endif %}
+
                     </div>
 
                     <div class="col-md-2">
-                        <input type="checkbox" name="chk_Internal" > Internal
-                    </div>
 
-                    <div class="col-md-2">
-                        <input type="checkbox" name="chk_Supplier" > Supplier
-                    </div>
-
-                    <div class="col-md-2">
-                        <input type="checkbox" name="chk_TWL" > Other TWL Shop or Area
+                         {% if 1 == data.chk_Supplier %}
+                                <label><input type="checkbox" name="chk_Supplier" id="chk_Supplier" checked> Supplier </label>
+                            {% else %}
+                                <label><input type="checkbox" name="chk_Supplier" id="chk_Supplier"> Supplier </label>
+                            {% endif %}
 
                     </div>
 
                     <div class="col-md-2">
-                        <input type="checkbox" name="chk_Transportation" > Transportation Damage
+
+                         {% if 1 == data.chk_TWL %}
+                                <label><input type="checkbox" name="chk_TWL" id="chk_TWL" checked> Other TWL Shop or Area </label>
+                            {% else %}
+                                <label><input type="checkbox" name="chk_TWL" id="chk_TWL"> Other TWL Shop or Area </label>
+                            {% endif %}
+
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                         {% if 1 == data.chk_Transportation %}
+                                <label><input type="checkbox" name="chk_Transportation" id="chk_Transportation" checked> Transportation Damage </label><br>
+                            {% else %}
+                                <label><input type="checkbox" name="chk_Transportation" id="chk_Transportation"> Transportation Damage </label><br>
+                            {% endif %}
 
 
                     </div>
@@ -468,7 +515,13 @@
                         <h1>OK</h1>
 
                             <div class="form-group">
-                                <input type="file" class="form-control" id="ok_img"  name="ok_img" required="required" accept="image/*">
+                                <input type="file" class="form-control" id="ok_img"  name="ok_img" accept="image/*">
+
+                                {% if data.ok_img %}
+                                    <div class="col-lg-4">
+                                        <img src="/static/uploads/{{ data.ok_img }}" style="width: 60px;">
+                                    </div>
+                                {% endif %}
                                
                             </div>
                         
@@ -477,7 +530,13 @@
                         <h1>NOT OK</h1>
 
                          <div class="form-group">
-                                <input type="file" class="form-control" id="notok_img"  name="notok_img" required="required" accept="image/*">
+                                <input type="file" class="form-control" id="notok_img"  name="notok_img" accept="image/*">
+
+                                {% if data.notok_img %}
+                                    <div class="col-lg-4">
+                                        <img src="/static/uploads/{{ data.notok_img }}" style="width: 60px;">
+                                    </div>
+                                {% endif %}
                                
                             </div>
 
@@ -506,7 +565,7 @@
                             <label for="attachments_files">Attachments (file/ppt/job cards):</label>
                         
 
-                            <select class="form-control" id="attachments_files " name="attachments_files" required="required">
+                            <select class="form-control" id="attachments_files " name="attachments_files" >
                                 {% if 'Yes' == data.attachments_files %}
                                 <option value="Yes" selected>Yes</option>
                                 {% else %}
@@ -539,7 +598,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="responsibility">RESPONSIBILITY: </label>
-                            <input type="text" class="form-control" id="responsibility"  name="responsibility" value="{{data.responsibility}}" required="required">
+                            <input type="text" class="form-control" id="responsibility"  name="responsibility" value="{{data.responsibility}}" >
                             <div class="invalid-feedback">
                             Please enter RESPONSIBILITY.
                             </div>
@@ -548,8 +607,8 @@
 
                      <div class="col-md-4">
                         <div class="form-group">
-                            <label for="supplier_name">SUPPLIER NAME: </label>
-                            <input type="text" class="form-control" id="supplier_name"  name="supplier_name" value="{{data.supplier_name}}" required="required">
+                            <label for="supplier_name2">SUPPLIER NAME: </label>
+                            <input type="text" class="form-control" id="supplier_name2"  name="supplier_name2" readonly value="{{data.supplier_name}}" >
                             <div class="invalid-feedback">
                             Please enter SUPPLIER NAME.
                             </div>
@@ -559,7 +618,7 @@
                      <div class="col-md-4">
                         <div class="form-group">
                             <label for="invoice_number">INVOICE NUMBER: </label>
-                            <input type="text" class="form-control" id="invoice_number"  name="invoice_number" value="{{data.invoice_number}}" required="required">
+                            <input type="text" class="form-control" id="invoice_number"  name="invoice_number" value="{{data.invoice_number}}" >
                             <div class="invalid-feedback">
                             Please enter INVOICE NUMBER.
                             </div>
@@ -569,7 +628,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <label for="non_conforming_part_disposition">NON CONFORMING PART DISPOSITION: </label>
-                            <input type="text" class="form-control" id="non_conforming_part_disposition"  name="non_conforming_part_disposition" value="{{data.non_conforming_part_disposition}}" required="required">
+                            <input type="text" class="form-control" id="non_conforming_part_disposition"  name="non_conforming_part_disposition" value="{{data.non_conforming_part_disposition}}" >
                             <div class="invalid-feedback">
                             Please enter NON CONFORMING PART DISPOSITION.
                             </div>
@@ -579,7 +638,7 @@
                       <div class="col-md-4">
                         <div class="form-group">
                             <label for="responsible_for_execution">Responsible for execution of the disposition: </label>
-                            <input type="text" class="form-control" id="responsible_for_execution"  name="responsible_for_execution" value="{{data.responsible_for_execution}}" required="required">
+                            <input type="text" class="form-control" id="responsible_for_execution"  name="responsible_for_execution" value="{{data.responsible_for_execution}}" >
                             <div class="invalid-feedback">
                             Please enter Responsible for execution of the disposition.
                             </div>
@@ -665,7 +724,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="corrective_action_date">*Date (DD/MM/YYYY):</label>
-                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="corrective_action_date" name="corrective_action_date" value="{{data.corrective_action_date|date:'d/m/Y'}}">
+                                    <input type="text" autocomplete="off"  class="form-control date-time" id="corrective_action_date" name="corrective_action_date" value="{{data.corrective_action_date|date:'d/m/Y'}}">
                                     <div class="invalid-feedback">
                                     Please enter Date.
                                     </div>
@@ -675,13 +734,24 @@
 
 
                             <div class="col-md-12">
+
+
+
+
                                 <div class="form-group">
                                     <label for="signature_img">*Signature: </label>
-                                    <input type="file" class="form-control" id="signature_img"  name="signature_img" required="required" accept="image/*">
+                                    <input type="file" class="form-control" id="signature_img"  name="signature_img"  accept="image/*">
                                     <div class="invalid-feedback">
                                     Please upload Signature.
                                     </div>
                                 </div>
+
+                                {% if data.signature_img %}
+                                    <div class="col-lg-4">
+                                        <img src="/static/uploads/{{ data.signature_img }}" style="width: 60px;">
+                                    </div>
+                                {% endif %}
+
                             </div>
 
                     </div>
@@ -711,7 +781,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="approved_date">*Date (DD/MM/YYYY):</label>
-                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="approved_date" name="approved_date" value="{{data.approved_date|date:'d/m/Y'}}">
+                                    <input type="text" autocomplete="off"  class="form-control date-time" id="approved_date" name="approved_date" value="{{data.approved_date|date:'d/m/Y'}}">
                                     <div class="invalid-feedback">
                                     Please enter Date.
                                     </div>
@@ -723,11 +793,18 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="signature_img2">*Signature: </label>
-                                    <input type="file" class="form-control" id="signature_img2"  name="signature_img2" required="required" accept="image/*">
+                                    <input type="file" class="form-control" id="signature_img2"  name="signature_img2"  accept="image/*">
                                     <div class="invalid-feedback">
                                     Please upload Signature.
                                     </div>
                                 </div>
+
+                                {% if data.signature_img2 %}
+                                    <div class="col-lg-4">
+                                        <img src="/static/uploads/{{ data.signature_img2 }}" style="width: 60px;">
+                                    </div>
+                                {% endif %}
+
                             </div>
 
                     </div>
@@ -755,7 +832,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="action_date">*Date (DD/MM/YYYY):</label>
-                                <input type="text" autocomplete="off" required="required" class="form-control date-time" id="action_date" name="action_date" value="{{data.action_date|date:'d/m/Y'}}">
+                                <input type="text" autocomplete="off"  class="form-control date-time" id="action_date" name="action_date" value="{{data.action_date|date:'d/m/Y'}}">
                                 <div class="invalid-feedback">
                                 Please enter Date.
                                 </div>
@@ -767,11 +844,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="signature_img3">*Signature: </label>
-                                <input type="file" class="form-control" id="signature_img3"  name="signature_img3" required="required" accept="image/*">
+                                <input type="file" class="form-control" id="signature_img3"  name="signature_img3"  accept="image/*">
                                 <div class="invalid-feedback">
                                 Please upload Signature.
                                 </div>
                             </div>
+                            {% if data.signature_img3 %}
+                                <div class="col-lg-4">
+                                    <img src="/static/uploads/{{ data.signature_img3 }}" style="width: 60px;">
+                                </div>
+                            {% endif %}
                         </div>
 
                         </div>
@@ -798,7 +880,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="verification_date">*Date (DD/MM/YYYY):</label>
-                                <input type="text" autocomplete="off" required="required" class="form-control date-time" id="verification_date" name="verification_date" value="{{data.verification_date|date:'d/m/Y'}}">
+                                <input type="text" autocomplete="off"  class="form-control date-time" id="verification_date" name="verification_date" value="{{data.verification_date|date:'d/m/Y'}}">
                                 <div class="invalid-feedback">
                                 Please enter Date.
                                 </div>
@@ -810,11 +892,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="signature_img4">*Signature: </label>
-                                <input type="file" class="form-control" id="signature_img4"  name="signature_img4" required="required" accept="image/*">
+                                <input type="file" class="form-control" id="signature_img4"  name="signature_img4"  accept="image/*">
                                 <div class="invalid-feedback">
                                 Please upload Signature.
                                 </div>
                             </div>
+                            {% if data.signature_img4 %}
+                                <div class="col-lg-4">
+                                    <img src="/static/uploads/{{ data.signature_img4 }}" style="width: 60px;">
+                                </div>
+                            {% endif %}
                         </div>
 
                         </div>
@@ -917,6 +1004,237 @@
 
                 </div>
 
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-12 mb-4"> <h5>COST OF NON - QUALITY</h5> </div>
+
+                     
+                    <div class="col-6 mb-4"> 
+                        <b>DESCRIPTION OF UNDERTAKEN ACITONS</b>
+                    </div>
+                    <div class="col-6"> 
+                        <b>COST IN RUPEES</b> 
+                    </div>
+
+                
+
+                    <div class="col-12 mt-4"> 
+
+                        <div class="row">
+
+                            <div class="col-6"> 
+                                <label>*SORTING/ REWORK </label> 
+                            </div>
+
+                             <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="cost_1" required  name="cost_1" value="{{data.cost_1}}" onchange="calculateTotal();">
+                                </div>
+                            </div>
+
+                        </div>
+
+                         <div class="row">
+
+                            <div class="col-6"> 
+                                <label>*DETECTION /DISMANTLING</label> 
+                            </div>
+
+                             <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="cost_2" required name="cost_2" value="{{data.cost_2}}" onchange="calculateTotal();">
+                                </div>
+                            </div>
+
+                        </div>
+
+                         <div class="row">
+
+                            <div class="col-6"> 
+                                <label>*ADDITIONAL HANDLING </label> 
+                            </div>
+
+                             <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="cost_3" required name="cost_3" value="{{data.cost_3}}" onchange="calculateTotal();">
+                                </div>
+                            </div>
+
+                        </div>
+
+                         <div class="row">
+
+                            <div class="col-6"> 
+                                <label>*TRANSPORT COSTS</label> 
+                            </div>
+
+                             <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="cost_4" required name="cost_4" value="{{data.cost_4}}" onchange="calculateTotal();">
+                                </div>
+                            </div>
+
+                        </div>
+
+                          <div class="row">
+
+                            <div class="col-6"> 
+                                <label>*TOOL/ MACHINE BREAKDOWN </label> 
+                            </div>
+
+                             <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="cost_5" required name="cost_5" value="{{data.cost_5}}" onchange="calculateTotal();">
+                                </div>
+                            </div>
+
+                        </div>
+
+                          <div class="row">
+
+                            <div class="col-6"> 
+                                <label>*ADMINISTRATIVE CHARGE</label> 
+                            </div>
+
+                             <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="cost_6" required name="cost_6" value="{{data.cost_6}}" onchange="calculateTotal();">
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-4"> 
+                                <b>*TOTAL COST RECOVERY AMOUNT</b> <button type="button" onclick="calculateTotal();">Fetch Total</button>
+                            </div>
+
+                             <div class="col-8">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="total_cost" required name="total_cost" value="{{data.total_cost}}">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-12"> 
+                                <span class="text-primary">* Final cost recovery amount will be calculated and submitted after defined curative actions are completion</span> 
+                            </div>
+
+                        </div>
+
+
+                        
+                        
+                    </div>
+
+
+                </div>
+
+                <div class="row " style="padding: 20px;">
+                    <div class="col-12">  
+                        <b>NCR Closure( final)</b>
+
+                    </div>
+
+                    <div class="col-4">  
+
+                            <div class="form-group">
+                                <label for="no_of_day_open">No. Of Days NCR Remained Open:</label>
+                                <input type="text" class="form-control" id="no_of_day_open"  name="no_of_day_open" value="{{data.no_of_day_open}}">
+                                <div class="invalid-feedback">
+                                Please enter No. Of Days NCR Remained Open.
+                                </div>
+                            </div>
+                       
+                    </div>
+
+                     <div class="col-4">  
+                                    
+                        <div class="raw">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="physical_closure">Physical Closure:</label>
+                                    <input type="text" class="form-control" id="physical_closure"  name="physical_closure" value="{{data.physical_closure}}">
+                                    <div class="invalid-feedback">
+                                    Please enter Physical Closure.
+                                    </div>
+                                </div>
+                            </div>
+
+                                <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="physical_closure">Physical Closure With RCA- CAPA :</label>
+                                    <input type="text" class="form-control" id="physical_closure_rca_capa"  name="physical_closure_rca_capa" value="{{data.physical_closure_rca_capa}}">
+                                    <div class="invalid-feedback">
+                                    Please enter Physical Closure With RCA- CAPA.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                     <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="fnl_name">Name:</label>
+                                        <input type="text" class="form-control" id="fnl_name"  name="fnl_name" value="{{data.fnl_name}}">
+                                        <div class="invalid-feedback">
+                                        Please enter Name.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="fnl_name">Designation:</label>
+                                        <input type="text" class="form-control" id="fnl_designation"  name="fnl_designation" value="{{data.fnl_designation}}">
+                                        <div class="invalid-feedback">
+                                        Please enter Designation.
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="signature_img5">*Signature: </label>
+                                        <input type="file" class="form-control" id="signature_img5"  name="signature_img5"  accept="image/*">
+                                        <div class="invalid-feedback">
+                                        Please upload Signature.
+                                        </div>
+                                    </div>
+                                    {% if data.signature_img5 %}
+                                        <div class="col-lg-4">
+                                            <img src="/static/uploads/{{ data.signature_img5 }}" style="width: 60px;">
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+
+                                    
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="fnl_date">*Date (DD/MM/YYYY):</label>
+                                        <input type="text" autocomplete="off"  class="form-control date-time" id="fnl_date" name="fnl_date" value="{{data.fnl_date|date:'d/m/Y'}}">
+                                        <div class="invalid-feedback">
+                                        Please enter Date.
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                </div>
+
 
 
 
@@ -972,8 +1290,127 @@
           autoclose: true,
           format: 'dd/mm/yyyy',});
 
+             $('#fnl_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
+
+               var input = '{{ data.sel_car }}';
+           const resultArray = input.split(",").map(item => item.trim());
+
+           console.log(resultArray)
+            $('#sel_car').val(resultArray);
+
+              var input2 = '{{ data.location_id }}';
+           const resultArray2 = input2.split(",").map(item => item.trim());
+
+           console.log(resultArray2)
+            $('#location_id').val(resultArray2);
+
+
+
+
+            var timeInput = document.getElementById('time');
+        var time24 = timeInput.value;
+
+        if (time24) {
+            var [hour, minute, second] = time24.split(':');
+            hour = parseInt(hour);
+            var ampm = hour >= 12 ? 'PM' : 'AM';
+            hour = hour % 12 || 12; // Convert 0 to 12
+
+            var formattedTime = `${hour}:${minute} ${ampm}`;
+            timeInput.value = formattedTime;
+        }
+
 
     });
+
+    function calculateTotal(){
+        $('#total_cost').val(0);
+        var cost_1 = $('#cost_1').val();
+        var cost_2 = $('#cost_2').val();
+        var cost_3 = $('#cost_3').val();
+        var cost_4 = $('#cost_4').val();
+        var cost_5 = $('#cost_5').val();
+        var cost_6 = $('#cost_6').val();
+
+        var totalValue = parseFloat(cost_1) + parseFloat(cost_2) + parseFloat(cost_3) + parseFloat(cost_4) + parseFloat(cost_5) + parseFloat(cost_6);
+
+        $('#total_cost').val(totalValue);
+
+    }
+
+
+
+     $("#addNCRForm").submit(function(e) {
+        e.preventDefault();
+
+        var form = $('#addNCRForm')[0];  // Get the raw DOM form element
+        var formData = new FormData(form);    // Create FormData object
+
+        var sel_car= $('#sel_car').val()
+
+        const select = document.getElementById("sel_car");
+        const selectedValues = Array.from(select.selectedOptions).map(opt => opt.value);
+        sel_car = selectedValues.join(", ");
+        console.log(sel_car); // Logs: BMW, Audi, etc.
+
+        var location_id= $('#location_id').val()
+
+        const select2 = document.getElementById("location_id");
+        const selectedValues2 = Array.from(select2.selectedOptions).map(opt => opt.value);
+        location_id = selectedValues2.join(", ");
+        console.log(location_id); // Logs: BMW, Audi, etc.
+
+
+          var chkMinorV = document.getElementById('chkMinor').checked ? 1 : 0;
+            var chkMajorV = document.getElementById('chkMajor').checked ? 1 : 0;
+            var chkCriticalV = document.getElementById('chkCritical').checked ? 1 : 0;
+
+
+              var chk_InternalV = document.getElementById('chk_Internal').checked ? 1 : 0;
+            var chk_SupplierV = document.getElementById('chk_Supplier').checked ? 1 : 0;
+            var chk_TWLV = document.getElementById('chk_TWL').checked ? 1 : 0;
+            var chk_TransportationV = document.getElementById('chk_Transportation').checked ? 1 : 0;
+
+
+
+
+        formData.append('id', '{{ data.id }}');
+        formData.append('st', 8);
+        formData.append('sel_car_val', sel_car);
+        formData.append('location_id_val', location_id);
+        formData.append('chkMinorV', chkMinorV);
+        formData.append('chkMajorV', chkMajorV);
+        formData.append('chkCriticalV', chkCriticalV);
+        formData.append('chk_InternalV', chk_InternalV);
+        formData.append('chk_SupplierV', chk_SupplierV);
+        formData.append('chk_TWLV', chk_TWLV);
+        formData.append('chk_TransportationV', chk_TransportationV);
+
+        $.ajax({
+            url: "/forms/ncr_register/addncr/",
+            method: 'POST',
+            data: formData,
+            dataType: 'json',
+            processData: false,     // Prevent jQuery from processing data
+            contentType: false,     // Let browser set content type including boundaries
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+
+            success: function (response) {
+                if (response.status == '1') {
+                    window.location.reload();
+                } else {
+                    swal('Failed to update NCR (Non-Conformity Report)');
+                }
+            },
+            error: function () {
+                swal('An error occurred while submitting the data.');
+            }
+        });
+    });
+
 
 
 
