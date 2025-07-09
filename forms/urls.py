@@ -86,5 +86,7 @@ urlpatterns = [
     path('ncr_register/', NCRRegister.as_view(), name='ncr_register'),
     path('ncr_register/addncr/',AddNCR.as_view(),name='add_ncr'),
     path('ncr_register/addncr/<int:id>/',AddNCR.as_view(),name='add_ncr'),
+    path('ncr_register/viewncr/',ViewNCR.as_view(),name='view_ncr'),
+    path('ncr_register/viewncr/<int:id>/',ViewNCR.as_view(),name='view_ncr'),
     
 ]

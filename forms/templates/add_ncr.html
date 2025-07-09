@@ -1400,7 +1400,11 @@
 
             success: function (response) {
                 if (response.status == '1') {
-                    window.location.reload();
+                    swal('Successfully update NCR (Non-Conformity Report)');
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 3000); // 3000 milliseconds = 3 seconds
+
                 } else {
                     swal('Failed to update NCR (Non-Conformity Report)');
                 }

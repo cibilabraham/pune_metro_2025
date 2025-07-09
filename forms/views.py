@@ -6495,3 +6495,191 @@ class AddNCR(View):
 
         return JsonResponse({'status':'1'})
 
+
+
+
+class ViewNCR(View):
+    template_name = 'view_ncr.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        user_Role = request.session.get('user_Role')
+        P_id = request.session['P_id']
+        if user_Role == 4:
+            return redirect('/dashboard/')
+        id = kwargs.get("id")
+        data=[]
+
+        NCRGeneration_datas =NCRGeneration.objects.filter(rec_id=id)
+        jb = NCRGeneration_datas[0]
+
+        PBSMaster_datas=PBSMaster.objects.filter(id=jb.rootcause_id.asset_type)
+
+        Defect_datas=Defect.objects.filter(defect_id=jb.rootcause_id.defect.defect_id)
+
+        current_time = datetime.datetime.now().strftime("%H:%M")
+        today_date = date.today()
+
+        if jb.defect_time == None or jb.defect_time == "":
+            defect_time = current_time
+        else:
+            time_obj1 = datetime.datetime.strptime(jb.defect_time, "%H:%M")
+            defect_time = time_obj1.strftime("%I:%M %p")
+
+        if jb.defect_date == None or jb.defect_date == "":
+            defect_date = Defect_datas[0].defect_open_date
+        else:
+            defect_date = datetime.datetime.strptime(jb.defect_date, "%Y-%m-%d").date() 
+
+        if jb.corrective_action_date == None or jb.corrective_action_date == "":
+            corrective_action_date = today_date
+        else:
+            corrective_action_date = datetime.datetime.strptime(jb.corrective_action_date, "%Y-%m-%d").date() 
+
+
+        if jb.approved_date == None or jb.approved_date == "":
+            approved_date = today_date
+        else:
+            approved_date = datetime.datetime.strptime(jb.approved_date, "%Y-%m-%d").date() 
+
+        if jb.action_date == None or jb.action_date == "":
+            action_date = today_date
+        else:
+            action_date = datetime.datetime.strptime(jb.action_date, "%Y-%m-%d").date() 
+
+        if jb.verification_date == None or jb.verification_date == "":
+            verification_date = today_date
+        else:
+            verification_date = datetime.datetime.strptime(jb.verification_date, "%Y-%m-%d").date() 
+
+        if jb.fnl_date == None or jb.fnl_date == "":
+            fnl_date = today_date
+        else:
+            fnl_date = datetime.datetime.strptime(jb.fnl_date, "%Y-%m-%d").date() 
+
+        if jb.defect_description == None or jb.defect_description == "":
+            defect_description = Defect_datas[0].defect_description
+        else:
+            defect_description = jb.defect_description
+
+
+        time_obj = datetime.datetime.strptime(jb.time, "%H:%M:%S")
+        formatted_time = time_obj.strftime("%I:%M %p")
+
+        data={ 
+            'ncr_gen_id' :  jb.ncr_gen_id,
+            'date' : datetime.datetime.strptime(jb.date, "%Y-%m-%d").date(),
+            'time' : formatted_time,
+            'id':jb.rec_id,
+            'user_Role':user_Role,
+            'defect_time':defect_time,
+            'defect_date':defect_date,
+            'corrective_action_date':corrective_action_date,
+            'approved_date':approved_date,
+            'action_date':action_date,
+            'verification_date':verification_date,
+            'fnl_date':fnl_date,
+            'project_name':PBSMaster_datas[0].project.product_name,
+            'defect_description':defect_description,
+
+            'inspector_name':jb.inspector_name,
+            'assembly_name':jb.assembly_name,
+            'assembly_no':jb.assembly_no,
+            'drawing_no':jb.drawing_no,
+            'detection_workstation':jb.detection_workstation,
+            'location_id':jb.location_id,
+            'sel_car':jb.sel_car,
+            'serial_no':jb.serial_no,
+            'green_red_channel':jb.green_red_channel,
+
+            'chkMinor':jb.chkMinor,
+            'chkMajor':jb.chkMajor,
+            'chkCritical':jb.chkCritical,
+
+            'specification':jb.specification,
+            'defect_source':jb.defect_source,
+            'supplier_name':jb.supplier_name,
+            'defect_location':jb.defect_location,
+            'defect_detected_by':jb.defect_detected_by,
+            'defect_detected_workstation':jb.defect_detected_workstation,
+            'no_of_parts_deloverd':jb.no_of_parts_deloverd,
+            'no_of_defective_parts':jb.no_of_defective_parts,
+
+            'active_deviations':jb.active_deviations,
+            'chk_Internal':jb.chk_Internal,
+            'chk_Supplier':jb.chk_Supplier,
+            'chk_TWL':jb.chk_TWL,
+            'chk_Transportation':jb.chk_Transportation,
+
+            'ok_img':jb.ok_img,
+            'notok_img':jb.notok_img,
+            'signature_img':jb.signature_img,
+            'signature_img2':jb.signature_img2,
+            'signature_img3':jb.signature_img3,
+            'signature_img4':jb.signature_img4,
+            'signature_img5':jb.signature_img5,
+
+
+            'initial_analysis':jb.initial_analysis,
+            'attachments_files':jb.attachments_files,
+            'responsibility':jb.responsibility,
+            'invoice_number':jb.invoice_number,
+            'non_conforming_part_disposition':jb.non_conforming_part_disposition,
+            'responsible_for_execution':jb.responsible_for_execution,
+            'containment_action':jb.containment_action,
+            'corrective_action_by':jb.corrective_action_by,
+            'corrective_action_designation':jb.corrective_action_designation,
+            'approved_by':jb.approved_by,
+            'approved_designation':jb.approved_designation,
+            'action_name':jb.action_name,
+            'verification_name':jb.verification_name,
+            'inp_root_cause':jb.inp_root_cause,
+            'occurrence':jb.occurrence,
+            'detection':jb.detection,
+            'effectiveness':jb.effectiveness,
+
+            'cost_1':jb.cost_1,
+            'cost_2':jb.cost_2,
+            'cost_3':jb.cost_3,
+            'cost_4':jb.cost_4,
+            'cost_5':jb.cost_5,
+            'cost_6':jb.cost_6,
+            'total_cost':jb.total_cost,
+
+
+            'no_of_day_open':jb.no_of_day_open,
+            'physical_closure':jb.physical_closure,
+            'physical_closure_rca_capa':jb.physical_closure_rca_capa,
+            'fnl_name':jb.fnl_name,
+            'fnl_designation':jb.fnl_designation,
+
+
+        }
+
+
+        if user_Role == 1:
+            train_set_options = Asset.objects.filter(is_active=0).distinct('location_id')
+        else:
+            train_set_options = Asset.objects.filter(is_active=0,P_id=P_id).distinct('location_id')
+
+
+        Corrective_data = []
+        if user_Role == 1:
+            CorrectiveAction_data =CorrectiveAction.objects.filter(is_active=0,defect_id=jb.rootcause_id.defect)
+        else:
+            CorrectiveAction_data =CorrectiveAction.objects.filter(is_active=0,P_id=P_id,defect_id=jb.rootcause_id.defect)
+
+        for CorrectiveActions in CorrectiveAction_data:
+            Corrective_data.append({ 
+                'corrective_action_id' : CorrectiveActions.corrective_action_id,
+                'corrective_action_owner' : CorrectiveActions.corrective_action_owner,
+                'corrective_action_description' : CorrectiveActions.corrective_action_description,
+                'corrective_action_update' : CorrectiveActions.corrective_action_update,
+                'corrective_action_status' : CorrectiveActions.corrective_action_status,
+            })     
+
+        return render(request, self.template_name,{'data':data ,'train_set_options':train_set_options,'Corrective_data':Corrective_data })
+      
+ 
+
