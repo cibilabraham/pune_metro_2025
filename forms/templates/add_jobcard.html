@@ -1066,14 +1066,18 @@
                                                                         <td>{{ job_works.s_no }}</td>
                                                                         <td>{{ job_works.jobwork_name }}</td>
                                                                         <td>{{ job_works.jobwork_work }}</td>
-                                                                        <td>{{ job_works.jobwork_signature }}</td>
+                                                                        <td>
+ <img src="/static/uploads/{{ job_works.jobwork_signature }}" style="width: 60px;">
+                                                                            
+                                                                            
+                                                                     </td>
                                                                        
                                                                         
                                                                         <td class="bg-white">
 
                                                                             {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
-                                                                <input type="button" value="Edit" onClick="editJobWork('{{ job_works.job_work_id }}',`{{ job_works.jobwork_name }}`,`{{ job_works.jobwork_work }}`,`{{ job_works.jobwork_signature }}`);">
+                                                                <input type="button" value="Edit" onClick="editJobWork('{{ job_works.job_work_id }}',`{{ job_works.jobwork_name }}`,`{{ job_works.jobwork_work }}`);">
 
                                                                 <input type="button" value="Delete" onClick="deleteJobWork('{{ job_works.job_work_id }}');">
 
@@ -2250,16 +2254,20 @@
                     </div>
                 </div>
 
-                   <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="jobwork_signature">*Signature:</label>
-                        <textarea class="form-control" required="required" id="jobwork_signature" name="jobwork_signature"></textarea>
-                         <div class="invalid-feedback">
-                         Please enter Signature.
-                        </div>
+                <div class="col-sm-12">
+
+                     <div class="form-group">
+                    <label for="jobwork_signature">*Signature: </label>
+                    <input type="file" class="form-control" id="jobwork_signature"  name="jobwork_signature"  accept="image/*" required>
+                    <div class="invalid-feedback">
+                    Please upload Signature.
                     </div>
                 </div>
 
+                </div>
+
+
+                
 
 
 
@@ -2434,33 +2442,21 @@
      $( "#JobWorkForm" ).submit(function(e) {
         e.preventDefault();
 
+        var form = $('#JobWorkForm')[0];  // Get the raw DOM form element
+        var formData = new FormData(form);    // Create FormData object
 
+        formData.append('id', '{{ data.id }}');
+        formData.append('st', 18);
 
-        var jobwork_name= $('#jobwork_name').val()
-        var jobwork_work= $('#jobwork_work').val()
-        var jobwork_signature= $('#jobwork_signature').val()
-        var JobWorkID= $('#JobWorkID').val()
-
-        jobwork_signature = jobwork_signature.replace(/['"`]/g, '');
-        jobwork_work = jobwork_work.replace(/['"`]/g, '');
-
-        var id= '{{data.id}}';
-
-      
 
         $.ajax({
             url: "/forms/jobcard_register/addjobcard/",
             method: 'POST',
+            data: formData,
             dataType: 'json',
+            processData: false,     // Prevent jQuery from processing data
+            contentType: false,     // Let browser set content type including boundaries
             headers: {'X-CSRFToken': '{{ csrf_token }}'},
-            data : {
-                'id':id,
-                'jobwork_name' : jobwork_name,
-                'jobwork_work':jobwork_work,
-                'jobwork_signature':jobwork_signature,
-                'JobWorkID':JobWorkID,
-                'st':18,
-            },
 
             success: function (response) {
                 if(response.status == '1') {
@@ -2470,10 +2466,13 @@
                     swal('Failed to save Allotment of work to Maintainers')
                     
                 }
+            },
+            error: function () {
+                swal('An error occurred while submitting the data.');
             }
         });
-        
 
+      
 
     });
 
@@ -2563,13 +2562,12 @@
 
     }
 
-    function editJobWork(id,jobwork_name,jobwork_work,jobwork_signature){
+    function editJobWork(id,jobwork_name,jobwork_work){
 
         $('#JobWorkID').val(id);
        $('#jobwork_name').val(jobwork_name);
        $('#jobwork_work').val(jobwork_work);
-       $('#jobwork_signature').val(jobwork_signature);
-
+       
         myModal2.show();
 
     }

@@ -198,6 +198,16 @@ class AddAsset(View):
         sub_location = req.get('sub_location')
         Action = req.get('Action')
         ids = req.get('id')
+
+        if ids =="":
+            if Asset.objects.filter(asset_config_id=asset_config_id,is_active=1).exists():
+                print('rec deleted')
+                dltRec = Asset.objects.filter(asset_config_id=asset_config_id,is_active=1)
+                ids = dltRec[0].id
+                Asset.objects.filter(id=ids).update(is_active=0)
+
+
+
         DATA = []
         HEAD = ["asset_config_id",'asset_serial_number','location_id','location_description','asset_type','software_version','asset_description','software_description','asset_status','sub_location']
         asst =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
@@ -213,10 +223,12 @@ class AddAsset(View):
                     'value':req.get(f)
                 })
         # print(DATA)
+        
         if ids =="":
             if Asset.objects.filter(asset_config_id=asset_config_id,is_active=0).exists():
                 return JsonResponse({'status':'0'})
             else:
+
                 Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
                 for Find_Pid in Find_Pids:
                     r=Asset(P_id=Find_Pid.project_id,asset_config_id=asset_config_id,location_id=location_id,location_description=location_description,asset_serial_number=asset_serial_number,asset_type=Find_Pid.id,asset_description=asset_description,software_version=software_version,software_description=software_description,asset_status=asset_status,sub_location=sub_location)
@@ -230,6 +242,11 @@ class AddAsset(View):
                     h.save()
                     return JsonResponse({'status':'1','id':r.id})
         else:
+
+            if Asset.objects.filter(asset_config_id=asset_config_id, is_active=0).exclude(id=ids).exists():
+                return JsonResponse({'status':'0'})
+
+
             meg =''
             for i in DATA:
                 cursor.execute("SELECT * FROM fracas_asset WHERE id='{0}' and {1}='{2}'".format(ids,i['field'],i['value']))
@@ -252,7 +269,7 @@ class AddAsset(View):
                             FindUser = UserProfile.objects.filter(user_id=user_ID)
                             now = datetime.datetime.now()
                             current_time = now.strftime("%H:%M:%S")
-                            meg ="ID: "+ids +"=> "+meg
+                            meg = "ID: " + str(ids) + " => " + meg
                             h = history(user_id=FindUser[0].id,P_id=P_id,date=datetime.date.today(),time=current_time,message=meg,function_name="Asset Register")
                             h.save()
                         return JsonResponse({'status':'1','id':ids})
@@ -4980,9 +4997,20 @@ class AddJobcard(View):
             # print('here')
             jobwork_name = req.get('jobwork_name')
             jobwork_work = req.get('jobwork_work')
-            jobwork_signature = req.get('jobwork_signature')
             JobWorkID = req.get('JobWorkID')
 
+            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+            # Create folder if it doesn't exist
+            os.makedirs(static_path, exist_ok=True)
+
+            if 'jobwork_signature' in request.FILES:
+                uploaded_file = request.FILES['jobwork_signature']
+                file_path = os.path.join(static_path, uploaded_file.name)
+                jobwork_signature = uploaded_file.name
+                with open(file_path, 'wb+') as destination:
+                    for chunk in uploaded_file.chunks():
+                        destination.write(chunk)
+                        
             # print('here')
 
             if JobWorkID == "":
