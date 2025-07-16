@@ -12,6 +12,9 @@ urlpatterns = [
     path('asset_register/addasset/<int:id>/',AddAsset.as_view(),name='add_asset'),
     path('asset_register/delete/',DeleteAsset.as_view(),name='delete_asset'),
     path('asset_register/deleteAll/',DeleteAllAsset.as_view(),name='deleteAll_asset'),
+
+    path('asset_register/get_serial_no/',GetSerialNumber.as_view(),name='get_serial_no'),
+    path('asset_register/get_serial_no/<int:id>/',GetSerialNumber.as_view(),name='get_serial_no'),
     
     path('failuredata/',Failuredata.as_view(),name='failuredata'),
     path('failuredata/delete/',DeleteFailureData.as_view(),name='delete_failuredata'),
@@ -88,5 +91,11 @@ urlpatterns = [
     path('ncr_register/addncr/<int:id>/',AddNCR.as_view(),name='add_ncr'),
     path('ncr_register/viewncr/',ViewNCR.as_view(),name='view_ncr'),
     path('ncr_register/viewncr/<int:id>/',ViewNCR.as_view(),name='view_ncr'),
+
+
+    path('location_id_from_asset_type/',LocatioIDFromAssetType.as_view(),name='location_id_from_asset_type'),
+    path('get_all_Serialnumber/',GetAllSerialNumber.as_view(),name='get_all_Serialnumber'),
+    path('location_id_from_asset_type_ncr/',LocatioIDFromAssetTypeNcr.as_view(),name='location_id_from_asset_type_ncr'),
+    path('get_all_Serialnumber_ncr/',GetAllSerialNumberNcr.as_view(),name='get_all_Serialnumber_ncr'),
     
 ]

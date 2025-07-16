@@ -34,21 +34,33 @@ class assetRegister(View):
         user_ID = request.session['user_ID']
         user_Role = request.session.get('user_Role')
         if user_Role == 1:
-            location_id = Asset.objects.filter(is_active=0).distinct('location_id')
-            asset_serial_number = Asset.objects.filter(is_active=0).distinct('asset_serial_number')
             asset_type = PBSMaster.objects.filter(is_active=0).order_by('asset_type') 
-            asset_description = Asset.objects.filter(is_active=0).distinct('asset_description')
-            software_version = Asset.objects.filter(is_active=0).distinct('software_version')
-            software_description = Asset.objects.filter(is_active=0).distinct('software_description')
-            asset_status = Asset.objects.filter(is_active=0).distinct('asset_status')
+
+
+            # location_id = Asset.objects.filter(is_active=0).distinct('location_id')
+            # asset_serial_number = Asset.objects.filter(is_active=0).distinct('asset_serial_number')
+            
+            # asset_description = Asset.objects.filter(is_active=0).distinct('asset_description')
+            # software_version = Asset.objects.filter(is_active=0).distinct('software_version')
+            # software_description = Asset.objects.filter(is_active=0).distinct('software_description')
+            # asset_status = Asset.objects.filter(is_active=0).distinct('asset_status')
         else:
-            location_id = Asset.objects.filter(is_active=0,P_id=P_id).distinct('location_id')
-            asset_serial_number = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_serial_number')
-            asset_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_description')
-            software_version = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_version')
-            software_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_description')
-            asset_status = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_status')
             asset_type = PBSMaster.objects.filter(is_active=0,project_id=P_id).order_by('asset_type') 
+
+            # location_id = Asset.objects.filter(is_active=0,P_id=P_id).distinct('location_id')
+            # asset_serial_number = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_serial_number')
+            # asset_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_description')
+            # software_version = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_version')
+            # software_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_description')
+            # asset_status = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_status')
+
+        location_id = []
+        asset_serial_number = []
+        software_version = []
+        software_description = []
+        asset_status = []
+        asset_description = []
+            
         return render(request, self.template_name, {'asset_status':asset_status,'software_description':software_description, 'software_version':software_version, 'asset_description':asset_description, 'location_id' : location_id, 'asset_serial_number':asset_serial_number,'asset_type':asset_type})
 
     def post(self, request, *args, **kwargs):
@@ -66,6 +78,7 @@ class assetRegister(View):
         software_version = req.get('software_version')
         software_description = req.get('software_description')
         asset_status = req.get('asset_status')
+        sel_car = req.get('sel_car')
         
         Asset_data =Asset.objects.filter(is_active=0)
         print(Asset_data)
@@ -73,7 +86,7 @@ class assetRegister(View):
         if location_id != "all":
             Asset_data=Asset_data.filter(location_id=location_id)
         if asset_serial_number != "all":
-            Asset_data=Asset_data.filter(asset_serial_number=asset_serial_number)
+            Asset_data=Asset_data.filter(asset_config_id=asset_serial_number)
         if asset_type != "all":
             Asset_data=Asset_data.filter(asset_type=asset_type)
         if asset_description != "all":
@@ -84,6 +97,8 @@ class assetRegister(View):
             Asset_data=Asset_data.filter(software_description=software_description)
         if asset_status != "all":
             Asset_data=Asset_data.filter(asset_status=asset_status)
+        if sel_car != "all":
+            Asset_data=Asset_data.filter(sub_location=sel_car)
     
         # Asset_data = Asset.objects.all()
         for Assets in Asset_data:
@@ -103,6 +118,7 @@ class assetRegister(View):
                             'software_version' : Assets.software_version,
                             'software_description' : Assets.software_description,
                             'asset_status':Assets.asset_status,
+                            'sub_location':Assets.sub_location,
                             'id':Assets.id,
                             'user_Role':user_Role,
                         }) 
@@ -121,6 +137,7 @@ class assetRegister(View):
                                 'software_description' : Assets.software_description,
                                 'asset_status':Assets.asset_status,
                                 'id':Assets.id,
+                                'sub_location':Assets.sub_location,
                                 'user_Role':user_Role
                             }) 
         print(data)
@@ -6191,6 +6208,11 @@ class AddNCR(View):
         id = kwargs.get("id")
         data=[]
 
+        if user_Role == 1:
+            asset_types = PBSMaster.objects.filter(is_active=0).order_by('asset_type')
+        else:
+            asset_types = PBSMaster.objects.filter(is_active=0,project_id=P_id).order_by('asset_type')
+
         NCRGeneration_datas =NCRGeneration.objects.filter(rec_id=id)
         jb = NCRGeneration_datas[0]
 
@@ -6332,14 +6354,31 @@ class AddNCR(View):
             'fnl_name':jb.fnl_name,
             'fnl_designation':jb.fnl_designation,
 
+            'asset_type':jb.asset_type,
+
 
         }
 
-
-        if user_Role == 1:
-            train_set_options = Asset.objects.filter(is_active=0).distinct('location_id')
+        if jb.asset_type == "":
+            
+            if user_Role == 1:
+                train_set_options = Asset.objects.filter(is_active=0).distinct('location_id')
+                asset_serial_number = Asset.objects.filter(is_active=0).distinct('asset_serial_number')
+            else:
+                train_set_options = Asset.objects.filter(is_active=0,P_id=P_id).distinct('location_id')
+                asset_serial_number = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_serial_number')
         else:
-            train_set_options = Asset.objects.filter(is_active=0,P_id=P_id).distinct('location_id')
+            Find_Pids =PBSMaster.objects.filter(asset_type=jb.asset_type,is_active=0)
+            Find_Pid = Find_Pids[0]
+            
+            asset_type = Find_Pid.id
+
+            train_set_options = Asset.objects.filter(is_active=0,asset_type=asset_type).distinct('location_id')
+
+            asset_serial_number = Asset.objects.filter(is_active=0,asset_type=asset_type).distinct('asset_serial_number')
+
+
+        
 
 
         Corrective_data = []
@@ -6357,7 +6396,7 @@ class AddNCR(View):
                 'corrective_action_status' : CorrectiveActions.corrective_action_status,
             })     
 
-        return render(request, self.template_name,{'data':data ,'train_set_options':train_set_options,'Corrective_data':Corrective_data })
+        return render(request, self.template_name,{'data':data ,'train_set_options':train_set_options,'Corrective_data':Corrective_data , 'asset_types': asset_types, 'asset_serial_number':asset_serial_number })
       
  
     def post(self, request, *args, **kwargs):
@@ -6370,7 +6409,13 @@ class AddNCR(View):
         st = req.get('st')
 
         inspector_name = req.get('inspector_name')
-        assembly_name = req.get('assembly_name')
+        asset_type = req.get('asset_type')
+        # Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
+        # Find_Pid = Find_Pids[0]
+        
+        # asset_type = Find_Pid.id
+
+        assembly_name = req.get('asset_type')
         assembly_no = req.get('assembly_no')
         drawing_no = req.get('drawing_no')
         detection_workstation = req.get('detection_workstation')
@@ -6518,7 +6563,7 @@ class AddNCR(View):
 
        
 
-        NCRGeneration.objects.filter(rec_id=ids).update(inspector_name=inspector_name,assembly_name=assembly_name,assembly_no=assembly_no,drawing_no=drawing_no,detection_workstation=detection_workstation,location_id=location_id,sel_car=sel_car,serial_no=serial_no,green_red_channel=green_red_channel,chkMinor=chkMinor,chkMajor=chkMajor,chkCritical=chkCritical,specification=specification,defect_source=defect_source,supplier_name=supplier_name,defect_location=defect_location,defect_detected_by=defect_detected_by,defect_detected_workstation=defect_detected_workstation,no_of_parts_deloverd=no_of_parts_deloverd,no_of_defective_parts=no_of_defective_parts,defect_description=defect_description,defect_time=defect_time,defect_date=defect_date,active_deviations=active_deviations,chk_Internal=chk_Internal,chk_Supplier=chk_Supplier,chk_TWL=chk_TWL,chk_Transportation=chk_Transportation,corrective_action_date=corrective_action_date,approved_date=approved_date,action_date=action_date,verification_date=verification_date,initial_analysis=initial_analysis,attachments_files=attachments_files,responsibility=responsibility,invoice_number=invoice_number,non_conforming_part_disposition=non_conforming_part_disposition,responsible_for_execution=responsible_for_execution,containment_action=containment_action,corrective_action_by=corrective_action_by,corrective_action_designation=corrective_action_designation,approved_by=approved_by,approved_designation=approved_designation,action_name=action_name,verification_name=verification_name,inp_root_cause=inp_root_cause,occurrence=occurrence,detection=detection,effectiveness=effectiveness,cost_1=cost_1,cost_2=cost_2,cost_3=cost_3,cost_4=cost_4,cost_5=cost_5,cost_6=cost_6,total_cost=total_cost,fnl_date=fnl_date,no_of_day_open=no_of_day_open,physical_closure=physical_closure,physical_closure_rca_capa=physical_closure_rca_capa,fnl_name=fnl_name,fnl_designation=fnl_designation)
+        NCRGeneration.objects.filter(rec_id=ids).update(asset_type=asset_type,inspector_name=inspector_name,assembly_name=assembly_name,assembly_no=assembly_no,drawing_no=drawing_no,detection_workstation=detection_workstation,location_id=location_id,sel_car=sel_car,serial_no=serial_no,green_red_channel=green_red_channel,chkMinor=chkMinor,chkMajor=chkMajor,chkCritical=chkCritical,specification=specification,defect_source=defect_source,supplier_name=supplier_name,defect_location=defect_location,defect_detected_by=defect_detected_by,defect_detected_workstation=defect_detected_workstation,no_of_parts_deloverd=no_of_parts_deloverd,no_of_defective_parts=no_of_defective_parts,defect_description=defect_description,defect_time=defect_time,defect_date=defect_date,active_deviations=active_deviations,chk_Internal=chk_Internal,chk_Supplier=chk_Supplier,chk_TWL=chk_TWL,chk_Transportation=chk_Transportation,corrective_action_date=corrective_action_date,approved_date=approved_date,action_date=action_date,verification_date=verification_date,initial_analysis=initial_analysis,attachments_files=attachments_files,responsibility=responsibility,invoice_number=invoice_number,non_conforming_part_disposition=non_conforming_part_disposition,responsible_for_execution=responsible_for_execution,containment_action=containment_action,corrective_action_by=corrective_action_by,corrective_action_designation=corrective_action_designation,approved_by=approved_by,approved_designation=approved_designation,action_name=action_name,verification_name=verification_name,inp_root_cause=inp_root_cause,occurrence=occurrence,detection=detection,effectiveness=effectiveness,cost_1=cost_1,cost_2=cost_2,cost_3=cost_3,cost_4=cost_4,cost_5=cost_5,cost_6=cost_6,total_cost=total_cost,fnl_date=fnl_date,no_of_day_open=no_of_day_open,physical_closure=physical_closure,physical_closure_rca_capa=physical_closure_rca_capa,fnl_name=fnl_name,fnl_designation=fnl_designation)
 
 
         return JsonResponse({'status':'1'})
@@ -6710,4 +6755,201 @@ class ViewNCR(View):
         return render(request, self.template_name,{'data':data ,'train_set_options':train_set_options,'Corrective_data':Corrective_data })
       
  
+
+class GetSerialNumber(View):
+    template_name = 'add_asset.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        user_Role = request.session.get('user_Role')
+        P_id = request.session['P_id']
+        if user_Role == 4:
+            return redirect('/dashboard/')
+        id = kwargs.get("id")
+        data=[]
+
+        
+        # print(prv_data)
+        return render(request, self.template_name,{'data':data })
+      
+ 
+    def post(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        req = request.POST
+        cursor = connection.cursor()
+        # print(req)
+        ids = req.get('id')
+        asset_type = req.get('asset_type')
+        location_id = req.get('location_id')
+        sub_location = req.get('sub_location')
+
+        new_id = False
+        if ids =="":
+            new_id = True
+        else:
+            Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
+            Find_Pid = Find_Pids[0]
+            if Asset.objects.filter(id=ids,asset_type=Find_Pid.id,location_id=location_id,sub_location=sub_location).exists():
+                asstDt = Asset.objects.filter(id=ids,asset_type=Find_Pid.id,location_id=location_id,sub_location=sub_location)
+                gen_serialnumber = asstDt[0].asset_serial_number
+                return JsonResponse({'status':'1','data':gen_serialnumber})
+            else:
+                new_id = True
+
+        if new_id:
+
+            serial_latest_id = 0
+                 
+            if AssetSerialNumberIDs.objects.filter(asset_type=asset_type,location_id=location_id,sub_location=sub_location).exists():
+                AssetSerialNumberID = AssetSerialNumberIDs.objects.filter(asset_type=asset_type,location_id=location_id,sub_location=sub_location)
+                serial_latest_id = AssetSerialNumberID[0].last_id
+
+            new_serial_id = int(serial_latest_id) + 1
+
+            gen_serialnumber = f"{asset_type}/{location_id}/{sub_location}/{new_serial_id:03}"
+
+            if Asset.objects.filter(asset_serial_number=gen_serialnumber).exists():
+                if AssetSerialNumberIDs.objects.filter(asset_type=asset_type,location_id=location_id,sub_location=sub_location).exists():
+                    print('----update------')
+                    AssetSerialNumberIDs.objects.filter(asset_type=asset_type,location_id=location_id,sub_location=sub_location).update(last_id=new_serial_id)
+                else:
+                    print('----add------')
+                    ju = AssetSerialNumberIDs(asset_type=asset_type,location_id=location_id,sub_location=sub_location,last_id=new_serial_id)
+                    ju.save()
+
+                new_serial_id = int(serial_latest_id) + 2
+                gen_serialnumber = f"{asset_type}/{location_id}/{sub_location}/{new_serial_id:03}"
+
+
+            return JsonResponse({'status':'1','data':gen_serialnumber})
+
+
+        return JsonResponse({'status':'0'})
+
+class LocatioIDFromAssetType(View):
+    template_name = 'asset_register.html'
+
+    def get(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_Role = request.session.get('user_Role')
+        req = request.GET
+        data=[]
+        asset_type = req.get('asset_type')
+        if asset_type == "":
+            return JsonResponse(data, safe=False)
+        if user_Role == 1:
+            # print(asset_config_id)
+            location_id = Asset.objects.filter(is_active=0,asset_type=asset_type).distinct('location_id')
+        else:
+            location_id = Asset.objects.filter(is_active=0,asset_type=asset_type).distinct('location_id')
+        for k in location_id:
+            data.append({'option':k.location_id,
+                         'id':k.location_id})
+        # response = {'data' : data}
+        return JsonResponse(data, safe=False)
+        # return render(request, self.template_name, {'sub_systems' : sub_systems, 'systems':systems})
+
+class LocatioIDFromAssetTypeNcr(View):
+    template_name = 'asset_register.html'
+
+    def get(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_Role = request.session.get('user_Role')
+        req = request.GET
+        data=[]
+        asset_type = req.get('asset_type')
+        if asset_type == "":
+            return JsonResponse(data, safe=False)
+
+
+        Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
+        Find_Pid = Find_Pids[0]
+        
+        asset_type = Find_Pid.id
+
+        
+        if user_Role == 1:
+            # print(asset_config_id)
+            location_id = Asset.objects.filter(is_active=0,asset_type=asset_type).distinct('location_id')
+        else:
+            location_id = Asset.objects.filter(is_active=0,asset_type=asset_type).distinct('location_id')
+        for k in location_id:
+            data.append({'option':k.location_id,
+                         'id':k.location_id})
+        # response = {'data' : data}
+        return JsonResponse(data, safe=False)
+        # return render(request, self.template_name, {'sub_systems' : sub_systems, 'systems':systems})
+
+
+class GetAllSerialNumber(View):
+    template_name = 'asset_register.html'
+
+    def get(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_Role = request.session.get('user_Role')
+        req = request.GET
+        data=[]
+        asset_type = req.get('asset_type')
+        location_id = req.get('location_id')
+        sel_car = req.get('sel_car')
+
+     
+        if user_Role == 1:
+            # print(asset_config_id)
+            asset_serial_number = Asset.objects.filter(is_active=0)
+        else:
+            asset_serial_number = Asset.objects.filter(is_active=0)
+
+        if asset_type != "all":
+            asset_serial_number=asset_serial_number.filter(asset_type=asset_type)
+
+        if location_id != "all":
+            asset_serial_number=asset_serial_number.filter(location_id=location_id)
+
+        if sel_car != "all":
+            asset_serial_number=asset_serial_number.filter(sub_location=sel_car)
+
+        for k in asset_serial_number:
+            data.append({'option':k.asset_serial_number,
+                         'id':k.asset_config_id})
+        # response = {'data' : data}
+        return JsonResponse(data, safe=False)
+        # return render(request, self.template_name, {'sub_systems' : sub_systems, 'systems':systems})
+
+class GetAllSerialNumberNcr(View):
+    template_name = 'asset_register.html'
+
+    def get(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_Role = request.session.get('user_Role')
+        req = request.GET
+        data=[]
+        asset_type = req.get('asset_type')
+        location_id = req.get('location_id')
+        sel_car = req.get('sel_car')
+
+     
+        if user_Role == 1:
+            # print(asset_config_id)
+            asset_serial_number = Asset.objects.filter(is_active=0)
+        else:
+            asset_serial_number = Asset.objects.filter(is_active=0)
+
+        if asset_type != "":
+
+            Find_Pids =PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
+            Find_Pid = Find_Pids[0]
+            
+            asset_type = Find_Pid.id
+
+            asset_serial_number=asset_serial_number.filter(asset_type=asset_type)
+
+        for k in asset_serial_number:
+            data.append({'option':k.asset_serial_number,
+                         'id':k.asset_serial_number})
+        # response = {'data' : data}
+        return JsonResponse(data, safe=False)
+        # return render(request, self.template_name, {'sub_systems' : sub_systems, 'systems':systems})
 

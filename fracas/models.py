@@ -693,6 +693,7 @@ class NCRGeneration(models.Model):
     defect_description = models.TextField(null=True, blank=True)
 
     inspector_name = models.TextField(blank=True)
+    asset_type = models.CharField(max_length=550, blank=True)
     assembly_name = models.TextField( blank=True)
     assembly_no = models.TextField( blank=True)
     drawing_no = models.TextField(blank=True)
@@ -776,6 +777,19 @@ class NCRIDs(models.Model):
 
     class Meta:
         verbose_name_plural = 'NCR IDs'
+
+    def __str__(self):
+        return ''
+
+class AssetSerialNumberIDs(models.Model):
+    uid_id = models.AutoField(primary_key=True)
+    asset_type = models.CharField(max_length=550, null=True, blank=True)
+    location_id = models.CharField(max_length=550, null=True, blank=True)
+    sub_location = models.CharField(max_length=550, null=True, blank=True)
+    last_id = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'Asset Serial Number IDs'
 
     def __str__(self):
         return ''

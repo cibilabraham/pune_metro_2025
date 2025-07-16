@@ -57,68 +57,11 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 ">
-                    <div class="form-group">
-                        <label for="software_version">*Sub Location:</label>
-                        <input type="text" class="form-control" id="sub_location" name="sub_location" value="{{data.sub_location}}" required="required">
-                        <div class="invalid-feedback">
-                         Please enter Sub Location.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 ">
-                    <div class="form-group">
-                        <label for="software_version">*Train set no:</label>
-
-                         <select class="form-control" id="location_id" name="location_id" required="required">
-                        <option value="">--  Select Train set no  --</option>
-                        {% for train_set_options in train_set_options %}
-                            {% if train_set_options == data.location_id %}
-                                <option value="{{train_set_options}}" selected>{{train_set_options}} </option>
-                            {% else %}
-                                <option value="{{train_set_options}}">{{train_set_options}} </option>
-                            {% endif %}
-                                
-                        {% endfor %}
-                        </select>
-
-
-                        <!-- <input type="text" class="form-control" id="location_id" name="location_id" value="{{data.location_id}}" required="required"> -->
-                        <div class="invalid-feedback">
-                         Please enter Train set no.
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-md-4 d-none">
-                    <div class="form-group">
-                        <label for="location_description">Location description:</label>
-                        <textarea class="form-control" id="location_description" name="location_description">{{data.location_description}}</textarea>
-                        <div class="invalid-feedback">
-                         Please enter Location description.
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="asset_serial_number">*Asset serial number:</label>
-                        <input type="text" class="form-control" required="required" id="asset_serial_number" name="asset_serial_number" value="{{data.asset_serial_number}}">
-                        <div class="invalid-feedback">
-                         Please enter Asset serial number.
-                        </div>
-                    </div>
-                </div>
-
-
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="asset_type">*Asset Name:</label>
                         {% if request.session.user_Role == 1 %}
-                        <select class="form-control" id="asset_type" name="asset_type" required="required">
+                        <select class="form-control" id="asset_type" name="asset_type" required="required" onchange="getAssetSerialNumber();">
                         <option value="">--  Select Asset Name  --</option>
                         {% for asset_type in asset_types %}
                         {% if asset_type.asset_type != '' %}
@@ -132,7 +75,7 @@
                         {% endfor %}
                         </select>
                         {% else %}  
-                        <select class="form-control" id="asset_type" name="asset_type" required="required">
+                        <select class="form-control" id="asset_type" name="asset_type" required="required" onchange="getAssetSerialNumber();">
                         <option value="">--  Select Asset Name  --</option>
                         {% for asset_type in asset_types %}
                         {% if asset_type.asset_type != '' %}
@@ -162,6 +105,106 @@
                     </div>
                 </div>
 
+
+
+
+
+
+
+
+
+               
+
+                <div class="col-md-4 ">
+                    <div class="form-group">
+                        <label for="software_version">*Train set no:</label>
+
+                         <select class="form-control" id="location_id" name="location_id" required="required" onchange="getAssetSerialNumber();">
+                        <option value="">--  Select Train set no  --</option>
+                        {% for train_set_options in train_set_options %}
+                            {% if train_set_options == data.location_id %}
+                                <option value="{{train_set_options}}" selected>{{train_set_options}} </option>
+                            {% else %}
+                                <option value="{{train_set_options}}">{{train_set_options}} </option>
+                            {% endif %}
+                                
+                        {% endfor %}
+                        </select>
+
+
+                        <!-- <input type="text" class="form-control" id="location_id" name="location_id" value="{{data.location_id}}" required="required"> -->
+                        <div class="invalid-feedback">
+                         Please enter Train set no.
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="sub_location">*CAR:</label>
+                       
+                        <select class="form-control" id="sub_location" name="sub_location" required="required" onchange="getAssetSerialNumber();">
+                            <option value="" selected>-- Select CAR --</option>
+
+                            {% if 'DMA' == data.sub_location %}
+                            <option value="DMA" selected>DMA</option>
+                            {% else %}
+                                <option value="DMA">DMA</option>
+                            {% endif %}
+                            {% if 'TC' == data.sub_location %}
+                            <option value="TC" selected>TC</option>
+                            {% else %}
+                                <option value="TC">TC</option>
+                            {% endif %}
+                            {% if 'DMB' == data.sub_location %}
+                            <option value="DMB" selected>DMB</option>
+                            {% else %}
+                                <option value="DMB">DMB</option>
+                            {% endif %}
+
+                        </select>
+
+
+
+                        {% comment %} <input type="text" class="form-control" id="sub_location" name="sub_location" value="{{data.sub_location}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter CAR.
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="col-md-4 d-none">
+                    <div class="form-group">
+                        <label for="location_description">Location description:</label>
+                        <textarea class="form-control" id="location_description" name="location_description">{{data.location_description}}</textarea>
+                        <div class="invalid-feedback">
+                         Please enter Location description.
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="asset_serial_number">*Asset serial number:</label>
+                        <input type="text" class="form-control" required="required" id="asset_serial_number" name="asset_serial_number" value="{{data.asset_serial_number}}" readonly>
+                        <div class="invalid-feedback">
+                         Please enter Asset serial number.
+                        </div>
+                    </div>
+                </div>
+
+
+                
+
                 <div class="col-md-4 hide d-none">
                     <div class="form-group">
                         <label for="software_version">Software version:</label>
@@ -173,7 +216,7 @@
                 </div>
 
 
-                 <div class="col-md-4 ">
+                 <div class="col-md-4 d-none">
                     <div class="form-group">
                         <label for="software_description">Software description:</label>
                         <textarea class="form-control" id="software_description" name="software_description">{{data.software_description}}</textarea>
@@ -260,6 +303,41 @@
         return true;
     }
 
+    function getAssetSerialNumber(){
+        $('#asset_serial_number').val('');
+        var asset_type= $('select[name=asset_type] option').filter(':selected').val()
+        var location_id= $('#location_id').val()
+        var sub_location= $('#sub_location').val()
+        var id= $('#id').val()
+
+        if(asset_type != "" && location_id != "" && sub_location !=""){
+            $.ajax({
+                url: "/forms/asset_register/get_serial_no/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                
+                    'id':id,
+                    'sub_location' : sub_location,
+                    'location_id':location_id,
+                    'asset_type':asset_type,
+                },
+
+                success: function (response) {
+                    if(response.status == '1') {
+                        $('#asset_serial_number').val(response.data);
+                    }
+                }
+            });
+
+
+        }
+
+
+
+    }
+
     $( "#AssetRegisterForm" ).submit(function(e) {
         e.preventDefault();
         var buttonClick= $('#buttonClick').val()
@@ -278,6 +356,11 @@
         asset_description = asset_description.replace(/['"`]/g, '');
         location_description = location_description.replace(/['"`]/g, '');
         software_description = software_description.replace(/['"`]/g, '');
+
+        if(sub_location == ""){
+            swal('Asset serial number cant be empty.')
+            return false;
+        }
 
 
         $.ajax({

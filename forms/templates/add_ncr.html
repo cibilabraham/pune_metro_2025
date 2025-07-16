@@ -48,16 +48,6 @@
                                 </div>
                             </div>
 
-                             <div class="col-lg-12 " >
-                                <div class="form-group">
-                                    <label for="inspector_name">Name of the inspector (NCR Raised):</label>
-                                    <input type="text" class="form-control" id="inspector_name"  name="inspector_name" value="{{data.inspector_name}}">
-                                    <div class="invalid-feedback" >
-                                    Please enter Name of the inspector (NCR Raised).
-                                    </div>
-                                </div>
-                            </div>
-
                               <div class="col-lg-12 " >
                                 <div class="form-group">
                                     <label for="project_name">PROJECT NAME:</label>
@@ -69,6 +59,56 @@
                             </div>
 
                             <div class="col-lg-12 " >
+                                <div class="form-group">
+                                    <label for="inspector_name">Name of the inspector (NCR Raised):</label>
+                                    <input type="text" class="form-control" id="inspector_name"  name="inspector_name" value="{{data.inspector_name}}">
+                                    <div class="invalid-feedback" >
+                                    Please enter Name of the inspector (NCR Raised).
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 " >
+                                <div class="form-group">
+                                    <label for="asset_type">*PART Description /ASSEMBLY NAME:</label>
+                                    {% if request.session.user_Role == 1 %}
+                                    <select class="form-control" id="asset_type" name="asset_type" required="required" onchange="getAssetSerialNumber();">
+                                    <option value="">--  Select PART Description /ASSEMBLY NAME  --</option>
+                                    {% for asset_type in asset_types %}
+                                    {% if asset_type.asset_type != '' %}
+                                        {% if asset_type.asset_type == data.asset_type %}
+                                            <option value="{{asset_type.asset_type}}" selected>{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                                        {% else %}
+                                            <option value="{{asset_type.asset_type}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                                        {% endif %}
+                                            
+                                        {% endif %}
+                                    {% endfor %}
+                                    </select>
+                                    {% else %}  
+                                    <select class="form-control" id="asset_type" name="asset_type" required="required" onchange="getAssetSerialNumber();">
+                                    <option value="">--  Select PART Description /ASSEMBLY NAME  --</option>
+                                    {% for asset_type in asset_types %}
+                                    {% if asset_type.asset_type != '' %}
+                                        {% if asset_type.asset_type == data.asset_type %}
+                                            <option value="{{asset_type.asset_type}}" selected>{{asset_type.asset_type}} </option>
+                                        {% else %}
+                                            <option value="{{asset_type.asset_type}}">{{asset_type.asset_type}} </option>
+                                        {% endif %}
+                                            
+                                        {% endif %}
+                                    {% endfor %}
+                                    </select>
+                                    {% endif %}  
+                                    <div class="invalid-feedback">
+                                    Please select PART Description /ASSEMBLY NAME.
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-lg-12 d-none hide" >
                                 <div class="form-group">
                                     <label for="assembly_name">PART Description /ASSEMBLY NAME:</label>
                                     <input type="text" class="form-control" id="assembly_name"  name="assembly_name" value="{{data.assembly_name}}">
@@ -188,7 +228,31 @@
                                             </div>
 
 
-                                 <div class="col-lg-12 " >
+
+                                <div class="col-lg-12 " >
+                                    <div class="form-group">
+                                        <label for="serial_no">Serial no/Traceability:</label>
+                                        <select class="form-control" id="serial_no" name="serial_no">
+                                        <option value="">--  Select Serial no/Traceability  --</option>
+                                        {% for asset_serial_number in asset_serial_number %}
+                                        {% if asset_serial_number.asset_serial_number != '' %}
+                                        {% if asset_serial_number.asset_serial_number == data.serial_no %}
+                                            <option value="{{asset_serial_number.asset_serial_number}}" selected>{{asset_serial_number.asset_serial_number}}</option>
+                                            {% else %}
+                                            <option value="{{asset_serial_number.asset_serial_number}}">{{asset_serial_number.asset_serial_number}}</option>
+                                            {% endif %}
+                                        {% endif %}
+                                        {% endfor %}
+                                        </select>
+                                        {% comment %} <input type="text" class="form-control" id="serial_no" name="serial_no" value="{{data.serial_no}}"> {% endcomment %}
+                                        <div class="invalid-feedback">
+                                        Please enter Serial no/Traceability.
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                 <!-- <div class="col-lg-12 " >
                                     <div class="form-group">
                                         <label for="serial_no">Serial no/Traceability:</label>
                                         <input type="text" class="form-control" id="serial_no"  name="serial_no" value="{{data.serial_no}}" >
@@ -196,7 +260,7 @@
                                         Please enter Serial no/Traceability.
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
 
 
@@ -1325,6 +1389,58 @@
 
 
     });
+
+
+      $("#asset_type").change(function () {                            
+        var asset_type= $('select[name=asset_type]').val()
+        $.ajax({
+            url: "/forms/location_id_from_asset_type_ncr/",
+            method: 'GET',
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data : {
+            'asset_type' : asset_type
+            },
+            success: function (response) {
+                //console.log(response);
+                var options = "";
+                    $.each(response, function (i,value) {
+                    if (value.id != ''){
+                    options = options + "<option value="+value.id+">"+value.option+"</options>";
+                    }
+                });
+                    var select = "<select>"+options+"</select>";
+                $("#location_id").html(select);
+                
+                }
+            }); 
+
+
+        $.ajax({
+        url: "/forms/get_all_Serialnumber_ncr/",
+        method: 'GET',
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data : {
+        'asset_type' : asset_type,
+        },
+        success: function (response) {
+            //console.log(response);
+            var options = "<option value="+""+">"+"--  Select Serial no/Traceability  --"+"</options>";
+                $.each(response, function (i,value) {
+                if (value.id != ''){
+                options = options + "<option value="+value.id+">"+value.option+"</options>";
+                }
+            });
+                var select = "<select>"+options+"</select>";
+            $("#serial_no").html(select);
+            
+            }
+        }); 
+    });
+
+
+
 
     function calculateTotal(){
         $('#total_cost').val(0);

@@ -58,6 +58,35 @@
             </div>
              {% endif %}    
             <div class="row mb-4">
+
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="asset_type">Asset Name</label>
+                        {% if request.session.user_Role == 1 %}
+                            <select class="form-control" id="asset_type" name="asset_type" required="required" >
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% else %}  
+                            <select class="form-control" id="asset_type" name="asset_type" required="required" >
+                                <option value="all">--All--</option>
+                                {% for asset_type in asset_type %}
+                                {% if asset_type.asset_type != '' %}
+                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% endif %} 
+                    </div>
+                </div>
+
+
+
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="location_id">Train set no</label>
@@ -69,6 +98,22 @@
                             {% endif %}
                         {% endfor %}
                         </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="sel_car">CAR:</label>
+                       
+                        <select class="form-control" id="sel_car" name="sel_car" >
+                            <option value="all" selected>-- All --</option>
+                            <option value="DMA">DMA</option>
+                            <option value="TC">TC</option>
+                            <option value="DMB">DMB</option>
+                        </select>
+
+
+
                     </div>
                 </div>
                 
@@ -86,32 +131,9 @@
                     </div>
                 </div> 
                 
-                <div class="col-md-3">     
-                    <div class="form-group">
-                        <label for="asset_type">Asset Name</label>
-                        {% if request.session.user_Role == 1 %}
-                            <select class="form-control" id="asset_type" name="asset_type" required="required">
-                                <option value="all">--All--</option>
-                                {% for asset_type in asset_type %}
-                                {% if asset_type.asset_type != '' %}
-                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
-                                {% endif %}
-                                {% endfor %}
-                            </select>
-                        {% else %}  
-                            <select class="form-control" id="asset_type" name="asset_type" required="required">
-                                <option value="all">--All--</option>
-                                {% for asset_type in asset_type %}
-                                {% if asset_type.asset_type != '' %}
-                                    <option value="{{asset_type.id}}">{{asset_type.asset_type}} </option>
-                                {% endif %}
-                                {% endfor %}
-                            </select>
-                        {% endif %} 
-                    </div>
-                </div>
+               
 
-                <div class="col-md-3">     
+                <div class="col-md-3 d-none">     
                     <div class="form-group">
                         <label for="asset_description">Asset description</label>
                         <select class="form-control" id="asset_description" name="asset_description">
@@ -192,11 +214,14 @@
                         <tr>
                             <th><input type="checkbox" id="deleteAll" /></th>
                             <th>Asset config ID</th>
-                            <th>Train Set No</th>
-                            <!-- <th>Location description</th> -->
-                            <th>Asset serial number </th>
                             <th>Asset Name</th>
                             <th>Asset description</th>
+                            <th>Train Set No</th>
+                            <th>CAR</th>
+
+                            <!-- <th>Location description</th> -->
+                            <th>Asset serial number </th>
+                            
                             <!-- <th>Software version</th> -->
                             <!-- <th>Software description</th> -->
                             <th>Asset status</th>
@@ -231,6 +256,62 @@
         });*/
 
     });
+
+     $("#asset_type").change(function () {                            
+    var asset_type= $('select[name=asset_type]').val()
+    $.ajax({
+        url: "/forms/location_id_from_asset_type/",
+        method: 'GET',
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data : {
+        'asset_type' : asset_type
+        },
+        success: function (response) {
+            //console.log(response);
+            var options = "<option value="+"all"+">"+"--  Select Train set no  --"+"</options>";
+                $.each(response, function (i,value) {
+                if (value.id != ''){
+                options = options + "<option value="+value.id+">"+value.option+"</options>";
+                }
+            });
+                var select = "<select>"+options+"</select>";
+            $("#location_id").html(select);
+            
+            }
+        }); 
+    });
+
+
+     $("#sel_car").change(function () {                            
+    var asset_type= $('select[name=asset_type]').val()
+    var location_id= $('select[name=location_id]').val()
+    var sel_car= $('select[name=sel_car]').val()
+    $.ajax({
+        url: "/forms/get_all_Serialnumber/",
+        method: 'GET',
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data : {
+        'asset_type' : asset_type,
+        'location_id' : location_id,
+        'sel_car' : sel_car
+        },
+        success: function (response) {
+            //console.log(response);
+            var options = "<option value="+"all"+">"+"--  Select Asset serial number  --"+"</options>";
+                $.each(response, function (i,value) {
+                if (value.id != ''){
+                options = options + "<option value="+value.id+">"+value.option+"</options>";
+                }
+            });
+                var select = "<select>"+options+"</select>";
+            $("#asset_serial_number").html(select);
+            
+            }
+        }); 
+    });
+
 
     function deleteAsset(id){
         swal({
@@ -314,6 +395,7 @@
 
 function getDefectData(){
     var location_id= $('select[name=location_id] option').filter(':selected').val()
+    var sel_car= $('select[name=sel_car] option').filter(':selected').val()
     var asset_serial_number= $('select[name=asset_serial_number] option').filter(':selected').val()
     var asset_type= $('select[name=asset_type] option').filter(':selected').val()
     var asset_description= $('select[name=asset_description] option').filter(':selected').val()
@@ -361,7 +443,8 @@ function getDefectData(){
                         'asset_description' : asset_description,
                         'software_version': software_version,
                         'software_description' : software_description,
-                        'asset_status' : asset_status
+                        'asset_status' : asset_status,
+                        'sel_car':sel_car
                       }
                   },
                   "columns" : [
@@ -375,11 +458,16 @@ function getDefectData(){
                             else return item.asset_config_id;
                         }
                     },
-                      {"data" : "location_id"},
+                      
                     //   {"data" : "location_description"},
+                    {"data" : "asset_type"},
+                    {"data" : "asset_description"},
+                    {"data" : "location_id"},
+                    {"data" : "sub_location"},
+
                       {"data" : "asset_serial_number"},
-                      {"data" : "asset_type"},
-                      {"data" : "asset_description"},
+                      
+                      
                     //   {"data" : "software_version"},
                     //   {"data" : "software_description"},
                       {"data" : "asset_status"},
