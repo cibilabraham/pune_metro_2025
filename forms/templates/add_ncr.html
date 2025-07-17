@@ -794,15 +794,15 @@
 
 
                              <select class="form-control" id="containment_action " name="containment_action" >
-                                {% if 'Yes' == data.containment_action %}
-                                <option value="Yes" selected>Yes</option>
+                                {% if 'Done' == data.containment_action %}
+                                <option value="Done" selected>Done</option>
                                 {% else %}
-                                    <option value="Yes">Yes</option>
+                                    <option value="Done">Done</option>
                                 {% endif %}
-                                {% if 'No' == data.containment_action %}
-                                <option value="No" selected>No</option>
+                                {% if 'Not Done' == data.containment_action %}
+                                <option value="Not Done" selected>Not Done</option>
                                 {% else %}
-                                    <option value="No">No</option>
+                                    <option value="Not Done">Not Done</option>
                                 {% endif %}
                             </select>
 
