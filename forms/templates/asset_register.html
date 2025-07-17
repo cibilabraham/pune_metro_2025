@@ -411,15 +411,24 @@ function getDefectData(){
                     title: 'Asset register',
                     className: 'btn-outline-primary'
                     },
-                    {
-                    extend: 'pdf',
-                    title: 'Asset register',
-                    className: 'btn-outline-primary'
-                    },
+                     {
+                          extend: 'pdfHtml5',
+                          title: 'Asset register',
+                          className: 'btn-outline-primary',
+                          orientation: 'landscape', // ✅ set orientation
+                          pageSize: 'A4'            // ✅ optional
+                        },
+                    // {
+                    // extend: 'pdf',
+                    // title: 'Asset register',
+                    // className: 'btn-outline-primary'
+                    // },
                     {
                     extend: 'print',
                     title: 'Asset register',
-                    className: 'btn-outline-primary'
+                    className: 'btn-outline-primary',
+                    orientation: 'landscape', // ✅ set orientation
+                    pageSize: 'A4'            // ✅ optional
                     }
                 ],
                   scrollY:        "400px",

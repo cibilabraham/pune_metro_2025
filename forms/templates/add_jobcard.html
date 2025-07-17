@@ -38,7 +38,18 @@
                     <span>Department: <b>{{data.department}}</b></span><br>
                     <span>Nature of Job: <b>{{ data.nature_of_job|default_if_none:"" }}</b></span><br>
                     <span>SIC Required: <b>{{ data.sic_required|default_if_none:"" }}</b></span><br>
-                    <span>Assigned To: <b>{{ data.assigned_to|default_if_none:"" }}</b></span><br>
+                    <span>Assigned To: <b>
+                        {% if data.run_status < 3 %}
+                            Operator
+                        {% elif data.run_status <= 6 %}
+                            Maintainer
+                        {% elif data.run_status == 7 %}
+                            Operator
+                        {% else %}
+                            Operator
+                        {% endif %}
+
+                    </b></span><br>
                  
                   
                 </div>

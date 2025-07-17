@@ -7,6 +7,11 @@
         th:first-child,td:first-child,th:last-child,td:last-child,th:nth-child(2),td:nth-child(2) {  
         background-color:white;    
         }
+
+        table.dataTable th, table.dataTable td {
+          white-space: nowrap;
+        }
+
     </style>
     <!-- <h1 id="site-name">Asset Optima</h1> -->
   {% endblock %}
@@ -202,22 +207,58 @@ function getDefectData(){
         $('#example').DataTable({
                   dom: 'Bfrtip',
                   buttons: [
-                        {
-                        extend: 'excel',
-                        title: 'Daily Kilometre Reading',
-                        className: 'btn-outline-primary'
-                        },
-                        {
-                        extend: 'pdf',
-                        title: 'Daily Kilometre Reading',
-                        className: 'btn-outline-primary'
-                        },
-                        {
-                        extend: 'print',
-                        title: 'Daily Kilometre Reading',
-                        className: 'btn-outline-primary'
-                        }
-                    ],
+  {
+    extend: 'excel',
+    title: 'Daily Kilometre Reading',
+    className: 'btn-outline-primary',
+    exportOptions: {
+      columns: ':visible',
+      modifier: {
+        page: 'all'
+      }
+    }
+  },
+  {
+    extend: 'pdfHtml5',
+    title: 'Daily Kilometre Reading',
+    orientation: 'landscape',
+    pageSize: 'A3',
+    className: 'btn-outline-primary',
+    exportOptions: {
+      columns: ':visible',
+      modifier: {
+        page: 'all'  // ✅ ensures all rows get exported
+      }
+    },
+    customize: function (doc) {
+      doc.defaultStyle.fontSize = 2;
+      doc.styles.tableHeader.fontSize = 3;
+
+      // ✅ Fix multi-row header (use header from original HTML)
+      var headerRows = document.querySelectorAll('#example thead tr');
+      var tableHeader = [];
+
+      headerRows.forEach(function(row) {
+        var rowData = [];
+        row.querySelectorAll('th').forEach(function(cell) {
+          var colSpan = cell.colSpan || 1;
+          for (var i = 0; i < colSpan; i++) {
+            rowData.push(cell.innerText);
+          }
+        });
+        tableHeader.push(rowData);
+      });
+
+      // Replace the PDF table header with custom header
+      if (doc.content[1].table && tableHeader.length > 1) {
+        // doc.content[1].table.body.unshift(tableHeader[1]); // second header row
+        doc.content[1].table.body.unshift(tableHeader[0]); // first header row
+      }
+    }
+  }
+
+],
+
                   scrollY:        "400px",
                     scrollX:        true,
                     scrollCollapse: true,

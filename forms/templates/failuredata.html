@@ -126,11 +126,13 @@
                         </div>
                     </div>
                 </div>
+
+                
            
             </div>
 
-            <div class="row mb-4 hide d-none">
-                <div class="col-md-3">
+            <div class="row mb-4 hide ">
+                <div class="col-md-3 d-none">
                     <div class="form-group">
                         <label for="mode_id">By mode id</label>
                         <select class="form-control" id="mode_id" name="mode_id">
@@ -141,6 +143,21 @@
                             {% endif %}
                         {% endfor %}
                         </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="incident">Incident:</label>
+                        <select class="form-control" id="incident" name="incident" required="required">
+                            <option value="all">--All--</option>
+                            <option value="Yes">Yes</option>
+                            
+                            <option value="No">No</option>
+                           
+                        </select>
+                       
                     </div>
                 </div>
                 
@@ -323,6 +340,7 @@
         var failure_type= $('select[name=failure_type] option').filter(':selected').val()
         var safety_failure= $('select[name=safety_failure] option').filter(':selected').val()
         var mode_id= $('select[name=mode_id] option').filter(':selected').val()
+        var incident= $('select[name=incident] option').filter(':selected').val()
 
             $('#example').DataTable().destroy();
             $('#example').DataTable({
@@ -364,6 +382,7 @@
                             'failure_type':failure_type,
                             'safety_failure' : safety_failure,
                             'mode_id': mode_id,
+                            'incident':incident,
                         }
                     },
                     "columns" : [

@@ -367,6 +367,7 @@ class Failuredata(View):
         failure_type = req.get('failure_type')
         safety_failure = req.get('safety_failure')
         mode_id = req.get('mode_id')
+        incident = req.get('incident')
         if user_Role == 1:
             FailureData_data =FailureData.objects.filter(is_active=0)
         else:
@@ -383,6 +384,8 @@ class Failuredata(View):
             FailureData_data=FailureData_data.filter(safety_failure=safety_failure)
         if mode_id != "all":
             FailureData_data=FailureData_data.filter(mode_id=mode_id)
+        if incident != "all":
+            FailureData_data=FailureData_data.filter(incident=incident)
     
         # Asset_data = Asset.objects.all()
         for FailureDatas in FailureData_data:
@@ -6177,6 +6180,8 @@ class NCRRegister(View):
                             'time' : jb.time,
                             'id':jb.rec_id,
                             'user_Role':user_Role,
+                            'fnl_date':jb.fnl_date,
+                            'ncr_status':jb.ncr_status,
                         }) 
                 else:
                     if PBSMaster.objects.filter(id=asset_type_id,project_id=P_id,is_active=0).exists():
@@ -6188,6 +6193,7 @@ class NCRRegister(View):
                                 'time' : jb.time,
                                 'id':jb.rec_id,
                                 'user_Role':user_Role,
+                                'ncr_status':jb.ncr_status,
                             }) 
         print(data)
         return JsonResponse({'data':data})
@@ -6256,7 +6262,7 @@ class AddNCR(View):
             verification_date = datetime.datetime.strptime(jb.verification_date, "%Y-%m-%d").date() 
 
         if jb.fnl_date == None or jb.fnl_date == "":
-            fnl_date = today_date
+            fnl_date = ''
         else:
             fnl_date = datetime.datetime.strptime(jb.fnl_date, "%Y-%m-%d").date() 
 
@@ -6355,6 +6361,8 @@ class AddNCR(View):
             'fnl_designation':jb.fnl_designation,
 
             'asset_type':jb.asset_type,
+            'root_cause_analysis':jb.root_cause_analysis,
+            'ncr_status':jb.ncr_status,
 
 
         }
@@ -6394,9 +6402,11 @@ class AddNCR(View):
                 'corrective_action_description' : CorrectiveActions.corrective_action_description,
                 'corrective_action_update' : CorrectiveActions.corrective_action_update,
                 'corrective_action_status' : CorrectiveActions.corrective_action_status,
-            })     
+            })    
 
-        return render(request, self.template_name,{'data':data ,'train_set_options':train_set_options,'Corrective_data':Corrective_data , 'asset_types': asset_types, 'asset_serial_number':asset_serial_number })
+        imageList = NCRImagesList.objects.filter(is_active=0,ncr_gen_id=jb.rec_id)
+
+        return render(request, self.template_name,{'data':data ,'train_set_options':train_set_options,'Corrective_data':Corrective_data , 'asset_types': asset_types, 'asset_serial_number':asset_serial_number, 'imageList':imageList })
       
  
     def post(self, request, *args, **kwargs):
@@ -6439,7 +6449,9 @@ class AddNCR(View):
         defect_description = req.get('defect_description')
 
         defect_time = req.get('defect_time')
-        defect_date = datetime.datetime.strptime(req.get('defect_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        defect_date = req.get('defect_date')
+        if defect_date != "":
+            defect_date = datetime.datetime.strptime(req.get('defect_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
 
 
         active_deviations = req.get('active_deviations')
@@ -6452,25 +6464,37 @@ class AddNCR(View):
         # Create folder if it doesn't exist
         os.makedirs(static_path, exist_ok=True)
 
+
         if 'ok_img' in request.FILES:
-            uploaded_file = request.FILES['ok_img']
-            file_path = os.path.join(static_path, uploaded_file.name)
-            ok_img = uploaded_file.name
-            with open(file_path, 'wb+') as destination:
-                for chunk in uploaded_file.chunks():
-                    destination.write(chunk)
-            NCRGeneration.objects.filter(rec_id=ids).update(ok_img=ok_img)
+            uploaded_files = request.FILES.getlist('ok_img')  # get list of uploaded files
+            for uploaded_file in uploaded_files:
+                file_path = os.path.join(static_path, uploaded_file.name)
+                with open(file_path, 'wb+') as destination:
+                    for chunk in uploaded_file.chunks():
+                        destination.write(chunk)
+
+                im = NCRImagesList(ncr_gen_id=ids,file_path=uploaded_file.name)
+                im.save()
+            
+        # if 'ok_img' in request.FILES:
+        #     uploaded_file = request.FILES['ok_img']
+        #     file_path = os.path.join(static_path, uploaded_file.name)
+        #     ok_img = uploaded_file.name
+        #     with open(file_path, 'wb+') as destination:
+        #         for chunk in uploaded_file.chunks():
+        #             destination.write(chunk)
+        #     NCRGeneration.objects.filter(rec_id=ids).update(ok_img=ok_img)
 
 
-        if 'notok_img' in request.FILES:
-            uploaded_file = request.FILES['notok_img']
-            file_path = os.path.join(static_path, uploaded_file.name)
-            notok_img = uploaded_file.name
-            with open(file_path, 'wb+') as destination:
-                for chunk in uploaded_file.chunks():
-                    destination.write(chunk)
+        # if 'notok_img' in request.FILES:
+        #     uploaded_file = request.FILES['notok_img']
+        #     file_path = os.path.join(static_path, uploaded_file.name)
+        #     notok_img = uploaded_file.name
+        #     with open(file_path, 'wb+') as destination:
+        #         for chunk in uploaded_file.chunks():
+        #             destination.write(chunk)
 
-            NCRGeneration.objects.filter(rec_id=ids).update(notok_img=notok_img)
+        #     NCRGeneration.objects.filter(rec_id=ids).update(notok_img=notok_img)
 
         if 'signature_img' in request.FILES:
             uploaded_file = request.FILES['signature_img']
@@ -6540,10 +6564,21 @@ class AddNCR(View):
         detection = req.get('detection')
         effectiveness = req.get('effectiveness')
 
-        corrective_action_date = datetime.datetime.strptime(req.get('corrective_action_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
-        approved_date = datetime.datetime.strptime(req.get('approved_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
-        action_date = datetime.datetime.strptime(req.get('action_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
-        verification_date = datetime.datetime.strptime(req.get('verification_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        corrective_action_date = req.get('corrective_action_date')
+        if corrective_action_date != "":
+            corrective_action_date = datetime.datetime.strptime(req.get('corrective_action_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
+        approved_date = req.get('approved_date')
+        if approved_date != "":
+            approved_date = datetime.datetime.strptime(req.get('approved_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
+        action_date = req.get('action_date')
+        if action_date != "":
+            action_date = datetime.datetime.strptime(req.get('action_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
+        verification_date = req.get('verification_date')
+        if verification_date != "":
+            verification_date = datetime.datetime.strptime(req.get('verification_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
 
 
         cost_1 = req.get('cost_1')
@@ -6559,11 +6594,18 @@ class AddNCR(View):
         physical_closure_rca_capa = req.get('physical_closure_rca_capa')
         fnl_name = req.get('fnl_name')
         fnl_designation = req.get('fnl_designation')
-        fnl_date = datetime.datetime.strptime(req.get('fnl_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
 
-       
+        fnl_date = req.get('fnl_date')
+        if fnl_date != "":
+            fnl_date = datetime.datetime.strptime(req.get('fnl_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
 
-        NCRGeneration.objects.filter(rec_id=ids).update(asset_type=asset_type,inspector_name=inspector_name,assembly_name=assembly_name,assembly_no=assembly_no,drawing_no=drawing_no,detection_workstation=detection_workstation,location_id=location_id,sel_car=sel_car,serial_no=serial_no,green_red_channel=green_red_channel,chkMinor=chkMinor,chkMajor=chkMajor,chkCritical=chkCritical,specification=specification,defect_source=defect_source,supplier_name=supplier_name,defect_location=defect_location,defect_detected_by=defect_detected_by,defect_detected_workstation=defect_detected_workstation,no_of_parts_deloverd=no_of_parts_deloverd,no_of_defective_parts=no_of_defective_parts,defect_description=defect_description,defect_time=defect_time,defect_date=defect_date,active_deviations=active_deviations,chk_Internal=chk_Internal,chk_Supplier=chk_Supplier,chk_TWL=chk_TWL,chk_Transportation=chk_Transportation,corrective_action_date=corrective_action_date,approved_date=approved_date,action_date=action_date,verification_date=verification_date,initial_analysis=initial_analysis,attachments_files=attachments_files,responsibility=responsibility,invoice_number=invoice_number,non_conforming_part_disposition=non_conforming_part_disposition,responsible_for_execution=responsible_for_execution,containment_action=containment_action,corrective_action_by=corrective_action_by,corrective_action_designation=corrective_action_designation,approved_by=approved_by,approved_designation=approved_designation,action_name=action_name,verification_name=verification_name,inp_root_cause=inp_root_cause,occurrence=occurrence,detection=detection,effectiveness=effectiveness,cost_1=cost_1,cost_2=cost_2,cost_3=cost_3,cost_4=cost_4,cost_5=cost_5,cost_6=cost_6,total_cost=total_cost,fnl_date=fnl_date,no_of_day_open=no_of_day_open,physical_closure=physical_closure,physical_closure_rca_capa=physical_closure_rca_capa,fnl_name=fnl_name,fnl_designation=fnl_designation)
+        root_cause_analysis = req.get('root_cause_analysis')
+        ncr_status = 0
+
+        if fnl_date != "" and fnl_name != "" and fnl_designation != "":
+            ncr_status = 1
+
+        NCRGeneration.objects.filter(rec_id=ids).update(asset_type=asset_type,inspector_name=inspector_name,assembly_name=assembly_name,assembly_no=assembly_no,drawing_no=drawing_no,detection_workstation=detection_workstation,location_id=location_id,sel_car=sel_car,serial_no=serial_no,green_red_channel=green_red_channel,chkMinor=chkMinor,chkMajor=chkMajor,chkCritical=chkCritical,specification=specification,defect_source=defect_source,supplier_name=supplier_name,defect_location=defect_location,defect_detected_by=defect_detected_by,defect_detected_workstation=defect_detected_workstation,no_of_parts_deloverd=no_of_parts_deloverd,no_of_defective_parts=no_of_defective_parts,defect_description=defect_description,defect_time=defect_time,defect_date=defect_date,active_deviations=active_deviations,chk_Internal=chk_Internal,chk_Supplier=chk_Supplier,chk_TWL=chk_TWL,chk_Transportation=chk_Transportation,corrective_action_date=corrective_action_date,approved_date=approved_date,action_date=action_date,verification_date=verification_date,initial_analysis=initial_analysis,attachments_files=attachments_files,responsibility=responsibility,invoice_number=invoice_number,non_conforming_part_disposition=non_conforming_part_disposition,responsible_for_execution=responsible_for_execution,containment_action=containment_action,corrective_action_by=corrective_action_by,corrective_action_designation=corrective_action_designation,approved_by=approved_by,approved_designation=approved_designation,action_name=action_name,verification_name=verification_name,inp_root_cause=inp_root_cause,occurrence=occurrence,detection=detection,effectiveness=effectiveness,cost_1=cost_1,cost_2=cost_2,cost_3=cost_3,cost_4=cost_4,cost_5=cost_5,cost_6=cost_6,total_cost=total_cost,fnl_date=fnl_date,no_of_day_open=no_of_day_open,physical_closure=physical_closure,physical_closure_rca_capa=physical_closure_rca_capa,fnl_name=fnl_name,fnl_designation=fnl_designation,root_cause_analysis=root_cause_analysis,ncr_status=ncr_status)
 
 
         return JsonResponse({'status':'1'})
@@ -6727,6 +6769,9 @@ class ViewNCR(View):
             'fnl_name':jb.fnl_name,
             'fnl_designation':jb.fnl_designation,
 
+            'root_cause_analysis':jb.root_cause_analysis,
+            'ncr_status':jb.ncr_status,
+
 
         }
 
@@ -6752,7 +6797,24 @@ class ViewNCR(View):
                 'corrective_action_status' : CorrectiveActions.corrective_action_status,
             })     
 
-        return render(request, self.template_name,{'data':data ,'train_set_options':train_set_options,'Corrective_data':Corrective_data })
+        imageList = NCRImagesList.objects.filter(is_active=0,ncr_gen_id=jb.rec_id)
+
+        return render(request, self.template_name,{'data':data ,'train_set_options':train_set_options,'Corrective_data':Corrective_data,'imageList':imageList })
+
+    def post(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        req = request.POST
+        cursor = connection.cursor()
+        # print(req)
+        ids = req.get('id')
+        st = req.get('st')
+        if st == 1 or st == '1':
+            NCRImagesList.objects.filter(img_id=ids).update(is_active=1)
+            return JsonResponse({'status':'1'})
+        
+        return JsonResponse({'status':'0'})
+
       
  
 

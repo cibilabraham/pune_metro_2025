@@ -40,10 +40,11 @@
                     <thead>
                         <tr>
                             <th>NON-CONFORMITY REPORT No</th>
-                            <th>Date</th>
-                            <th>Time</th>
+                            <th>NCR Opening Date</th>
+                            <th>NCR Closure Date</th>
+                            <th>Status</th>
                           
-                            <th>Operations</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,7 +115,29 @@ function getDefectData(){
                         
                         }
                     },
-                      {"data" : "time"},
+                      
+                  
+                    {"data":null,"render":function(item){
+
+                            if(item.fnl_date != null){
+                                return moment(item.fnl_date).format('DD-MM-YYYY');
+                            }
+                            return item.fnl_date;
+                        
+                        }
+                    },
+                      
+                    {"data":null,"render":function(item){
+
+                            if(item.ncr_status == 1){
+                                return '<h5 class="text-danger"> Closed </h5>';
+                            }else{
+                                return '<h5 class="text-success"> Open </h5>';
+                            }
+                            
+                        
+                        }
+                    },
                      
                      
                       {"data":null,"render":function(item){
@@ -123,7 +146,7 @@ function getDefectData(){
                             tbl += '<a href="/forms/ncr_register/viewncr/'+ item.id +'" >View</a> | ';
 
                             
-                            if( item.user_Role == 1 || item.user_Role == 2 || item.user_Role == 5 ){
+                            if( item.user_Role == 1 || item.user_Role == 2 || item.user_Role == 3 || item.user_Role == 6 ){
                                 tbl += '<a href="/forms/ncr_register/addncr/'+ item.id +'" >Edit</a> | ';
                             }
 

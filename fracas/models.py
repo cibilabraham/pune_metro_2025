@@ -763,6 +763,9 @@ class NCRGeneration(models.Model):
     fnl_name = models.TextField( blank=True)
     fnl_designation = models.TextField( blank=True)
 
+    ncr_status = models.IntegerField(default=0)
+    root_cause_analysis = models.CharField(max_length=550, default=0)
+
 
     class Meta:
         verbose_name_plural = 'NCR'
@@ -790,6 +793,18 @@ class AssetSerialNumberIDs(models.Model):
 
     class Meta:
         verbose_name_plural = 'Asset Serial Number IDs'
+
+    def __str__(self):
+        return ''
+
+class NCRImagesList(models.Model):
+    img_id = models.AutoField(primary_key=True)
+    ncr_gen_id = models.CharField(max_length=550, null=True, blank=True)
+    file_path = models.TextField(null=True, blank=True)
+    is_active = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = 'NCR Images List'
 
     def __str__(self):
         return ''

@@ -123,7 +123,27 @@ function getDefectData(){
                       {"data" : "department"},
                       {"data" : "nature_of_job"},
                       {"data" : "sic_required"},
-                      {"data" : "assigned_to"},
+
+
+                       {"data":null,"render":function(item){
+
+                        if(item.run_status < 3){
+                            return 'Operator';
+                        }else if(item.run_status <= 6){
+                            return 'Maintainer';
+                        }else if(item.run_status == 7){
+                            return 'Operator';
+                        }else {
+                            return 'Operator';
+                        }
+
+                           
+                        }
+                    },
+
+
+
+                    //   {"data" : "assigned_to"},
                       {"data" : "last_update"},
                        {"data":null,"render":function(item){
 

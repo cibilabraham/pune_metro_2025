@@ -35,8 +35,22 @@
 
                 <div class="row " style="padding: 20px;">
 
+                      <div class="col-lg-12 " >
+                            <div class="form-group">
+                                {% if data.ncr_status == 1 %}
+                                    <h3 class="text-danger"> Closed </h3>
+                                {% else %}
+                                    <h3 class="text-success"> Open </h3>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
                     <div class="col-lg-6 " >
                         <div class="row ">
+
+                              
+                         
 
                              <div class="col-lg-12 " >
                                 <div class="form-group">
@@ -513,8 +527,14 @@
                         </div>
                     </div>
 
-
                     <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="active_deviations">Active Deviations:</label>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3 d-none">
                         <div class="form-group">
                             <label for="active_deviations">Active Deviations:</label>
                             <input type="text" class="form-control" id="active_deviations" name="active_deviations" value="{{data.active_deviations}}" >
@@ -574,23 +594,45 @@
 
                 <div class="row " style="padding: 20px;">
 
-                    <div class="col-6"> 
+                    <div class="col-12">
+                        <b>Evidence/ related figures</b>
+                     </div>
 
-                        <h1>OK</h1>
 
+                    <div class="col-4"> 
+
+                        
                             <div class="form-group">
-                                <input type="file" class="form-control" id="ok_img"  name="ok_img" accept="image/*">
+                                <input type="file" class="form-control" id="ok_img"  name="ok_img" accept="image/*" multiple>
 
-                                {% if data.ok_img %}
+                                <!-- {% if data.ok_img %}
                                     <div class="col-lg-4">
                                         <img src="/static/uploads/{{ data.ok_img }}" style="width: 60px;">
                                     </div>
-                                {% endif %}
+                                {% endif %} -->
                                
                             </div>
                         
                     </div>
-                    <div class="col-6"> 
+
+                    <div class="col-8"> 
+
+                        {% for imageList in imageList %}
+
+                            <img src="/static/uploads/{{ imageList.file_path }}" style="width: 90px;">
+                            <input class="btn btn-sm" type="button" value="Delete" onClick="deleteNCRImage('{{ imageList.img_id }}');">
+
+
+
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">No images available</td>
+                            </tr>
+                        {% endfor %}
+
+                    </div>
+
+                    <!-- <div class="col-6 d-none"> 
                         <h1>NOT OK</h1>
 
                          <div class="form-group">
@@ -604,7 +646,7 @@
                                
                             </div>
 
-                    </div>
+                    </div> -->
 
                 </div>
 
@@ -747,9 +789,24 @@
 
                     </div>
 
-                     <div class="col-md-9">
+                     <div class="col-md-4">
                         <div class="form-group">
-                            <textarea class="form-control" id="containment_action" name="containment_action">{{data.containment_action}}</textarea>
+
+
+                             <select class="form-control" id="containment_action " name="containment_action" >
+                                {% if 'Yes' == data.containment_action %}
+                                <option value="Yes" selected>Yes</option>
+                                {% else %}
+                                    <option value="Yes">Yes</option>
+                                {% endif %}
+                                {% if 'No' == data.containment_action %}
+                                <option value="No" selected>No</option>
+                                {% else %}
+                                    <option value="No">No</option>
+                                {% endif %}
+                            </select>
+
+
                            
                         </div>
                     </div>
@@ -787,7 +844,7 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="corrective_action_date">*Date (DD/MM/YYYY):</label>
+                                    <label for="corrective_action_date">Date (DD/MM/YYYY):</label>
                                     <input type="text" autocomplete="off"  class="form-control date-time" id="corrective_action_date" name="corrective_action_date" value="{{data.corrective_action_date|date:'d/m/Y'}}">
                                     <div class="invalid-feedback">
                                     Please enter Date.
@@ -803,7 +860,7 @@
 
 
                                 <div class="form-group">
-                                    <label for="signature_img">*Signature: </label>
+                                    <label for="signature_img">Signature: </label>
                                     <input type="file" class="form-control" id="signature_img"  name="signature_img"  accept="image/*">
                                     <div class="invalid-feedback">
                                     Please upload Signature.
@@ -844,7 +901,7 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="approved_date">*Date (DD/MM/YYYY):</label>
+                                    <label for="approved_date">Date (DD/MM/YYYY):</label>
                                     <input type="text" autocomplete="off"  class="form-control date-time" id="approved_date" name="approved_date" value="{{data.approved_date|date:'d/m/Y'}}">
                                     <div class="invalid-feedback">
                                     Please enter Date.
@@ -856,7 +913,7 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="signature_img2">*Signature: </label>
+                                    <label for="signature_img2">Signature: </label>
                                     <input type="file" class="form-control" id="signature_img2"  name="signature_img2"  accept="image/*">
                                     <div class="invalid-feedback">
                                     Please upload Signature.
@@ -895,7 +952,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="action_date">*Date (DD/MM/YYYY):</label>
+                                <label for="action_date">Date (DD/MM/YYYY):</label>
                                 <input type="text" autocomplete="off"  class="form-control date-time" id="action_date" name="action_date" value="{{data.action_date|date:'d/m/Y'}}">
                                 <div class="invalid-feedback">
                                 Please enter Date.
@@ -907,7 +964,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="signature_img3">*Signature: </label>
+                                <label for="signature_img3">Signature: </label>
                                 <input type="file" class="form-control" id="signature_img3"  name="signature_img3"  accept="image/*">
                                 <div class="invalid-feedback">
                                 Please upload Signature.
@@ -943,7 +1000,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="verification_date">*Date (DD/MM/YYYY):</label>
+                                <label for="verification_date">Date (DD/MM/YYYY):</label>
                                 <input type="text" autocomplete="off"  class="form-control date-time" id="verification_date" name="verification_date" value="{{data.verification_date|date:'d/m/Y'}}">
                                 <div class="invalid-feedback">
                                 Please enter Date.
@@ -955,7 +1012,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="signature_img4">*Signature: </label>
+                                <label for="signature_img4">Signature: </label>
                                 <input type="file" class="form-control" id="signature_img4"  name="signature_img4"  accept="image/*">
                                 <div class="invalid-feedback">
                                 Please upload Signature.
@@ -979,6 +1036,33 @@
 
 
                 <div class="row " style="padding: 20px;">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="root_cause_analysis">Root cause analysis :</label>
+                                <select class="form-control" id="root_cause_analysis " name="root_cause_analysis" required="required">
+                                    {% if 'Not necessary' == data.root_cause_analysis %}
+                                    <option value="Not necessary" selected>Not necessary</option>
+                                    {% else %}
+                                        <option value="Not necessary">Not necessary</option>
+                                    {% endif %}
+                                    {% if 'Necessary but done by the supplier' == data.root_cause_analysis %}
+                                    <option value="Necessary but done by the supplier" selected>Necessary but done by the supplier</option>
+                                    {% else %}
+                                        <option value="Necessary but done by the supplier">Necessary but done by the supplier</option>
+                                    {% endif %}
+                                    {% if 'Necessary by internal' == data.ohe_required %}
+                                    <option value="Necessary by internal" selected>Necessary by internal</option>
+                                    {% else %}
+                                        <option value="Necessary by internal">Necessary by internal</option>
+                                    {% endif %}
+                                </select>
+                                {% comment %} <input type="text" class="form-control" id="root_cause_analysis" name="root_cause_analysis" value="{{data.root_cause_analysis}}"> {% endcomment %}
+                                <div class="invalid-feedback">
+                                Please select Root cause analysis.
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
@@ -1068,7 +1152,7 @@
 
                 </div>
 
-                <div class="row " style="padding: 20px;">
+                <div class="row d-none hide" style="padding: 20px;">
 
                     <div class="col-12 mb-4"> <h5>COST OF NON - QUALITY</h5> </div>
 
@@ -1205,19 +1289,9 @@
 
                     </div>
 
-                    <div class="col-4">  
+                  
 
-                            <div class="form-group">
-                                <label for="no_of_day_open">No. Of Days NCR Remained Open:</label>
-                                <input type="text" class="form-control" id="no_of_day_open"  name="no_of_day_open" value="{{data.no_of_day_open}}">
-                                <div class="invalid-feedback">
-                                Please enter No. Of Days NCR Remained Open.
-                                </div>
-                            </div>
-                       
-                    </div>
-
-                     <div class="col-4">  
+                     <div class="col-4 d-none">  
                                     
                         <div class="raw">
                             <div class="col-md-12">
@@ -1268,7 +1342,7 @@
 
                                   <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="signature_img5">*Signature: </label>
+                                        <label for="signature_img5">Signature: </label>
                                         <input type="file" class="form-control" id="signature_img5"  name="signature_img5"  accept="image/*">
                                         <div class="invalid-feedback">
                                         Please upload Signature.
@@ -1285,8 +1359,8 @@
                                     
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="fnl_date">*Date (DD/MM/YYYY):</label>
-                                        <input type="text" autocomplete="off"  class="form-control date-time" id="fnl_date" name="fnl_date" value="{{data.fnl_date|date:'d/m/Y'}}">
+                                        <label for="fnl_date">NCR Closure Date (DD/MM/YYYY):</label>
+                                        <input type="text" autocomplete="off"  class="form-control date-time" id="fnl_date" name="fnl_date" value="{{data.fnl_date|date:'d/m/Y'}}" onchange="getNumberOfDays();">
                                         <div class="invalid-feedback">
                                         Please enter Date.
                                         </div>
@@ -1294,7 +1368,17 @@
                                 </div>
 
 
+                        <div class="col-4">  
 
+                            <div class="form-group">
+                                <label for="no_of_day_open">No. Of Days NCR Remained Open:</label>
+                                <input type="text" class="form-control" id="no_of_day_open"  name="no_of_day_open" value="{{data.no_of_day_open}}">
+                                <div class="invalid-feedback">
+                                Please enter No. Of Days NCR Remained Open.
+                                </div>
+                            </div>
+                       
+                        </div>
 
 
                 </div>
@@ -1389,6 +1473,62 @@
 
 
     });
+
+    function getNumberOfDays(){
+        var date = $('#date').val();
+        var fnl_date = $('#fnl_date').val();
+
+        // Parse the first date (e.g., "July 3, 2025")
+        const date1 = new Date(date);
+
+        // Parse the second date (e.g., "03/07/2025" in dd/mm/yyyy format)
+        const parts = fnl_date.split('/');
+        const date2 = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`); // yyyy-mm-dd format
+
+        // Calculate the difference in milliseconds
+        const diffInMs = Math.abs(date1 - date2);
+
+        // Convert milliseconds to days
+        const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+        console.log(`Difference is ${diffInDays} day(s)`);
+
+        $('#no_of_day_open').val(diffInDays);
+
+
+
+    }
+
+
+
+     function deleteNCRImage(id){
+
+         swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/ncr_register/viewncr/",
+                method: 'POST',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                    'st':1,
+                },
+                success: function (response) {
+                    window.location.reload(); 
+                }
+            });     
+        });
+
+    }
 
 
       $("#asset_type").change(function () {                            
