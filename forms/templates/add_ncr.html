@@ -82,51 +82,15 @@
                                 </div>
                             </div>
 
+                            
+
+
+
                             <div class="col-lg-12 " >
                                 <div class="form-group">
-                                    <label for="asset_type">*PART Description /ASSEMBLY NAME:</label>
-                                    {% if request.session.user_Role == 1 %}
-                                    <select class="form-control" id="asset_type" name="asset_type" required="required" onchange="getAssetSerialNumber();">
-                                    <option value="">--  Select PART Description /ASSEMBLY NAME  --</option>
-                                    {% for asset_type in asset_types %}
-                                    {% if asset_type.asset_type != '' %}
-                                        {% if asset_type.asset_type == data.asset_type %}
-                                            <option value="{{asset_type.asset_type}}" selected>{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
-                                        {% else %}
-                                            <option value="{{asset_type.asset_type}}">{{asset_type.asset_type}} ( {{asset_type.project}} )</option>
-                                        {% endif %}
-                                            
-                                        {% endif %}
-                                    {% endfor %}
-                                    </select>
-                                    {% else %}  
-                                    <select class="form-control" id="asset_type" name="asset_type" required="required" onchange="getAssetSerialNumber();">
-                                    <option value="">--  Select PART Description /ASSEMBLY NAME  --</option>
-                                    {% for asset_type in asset_types %}
-                                    {% if asset_type.asset_type != '' %}
-                                        {% if asset_type.asset_type == data.asset_type %}
-                                            <option value="{{asset_type.asset_type}}" selected>{{asset_type.asset_type}} </option>
-                                        {% else %}
-                                            <option value="{{asset_type.asset_type}}">{{asset_type.asset_type}} </option>
-                                        {% endif %}
-                                            
-                                        {% endif %}
-                                    {% endfor %}
-                                    </select>
-                                    {% endif %}  
-                                    <div class="invalid-feedback">
-                                    Please select PART Description /ASSEMBLY NAME.
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                            <div class="col-lg-12 d-none hide" >
-                                <div class="form-group">
                                     <label for="assembly_name">PART Description /ASSEMBLY NAME:</label>
-                                    <input type="text" class="form-control" id="assembly_name"  name="assembly_name" value="{{data.assembly_name}}">
-                                    <div class="invalid-feedback" >
+                                    <input type="text" class="form-control" id="assembly_name"  name="assembly_name" value="{{data.assembly_name}}" readonly>
+                                    <div class="invalid-feedback" readonly>
                                     Please enter PART Description /ASSEMBLY NAME.
                                     </div>
                                 </div>
@@ -197,9 +161,9 @@
 
                                  <div class="col-lg-12 ">
                                     <div class="form-group">
-                                        <label for="software_version">Train set no(Ctrl + left mouse click to select multiple options):</label>
+                                        <label for="software_version">*Train set no(Ctrl + left mouse click to select multiple options):</label>
 
-                                        <select class="form-control" id="location_id" name="location_id" multiple>
+                                        <select class="form-control" id="location_id" name="location_id" multiple required>
                                         <!-- <option value="">--  Select Train set no  --</option> -->
                                         {% for train_set_options in train_set_options %}
                                             {% if train_set_options.location_id == data.location_id %}
@@ -245,8 +209,8 @@
 
                                 <div class="col-lg-12 " >
                                     <div class="form-group">
-                                        <label for="serial_no">Serial no/Traceability:</label>
-                                        <select class="form-control" id="serial_no" name="serial_no">
+                                        <label for="serial_no">*Serial no/Traceability:</label>
+                                        <select class="form-control" id="serial_no" name="serial_no" required>
                                         <option value="">--  Select Serial no/Traceability  --</option>
                                         {% for asset_serial_number in asset_serial_number %}
                                         {% if asset_serial_number.asset_serial_number != '' %}
@@ -1283,6 +1247,44 @@
 
                 </div>
 
+
+               
+
+
+
+                        {% if data.ncr_status == 0 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
+
+                            <div class="row " style="padding: 20px;">
+                                <div class="col-12">  
+                                    <button type="submit" class="btn btn-primary mt-2" >Update </button>
+
+                                </div>
+                            </div>
+                           
+                        {% endif %}
+
+
+
+          
+
+
+
+
+            </form>
+
+
+
+            <form id="closeNCRForm"> 
+
+
+
+
+
+
+
+
+             
+
                 <div class="row " style="padding: 20px;">
                     <div class="col-12">  
                         <b>NCR Closure( final)</b>
@@ -1321,8 +1323,8 @@
 
                      <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="fnl_name">Name:</label>
-                                        <input type="text" class="form-control" id="fnl_name"  name="fnl_name" value="{{data.fnl_name}}">
+                                        <label for="fnl_name">*Name:</label>
+                                        <input type="text" class="form-control" id="fnl_name"  name="fnl_name" value="{{data.fnl_name}}" required>
                                         <div class="invalid-feedback">
                                         Please enter Name.
                                         </div>
@@ -1331,8 +1333,8 @@
 
                                  <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="fnl_name">Designation:</label>
-                                        <input type="text" class="form-control" id="fnl_designation"  name="fnl_designation" value="{{data.fnl_designation}}">
+                                        <label for="fnl_name">*Designation:</label>
+                                        <input type="text" class="form-control" id="fnl_designation"  name="fnl_designation" value="{{data.fnl_designation}}" required>
                                         <div class="invalid-feedback">
                                         Please enter Designation.
                                         </div>
@@ -1342,8 +1344,8 @@
 
                                   <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="signature_img5">Signature: </label>
-                                        <input type="file" class="form-control" id="signature_img5"  name="signature_img5"  accept="image/*">
+                                        <label for="signature_img5">*Signature: </label>
+                                        <input type="file" class="form-control" id="signature_img5"  name="signature_img5"  accept="image/*" required>
                                         <div class="invalid-feedback">
                                         Please upload Signature.
                                         </div>
@@ -1359,8 +1361,8 @@
                                     
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="fnl_date">NCR Closure Date (DD/MM/YYYY):</label>
-                                        <input type="text" autocomplete="off"  class="form-control date-time" id="fnl_date" name="fnl_date" value="{{data.fnl_date|date:'d/m/Y'}}" onchange="getNumberOfDays();">
+                                        <label for="fnl_date">*NCR Closure Date (DD/MM/YYYY):</label>
+                                        <input type="text" autocomplete="off"  class="form-control date-time" id="fnl_date" name="fnl_date" value="{{data.fnl_date|date:'d/m/Y'}}" onchange="getNumberOfDays();" required>
                                         <div class="invalid-feedback">
                                         Please enter Date.
                                         </div>
@@ -1384,26 +1386,18 @@
                 </div>
 
 
+                {% if data.ncr_status == 0 or request.session.user_Role == 1 or request.session.user_Role == 2 %}
 
+                <div class="row " style="padding: 20px;">
+                    <div class="col-12">  
+                        <button type="submit" class="btn btn-primary mt-2" >Close NCR </button>
 
-
-
-
-
-            <div class="row " style="padding: 20px;">
-                <div class="col-12">  
-                    <button type="submit" class="btn btn-primary mt-2" >Update </button>
-
+                    </div>
                 </div>
-            </div>
 
-
-
+                {% endif %}
 
             </form>
-
-
-
 
 
 
@@ -1670,6 +1664,46 @@
             }
         });
     });
+
+
+
+
+    $("#closeNCRForm").submit(function(e) {
+        e.preventDefault();
+
+        var form = $('#closeNCRForm')[0];  // Get the raw DOM form element
+        var formData = new FormData(form);    // Create FormData object
+
+
+        formData.append('id', '{{ data.id }}');
+        formData.append('st', 2);
+      
+        $.ajax({
+            url: "/forms/ncr_register/viewncr/",
+            method: 'POST',
+            data: formData,
+            dataType: 'json',
+            processData: false,     // Prevent jQuery from processing data
+            contentType: false,     // Let browser set content type including boundaries
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+
+            success: function (response) {
+                if (response.status == '1') {
+                    swal('Successfully close NCR (Non-Conformity Report)');
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 3000); // 3000 milliseconds = 3 seconds
+
+                } else {
+                    swal('Failed to close NCR (Non-Conformity Report)');
+                }
+            },
+            error: function () {
+                swal('An error occurred while submitting the data.');
+            }
+        });
+    });
+
 
 
 

@@ -352,15 +352,43 @@
                         className: 'btn-outline-primary'
                         },
                         {
-                        extend: 'pdf',
-                        title: 'Failure data collection',
-                        className: 'btn-outline-primary'
-                        },
-                        {
-                        extend: 'print',
-                        title: 'Failure data collection',
-                        className: 'btn-outline-primary'
-                        }
+    extend: 'pdfHtml5',
+    title: 'Failure data collection',
+    orientation: 'landscape',
+    pageSize: 'A3',
+    className: 'btn-outline-primary',
+    exportOptions: {
+      columns: ':visible',
+      modifier: {
+        page: 'all'  // ✅ ensures all rows get exported
+      }
+    },
+    customize: function (doc) {
+      doc.defaultStyle.fontSize = 3;
+      doc.styles.tableHeader.fontSize = 4;
+
+      // ✅ Fix multi-row header (use header from original HTML)
+      var headerRows = document.querySelectorAll('#example thead tr');
+      var tableHeader = [];
+
+      headerRows.forEach(function(row) {
+        var rowData = [];
+        row.querySelectorAll('th').forEach(function(cell) {
+          var colSpan = cell.colSpan || 1;
+          for (var i = 0; i < colSpan; i++) {
+            rowData.push(cell.innerText);
+          }
+        });
+        tableHeader.push(rowData);
+      });
+
+      // Replace the PDF table header with custom header
+      if (doc.content[1].table && tableHeader.length > 1) {
+        // doc.content[1].table.body.unshift(tableHeader[1]); // second header row
+        doc.content[1].table.body.unshift(tableHeader[0]); // first header row
+      }
+    }
+  }
                     ],
                     scrollY:        "350px",
                     scrollX:        true,
