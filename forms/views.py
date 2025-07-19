@@ -5403,6 +5403,309 @@ class ViewJobcard(View):
 
 
 
+class DwdJobcard(View):
+    template_name = 'dwd_jobcard.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        user_Role = request.session.get('user_Role')
+        P_id = request.session['P_id']
+        if user_Role == 4:
+            return redirect('/dashboard/')
+        id = kwargs.get("id")
+        data=[]
+        JobCard_datas =JobCard.objects.filter(job_id=id)
+        jb = JobCard_datas[0]
+        ast_data = Asset.objects.filter(id=jb.failure_id.location_id)
+
+        FailureDatas=FailureData.objects.filter(id=jb.failure_id.id)
+        datas = FailureDatas[0]
+
+        PBSMaster_datas=PBSMaster.objects.filter(id=FailureDatas[0].asset_type)
+
+        job_details = []
+        job_detailsArr = JobDetails.objects.filter(job_card_id=jb.job_id,is_active=0)
+        st = 0
+        for jdar in job_detailsArr:
+            st = st + 1
+            job_details.append({ 
+                'job_details_id' :  jdar.job_details_id,
+                'job_description' : jdar.job_description,
+                's_no' : st,
+            })
+
+
+        full_path = jb.signature_img
+        if full_path == None:
+            relative_path = None
+        else:
+            # Find the index of /static
+            index = full_path.find("/static")
+            if index != -1:
+                relative_path = full_path[index + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path = relative_path.lstrip("/")
+            else:
+                relative_path = full_path  # fallback if /static not found
+
+        full_path2 = jb.signature_img2
+        if full_path2 == None:
+            relative_path2 = None
+        else:
+            # Find the index of /static
+            index2 = full_path2.find("/static")
+            if index2 != -1:
+                relative_path2 = full_path2[index2 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path2 = relative_path2.lstrip("/")
+            else:
+                relative_path2 = full_path2  # fallback if /static not found
+
+
+        full_path3 = jb.signature_img3
+        if full_path3 == None:
+            relative_path3 = None
+        else:
+            # Find the index of /static
+            index3 = full_path3.find("/static")
+            if index3 != -1:
+                relative_path3 = full_path3[index3 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path3 = relative_path3.lstrip("/")
+            else:
+                relative_path3 = full_path3  # fallback if /static not found
+
+
+        full_path4 = jb.signature_img4
+        if full_path4 == None:
+            relative_path4 = None
+        else:
+            # Find the index of /static
+            index4 = full_path4.find("/static")
+            if index4 != -1:
+                relative_path4 = full_path4[index4 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path4 = relative_path4.lstrip("/")
+            else:
+                relative_path4 = full_path4  # fallback if /static not found
+
+        full_path5 = jb.signature_img5
+        if full_path5 == None:
+            relative_path5 = None
+        else:
+            # Find the index of /static
+            index5 = full_path5.find("/static")
+            if index5 != -1:
+                relative_path5 = full_path5[index5 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path5 = relative_path5.lstrip("/")
+            else:
+                relative_path5 = full_path5  # fallback if /static not found
+
+        full_path6 = jb.signature_img6
+        if full_path6 == None:
+            relative_path6 = None
+        else:
+            # Find the index of /static
+            index6 = full_path6.find("/static")
+            if index6 != -1:
+                relative_path6 = full_path6[index6 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path6 = relative_path6.lstrip("/")
+            else:
+                relative_path6 = full_path6  # fallback if /static not found
+
+
+
+        data={ 
+            'job_card_no' :  jb.job_card_no,
+            'train_set_no' : ast_data[0].location_id,
+            'date' : jb.failure_id.date,
+            'time' : jb.failure_id.time,
+            'department' : jb.failure_id.department,
+            'nature_of_job' : jb.nature_of_job,
+            'sic_required' : jb.sic_required,
+            'assigned_to':jb.assigned_to,
+            'last_update' : jb.last_update,
+            'status':jb.status,
+            'id':jb.job_id,
+            'user_Role':user_Role,
+            'run_status' : jb.run_status,
+
+
+            'asset_type' : PBSMaster_datas[0].asset_type,
+            'subsystem' : PBSMaster_datas[0].subsystem,
+            'failure_id' : datas.failure_id,
+            'asset_config_id' : datas.asset_config_id,
+            'event_description' : datas.event_description,
+            'mode_id' :datas.mode_id,
+            'mode_description' : datas.mode_description,
+            'detection':datas.detection,
+            'service_delay' : datas.service_delay,
+            'immediate_investigation' : datas.immediate_investigation,
+            'failure_type' : datas.failure_type,
+            'safety_failure' : datas.safety_failure,
+            'hazard_id' : datas.hazard_id,
+            'cm_description' : datas.cm_description,
+            'replaced_asset_config_id':datas.replaced_asset_config_id,
+            'cm_start_date' : datas.cm_start_date,
+            'cm_start_time' : datas.cm_start_time,
+            'cm_end_date' : datas.cm_end_date,
+            'cm_end_time' : datas.cm_end_time,
+            'oem_failure_reference' : datas.oem_failure_reference,
+            'defect':datas.defect,
+
+
+            'location_id' : datas.location_id,
+            'kilometre_reading' : datas.kilometre_reading,
+            'sel_car' : datas.sel_car,
+            'equipment' : datas.equipment,
+            'location' : datas.location,
+            'direction': datas.direction,
+            'incident' : datas.incident,
+            'no_of_trip_cancel' : datas.no_of_trip_cancel,
+            'deboarding' : datas.deboarding,
+            'reported_to_PPIO' : datas.reported_to_PPIO,
+            'TO_name': datas.TO_name,
+
+            'ohe_required' : jb.ohe_required,
+            'issued_to' : jb.issued_to,
+            'completion_time' : jb.completion_time,
+            'from_revenue_service' : jb.from_revenue_service,
+            'delay_to_service' : jb.delay_to_service,
+            'trip_no':jb.trip_no,
+            'event_date' : jb.event_date,
+            'event_time':jb.event_time,
+
+            'sic_no':jb.sic_no,
+
+            'signature_img':relative_path,
+            'issued_by' : jb.issued_by,
+            'l1_time':jb.l1_time,
+            'l1_date':jb.l1_date,
+
+            'signature_img2':relative_path2,
+            'received_by' : jb.received_by,
+            'l2_time':jb.l2_time,
+            'l2_date':jb.l2_date,
+
+
+            'signature_img3':relative_path3,
+            'follow_up_details' : jb.follow_up_details,
+            'details_of_the_activitues' : jb.details_of_the_activitues,
+            'handed_over':jb.handed_over,
+            'new_supervisor':jb.new_supervisor,
+
+
+            'signature_img4':relative_path4,
+            'completion_date_time' : jb.completion_date_time,
+            'completion_date':jb.completion_date,
+            'train_can_be_moved':jb.train_can_be_moved,
+            'down_time':jb.down_time,
+            'completion_name':jb.completion_name,
+            'train_can_be_energized':jb.train_can_be_energized,
+
+
+            'signature_img5':relative_path5,
+            'completion_date_time2' : jb.completion_date_time2,
+            'completion_date2':jb.completion_date2,
+            'train_can_be_moved2':jb.train_can_be_moved2,
+            'down_time2':jb.down_time2,
+            'completion_name2':jb.completion_name2,
+            'train_can_be_energized2':jb.train_can_be_energized2,
+            'corrective_action':jb.corrective_action,
+            'sic_start_time':jb.sic_start_time,
+            'sic_has_performed':jb.sic_has_performed,
+
+            'signature_img6':relative_path6,
+            'close_name' : jb.close_name,
+            'close_date':jb.close_date,
+            'close_time':jb.close_time,
+            
+
+
+
+        }
+
+        prv_data = []
+        JobCard_prvdatas =JobCard.objects.filter(failure_id__asset_config_id__location_id=jb.failure_id.asset_config_id.location_id,failure_id__date=jb.failure_id.date).exclude(job_id=id)
+        st_gen = 0
+        for jbr in JobCard_prvdatas:
+            st_gen = st_gen + 1
+            FailureDatasprv=FailureData.objects.filter(id=jbr.failure_id.id)
+            datasprv = FailureDatasprv[0]
+            sts = 'Open'
+            if jbr.status == 1 or jbr.status == '1':
+                sts = 'Close'
+
+            wrk = ''
+            job_detailsArrLoop = JobDetails.objects.filter(job_card_id=jbr.job_id,is_active=0)
+            for jdar in job_detailsArrLoop:
+                if wrk == '':
+                    wrk = jdar.job_description
+                else:
+                    wrk = f"{wrk}, {jdar.job_description}"
+
+            prv_data.append({ 
+                'st_gen':st_gen,
+                'job_card_no' :  jbr.job_card_no,
+                'issued_to' : jbr.issued_to,
+                'immediate_investigation' : wrk,
+                'completion_time' : jbr.completion_time,
+                'status':sts,
+            })
+
+
+        prv_data2 = []
+        thirty_days_ago = timezone.now().date() - timedelta(days=30)
+        print(thirty_days_ago)
+        JobCard_prvdatas2 =JobCard.objects.filter(failure_id__asset_config_id__location_id=jb.failure_id.asset_config_id.location_id,failure_id__equipment=jb.failure_id.equipment,date__gte=thirty_days_ago).exclude(job_id=id)
+        st_gen = 0
+        for jbr in JobCard_prvdatas2:
+            st_gen = st_gen + 1
+            PBSMaster_datas2 =PBSMaster.objects.filter(id=jbr.failure_id.asset_type)
+            if PBSMaster_datas[0].system == PBSMaster_datas2[0].system:
+                prv_data2.append({ 
+                    'st_gen':st_gen,
+                    'job_card_no' :  jbr.job_card_no,
+                    'date' :  jbr.failure_id.date,
+                    'immediate_investigation' :  jbr.failure_id.immediate_investigation,
+                })
+
+
+        job_works = []
+        job_worksArr = JobWorkToMaintainers.objects.filter(job_card_id=jb.job_id,is_active=0)
+        st = 0
+        for jdar in job_worksArr:
+            st = st + 1
+            job_works.append({ 
+                'job_work_id' :  jdar.job_work_id,
+                'jobwork_name' :  jdar.jobwork_name,
+                'jobwork_work' :  jdar.jobwork_work,
+                'jobwork_signature' : jdar.jobwork_signature,
+                's_no' : st,
+            })
+
+        job_equipment = []
+        job_equipmentArr = JobReplacedEquipment.objects.filter(job_card_id=jb.job_id,is_active=0)
+        st = 0
+        for jdar in job_equipmentArr:
+            st = st + 1
+            job_equipment.append({ 
+                'job_equipment_id' :  jdar.job_equipment_id,
+                'jobequipment_name' :  jdar.jobequipment_name,
+                'jobequipment_new_no' :  jdar.jobequipment_new_no,
+                'jobequipment_old_no' : jdar.jobequipment_old_no,
+                's_no' : st,
+            })
+
+
+        return render(request, self.template_name,{'data':data,'job_details':job_details, 'prv_data':prv_data, 'job_works':job_works, 'job_equipment':job_equipment ,"prv_data2":prv_data2 })
+      
+
+
+
 
 class EIRRegister(View):
     template_name = 'eir_register.html'

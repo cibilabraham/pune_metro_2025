@@ -1,0 +1,925 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+
+            <style>
+                .tick-top {
+                position: relative;
+                display: inline-block;
+                /* padding-top: 0.2em;  */
+                /* text-align: center; */
+                }
+
+                .tick-top::before {
+                content: "✔"; /* Unicode for tick mark */
+                position: relative;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 1.1em;
+                color: green;
+                }
+
+                .no-click {
+  pointer-events: none; /* prevents all mouse interactions */
+}
+
+                .page-break {
+    page-break-after: always;
+  }
+
+
+                 .no-border-cols {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .no-border-cols th,
+  .no-border-cols td {
+    border: none;
+    border-right: 1px solid #dee2e6; /* column separator */
+  }
+
+  .no-border-cols th:last-child,
+  .no-border-cols td:last-child {
+    border-right: none; /* remove right border on last column */
+  }
+
+  #dwdJobcardDiv {
+  width: 100%;
+  max-width: 7.5in; /* Keeps within A4 width with margin */
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+table, div, td, th {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+
+            </style>
+
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                    <h3 class="page-header">
+                       Download Jobcard
+                    </h3>
+                  
+                </div>
+
+                 <div class="col-lg-6 mb-3">
+    
+    
+                    <a href="/forms/jobcard_register/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+
+            </div>
+
+            <div class="border border-light rounded" >
+
+
+                <div class="d-flex justify-content-center gap-3 py-3">
+                    <button onclick="downloadPDF()" class="btn btn-primary">
+                        <i class="bi bi-download"></i> Download PDF
+                    </button>
+
+                    &nbsp; &nbsp; 
+
+                    <button onclick="printDiv()" class="btn btn-secondary">
+                        <i class="bi bi-printer"></i> Print
+                    </button>
+                    </div>
+
+
+
+
+            <div id="dwdJobcardDiv" style="overflow: visible; height: auto;" >
+
+            
+
+            <div class="container mt-1">
+                <div class="p-4">
+                    <div >
+                        <div>
+                            <span><b>Part A Job Card Details </b>(To be filled by PPIO)</span>
+
+                            <table class="table table-bordered mt-2">
+                               
+                                    <tr>
+                                        <td colspan="3"><span><b>Job Card No: </b>{{data.job_card_no}}</span></td>
+                                        <td colspan="3"><span><b>Train Set No: </b>{{data.train_set_no}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><span><b>Kilometre Reading: </b>{{data.kilometre_reading}}</span></td>
+                                        <td colspan="3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <strong>OHE Required:</strong>
+                                                <div>
+
+                                                {% if data.ohe_required == 'Yes' %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" checked> <span >Yes</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                <span >
+                                                    <input class="form-check-input no-click" type="checkbox"> <span>No</span>
+                                                </span>
+                                                {% else %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" > <span >Yes</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                <span >
+                                                    <input class="form-check-input no-click" type="checkbox" checked> <span>No</span>
+                                                </span>
+                                                {% endif %}
+                                               
+                                                </div>
+                                            </div>
+                                            </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="3"><span><b>Issued to: </b>{{data.issued_to}}</span></td>
+                                        <td colspan="3"><span><b>Department: </b>{{data.department}}</span></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="2">
+                                           Expected Time of Completion:
+                                        </td>
+                                        <td rowspan="2">
+                                            {% if data.completion_time %}
+                                            <span>{{ data.completion_time }} hrs</span>
+                                            {% else %}
+                                            <span>{{data.completion_time}}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td rowspan="2">Train Withdrawn from Revenue Service:</td>
+                                        <td style="text-align: center;">
+                                            {% if data.from_revenue_service == 'Yes' %}
+                                               <span class="tick-top">Yes</span>
+                                            {% else %}
+                                               <span class="text-center" style="text-align: center;">Yes</span>
+                                            {% endif %}
+
+                                        </td>
+                                        <td rowspan="2">Delay to Service:</td>
+                                        <td><span><b>Minutes: </b>{{data.delay_to_service}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            {% if data.from_revenue_service == 'No' %}
+                                               <span class="tick-top">No</span>
+                                            {% else %}
+                                               <span class="text-center" >No</span>
+                                            {% endif %}
+
+                                        </td>
+                                        <td><span><b>Trip No: </b>{{data.trip_no}}</span></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6"><span><b>Nature of Job: </b>{{data.nature_of_job}}</span><br>
+                                        <span><b>Event Date: </b>{{data.event_date}}</span> &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><b>Time: </b>{{data.event_time}}</span>
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6"><span>Details of Job(s) to be carried out: </span><br>
+                                
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+
+                                            <table class=" no-border-cols" style="width:100%">
+                                                <thead>
+                                                     <tr>
+                                                    
+                                                        <th>S. No</th>
+                                                        <th>Car No</th>
+                                                        <th>Sub System</th>
+                                                        <th>Equipment</th>
+                                                        <th>Job Details</th>
+                                                    
+                                                    </tr>
+
+                                                </thead>
+                                                <tbody>
+
+                                                {% for job_details in job_details %}
+                                                        <tr>
+                                                            <td>{{ job_details.s_no }}</td>
+                                                            <td>{{ data.sel_car }}</td>
+                                                            <td>{{ data.subsystem }}</td>
+                                                            <td>{{ data.equipment }}</td>
+                                                            <td>{{ job_details.job_description }}</td>
+
+                                                            
+                                                        
+                                                        </tr>
+                                                    {% empty %}
+                                                        <tr>
+                                                            <td colspan="5" class="text-center text-muted">No job details available</td>
+                                                        </tr>
+                                                    {% endfor %}
+
+                                                    </tbody>
+
+
+                                            </table>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="2" colspan="2">
+                                           Safety Independent Check Required (To be decided by PPIO)
+                                        </td>
+                                        <td style="text-align: center;" rowspan="2">
+                                            {% if data.sic_required == 'Yes' %}
+                                               <span class="tick-top">Yes</span>
+                                            {% else %}
+                                               <span class="text-center" style="text-align: center;">Yes</span>
+                                            {% endif %}
+
+                                        </td>
+                                        <td style="text-align: center;" rowspan="2">
+                                            {% if data.sic_required == 'No' %}
+                                               <span class="tick-top">No</span>
+                                            {% else %}
+                                               <span class="text-center" style="text-align: center;">No</span>
+                                            {% endif %}
+
+                                        </td>
+
+                                        <td>SIC No:</td>
+                                        <td>SIC Assigned To:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{data.sic_no}}</td>
+                                        <td>{{data.assigned_to}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="6"><b>If any other Job Cards Issued for the same Train on the same day & same time</b><br>
+                                
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+
+                                             <table class=" no-border-cols" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                        
+                                                            <th>S. No</th>
+                                                            <th>Job Card No</th>
+                                                            <th>Job Card Issue To</th>
+                                                            <th>Activity</th>
+                                                            <th>Expected Completion Time</th>
+                                                            <th>Status</th>
+                                                        
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+
+                                                    {% for prv_dts in prv_data %}
+                                                            <tr>
+                                                                <td>{{ prv_dts.st_gen }}</td>
+                                                                <td>{{ prv_dts.job_card_no }}</td>
+                                                                <td>{{ prv_dts.issued_to }}</td>
+                                                                <td>{{ prv_dts.immediate_investigation }}</td>
+                                                                <td>{{ prv_dts.completion_time }}</td>
+                                                                <td>{{ prv_dts.status }}</td>
+
+                                                                
+                                                            
+                                                            </tr>
+                                                        {% empty %}
+                                                            <tr>
+                                                                <td colspan="6" class="text-center text-muted">No job card available</td>
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                        
+
+
+
+
+
+                                                    </tbody>
+                                                </table>
+
+
+                                        </td>
+
+                                    </tr>
+                               
+                            </table>
+
+                            <div class="page-break"></div>
+
+
+                            <span><b>Part B: Previous Failure History (To be filled by PPIO)</b></span>
+
+                            <table class="table table-bordered mt-2">
+
+                                    <tr>
+                                        <td colspan="6"><span>Previous Failure History of the same sub system or equipment for which this job card is issued:- if any</span><br>
+                                
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+
+
+                                             <table class=" no-border-cols" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                        
+                                                            <th>S. No</th>
+                                                            <th>Event Date</th>
+                                                            <th>Job Card No</th>
+                                                            <th>Action Taken</th>
+                                                        
+                                                        
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+
+                                                    {% for prv_dts in prv_data2 %}
+                                                            <tr>
+                                                                <td>{{ prv_dts.st_gen }}</td>
+                                                                <td>{{ prv_dts.date }}</td>
+                                                                <td>{{ prv_dts.job_card_no }}</td>
+                                                                <td>{{ prv_dts.immediate_investigation }}</td>
+                                                            
+                                                                
+                                                            
+                                                            </tr>
+                                                        {% empty %}
+                                                            <tr>
+                                                                <td colspan="6" class="text-center text-muted">No job card available</td>
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                        
+
+
+
+
+
+                                                    </tbody>
+                                                </table>
+
+                                           
+
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="2" >
+                                           Issued by
+                                        </td>
+                                        <td> <b>Name:</b> </td>
+                                        <td colspan="2">{{data.issued_by}} </td>
+                                        <td> <b>Date:</b> </td>
+                                        <td >{{data.l1_date}} </td>
+
+                                    </tr>
+                                    <tr>
+                                      
+                                        <td> <b>Signature:</b> </td>
+                                        <td colspan="2">
+                                             <img src="/static/{{data.signature_img}}" style="width: 30px;">
+                                        </td>
+                                        <td> <b>Time:</b> </td>
+                                        <td >{{data.l1_time}} </td>
+
+                                    </tr>
+                                
+                            </table>
+
+                            
+
+                            <span><b>Part C: Acceptance of Job Card (To be filled by nominated work supervisor) </b></span>
+
+                            <table class="table table-bordered mt-2">
+
+                                <tr>
+                                    <td colspan="6"><span>I hereby declare that, I accept the responsibility to carry out the work on the equipment detailed on this Job Card only, and no attempt shall be made by me or any person under my control, to carry out work on any other equipment.</span>
+                            
+                                </tr>
+
+                                <tr>
+                                    <td rowspan="2" >
+                                        Received by
+                                    </td>
+                                    <td> <b>Name:</b> </td>
+                                    <td colspan="2">{{data.received_by}} </td>
+                                    <td> <b>Date:</b> </td>
+                                    <td >{{data.l2_date}} </td>
+
+                                </tr>
+                                <tr>
+                                    
+                                    <td> <b>Signature:</b> </td>
+                                    <td colspan="2">
+                                            <img src="/static/{{data.signature_img2}}" style="width: 30px;">
+                                    </td>
+                                    <td> <b>Time:</b> </td>
+                                    <td >{{data.l2_time}} </td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="6"><b>Allotment of work to Maintainers</b><br>
+                            
+                                </tr>
+
+                                <tr>
+                                    <td colspan="6">
+
+                                        <table class=" no-border-cols" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                
+                                                    <th>S. No</th>
+                                                    <th>Name</th>
+                                                    <th>Work</th>
+                                                    <th>Signature</th>
+                                            
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                            {% for job_works in job_works %}
+                                                    <tr>
+                                                        <td>{{ job_works.s_no }}</td>
+                                                        <td>{{ job_works.jobwork_name }}</td>
+                                                        <td>{{ job_works.jobwork_work }}</td>
+                                                        <td>
+        <img src="/static/uploads/{{ job_works.jobwork_signature }}" style="width: 30px;">
+                                                                                    
+                                                                                    
+                                                                            </td>
+                                                        
+                                                    
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="6" class="text-center text-muted">No work available</td>
+                                                    </tr>
+                                                {% endfor %}
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="page-break"></div>
+
+
+                            <span><b>Part D: Work Details (To be filled by work supervisor)</b></span>
+
+                            <table class="table table-bordered mt-2">
+
+                                <tr>
+                                    <td colspan="6"><span><b>Details of the activities carried out:</b> (If required enclose additional "Annexure to Job Card)</span><br>
+
+                                    {{data.details_of_the_activitues}}
+
+                                        </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6"><span><b>Follow Up Details:</b></span><br>
+
+                                    {{data.follow_up_details}}
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td rowspan="2" >
+                                        Job Card Handed over to the next supervisor, if work is not completed in your shift
+                                    </td>
+                                    <td style="text-align: center;" >
+                                        {% if data.handed_over == 'Yes' %}
+                                            <span class="tick-top">Yes</span>
+                                        {% else %}
+                                            <span class="text-center" style="text-align: center;">Yes</span>
+                                        {% endif %}
+
+                                    </td>
+                                    <td colspan="2">
+                                        <b>Name of the New Supervisor:</b>
+                                    </td>
+                                    <td colspan="2">
+                                        {{data.new_supervisor}}
+                                    </td>
+
+                                </tr>
+                                 <tr>
+
+                                 
+                                    <td style="text-align: center;" >
+                                        {% if data.handed_over == 'No' %}
+                                            <span class="tick-top">No</span>
+                                        {% else %}
+                                            <span class="text-center" style="text-align: center;">No</span>
+                                        {% endif %}
+
+                                    </td>
+                                    <td colspan="2">
+                                        <b>Sign. of the New Supervisor:</b>
+                                    </td>
+                                    <td colspan="2">
+                                        <img src="/static/{{ data.signature_img3 }}" style="width: 30px;">
+                                    </td>
+
+                                </tr>
+
+                            </table>
+
+                            <span><b>Part E: Details of Equipment Replaced: if any (To be filled by work supervisor) </b></span>
+
+                            <table class="table table-bordered mt-2">
+
+                                <tr>
+                                    <td colspan="6">
+
+                                        <table class=" no-border-cols" style="width:100%">
+
+                                            <thead>
+                                                                <tr>
+                                                                
+                                                                    <th>S. No</th>
+                                                                    <th>Name of Equipment</th>
+                                                                    <th>In Sr.No.(New)</th>
+                                                                    <th>Out Sr.No.(Old)</th>
+                                                                 
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+
+                                                            {% for job_equipment in job_equipment %}
+                                                                    <tr>
+                                                                        <td>{{ job_equipment.s_no }}</td>
+                                                                        <td>{{ job_equipment.jobequipment_name }}</td>
+                                                                        <td>{{ job_equipment.jobequipment_new_no }}</td>
+                                                                        <td>{{ job_equipment.jobequipment_old_no }}</td>
+                                                                       
+                                                                     
+                                                                    </tr>
+                                                                {% empty %}
+                                                                    <tr>
+                                                                        <td colspan="6" class="text-center text-muted">No Equipment Replaced</td>
+                                                                    </tr>
+                                                                {% endfor %}
+
+
+                                                            </tbody>
+                                                        </table>
+
+
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                            <span><b>Part F: Job Completion report (To be filled by work supervisor)  </b></span>
+
+                            <table class="table table-bordered mt-2">
+
+                                 <tr>
+                                    <td colspan="6">
+                                        <span>
+                                            <div class="form-check">
+                                                <input class="form-check-input no-click" type="checkbox" id="declarationCheckbox" checked readonly>
+                                                <label class="form-check-label" for="declarationCheckbox">
+                                                I hereby declare that all persons have been withdrawn and all the equipment affected, as detailed in Part A above, have been restored to normal.
+                                                </label>
+                                            </div>
+                                        </span>
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        <span>Train can be energized:</span>
+                                    </td>
+                                    <td style="text-align: center;" >
+
+                                        {% if data.train_can_be_energized == 'Yes' %}
+                                            <span class="tick-top">Yes</span>
+                                        {% else %}
+                                            <span class="text-center" style="text-align: center;">Yes</span>
+                                        {% endif %}
+
+                                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+
+                                        {% if data.train_can_be_energized == 'No' %}
+                                            <span class="tick-top">No</span>
+                                        {% else %}
+                                            <span class="text-center" style="text-align: center;">No</span>
+                                        {% endif %}
+
+                                    </td>
+                                    <td colspan="2">
+                                        <span><b>Name:</b> {{data.completion_name}}</span>
+                                    </td>
+                                    <td colspan="2">
+                                       
+                                            {% if data.down_time %}
+                                            <span><b>Down Time:</b> {{ data.down_time }} mins</span>
+                                            {% else %}
+                                            <span><b>Down Time:</b> {{data.down_time}}</span>
+                                            {% endif %}
+                                     
+                                    </td>
+                                   
+
+                                </tr>
+
+                                <tr>
+
+                                    <td>
+                                        <span>Train can be moved:</span>
+                                    </td>
+                                    <td style="text-align: center;" >
+
+                                        {% if data.train_can_be_moved == 'Yes' %}
+                                            <span class="tick-top">Yes</span>
+                                        {% else %}
+                                            <span class="text-center" style="text-align: center;">Yes</span>
+                                        {% endif %}
+
+                                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+
+                                        {% if data.train_can_be_moved == 'No' %}
+                                            <span class="tick-top">No</span>
+                                        {% else %}
+                                            <span class="text-center" style="text-align: center;">No</span>
+                                        {% endif %}
+
+                                    </td>
+                                    <td colspan="2">
+                                        <span><b>Signature:</b> 
+                                        <img src="/static/{{ data.signature_img4 }}" style="width: 30px;">
+                                    </span>
+                                    </td>
+
+                                    <td >
+                                        <span><b>Date:</b> {{data.completion_date}}</span>
+                                    </td>
+
+                                    <td >
+                                        <span><b>Time:</b> {{data.completion_date_time}}</span>
+                                    </td>
+                                   
+
+                                </tr>
+
+                            </table>
+
+                            <div class="page-break"></div>
+
+                            <span><b>Part G: SIC Completion report (To be filed by SIC supervisor)  </b></span>
+
+                            <table class="table table-bordered mt-2">
+
+                                <tr>
+                                    <td colspan="4">
+                                        <span>Corrective action required to be carried out (If any) </span>
+                                    </td>
+                                     <td colspan="2">
+                                        <span><b>SIC Start Time:</b> {{data.sic_start_time}} </span>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="12">{{data.corrective_action}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="12">
+                                        <span>I hereby declare that,</span>
+                                          <div class="form-check">
+                                                <input class="form-check-input no-click" type="checkbox" id="declarationCheckbox" checked readonly>
+                                                <label class="form-check-label" for="declarationCheckbox">
+                                                SIC has been performed on concerned equipment.
+                                                </label>
+                                            </div>
+                                             <div class="form-check">
+                                                <input class="form-check-input no-click" type="checkbox" id="declarationCheckbox" checked readonly>
+                                                <label class="form-check-label" for="declarationCheckbox">
+                                                All the necessary follow up action as described in Part F above and final inspection, including SIC (if any), have been completed. 
+                                                </label>
+                                            </div>
+
+                                    </td>
+                                </tr>
+
+
+                                 <tr>
+
+                                    <td>
+                                        <span>Train can be energized:</span>
+                                    </td>
+                                    <td style="text-align: center;" >
+
+                                        {% if data.train_can_be_energized2 == 'Yes' %}
+                                            <span class="tick-top">Yes</span>
+                                        {% else %}
+                                            <span class="text-center" style="text-align: center;">Yes</span>
+                                        {% endif %}
+
+                                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+
+                                        {% if data.train_can_be_energized2 == 'No' %}
+                                            <span class="tick-top">No</span>
+                                        {% else %}
+                                            <span class="text-center" style="text-align: center;">No</span>
+                                        {% endif %}
+
+                                    </td>
+                                    <td colspan="2">
+                                        <span><b>Name:</b> {{data.completion_name2}}</span>
+                                    </td>
+                                    <td colspan="2">
+                                       
+                                            {% if data.down_time2 %}
+                                            <span><b>Down Time:</b> {{ data.down_time2 }} mins</span>
+                                            {% else %}
+                                            <span><b>Down Time:</b> {{data.down_time2}}</span>
+                                            {% endif %}
+                                     
+                                    </td>
+                                   
+
+                                </tr>
+
+                                <tr>
+
+                                    <td>
+                                        <span>Train can be moved:</span>
+                                    </td>
+                                    <td style="text-align: center;" >
+
+                                        {% if data.train_can_be_moved2 == 'Yes' %}
+                                            <span class="tick-top">Yes</span>
+                                        {% else %}
+                                            <span class="text-center" style="text-align: center;">Yes</span>
+                                        {% endif %}
+
+                                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+
+                                        {% if data.train_can_be_moved2 == 'No' %}
+                                            <span class="tick-top">No</span>
+                                        {% else %}
+                                            <span class="text-center" style="text-align: center;">No</span>
+                                        {% endif %}
+
+                                    </td>
+                                    <td colspan="2">
+                                        <span><b>Signature:</b> 
+                                        <img src="/static/{{ data.signature_img5 }}" style="width: 30px;">
+                                    </span>
+                                    </td>
+
+                                    <td >
+                                        <span><b>Date:</b> {{data.completion_date2}}</span>
+                                    </td>
+
+                                    <td >
+                                        <span><b>Time:</b> {{data.completion_date_time2}}</span>
+                                    </td>
+                                   
+
+                                </tr>
+
+                            </table>
+
+                            <span><b>Part H: Acknowledgement of returned Job Card (To be filled by PPIO)  </b></span>
+
+                            <table class="table table-bordered mt-2">
+
+                                <tr>
+
+                                    <td colspan="2">
+                                        <span><b>Name:</b> 
+                                        {{data.close_name}}
+                                        </span>
+                                    </td>
+
+                                    <td colspan="2">
+                                        <span><b>Signature:</b> 
+                                        <img src="/static/{{ data.signature_img6 }}" style="width: 30px;">
+                                        </span>
+                                    </td>
+
+                                    <td >
+                                        <span><b>Date:</b> {{data.close_date}}</span>
+                                    </td>
+
+                                    <td >
+                                        <span><b>Time:</b> {{data.close_time}}</span>
+                                    </td>
+                                   
+
+                                </tr>
+
+                            </table>
+
+
+                          
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+            </div>
+
+
+         
+
+           
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+
+
+    });
+
+   function downloadPDF() {
+  const element = document.getElementById("dwdJobcardDiv");
+
+  html2pdf()
+    .from(element)
+    .set({
+      margin: 0.4,
+      filename: "{{data.job_card_no}}.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        scrollY: 0  // Prevent clipping
+      },
+      jsPDF: {
+        unit: "in",
+        format: "a4",
+        orientation: "portrait"
+      }
+    })
+    .save();
+}
+
+
+     function printDiv() {
+        const printContents = document.getElementById('dwdJobcardDiv').innerHTML;
+        const originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload(); // Optional: reload to restore event bindings
+    }
+
+   
+</script>
+
+{% endblock sb_admin_js %}
