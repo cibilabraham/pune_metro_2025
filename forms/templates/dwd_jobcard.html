@@ -69,6 +69,17 @@ table, div, td, th {
 }
 
 
+table.table-bordered th,
+  table.table-bordered td {
+    border-width: .5px; /* Set your desired thickness */
+    border-color: #000; /* Optional: customize border color */
+  }
+
+  table.table-bordered {
+    border-width: .5px;
+    border-color: #000;
+  }
+
             </style>
 
             <div class="row mb-3">
@@ -119,6 +130,19 @@ table, div, td, th {
                 <div class="p-4">
                     <div >
                         <div>
+
+                            <table class="table table-bordered mt-2">
+                                <tr>
+                                    <td colspan="2"> <img src="/static/Riyadh-metro-logo-footer.png" alt="Riyadh Metro Logo" style="width: auto; height: 120px; "></td>
+                                    <td colspan="4" align="center" >
+                                        <h3 class="text-center" style="padding-top: 10px;">MAHA METRO RAIL CORPORATION LTD </h3>
+                                        <h5 class="text-center">(PUNE METRO RAIL PROJECT)  </h5>
+                                        <b class="text-center">JOB CARD </b>
+                                    </td>
+                                </tr>
+                            </table>
+
+
                             <span><b>Part A Job Card Details </b>(To be filled by PPIO)</span>
 
                             <table class="table table-bordered mt-2">
@@ -416,7 +440,7 @@ table, div, td, th {
                                       
                                         <td> <b>Signature:</b> </td>
                                         <td colspan="2">
-                                             <img src="/static/{{data.signature_img}}" style="width: 30px;">
+                                             <img src="/static/{{data.signature_img}}" style="width: 60px;">
                                         </td>
                                         <td> <b>Time:</b> </td>
                                         <td >{{data.l1_time}} </td>
@@ -450,7 +474,7 @@ table, div, td, th {
                                     
                                     <td> <b>Signature:</b> </td>
                                     <td colspan="2">
-                                            <img src="/static/{{data.signature_img2}}" style="width: 30px;">
+                                            <img src="/static/{{data.signature_img2}}" style="width: 60px;">
                                     </td>
                                     <td> <b>Time:</b> </td>
                                     <td >{{data.l2_time}} </td>
@@ -484,7 +508,7 @@ table, div, td, th {
                                                         <td>{{ job_works.jobwork_name }}</td>
                                                         <td>{{ job_works.jobwork_work }}</td>
                                                         <td>
-        <img src="/static/uploads/{{ job_works.jobwork_signature }}" style="width: 30px;">
+        <img src="/static/uploads/{{ job_works.jobwork_signature }}" style="width: 60px;">
                                                                                     
                                                                                     
                                                                             </td>
@@ -561,7 +585,7 @@ table, div, td, th {
                                         <b>Sign. of the New Supervisor:</b>
                                     </td>
                                     <td colspan="2">
-                                        <img src="/static/{{ data.signature_img3 }}" style="width: 30px;">
+                                        <img src="/static/{{ data.signature_img3 }}" style="width: 60px;">
                                     </td>
 
                                 </tr>
@@ -694,7 +718,7 @@ table, div, td, th {
                                     </td>
                                     <td colspan="2">
                                         <span><b>Signature:</b> 
-                                        <img src="/static/{{ data.signature_img4 }}" style="width: 30px;">
+                                        <img src="/static/{{ data.signature_img4 }}" style="width: 60px;">
                                     </span>
                                     </td>
 
@@ -811,7 +835,7 @@ table, div, td, th {
                                     </td>
                                     <td colspan="2">
                                         <span><b>Signature:</b> 
-                                        <img src="/static/{{ data.signature_img5 }}" style="width: 30px;">
+                                        <img src="/static/{{ data.signature_img5 }}" style="width: 60px;">
                                     </span>
                                     </td>
 
@@ -842,7 +866,7 @@ table, div, td, th {
 
                                     <td colspan="2">
                                         <span><b>Signature:</b> 
-                                        <img src="/static/{{ data.signature_img6 }}" style="width: 30px;">
+                                        <img src="/static/{{ data.signature_img6 }}" style="width: 60px;">
                                         </span>
                                     </td>
 
