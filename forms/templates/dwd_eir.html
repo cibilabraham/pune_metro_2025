@@ -486,6 +486,9 @@ table.table-bordered th,
 
 
     function downloadPDF() {
+
+        const eirGenId = "{{ data.eir_gen_id }}";
+
     // Show header before generating PDF
     document.querySelectorAll('.header-div').forEach(function(el) {
         el.style.display = 'block';
@@ -495,7 +498,7 @@ table.table-bordered th,
 
     const opt = {
         margin: 0.4,
-        filename: "{{data.eir_gen_id}}.pdf",
+        filename: eirGenId + ".pdf",
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: {
             scale: 2,
@@ -522,8 +525,11 @@ table.table-bordered th,
                 pdf.text(`Page ${i} of ${totalPages}`, pdf.internal.pageSize.getWidth() - 1, pdf.internal.pageSize.getHeight() - 0.5);
             }
 
-            // Save after adding page numbers
-            pdf.save();
+            // // Save after adding page numbers
+            // pdf.save();
+
+            // Save with correct filename
+            pdf.save(eirGenId + ".pdf");
 
             // Hide header after saving
             document.querySelectorAll('.header-div').forEach(function(el) {
