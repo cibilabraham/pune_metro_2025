@@ -38,6 +38,10 @@
     page-break-after: always;
   }
 
+  .header-div {
+    display: none;
+  }
+
 
                  .no-border-cols {
     border-collapse: separate;
@@ -57,7 +61,7 @@
 
   #dwdJobcardDiv {
   width: 100%;
-  max-width: 7.5in; /* Keeps within A4 width with margin */
+  /* max-width: 7.5in;  */
   overflow-x: hidden;
   box-sizing: border-box;
 }
@@ -113,10 +117,10 @@ table.table-bordered th,
                     </button>
 
                     &nbsp; &nbsp; 
-
+<!-- 
                     <button onclick="printDiv()" class="btn btn-secondary">
                         <i class="bi bi-printer"></i> Print
-                    </button>
+                    </button> -->
                     </div>
 
 
@@ -135,15 +139,18 @@ table.table-bordered th,
                                 <tr>
                                     <td > <img src="/static/Riyadh-metro-logo-footer.png" style="width: auto; height: 120px; "></td>
                                     <td colspan="5" align="center" >
-                                        <h3 class="text-center" style="padding-top: 10px;">MAHA METRO RAIL CORPORATION LTD </h3>
+                                        <h5>महाराष्ट मटा रल कापरिशन लिमिटेड</h5>
+                                        <h3 class="text-center" style="padding-top: 10px;">MAHARASHTRA METRO RAIL CORPORATION LIMITED </h3>
+                                        <span>(भारत सरकार आणि महाराष्ट्र शासनाचा संयुक्त उपक्रम)</span><br>
+                                        <span>Joint Venture of Govt. of India & Govt. of Maharashtra</span>
                                         <h5 class="text-center">(PUNE METRO RAIL PROJECT)  </h5>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><span><b>EIR No:</b> {{data.eir_gen_id}}</span>
+                                    <td colspan="2"><span><b>EIR No: {{data.eir_gen_id}}</b> </span>
                                     </td>
-                                    <td colspan="2"><b>Engineering Incident Report</b></td>
-                                    <td colspan="2"><span><b>Date:</b> {{data.date}}</span>
+                                    <td colspan="2"><h3 class="text-center text-success">Engineering Incident Report</h3></td>
+                                    <td colspan="2"><span><b>Date: {{data.date}}</b> </span>
                                     </td>
                                    
                                 </tr>
@@ -257,10 +264,32 @@ table.table-bordered th,
 
                             <div class="page-break"></div>
 
+                            <table class="table table-bordered mt-2 header-div">
+                                <tr>
+                                    <td > <img src="/static/Riyadh-metro-logo-footer.png" style="width: auto; height: 120px; "></td>
+                                    <td colspan="5" align="center" >
+                                        <h5>महाराष्ट मटा रल कापरिशन लिमिटेड</h5>
+                                        <h3 class="text-center" style="padding-top: 10px;">MAHARASHTRA METRO RAIL CORPORATION LIMITED </h3>
+                                        <span>(भारत सरकार आणि महाराष्ट्र शासनाचा संयुक्त उपक्रम)</span><br>
+                                        <span>Joint Venture of Govt. of India & Govt. of Maharashtra</span>
+                                        <h5 class="text-center">(PUNE METRO RAIL PROJECT)  </h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span><b>EIR No: {{data.eir_gen_id}}</b> </span>
+                                    </td>
+                                    <td colspan="2"><h3 class="text-center text-success">Engineering Incident Report</h3></td>
+                                    <td colspan="2"><span><b>Date: {{data.date}}</b> </span>
+                                    </td>
+                                   
+                                </tr>
+
+                            </table>
+
                             <span><b>INVESTIGATION DETAILS:</b></span>
 
 
-                            <table class="table table-bordered mt-2">
+                            <table class="table table-bordered mt-2 ">
 
                                 <tr>
                                     <td colspan="6">
@@ -311,6 +340,28 @@ table.table-bordered th,
                             <span>Note: By ERTS, corrosion of under frame equipment is not acceptable.</span> <br><br>
 
                             <div class="page-break"></div>
+
+                            <table class="table table-bordered mt-2 header-div">
+                                <tr>
+                                    <td > <img src="/static/Riyadh-metro-logo-footer.png" style="width: auto; height: 120px; "></td>
+                                    <td colspan="5" align="center" >
+                                        <h5>महाराष्ट मटा रल कापरिशन लिमिटेड</h5>
+                                        <h3 class="text-center" style="padding-top: 10px;">MAHARASHTRA METRO RAIL CORPORATION LIMITED </h3>
+                                        <span>(भारत सरकार आणि महाराष्ट्र शासनाचा संयुक्त उपक्रम)</span><br>
+                                        <span>Joint Venture of Govt. of India & Govt. of Maharashtra</span>
+                                        <h5 class="text-center">(PUNE METRO RAIL PROJECT)  </h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span><b>EIR No: {{data.eir_gen_id}}</b> </span>
+                                    </td>
+                                    <td colspan="2"><h3 class="text-center text-success">Engineering Incident Report</h3></td>
+                                    <td colspan="2"><span><b>Date: {{data.date}}</b> </span>
+                                    </td>
+                                   
+                                </tr>
+
+                            </table>
 
                             <span><b>Action Taken in Depot: </b>{{data.action_taken_in_depot}}</span> <br>
 
@@ -363,6 +414,31 @@ table.table-bordered th,
 
                             </div>
 
+
+                            <div class="page-break"></div>
+
+                            <table class="table table-bordered mt-2 header-div">
+                                <tr>
+                                    <td > <img src="/static/Riyadh-metro-logo-footer.png" style="width: auto; height: 120px; "></td>
+                                    <td colspan="5" align="center" >
+                                        <h5>महाराष्ट मटा रल कापरिशन लिमिटेड</h5>
+                                        <h3 class="text-center" style="padding-top: 10px;">MAHARASHTRA METRO RAIL CORPORATION LIMITED </h3>
+                                        <span>(भारत सरकार आणि महाराष्ट्र शासनाचा संयुक्त उपक्रम)</span><br>
+                                        <span>Joint Venture of Govt. of India & Govt. of Maharashtra</span>
+                                        <h5 class="text-center">(PUNE METRO RAIL PROJECT)  </h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span><b>EIR No: {{data.eir_gen_id}}</b> </span>
+                                    </td>
+                                    <td colspan="2"><h3 class="text-center text-success">Engineering Incident Report</h3></td>
+                                    <td colspan="2"><span><b>Date: {{data.date}}</b> </span>
+                                    </td>
+                                   
+                                </tr>
+
+                            </table>
+
                              <div class="row " style="padding: 20px;">
 
                              {% for images in images %}
@@ -404,29 +480,127 @@ table.table-bordered th,
     $(document).ready(function() {
 
 
+
     });
 
-   function downloadPDF() {
-  const element = document.getElementById("dwdJobcardDiv");
 
-  html2pdf()
-    .from(element)
-    .set({
-      margin: 0.4,
-      filename: "{{data.eir_gen_id}}.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: {
-        scale: 2,
-        scrollY: 0  // Prevent clipping
-      },
-      jsPDF: {
-        unit: "in",
-        format: "a4",
-        orientation: "portrait"
-      }
-    })
-    .save();
+
+    function downloadPDF() {
+    // Show header before generating PDF
+    document.querySelectorAll('.header-div').forEach(function(el) {
+        el.style.display = 'block';
+    });
+
+    const element = document.getElementById("dwdJobcardDiv");
+
+    const opt = {
+        margin: 0.4,
+        filename: "{{data.eir_gen_id}}.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+            scale: 2,
+            scrollY: 0
+        },
+        jsPDF: {
+            unit: "in",
+            format: "a4",
+            orientation: "portrait"
+        }
+    };
+
+    html2pdf()
+        .set(opt)
+        .from(element)
+        .toPdf()
+        .get('pdf')
+        .then(function (pdf) {
+            const totalPages = pdf.internal.getNumberOfPages();
+
+            for (let i = 1; i <= totalPages; i++) {
+                pdf.setPage(i);
+                pdf.setFontSize(10);
+                pdf.text(`Page ${i} of ${totalPages}`, pdf.internal.pageSize.getWidth() - 1, pdf.internal.pageSize.getHeight() - 0.5);
+            }
+
+            // Save after adding page numbers
+            pdf.save();
+
+            // Hide header after saving
+            document.querySelectorAll('.header-div').forEach(function(el) {
+                el.style.display = 'none';
+            });
+        });
 }
+
+
+//    function downloadPDF() {
+
+// //     document.querySelectorAll('.header-div').forEach(function(el) {
+// //         el.style.display = 'block';
+// //     });
+
+// //     const element = document.getElementById("dwdJobcardDiv");
+
+// //         const opt = {
+// //         margin: 0.4,
+// //         filename: "{{data.eir_gen_id}}.pdf",
+// //         image: { type: "jpeg", quality: 0.98 },
+// //         html2canvas: {
+// //             scale: 2,
+// //             scrollY: 0
+// //         },
+// //         jsPDF: {
+// //             unit: "in",
+// //             format: "a4",
+// //             orientation: "portrait"
+// //         }
+// //         };
+
+// //         html2pdf()
+// //         .set(opt)
+// //         .from(element)
+// //         .toPdf()
+// //         .get('pdf')
+// //         .then(function (pdf) {
+// //             const totalPages = pdf.internal.getNumberOfPages();
+
+// //             for (let i = 1; i <= totalPages; i++) {
+// //             pdf.setPage(i);
+// //             pdf.setFontSize(10);
+// //             pdf.text(`Page ${i} of ${totalPages}`, pdf.internal.pageSize.getWidth() - 1, pdf.internal.pageSize.getHeight() - 0.5);
+// //             }
+// //         })
+// //         .save();
+
+
+
+// // document.querySelectorAll('.header-div').forEach(function(el) {
+// //     el.style.display = 'none';
+// // });
+
+
+
+
+// //   const element = document.getElementById("dwdJobcardDiv");
+
+// //   html2pdf()
+// //     .from(element)
+// //     .set({
+// //       margin: 0.4,
+// //       filename: "{{data.eir_gen_id}}.pdf",
+// //       image: { type: "jpeg", quality: 0.98 },
+// //       html2canvas: {
+// //         scale: 2,
+// //         scrollY: 0  // Prevent clipping
+// //       },
+// //       jsPDF: {
+// //         unit: "in",
+// //         format: "a4",
+// //         orientation: "portrait"
+// //       }
+// //     })
+// //     .save();
+// }
 
 
      function printDiv() {
