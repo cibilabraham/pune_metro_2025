@@ -5093,6 +5093,10 @@ class AddJobcard(View):
             JobCard.objects.filter(job_id=ids).update(run_status=2,status=0)
             return JsonResponse({'status':'1'})
 
+        elif st == 30 or st == '30':
+            JobCard.objects.filter(job_id=ids).delete()
+            return JsonResponse({'status':'1'})
+
         
         
         else:

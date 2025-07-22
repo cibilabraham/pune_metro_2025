@@ -66,6 +66,41 @@
        
     });
 
+    function deleteJobCard(id){
+
+        swal({
+            title: "Are you sure?",
+            text: "If you delete a job card, you won't be able to retrieve it again. Recreating the same job card is not possible — to create a new one, you must add new failure data.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Ok, delete it!",
+            closeOnConfirm: false, // Keep this to false so you can close it manually
+            width: '300px'
+        },
+        function(){
+            // Manually close the swal
+            swal.close();
+
+            // Run your AJAX
+            $.ajax({
+                url: "/forms/jobcard_register/addjobcard/",
+                method: 'POST',
+                dataType: 'json',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                data: {
+                    'id': id,
+                    'st': 30,
+                },
+                success: function(response) {
+                    getDefectData();
+                }
+            });
+        });
+
+
+    }
+
    
 
 function getDefectData(){
@@ -171,6 +206,10 @@ function getDefectData(){
 
                             if(item.status == 1){
                                 tbl += '| <a href="/forms/jobcard_register/dwdjobcard/'+ item.id +'" >PDF</a> ';
+                            }
+
+                            if(item.user_Role == 1 || item.user_Role == 2){
+                                tbl += '| <a href="#" onclick="deleteJobCard('+ item.id +');" >Delete</a> ';
                             }
 
 
