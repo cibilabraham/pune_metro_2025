@@ -1,0 +1,444 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+
+            <style>
+                .tick-top {
+                position: relative;
+                display: inline-block;
+                /* padding-top: 0.2em;  */
+                /* text-align: center; */
+                }
+
+                .tick-top::before {
+                content: "✔"; /* Unicode for tick mark */
+                position: relative;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 1.1em;
+                color: green;
+                }
+
+                .no-click {
+  pointer-events: none; /* prevents all mouse interactions */
+}
+
+                .page-break {
+    page-break-after: always;
+  }
+
+
+                 .no-border-cols {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .no-border-cols th,
+  .no-border-cols td {
+    border: none;
+    border-right: 1px solid #dee2e6; /* column separator */
+  }
+
+  .no-border-cols th:last-child,
+  .no-border-cols td:last-child {
+    border-right: none; /* remove right border on last column */
+  }
+
+  #dwdJobcardDiv {
+  width: 100%;
+  max-width: 7.5in; /* Keeps within A4 width with margin */
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+table, div, td, th {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+
+table.table-bordered th,
+  table.table-bordered td {
+    border-width: .5px; /* Set your desired thickness */
+    border-color: #000; /* Optional: customize border color */
+  }
+
+  table.table-bordered {
+    border-width: .5px;
+    border-color: #000;
+  }
+
+            </style>
+
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                    <h3 class="page-header">
+                       Download Engineering Incident Report(EIR) 
+                    </h3>
+                  
+                </div>
+
+                 <div class="col-lg-6 mb-3">
+    
+    
+                    <a href="/forms/eir_register/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+
+            </div>
+
+            <div class="border border-light rounded" >
+
+
+                <div class="d-flex justify-content-center gap-3 py-3">
+                    <button onclick="downloadPDF()" class="btn btn-primary">
+                        <i class="bi bi-download"></i> Download PDF
+                    </button>
+
+                    &nbsp; &nbsp; 
+
+                    <button onclick="printDiv()" class="btn btn-secondary">
+                        <i class="bi bi-printer"></i> Print
+                    </button>
+                    </div>
+
+
+
+
+            <div id="dwdJobcardDiv" style="overflow: visible; height: auto;" >
+
+            
+
+            <div class="container mt-1">
+                <div class="p-4">
+                    <div >
+
+                        <div>
+                            <table class="table table-bordered mt-2">
+                                <tr>
+                                    <td > <img src="/static/Riyadh-metro-logo-footer.png" style="width: auto; height: 120px; "></td>
+                                    <td colspan="5" align="center" >
+                                        <h3 class="text-center" style="padding-top: 10px;">MAHA METRO RAIL CORPORATION LTD </h3>
+                                        <h5 class="text-center">(PUNE METRO RAIL PROJECT)  </h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span><b>EIR No:</b> {{data.eir_gen_id}}</span>
+                                    </td>
+                                    <td colspan="2"><b>Engineering Incident Report</b></td>
+                                    <td colspan="2"><span><b>Date:</b> {{data.date}}</span>
+                                    </td>
+                                   
+                                </tr>
+
+                            </table>
+
+                            <table class="table table-bordered mt-2">
+                                <tr>
+                                    <td colspan="6" align="center"><b>Incident Details</b> </td>
+                                </tr>
+                                <tr>
+                                    <td ><b>Depot: </b></td>
+                                    <td >
+                                        {% if 'RHD' == data.depot %}
+                                        <span> Range Hill Depot (RHD)</span>
+                                        {% endif %}
+                                        {% if 'HVPCD' == data.depot %}
+                                        <span>  Hill View Park Car Depot (HVPCD)</span>
+                                        {% endif %}
+                                    </td>
+                                    <td colspan="2"><span><b>Train Set No:</b> {{data.train_set_no}}</span></td>
+                                    <td colspan="2"><span><b>Car ID:</b> {{data.sel_car}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td ><b>Equipment: </b></td>
+                                    <td colspan="3"><span>{{data.equipment}}</span></td>
+                                    <td colspan="2"><span><b>Component:</b> {{data.component}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td ><b>Addressed By: </b></td>
+                                    <td colspan="5"><span>{{data.addressed_by}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td ><b>Action Taken: </b></td>
+                                    <td colspan="5"><span>{{data.immediate_investigation}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td ><b>Incident Details: </b></td>
+                                    <td colspan="5"><span>{{data.incident_details}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td ><b>Repercussion: </b></td>
+                                    <td colspan="5"><span>{{data.repercussion}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6"><b>History (if any) </b></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+
+
+                                        <table class=" no-border-cols" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                
+                                                    <th>S. No</th>
+                                                    <th>EIR No</th>
+                                                    <th>Date</th>
+                                                    <th>Depot</th>
+                                                    <th>Train Set No</th>
+                                                    <th>Car ID</th>
+                                                    <th>Incident Location</th>
+                                                    <th>Incident Time</th>
+                                                
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                {% for prv_dts in prv_data %}
+                                                    <tr>
+                                                        <td>{{ prv_dts.st_gen }}</td>
+                                                        <td>{{ prv_dts.eir_gen_id }}</td>
+                                                        <td>{{ prv_dts.date }}</td>
+                                                        <td>{{ prv_dts.depot }}</td>
+                                                        <td>{{ prv_dts.train_set_no }}</td>
+                                                        <td>{{ prv_dts.sel_car }}</td>
+                                                        <td>{{ prv_dts.incident_location }}</td>
+                                                        <td>{{ prv_dts.incident_time }}</td>
+                                                        
+                                                    
+                                                    
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="8" class="text-center text-muted">No history available for similar Equipment and Component</td>
+                                                    </tr>
+                                                {% endfor %}
+
+                                                
+
+
+                                            </tbody>
+                                        </table>
+
+
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td ><b>Incident Location: </b></td>
+                                    <td colspan="2"><span>{{data.incident_location}}</span></td>
+                                    <td ><b>Incident Time: </b></td>
+                                    <td colspan="2"><span>{{data.incident_time}}</span></td>
+                                </tr>
+
+
+
+                            </table>
+
+                            <div class="page-break"></div>
+
+                            <span><b>INVESTIGATION DETAILS:</b></span>
+
+
+                            <table class="table table-bordered mt-2">
+
+                                <tr>
+                                    <td colspan="6">
+
+
+                                        <table class=" no-border-cols" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    
+                                                    <th>S. No</th>
+                                                    <th>Non- compliance details</th>
+                                                    <th>Investigation Details</th>
+                                                    <th>Relevant ERTS clause</th>
+                                                
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                {% for job_details in job_details %}
+                                                    <tr>
+                                                        <td>{{ job_details.s_no }}</td>
+                                                        <td>{{ job_details.non_compliance_details }}</td>
+                                                        <td>{{ job_details.onvestigation_details }}</td>
+                                                        <td>{{ job_details.relevant_ERTS_clause }}</td>
+                                                    
+                                                    
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="6" class="text-center text-muted">No investigation details available</td>
+                                                    </tr>
+                                                {% endfor %}
+
+                                                
+
+
+
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <span>Note: By ERTS, corrosion of under frame equipment is not acceptable.</span> <br><br>
+
+                            <div class="page-break"></div>
+
+                            <span><b>Action Taken in Depot: </b>{{data.action_taken_in_depot}}</span> <br>
+
+                            <span><b>Concern: </b>{{data.concern}}</span>
+
+                            <br>
+                            <br>
+                            <br>
+
+                            <span><b>Further Action Required: </b>{{data.further_action}}</span>
+
+                            <br>
+                            <br>
+
+                            <span><b>Attachments (Mandatory):  </b></span>
+
+                            
+
+
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+
+                            <div class="row " >
+
+                                <div class="col-lg-12 ">
+                                    <b>TRSL: </b> {{data.TRSL}} 
+                                </div>
+
+                                <br>
+                                <br>
+
+
+                                {% if data.signature_img2 %}
+                                    <div class="col-lg-6">
+                                        
+                                        <img src="/static/{{ data.signature_img2 }}" style="width: 60px;"><br>
+                                        <label>Sign of Supervisor</label>
+                                    </div>
+                                {% endif %}
+
+                                {% if data.signature_img3 %}
+                                    <div class="col-lg-6" align="right">
+                                        
+                                        <img src="/static/{{ data.signature_img3 }}" style="width: 60px;"><br>
+                                        <label>Sign of AM/DGM</label>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                             <div class="row " style="padding: 20px;">
+
+                             {% for images in images %}
+                                <div class="col-lg-6">
+                                    <img src="/static/{{images.file_path}}" style="width: 100%;">
+                                </div>
+                    
+                            {% endfor %}
+                            </div>
+
+                           
+
+
+
+
+
+
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            </div>
+            </div>
+
+
+         
+
+           
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+
+
+    });
+
+   function downloadPDF() {
+  const element = document.getElementById("dwdJobcardDiv");
+
+  html2pdf()
+    .from(element)
+    .set({
+      margin: 0.4,
+      filename: "{{data.eir_gen_id}}.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        scrollY: 0  // Prevent clipping
+      },
+      jsPDF: {
+        unit: "in",
+        format: "a4",
+        orientation: "portrait"
+      }
+    })
+    .save();
+}
+
+
+     function printDiv() {
+        const printContents = document.getElementById('dwdJobcardDiv').innerHTML;
+        const originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload(); // Optional: reload to restore event bindings
+    }
+
+   
+</script>
+
+{% endblock sb_admin_js %}

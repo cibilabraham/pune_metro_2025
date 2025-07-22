@@ -4744,7 +4744,7 @@ class AddJobcard(View):
             datasprv = FailureDatasprv[0]
             sts = 'Open'
             if jbr.status == 1 or jbr.status == '1':
-                sts = 'Close'
+                sts = 'Closed'
 
             wrk = ''
             job_detailsArrLoop = JobDetails.objects.filter(job_card_id=jbr.job_id,is_active=0)
@@ -5333,7 +5333,7 @@ class ViewJobcard(View):
             datasprv = FailureDatasprv[0]
             sts = 'Open'
             if jbr.status == 1 or jbr.status == '1':
-                sts = 'Close'
+                sts = 'Closed'
 
             wrk = ''
             job_detailsArrLoop = JobDetails.objects.filter(job_card_id=jbr.job_id,is_active=0)
@@ -5637,7 +5637,7 @@ class DwdJobcard(View):
             datasprv = FailureDatasprv[0]
             sts = 'Open'
             if jbr.status == 1 or jbr.status == '1':
-                sts = 'Close'
+                sts = 'Closed'
 
             wrk = ''
             job_detailsArrLoop = JobDetails.objects.filter(job_card_id=jbr.job_id,is_active=0)
@@ -7320,3 +7320,146 @@ class GetAllSerialNumberNcr(View):
         return JsonResponse(data, safe=False)
         # return render(request, self.template_name, {'sub_systems' : sub_systems, 'systems':systems})
 
+
+
+class DwdEIR(View):
+    template_name = 'dwd_eir.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        user_Role = request.session.get('user_Role')
+        P_id = request.session['P_id']
+        if user_Role == 4:
+            return redirect('/dashboard/')
+        id = kwargs.get("id")
+        data=[]
+
+        EIRGeneration_datas =EIRGeneration.objects.filter(eir_id=id)
+        jb = EIRGeneration_datas[0]
+        ast_data = Asset.objects.filter(id=jb.failure_id.location_id)
+
+        FailureDatas=FailureData.objects.filter(id=jb.failure_id.id)
+        datas = FailureDatas[0]
+
+        PBSMaster_datas=PBSMaster.objects.filter(id=FailureDatas[0].asset_type)
+
+
+        full_path2 = jb.signature_img2
+        if full_path2 == None:
+            relative_path2 = None
+        else:
+            # Find the index of /static
+            index2 = full_path2.find("/static")
+            if index2 != -1:
+                relative_path2 = full_path2[index2 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path2 = relative_path2.lstrip("/")
+            else:
+                relative_path2 = full_path2  # fallback if /static not found
+
+
+        full_path3 = jb.signature_img3
+        if full_path3 == None:
+            relative_path3 = None
+        else:
+            # Find the index of /static
+            index3 = full_path3.find("/static")
+            if index3 != -1:
+                relative_path3 = full_path3[index3 + len("/static"):]  # remove /static as well
+                # optionally remove leading slash
+                relative_path3 = relative_path3.lstrip("/")
+            else:
+                relative_path3 = full_path3  # fallback if /static not found
+
+       
+        data={ 
+            'eir_id' :  jb.eir_id,
+            'train_set_no' : ast_data[0].location_id,
+            'date' : jb.failure_id.date,
+            'time' : jb.failure_id.time,
+            'department' : jb.failure_id.department,
+            'eir_gen_id' : jb.eir_gen_id,
+            'depot' : jb.depot,
+            'addressed_by':jb.addressed_by,
+            'incident_details' : jb.incident_details,
+            'repercussion':jb.repercussion,
+            'id':jb.eir_id,
+            'user_Role':user_Role,
+            'incident_location' : jb.incident_location,
+            'incident_time' : jb.incident_time,
+            'sel_car' : jb.failure_id.sel_car,
+            'equipment' : jb.failure_id.equipment,
+            'component' : jb.component,
+            'location': jb.failure_id.location,
+            'immediate_investigation':jb.failure_id.immediate_investigation,
+
+            'action_taken_in_depot': jb.action_taken_in_depot,
+            'concern': jb.concern,
+            'further_action': jb.further_action,
+            'TRSL':jb.TRSL,
+            'signature_img2':relative_path2,
+            'signature_img3':relative_path3,
+
+
+        }
+
+
+        prv_data = []
+        EIRGeneration_datas_prvdatas = EIRGeneration.objects.filter(failure_id__equipment=jb.failure_id.equipment,component=jb.component).exclude(eir_id=id)
+        st_gen = 0
+        for jbr in EIRGeneration_datas_prvdatas:
+            st_gen = st_gen + 1
+            ast_data = Asset.objects.filter(id=jbr.failure_id.location_id)
+
+            prv_data.append({ 
+                'st_gen':st_gen,
+                'eir_gen_id' :  jbr.eir_gen_id,
+                'date' : jbr.failure_id.date,
+                'depot' : jbr.depot,
+                'train_set_no' : ast_data[0].location_id,
+                'sel_car' : jbr.failure_id.sel_car,
+                'incident_location' : jbr.incident_location,
+                'incident_time' : jbr.incident_time,
+                'id':jbr.eir_id,
+            })
+
+        job_details = []
+        job_detailsArr = InvestigationDetails.objects.filter(eir_dt_id=jb.eir_id,is_active=0)
+        st = 0
+        for jdar in job_detailsArr:
+            st = st + 1
+            job_details.append({ 
+                'details_id' :  jdar.details_id,
+                'non_compliance_details' : jdar.non_compliance_details,
+                'onvestigation_details' : jdar.onvestigation_details,
+                'relevant_ERTS_clause' : jdar.relevant_ERTS_clause,
+                's_no' : st,
+            })
+
+        images = []
+        imgArr = EIRImages.objects.filter(eir_dt_id=jb.eir_id,is_active=0)
+        for jdar in imgArr:
+
+            full_path6 = jdar.file_path
+            if full_path6 == None:
+                relative_path6 = None
+            else:
+                # Find the index of /static
+                index6 = full_path6.find("/static")
+                if index6 != -1:
+                    relative_path6 = full_path6[index6 + len("/static"):]  # remove /static as well
+                    # optionally remove leading slash
+                    relative_path6 = relative_path6.lstrip("/")
+                else:
+                    relative_path6 = full_path6  # fallback if /static not found
+
+            images.append({ 
+                'img_id' :  jdar.img_id,
+                'file_path' : relative_path6,
+            })
+
+
+        # print(prv_data)
+        return render(request, self.template_name,{'data':data ,'prv_data':prv_data , 'job_details':job_details, 'images':images })
+       

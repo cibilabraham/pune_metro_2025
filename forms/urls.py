@@ -82,6 +82,8 @@ urlpatterns = [
     path('eir_register/vieweir/',ViewEIR.as_view(),name='view_eir'),
     path('eir_register/addeir/<int:id>/',AddEIR.as_view(),name='add_eir'),
     path('eir_register/vieweir/<int:id>/',ViewEIR.as_view(),name='view_eir'),
+    path('eir_register/dwd_eir/',DwdEIR.as_view(),name='dwd_eir'),
+    path('eir_register/dwd_eir/<int:id>/',DwdEIR.as_view(),name='dwd_eir'),
 
 
     path('kilometre_reading/', KilometreReadingReg.as_view(), name='kilometre_reading'),

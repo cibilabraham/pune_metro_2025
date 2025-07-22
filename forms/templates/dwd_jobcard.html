@@ -201,7 +201,14 @@ table.table-bordered th,
                                         <td rowspan="2">Train Withdrawn from Revenue Service:</td>
                                         <td style="text-align: center;">
                                             {% if data.from_revenue_service == 'Yes' %}
-                                               <span class="tick-top">Yes</span>
+
+                                               <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">Yes✔</span>
+                                                    
+                                                </span>
+
+
+
                                             {% else %}
                                                <span class="text-center" style="text-align: center;">Yes</span>
                                             {% endif %}
@@ -213,7 +220,10 @@ table.table-bordered th,
                                     <tr>
                                         <td style="text-align: center;">
                                             {% if data.from_revenue_service == 'No' %}
-                                               <span class="tick-top">No</span>
+                                               <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">No✔</span>
+                                                    
+                                                </span>
                                             {% else %}
                                                <span class="text-center" >No</span>
                                             {% endif %}
@@ -284,7 +294,10 @@ table.table-bordered th,
                                         </td>
                                         <td style="text-align: center;" rowspan="2">
                                             {% if data.sic_required == 'Yes' %}
-                                               <span class="tick-top">Yes</span>
+                                               <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">Yes✔</span>
+                                                    
+                                                </span>
                                             {% else %}
                                                <span class="text-center" style="text-align: center;">Yes</span>
                                             {% endif %}
@@ -292,7 +305,13 @@ table.table-bordered th,
                                         </td>
                                         <td style="text-align: center;" rowspan="2">
                                             {% if data.sic_required == 'No' %}
-                                               <span class="tick-top">No</span>
+                                             
+                                               <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">No✔</span>
+                                                    
+                                                </span>
+
+
                                             {% else %}
                                                <span class="text-center" style="text-align: center;">No</span>
                                             {% endif %}
@@ -556,7 +575,10 @@ table.table-bordered th,
                                     </td>
                                     <td style="text-align: center;" >
                                         {% if data.handed_over == 'Yes' %}
-                                            <span class="tick-top">Yes</span>
+                                            <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">Yes✔</span>
+                                                    
+                                                </span>
                                         {% else %}
                                             <span class="text-center" style="text-align: center;">Yes</span>
                                         {% endif %}
@@ -575,7 +597,10 @@ table.table-bordered th,
                                  
                                     <td style="text-align: center;" >
                                         {% if data.handed_over == 'No' %}
-                                            <span class="tick-top">No</span>
+                                            <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">No✔</span>
+                                                    
+                                                </span>
                                         {% else %}
                                             <span class="text-center" style="text-align: center;">No</span>
                                         {% endif %}
@@ -664,7 +689,10 @@ table.table-bordered th,
                                     <td style="text-align: center;" >
 
                                         {% if data.train_can_be_energized == 'Yes' %}
-                                            <span class="tick-top">Yes</span>
+                                            <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">Yes✔</span>
+                                                    
+                                                </span>
                                         {% else %}
                                             <span class="text-center" style="text-align: center;">Yes</span>
                                         {% endif %}
@@ -672,7 +700,10 @@ table.table-bordered th,
                                         <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
 
                                         {% if data.train_can_be_energized == 'No' %}
-                                            <span class="tick-top">No</span>
+                                            <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">No✔</span>
+                                                    
+                                                </span>
                                         {% else %}
                                             <span class="text-center" style="text-align: center;">No</span>
                                         {% endif %}
@@ -702,7 +733,10 @@ table.table-bordered th,
                                     <td style="text-align: center;" >
 
                                         {% if data.train_can_be_moved == 'Yes' %}
-                                            <span class="tick-top">Yes</span>
+                                            <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">Yes✔</span>
+                                                    
+                                                </span>
                                         {% else %}
                                             <span class="text-center" style="text-align: center;">Yes</span>
                                         {% endif %}
@@ -710,7 +744,10 @@ table.table-bordered th,
                                         <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
 
                                         {% if data.train_can_be_moved == 'No' %}
-                                            <span class="tick-top">No</span>
+                                            <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">No✔</span>
+                                                    
+                                                </span>
                                         {% else %}
                                             <span class="text-center" style="text-align: center;">No</span>
                                         {% endif %}
@@ -781,7 +818,10 @@ table.table-bordered th,
                                     <td style="text-align: center;" >
 
                                         {% if data.train_can_be_energized2 == 'Yes' %}
-                                            <span class="tick-top">Yes</span>
+                                            <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">Yes✔</span>
+                                                    
+                                                </span>
                                         {% else %}
                                             <span class="text-center" style="text-align: center;">Yes</span>
                                         {% endif %}
@@ -789,7 +829,10 @@ table.table-bordered th,
                                         <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
 
                                         {% if data.train_can_be_energized2 == 'No' %}
-                                            <span class="tick-top">No</span>
+                                            <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">No✔</span>
+                                                    
+                                                </span>
                                         {% else %}
                                             <span class="text-center" style="text-align: center;">No</span>
                                         {% endif %}
@@ -819,7 +862,10 @@ table.table-bordered th,
                                     <td style="text-align: center;" >
 
                                         {% if data.train_can_be_moved2 == 'Yes' %}
-                                            <span class="tick-top">Yes</span>
+                                            <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">Yes✔</span>
+                                                    
+                                                </span>
                                         {% else %}
                                             <span class="text-center" style="text-align: center;">Yes</span>
                                         {% endif %}
@@ -827,7 +873,10 @@ table.table-bordered th,
                                         <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
 
                                         {% if data.train_can_be_moved2 == 'No' %}
-                                            <span class="tick-top">No</span>
+                                            <span style="position: relative; display: inline-block;">
+                                                    <span style="position: relative; top: 0; left: 50%; transform: translateX(-50%); font-size: 1.1em; display: block; text-align: center;">No✔</span>
+                                                    
+                                                </span>
                                         {% else %}
                                             <span class="text-center" style="text-align: center;">No</span>
                                         {% endif %}
