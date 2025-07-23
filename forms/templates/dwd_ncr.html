@@ -147,7 +147,7 @@ table.table-bordered th,
                                     <td colspan="2"><span><b>Record no: {{data.ncr_gen_id}}</b> </span>
                                     </td>
                                     <td colspan="1"><b>Record Type: NCR</b></td>
-                                    <td colspan="1"><span><b>Rev No: {{data.id}}</b> </span>
+                                    <td colspan="1"><span><b>Rev No: {{data.rev_no}}</b> </span>
                                     </td>
                                    
                                 </tr>
@@ -186,9 +186,9 @@ table.table-bordered th,
                                     </td>
                                 </tr>
                                   <tr>
-                                    <td ><span><b>PART Description /ASSEMBLY NAME:</b> </span>
+                                    <td colspan="2"><span><b>PART Description / ASSEMBLY NAME:</b> </span>
                                     </td>
-                                    <td colspan="2"><span>{{data.assembly_name}}</span>
+                                    <td ><span>{{data.assembly_name}}</span>
                                     </td>
                                     <td ><span><b>Trainset & Car No:</b> </span>
                                     </td>
@@ -294,10 +294,10 @@ table.table-bordered th,
 
                                 <tr>
                                   
-                                    <td colspan="2"><span><b>Defect  Date:</b> {{data.defect_date|date:'d/m/Y'}} </span>
+                                    <td colspan="2"><span><b>Defect Identified Date:</b> {{data.defect_date|date:'d/m/Y'}} </span>
                                     </td>
                                   
-                                    <td colspan="2"><span><b>Defect Time:</b> {{data.defect_time}} </span>
+                                    <td colspan="2"><span><b>Defect Identified Time:</b> {{data.defect_time}} </span>
                                     </td>
 
                                     <td colspan="2"><span><b>Defect Source (Work Station):</b> {{data.defect_source}} </span>

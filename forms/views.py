@@ -6677,6 +6677,8 @@ class AddNCR(View):
             'root_cause_analysis':jb.root_cause_analysis,
             'ncr_status':jb.ncr_status,
 
+            'rev_no' : jb.rev_no,
+
 
         }
 
@@ -6721,7 +6723,7 @@ class AddNCR(View):
         # Find_Pid = Find_Pids[0]
         
         # asset_type = Find_Pid.id
-
+        rev_no = req.get('rev_no')
         assembly_name = req.get('assembly_name')
         assembly_no = req.get('assembly_no')
         drawing_no = req.get('drawing_no')
@@ -6883,7 +6885,7 @@ class AddNCR(View):
         root_cause_analysis = req.get('root_cause_analysis')
         
 
-        NCRGeneration.objects.filter(rec_id=ids).update(inspector_name=inspector_name,assembly_name=assembly_name,assembly_no=assembly_no,drawing_no=drawing_no,detection_workstation=detection_workstation,location_id=location_id,sel_car=sel_car,serial_no=serial_no,green_red_channel=green_red_channel,chkMinor=chkMinor,chkMajor=chkMajor,chkCritical=chkCritical,specification=specification,defect_source=defect_source,supplier_name=supplier_name,defect_location=defect_location,defect_detected_by=defect_detected_by,defect_detected_workstation=defect_detected_workstation,no_of_parts_deloverd=no_of_parts_deloverd,no_of_defective_parts=no_of_defective_parts,defect_description=defect_description,defect_time=defect_time,defect_date=defect_date,active_deviations=active_deviations,chk_Internal=chk_Internal,chk_Supplier=chk_Supplier,chk_TWL=chk_TWL,chk_Transportation=chk_Transportation,corrective_action_date=corrective_action_date,approved_date=approved_date,action_date=action_date,verification_date=verification_date,initial_analysis=initial_analysis,attachments_files=attachments_files,responsibility=responsibility,invoice_number=invoice_number,non_conforming_part_disposition=non_conforming_part_disposition,responsible_for_execution=responsible_for_execution,containment_action=containment_action,corrective_action_by=corrective_action_by,corrective_action_designation=corrective_action_designation,approved_by=approved_by,approved_designation=approved_designation,action_name=action_name,verification_name=verification_name,inp_root_cause=inp_root_cause,occurrence=occurrence,detection=detection,effectiveness=effectiveness,cost_1=cost_1,cost_2=cost_2,cost_3=cost_3,cost_4=cost_4,cost_5=cost_5,cost_6=cost_6,total_cost=total_cost,root_cause_analysis=root_cause_analysis,ncr_status=0)
+        NCRGeneration.objects.filter(rec_id=ids).update(inspector_name=inspector_name,assembly_name=assembly_name,assembly_no=assembly_no,drawing_no=drawing_no,detection_workstation=detection_workstation,location_id=location_id,sel_car=sel_car,serial_no=serial_no,green_red_channel=green_red_channel,chkMinor=chkMinor,chkMajor=chkMajor,chkCritical=chkCritical,specification=specification,defect_source=defect_source,supplier_name=supplier_name,defect_location=defect_location,defect_detected_by=defect_detected_by,defect_detected_workstation=defect_detected_workstation,no_of_parts_deloverd=no_of_parts_deloverd,no_of_defective_parts=no_of_defective_parts,defect_description=defect_description,defect_time=defect_time,defect_date=defect_date,active_deviations=active_deviations,chk_Internal=chk_Internal,chk_Supplier=chk_Supplier,chk_TWL=chk_TWL,chk_Transportation=chk_Transportation,corrective_action_date=corrective_action_date,approved_date=approved_date,action_date=action_date,verification_date=verification_date,initial_analysis=initial_analysis,attachments_files=attachments_files,responsibility=responsibility,invoice_number=invoice_number,non_conforming_part_disposition=non_conforming_part_disposition,responsible_for_execution=responsible_for_execution,containment_action=containment_action,corrective_action_by=corrective_action_by,corrective_action_designation=corrective_action_designation,approved_by=approved_by,approved_designation=approved_designation,action_name=action_name,verification_name=verification_name,inp_root_cause=inp_root_cause,occurrence=occurrence,detection=detection,effectiveness=effectiveness,cost_1=cost_1,cost_2=cost_2,cost_3=cost_3,cost_4=cost_4,cost_5=cost_5,cost_6=cost_6,total_cost=total_cost,root_cause_analysis=root_cause_analysis,ncr_status=0,rev_no=rev_no)
 
 
         return JsonResponse({'status':'1'})
@@ -7049,6 +7051,8 @@ class ViewNCR(View):
 
             'root_cause_analysis':jb.root_cause_analysis,
             'ncr_status':jb.ncr_status,
+
+            'rev_no' : jb.rev_no,
 
 
         }
@@ -7628,6 +7632,8 @@ class DwdNCR(View):
 
             'root_cause_analysis':jb.root_cause_analysis,
             'ncr_status':jb.ncr_status,
+
+            'rev_no' : jb.rev_no,
 
 
         }

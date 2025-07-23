@@ -766,6 +766,8 @@ class NCRGeneration(models.Model):
     ncr_status = models.IntegerField(default=0)
     root_cause_analysis = models.CharField(max_length=550, default=0)
 
+    rev_no = models.CharField(max_length=550, default=0)
+
 
     class Meta:
         verbose_name_plural = 'NCR'
