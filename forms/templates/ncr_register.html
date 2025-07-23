@@ -143,17 +143,19 @@ function getDefectData(){
                       {"data":null,"render":function(item){
 
                             var tbl = '';
-                            tbl += '<a href="/forms/ncr_register/viewncr/'+ item.id +'" >View</a> | ';
+                            tbl += '<a href="/forms/ncr_register/viewncr/'+ item.id +'" >View</a>  ';
 
                             
                             if( item.user_Role == 1 || item.user_Role == 2 || item.ncr_status == 0 ){
-                                tbl += '<a href="/forms/ncr_register/addncr/'+ item.id +'" >Edit</a> | ';
+                                tbl += ' | <a href="/forms/ncr_register/addncr/'+ item.id +'" >Edit</a> ';
+                            }
+
+
+                            if(item.ncr_status == 1){
+                               tbl += ' | <a href="/forms/ncr_register/dwd_ncr/'+ item.id +'" >PDF</a> ';
                             }
 
                          
-
-                            tbl += '<a href="/forms/ncr_register/viewviewncreir/'+ item.id +'" >PDF</a> ';
-                            
                             return tbl;
                         }
                     },

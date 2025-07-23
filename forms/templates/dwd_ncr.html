@@ -1,0 +1,1000 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+
+            <style>
+                .tick-top {
+                position: relative;
+                display: inline-block;
+                /* padding-top: 0.2em;  */
+                /* text-align: center; */
+                }
+
+                .tick-top::before {
+                content: "✔"; /* Unicode for tick mark */
+                position: relative;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 1.1em;
+                color: green;
+                }
+
+                .no-click {
+  pointer-events: none; /* prevents all mouse interactions */
+}
+
+                .page-break {
+    page-break-after: always;
+  }
+
+  .header-div {
+    display: none;
+  }
+
+
+                 .no-border-cols {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .no-border-cols th,
+  .no-border-cols td {
+    border: none;
+    border-right: 1px solid #dee2e6; /* column separator */
+  }
+
+  .no-border-cols th:last-child,
+  .no-border-cols td:last-child {
+    border-right: none; /* remove right border on last column */
+  }
+
+  #dwdJobcardDiv {
+  width: 100%;
+  /* max-width: 7.5in;  */
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+table, div, td, th {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+
+table.table-bordered th,
+  table.table-bordered td {
+    border-width: .5px; /* Set your desired thickness */
+    border-color: #000; /* Optional: customize border color */
+  }
+
+  table.table-bordered {
+    border-width: .5px;
+    border-color: #000;
+  }
+
+            </style>
+
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                    <h3 class="page-header">
+                       Download NCR (Non-Conformity Report) Generation
+                    </h3>
+                  
+                </div>
+
+                 <div class="col-lg-6 mb-3">
+    
+    
+                    <a href="/forms/ncr_register/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+
+            </div>
+
+            <div class="border border-light rounded" >
+
+
+                <div class="d-flex justify-content-center gap-3 py-3">
+                    <button onclick="downloadPDF()" class="btn btn-primary">
+                        <i class="bi bi-download"></i> Download PDF
+                    </button>
+
+                    &nbsp; &nbsp; 
+<!-- 
+                    <button onclick="printDiv()" class="btn btn-secondary">
+                        <i class="bi bi-printer"></i> Print
+                    </button> -->
+                    </div>
+
+
+
+
+            <div id="dwdJobcardDiv" style="overflow: visible; height: auto;" >
+
+            
+
+            <div class="container mt-1">
+                <div class="p-4">
+                    <div >
+
+                        <div>
+                            <table class="table table-bordered mt-2">
+                                <tr>
+                                    <td rowspan="2"> <img src="/static/ncr_logo.png" style="width: auto; height: 120px; "></td>
+                                    <td colspan="5" align="center" >
+                                        <h3 class="text-center" style="padding-top: 10px;">NON-CONFORMITY REPORT</h3>
+                                     
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span><b>Record no: {{data.ncr_gen_id}}</b> </span>
+                                    </td>
+                                    <td colspan="1"><b>Record Type: NCR</b></td>
+                                    <td colspan="1"><span><b>Rev No: {{data.id}}</b> </span>
+                                    </td>
+                                   
+                                </tr>
+
+                            </table>
+
+                            <table class="table table-bordered mt-2">
+                                <tr>
+                                    <td ><span><b>NON-CONFORMITY REPORT No:</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.ncr_gen_id}}</span>
+                                    </td>
+                                    <td ><span><b>NCR opening date:</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.date}} </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td ><span><b>Name of the inspector (NCR Raised):</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.inspector_name}}</span>
+                                    </td>
+                                    <td ><span><b>NCR opening Time:</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.time}} </span>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td ><span><b>PROJECT NAME:</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.project_name}}</span>
+                                    </td>
+                                    <td ><span><b>Detection workstation:</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.detection_workstation}} </span>
+                                    </td>
+                                </tr>
+                                  <tr>
+                                    <td ><span><b>PART Description /ASSEMBLY NAME:</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.assembly_name}}</span>
+                                    </td>
+                                    <td ><span><b>Trainset & Car No:</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.location_id}}   {{data.sel_car}} </span>
+                                    </td>
+                                </tr>
+
+                                  <tr>
+                                    <td ><span><b>PART or ASSEMBLY No:</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.assembly_no}}</span>
+                                    </td>
+                                    <td ><span><b>Serial no/Traceability:</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.serial_no}} </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td ><span><b>Drawing No :</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.drawing_no}}</span>
+                                    </td>
+                                    <td ><span><b>Green/Red Channel :</b> </span>
+                                    </td>
+                                    <td colspan="2"><span>{{data.green_red_channel}} </span>
+                                    </td>
+                                </tr>
+
+                                 <tr>
+                                 
+                                    <td ><span><h3 class="text-center">Title</h3></span>
+                                    </td>
+                                  
+                                    <td colspan="5">
+
+
+                                         <div class="d-flex justify-content-between align-items-center">
+                                                <strong>Defect Criteria:</strong>
+                                                <div>
+
+                                                {% if 1 == data.chkMinor %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" checked> <span >Minor</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% else %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" > <span >Minor</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% endif %}
+
+                                                {% if 1 == data.chkMajor %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" checked> <span >Major</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% else %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" > <span >Major</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% endif %}
+
+                                                 {% if 1 == data.chkCritical %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" checked> <span >Critical</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% else %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" > <span >Critical</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% endif %}
+                                               
+                                                </div>
+                                            </div>
+
+
+
+                                    </td>
+                                </tr>
+
+                                 <tr>
+                                  
+                                    <td ><span><b>Specification:</b></span>
+                                    </td>
+                                  
+                                    <td colspan="5"><span>{{data.specification}} </span>
+                                    </td>
+                                </tr>
+
+                                 <tr>
+                                  
+                                    <td ><span><b>Defect Description (Actual vs Specification):</b></span>
+                                    </td>
+                                  
+                                    <td colspan="5"><span>{{data.defect_description}} </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                  
+                                    <td colspan="2"><span><b>Defect  Date:</b> {{data.defect_date|date:'d/m/Y'}} </span>
+                                    </td>
+                                  
+                                    <td colspan="2"><span><b>Defect Time:</b> {{data.defect_time}} </span>
+                                    </td>
+
+                                    <td colspan="2"><span><b>Defect Source (Work Station):</b> {{data.defect_source}} </span>
+                                    </td>
+                                </tr>
+
+                          
+
+                                  <tr>
+                                  
+                                    <td colspan="2"><span><b>Defect location (on part/on assembly/location on the car):</b></span>
+                                    </td>
+                                  
+                                    <td colspan="4"><span>{{data.defect_location}} </span>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                            <div class="page-break"></div>
+
+                            <table class="table table-bordered mt-2 header-div">
+                                <tr>
+                                    <td rowspan="2"> <img src="/static/ncr_logo.png" style="width: auto; height: 120px; "></td>
+                                    <td colspan="5" align="center" >
+                                        <h3 class="text-center" style="padding-top: 10px;">NON-CONFORMITY REPORT</h3>
+                                     
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span><b>Record no: {{data.ncr_gen_id}}</b> </span>
+                                    </td>
+                                    <td colspan="1"><b>Record Type: NCR</b></td>
+                                    <td colspan="1"><span><b>Rev No: {{data.id}}</b> </span>
+                                    </td>
+                                   
+                                </tr>
+
+                            </table>
+
+
+                            <table class="table table-bordered mt-2">
+
+                                <tr>
+                                  
+                                    <td ><span><b>Defect detected by (Name and Function):</b></span>
+                                    </td>
+                                  
+                                    <td colspan="5"><span>{{data.defect_detected_by}} </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                  
+                                    <td ><span><b>Defect detected workstation:</b></span>
+                                    </td>
+                                  
+                                    <td colspan="5"><span>{{data.defect_detected_workstation}} </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                  
+                                    <td ><span><b>No of parts delivered to line/plant ?:</b></span>
+                                    </td>
+                                  
+                                    <td colspan="2"><span>{{data.no_of_parts_deloverd}} </span>
+                                    </td>
+
+                                    <td ><span><b>No of defective parts identified in the line/plant?:</b></span>
+                                    </td>
+                                  
+                                    <td colspan="2"><span>{{data.no_of_defective_parts}} </span>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                
+                                  
+                                    <td colspan="6">
+
+
+                                         <div class="d-flex justify-content-between align-items-center">
+                                                <strong>Active Deviations:</strong>
+                                                <div>
+
+                                                {% if 1 == data.chk_Internal %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" checked> <span >Internal</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% else %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" > <span >Internal</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% endif %}
+
+                                                {% if 1 == data.chk_Supplier %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" checked> <span >Supplier</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% else %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" > <span >Supplier</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% endif %}
+
+                                                 {% if 1 == data.chk_TWL %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" checked> <span >Other TWL Shop or Area</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% else %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" > <span >Other TWL Shop or Area</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% endif %}
+
+                                                 {% if 1 == data.chk_Transportation %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" checked> <span >Transportation Damage</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% else %}
+                                                 <span class="me-6">
+                                                    <input class="form-check-input no-click" type="checkbox" > <span >Transportation Damage</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                                {% endif %}
+                                               
+                                                </div>
+                                            </div>
+
+
+
+                                    </td>
+                                </tr>
+
+
+                            </table>
+
+                            <table class="table table-bordered mt-2">
+
+                                <tr>
+
+                                    <td colspan="6"><span><b>Initial analysis (Defective part, Contributing dimension / Characteristics/ Welding/ Visual/Process)- Characteristics: <br> {{data.initial_analysis}}</b></span>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <b>Attachments (file/ppt/job cards):</b>
+                                    </td>
+                                     <td colspan="4">
+                                        <span>{{data.attachments_files}}</span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">
+                                        <b>RESPONSIBILITY: {{data.responsibility}}</b>
+                                    </td>
+                                     <td colspan="2">
+                                        <b>SUPPLIER NAME: {{data.supplier_name}}</b>
+                                    </td>
+                                     <td colspan="2">
+                                        <b>INVOICE NUMBER: {{data.invoice_number}}</b>
+                                    </td>
+                                </tr>
+
+                                 <tr>
+                                    <td >
+                                        <b>NON CONFORMING PART DISPOSITION:</b>
+                                    </td>
+                                     <td colspan="2">
+                                        <span>{{data.non_conforming_part_disposition}}</span>
+                                    </td>
+                                      <td >
+                                        <b>Responsible for execution of the disposition:</b>
+                                    </td>
+                                     <td colspan="2">
+                                        <span>{{data.responsible_for_execution}}</span>
+                                    </td>
+                                  
+                                </tr>
+
+                            </table>
+                            <div class="page-break"></div>
+
+                            <table class="table table-bordered mt-2 header-div">
+                                <tr>
+                                    <td rowspan="2"> <img src="/static/ncr_logo.png" style="width: auto; height: 120px; "></td>
+                                    <td colspan="5" align="center" >
+                                        <h3 class="text-center" style="padding-top: 10px;">NON-CONFORMITY REPORT</h3>
+                                     
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span><b>Record no: {{data.ncr_gen_id}}</b> </span>
+                                    </td>
+                                    <td colspan="1"><b>Record Type: NCR</b></td>
+                                    <td colspan="1"><span><b>Rev No: {{data.id}}</b> </span>
+                                    </td>
+                                   
+                                </tr>
+
+                            </table>
+
+
+                            <table class="table table-bordered mt-2">
+
+                                <tr>
+
+                                    <td>
+
+                                         <b>REWORK-</b>This disposition is for non-conforming material that can be reworked without adverse effect on safety, performance, interchangeability, reliability, or quality
+
+                                    </td>
+
+                                     <td colspan="2">
+
+                                          <b>RETURN TO VENDOR-</b> This disposition is applicable when the material discrepancy is the responsibility of the supplier and other dispositions are not recommended as material shall be sent to supplier for fault containment at supplier end
+
+                                    </td>
+
+                                     <td>
+
+                                           <b>SCRAP- </b>The non-conforming material cannot be used for its intended purposes and cannot be reworked or used as is. The nonconforming product is discarded.
+
+                                    </td>
+
+                                     <td colspan="2">
+
+                                          <b>USE AS IT IS-</b> This disposition is to bring the nonconforming material to an acceptable condition but which may not totally conform to the applicable drawings or specifications
+
+                                    </td>
+
+                                  
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">
+                                          <b>Containment action</b><br>
+                                            1. Store stock to be check<br>
+                                            2. Line stock to be check<br>
+                                            3. Green \ Red to be checked
+                                    </td>
+                                    <td colspan="4">{{data.containment_action}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Corrective action by:</b></td>
+                                    <td colspan="2">{{data.corrective_action_by}}</td>
+
+                                    <td><b>Approved by:</b></td>
+                                    <td colspan="2">{{data.approved_by}}</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td><b>Designation:</b></td>
+                                    <td colspan="2">{{data.corrective_action_designation}}</td>
+
+                                    <td><b>Designation:</b></td>
+                                    <td colspan="2">{{data.approved_designation}}</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td><b>Date:</b></td>
+                                    <td colspan="2">{{data.corrective_action_date|date:'d/m/Y'}}</td>
+
+                                    <td><b>Date:</b></td>
+                                    <td colspan="2">{{data.approved_date|date:'d/m/Y'}}</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td><b>Signature:</b></td>
+                                    <td colspan="2">
+                                        <img src="/static/uploads/{{ data.signature_img }}" style="width: 60px;">
+                                    </td>
+
+                                    <td><b>Signature:</b></td>
+                                    <td colspan="2">
+                                        <img src="/static/uploads/{{ data.signature_img2 }}" style="width: 60px;">
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="3" class="text-center"><b>Corrective action Implementation</b></td>
+                                    <td colspan="3" class="text-center"><b>Verification of implementation</b></td>
+
+                                </tr>
+                                <tr>
+
+                                    <td><b>Name:</b></td>
+                                    <td colspan="2">
+                                        {{data.action_name}}
+                                    </td>
+
+                                    <td><b>Name:</b></td>
+                                    <td colspan="2">
+                                        {{data.verification_name}}
+                                    </td>
+
+                                </tr>
+
+                                 <tr>
+                                    <td><b>Date & Sign:</b></td>
+                                    <td colspan="2">
+                                        {{data.action_date|date:'d/m/Y'}} <img src="/static/uploads/{{ data.signature_img3 }}" style="width: 60px;">
+                                    </td>
+
+                                    <td><b>Date & Sign:</b></td>
+                                    <td colspan="2">
+                                        {{data.verification_date|date:'d/m/Y'}} <img src="/static/uploads/{{ data.signature_img4 }}" style="width: 60px;">
+                                    </td>
+
+                                </tr>
+
+
+
+
+                                
+
+                            </table>
+
+
+                            <div class="page-break"></div>
+
+                            <table class="table table-bordered mt-2 header-div">
+                                <tr>
+                                    <td rowspan="2"> <img src="/static/ncr_logo.png" style="width: auto; height: 120px; "></td>
+                                    <td colspan="5" align="center" >
+                                        <h3 class="text-center" style="padding-top: 10px;">NON-CONFORMITY REPORT</h3>
+                                     
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span><b>Record no: {{data.ncr_gen_id}}</b> </span>
+                                    </td>
+                                    <td colspan="1"><b>Record Type: NCR</b></td>
+                                    <td colspan="1"><span><b>Rev No: {{data.id}}</b> </span>
+                                    </td>
+                                   
+                                </tr>
+
+                            </table>
+
+
+                            <table class="table table-bordered mt-2">
+
+                                <tr>
+                                    <td colspan="6"><b>Root cause analysis:</b><br>{{data.root_cause_analysis}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6"><b>ROOT CAUSE:</b><br>{{data.inp_root_cause}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6"><b>Occurrence:</b><br>{{data.occurrence}}</td>
+                                </tr>
+                                 <tr>
+                                    <td colspan="6"><b>Detection:</b><br>{{data.detection}}</td>
+                                </tr>
+                                 <tr>
+                                    <td colspan="6"><b>Corrective actions:</b><br>
+
+                                        <table class=" no-border-cols" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Corrective Action ID</th>
+                                                    <th>Corrective Action Owner </th>
+                                                    <th>Corrective Action Description</th>
+                                                    <th>Corrective Action Update</th>
+                                                    <th>Corrective Action Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                {% for Corrective_data in Corrective_data %}
+                                                    <tr>
+                                                        <td>{{ Corrective_data.corrective_action_id }}</td>
+                                                        <td>{{ Corrective_data.corrective_action_owner }}</td>
+                                                        <td>{{ Corrective_data.corrective_action_description }}</td>
+                                                        <td>{{ Corrective_data.corrective_action_update }}</td>
+                                                        <td>{{ Corrective_data.corrective_action_status }}</td>
+
+                                                
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="5" class="text-center text-muted">No corrective  actions available</td>
+                                                    </tr>
+                                                {% endfor %}
+
+
+
+
+                                            </tbody>
+                                        </table>
+
+
+                                    
+                                    
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="6"><b>EFFECTIVENESS:</b><br>{{data.effectiveness}}</td>
+                                </tr>
+
+
+                            </table>
+
+                            <div class="page-break"></div>
+
+                            <table class="table table-bordered mt-2 header-div">
+                                <tr>
+                                    <td rowspan="2"> <img src="/static/ncr_logo.png" style="width: auto; height: 120px; "></td>
+                                    <td colspan="5" align="center" >
+                                        <h3 class="text-center" style="padding-top: 10px;">NON-CONFORMITY REPORT</h3>
+                                     
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span><b>Record no: {{data.ncr_gen_id}}</b> </span>
+                                    </td>
+                                    <td colspan="1"><b>Record Type: NCR</b></td>
+                                    <td colspan="1"><span><b>Rev No: {{data.id}}</b> </span>
+                                    </td>
+                                   
+                                </tr>
+
+                            </table>
+
+                            <table class="table table-bordered mt-2">
+                                <tr>
+                                    <td colspan="6"><b>NCR Closure( final)</b></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><b>Name:</b></td>
+                                    <td colspan="4">{{data.fnl_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><b>Designation:</b></td>
+                                    <td colspan="4">{{data.fnl_designation}}</td>
+                                </tr>
+                                 <tr>
+                                    <td colspan="2"><b>Signature:</b></td>
+                                    <td colspan="4">
+                                        <img src="/static/uploads/{{ data.signature_img5 }}" style="width: 60px;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td ><b>NCR Closure Date:</b></td>
+                                    <td colspan="2">{{data.fnl_date|date:'d/m/Y'}}</td>
+                                     <td ><b>No. Of Days NCR Remained Open:</b></td>
+                                    <td colspan="2">{{data.no_of_day_open}}</td>
+                                </tr>
+
+                            </table>
+
+                            <div class="page-break"></div>
+
+                            <table class="table table-bordered mt-2 header-div">
+                                <tr>
+                                    <td rowspan="2"> <img src="/static/ncr_logo.png" style="width: auto; height: 120px; "></td>
+                                    <td colspan="5" align="center" >
+                                        <h3 class="text-center" style="padding-top: 10px;">NON-CONFORMITY REPORT</h3>
+                                     
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span><b>Record no: {{data.ncr_gen_id}}</b> </span>
+                                    </td>
+                                    <td colspan="1"><b>Record Type: NCR</b></td>
+                                    <td colspan="1"><span><b>Rev No: {{data.id}}</b> </span>
+                                    </td>
+                                   
+                                </tr>
+
+                            </table>
+
+                            <div class="row mt-2 " >
+
+                                <div class="col-sm-12">
+                                    <h5>Evidence/ related figures</h5><br>
+                                </div>
+
+
+
+                                    {% for imageList in imageList %}
+
+                                        <div class="col-sm-12"> 
+
+                                            <img src="/static/uploads/{{ imageList.file_path }}" style="width: auto;height: 300px;">
+
+                                        </div>
+                                        
+
+
+                                    {% empty %}
+
+                                        <div class="col-sm-12">
+                                            <span>No images available</span>
+                                        </div>
+
+                                     
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+
+
+
+
+
+                           
+                           
+
+
+
+
+
+
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            </div>
+            </div>
+
+
+         
+
+           
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+
+
+
+    });
+
+
+
+    function downloadPDF() {
+
+        const eirGenId = "{{ data.ncr_gen_id }}";
+
+    // Show header before generating PDF
+    document.querySelectorAll('.header-div').forEach(function(el) {
+        el.style.display = 'block';
+    });
+
+    const element = document.getElementById("dwdJobcardDiv");
+
+    const opt = {
+        margin: 0.4,
+        filename: eirGenId + ".pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+            scale: 2,
+            scrollY: 0
+        },
+        jsPDF: {
+            unit: "in",
+            format: "a4",
+            orientation: "portrait"
+        }
+    };
+
+    html2pdf()
+        .set(opt)
+        .from(element)
+        .toPdf()
+        .get('pdf')
+        .then(function (pdf) {
+            const totalPages = pdf.internal.getNumberOfPages();
+
+            for (let i = 1; i <= totalPages; i++) {
+                pdf.setPage(i);
+                pdf.setFontSize(10);
+                pdf.text(`Page ${i} of ${totalPages}`, pdf.internal.pageSize.getWidth() - 1, pdf.internal.pageSize.getHeight() - 0.5);
+            }
+
+            // // Save after adding page numbers
+            // pdf.save();
+
+            // Save with correct filename
+            pdf.save(eirGenId + ".pdf");
+
+            // Hide header after saving
+            document.querySelectorAll('.header-div').forEach(function(el) {
+                el.style.display = 'none';
+            });
+        });
+}
+
+
+//    function downloadPDF() {
+
+// //     document.querySelectorAll('.header-div').forEach(function(el) {
+// //         el.style.display = 'block';
+// //     });
+
+// //     const element = document.getElementById("dwdJobcardDiv");
+
+// //         const opt = {
+// //         margin: 0.4,
+// //         filename: "{{data.eir_gen_id}}.pdf",
+// //         image: { type: "jpeg", quality: 0.98 },
+// //         html2canvas: {
+// //             scale: 2,
+// //             scrollY: 0
+// //         },
+// //         jsPDF: {
+// //             unit: "in",
+// //             format: "a4",
+// //             orientation: "portrait"
+// //         }
+// //         };
+
+// //         html2pdf()
+// //         .set(opt)
+// //         .from(element)
+// //         .toPdf()
+// //         .get('pdf')
+// //         .then(function (pdf) {
+// //             const totalPages = pdf.internal.getNumberOfPages();
+
+// //             for (let i = 1; i <= totalPages; i++) {
+// //             pdf.setPage(i);
+// //             pdf.setFontSize(10);
+// //             pdf.text(`Page ${i} of ${totalPages}`, pdf.internal.pageSize.getWidth() - 1, pdf.internal.pageSize.getHeight() - 0.5);
+// //             }
+// //         })
+// //         .save();
+
+
+
+// // document.querySelectorAll('.header-div').forEach(function(el) {
+// //     el.style.display = 'none';
+// // });
+
+
+
+
+// //   const element = document.getElementById("dwdJobcardDiv");
+
+// //   html2pdf()
+// //     .from(element)
+// //     .set({
+// //       margin: 0.4,
+// //       filename: "{{data.eir_gen_id}}.pdf",
+// //       image: { type: "jpeg", quality: 0.98 },
+// //       html2canvas: {
+// //         scale: 2,
+// //         scrollY: 0  // Prevent clipping
+// //       },
+// //       jsPDF: {
+// //         unit: "in",
+// //         format: "a4",
+// //         orientation: "portrait"
+// //       }
+// //     })
+// //     .save();
+// }
+
+
+     function printDiv() {
+        const printContents = document.getElementById('dwdJobcardDiv').innerHTML;
+        const originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload(); // Optional: reload to restore event bindings
+    }
+
+   
+</script>
+
+{% endblock sb_admin_js %}

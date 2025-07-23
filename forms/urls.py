@@ -95,6 +95,8 @@ urlpatterns = [
     path('ncr_register/addncr/<int:id>/',AddNCR.as_view(),name='add_ncr'),
     path('ncr_register/viewncr/',ViewNCR.as_view(),name='view_ncr'),
     path('ncr_register/viewncr/<int:id>/',ViewNCR.as_view(),name='view_ncr'),
+    path('ncr_register/dwd_ncr/',DwdNCR.as_view(),name='dwd_ncr'),
+    path('ncr_register/dwd_ncr/<int:id>/',DwdNCR.as_view(),name='dwd_ncr'),
 
 
     path('location_id_from_asset_type/',LocatioIDFromAssetType.as_view(),name='location_id_from_asset_type'),
