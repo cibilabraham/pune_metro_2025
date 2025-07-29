@@ -1083,7 +1083,7 @@ class LogPlotMtbfReportView(View):
 
             for i in range(1, week_number+1):
                 if FN_NAME == 'one':
-                    lru_population_hours = (18*7)*i # to get LRU Weekely Hours
+                    lru_population_hours = (asset_quantity*18*7)*i # to get LRU Weekely Hours
                 else:
                     lru_population_hours = (asset_quantity*18*7)*i # to get LRU Weekely Hours
                 actual_mtbf_value = 'null'
@@ -2073,10 +2073,20 @@ class AvailabilityView(View):
                 else:
                     response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
                     return JsonResponse(response)
+            
+            print(f"asset_count = {asset_count}")
+
+            asset_quantity = pbs_master_data[0].asset_quantity
+
+            asset_quantity_new = Product.objects.filter(product_id=project)
+            asset_quantity = asset_quantity_new[0].num_of_trains
+
+            print(f"asset_quantity: {asset_quantity}")
+
             if FN_NAME == 'two':
-                fist_hrs = 7*24*asset_count
+                fist_hrs = 7*18*asset_quantity
             else:
-                fist_hrs = 7*24
+                fist_hrs = 7*18*asset_quantity
             
             if start_date and end_date : # coming start date and end date are used further calculation
                 start_dates = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
@@ -2184,9 +2194,17 @@ class AvailabilityView(View):
 
                 # Avaiability = ((100 - Cumulative_service_delay_Hrs) / cumulative_operating_hours)
                 #Avaiability = random.randint(1,100)    
-                Avalability_data.append({'x':week, 'y':Avaiability,})
-                availability_target_data.append({'x':week, 'y':availability_target,})
-                week_scale.append(str(week))
+                # Avalability_data.append({'x':week, 'y':Avaiability,})
+                # availability_target_data.append({'x':week, 'y':availability_target,})
+                # week_scale.append(str(week))
+
+
+                Avalability_data.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':Avaiability,})
+                availability_target_data.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':availability_target,})
+                week_scale.append(str(week_start_date.strftime('%Y-%m-%d')))
+
+
+
                 print(time_period,cumulative_operating_hours,Week_wise_Service_Delay,Week_wise_Service_Delay_Hrs,Cumulative_service_delay_Hrs,Cumulative_service_delay_Hrs,Up_Time_Hrs,Avaiability,availability_target)
                 
         response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
@@ -2315,10 +2333,20 @@ class Availability2View(View):
                 else:
                     response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
                     return JsonResponse(response)
+
+            print(f"asset_count = {asset_count}")
+
+            asset_quantity = pbs_master_data[0].asset_quantity
+
+            asset_quantity_new = Product.objects.filter(product_id=project)
+            asset_quantity = asset_quantity_new[0].num_of_trains
+
+            print(f"asset_quantity: {asset_quantity}")
+
             if FN_NAME == 'two':
-                fist_hrs = 7*24*asset_count
+                fist_hrs = 7*18*asset_quantity
             else:
-                fist_hrs = 7*24
+                fist_hrs = 7*18*asset_quantity
             
             if start_date and end_date : # coming start date and end date are used further calculation
                 start_dates = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
@@ -2416,9 +2444,15 @@ class Availability2View(View):
 
                 # Avaiability = ((100 - Cumulative_service_delay_Hrs) / cumulative_operating_hours)
                 #Avaiability = random.randint(1,100)    
-                Avalability_data.append({'x':week, 'y':Avaiability,})
-                availability_target_data.append({'x':week, 'y':availability_target,})
-                week_scale.append(str(week))
+                # Avalability_data.append({'x':week, 'y':Avaiability,})
+                # availability_target_data.append({'x':week, 'y':availability_target,})
+                # week_scale.append(str(week))
+
+                Avalability_data.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':Avaiability,})
+                availability_target_data.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':availability_target,})
+                week_scale.append(str(week_start_date.strftime('%Y-%m-%d')))
+
+
                 print(time_period,cumulative_operating_hours,Week_wise_Service_Delay,Week_wise_Service_Delay_Hrs,Cumulative_service_delay_Hrs,Cumulative_service_delay_Hrs,Up_Time_Hrs,Avaiability,availability_target)
                 
         response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
