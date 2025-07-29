@@ -444,15 +444,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="service_delay">*Delay Time (mins):</label>
-                        <input type="number" class="form-control" id="service_delay" required="required" name="service_delay" value="{{data.service_delay}}">
-                        <div class="invalid-feedback">
-                         Please enter Delay Time.
-                        </div>
-                    </div>
-                </div>
+               
 
                 <div class="col-md-4">
                     <div class="form-group">
@@ -489,7 +481,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="cm_start_date">*Cm start date (DD/MM/YYYY):</label>
-                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="cm_start_date" name="cm_start_date" value="{{data.cm_start_date|date:'d/m/Y'}}">
+                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="cm_start_date" name="cm_start_date" value="{{data.cm_start_date|date:'d/m/Y'}}" onchange="getServiceDelay();">
                         <div class="invalid-feedback">
                          Please enter Cm start date.
                         </div>
@@ -499,7 +491,7 @@
                   <div class="col-md-4">
                     <div class="form-group">
                         <label for="cm_start_time">*Cm start time:</label>
-                        <input type="time" class="form-control" required="required" id="cm_start_time" name="cm_start_time" value="{{data.cm_start_time|date:"H:i"}}">
+                        <input type="time" class="form-control" required="required" id="cm_start_time" name="cm_start_time" value="{{data.cm_start_time|date:"H:i"}}" onchange="getServiceDelay();">
                          <div class="invalid-feedback">
                          Please enter Cm start time.
                         </div>
@@ -510,7 +502,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="cm_end_date">Cm end date (DD/MM/YYYY):</label>
-                        <input type="text" autocomplete="off" class="form-control date-time" id="cm_end_date" name="cm_end_date" value="{{data.cm_end_date|date:'d/m/Y'}}">
+                        <input type="text" autocomplete="off" class="form-control date-time" id="cm_end_date" name="cm_end_date" value="{{data.cm_end_date|date:'d/m/Y'}}" onchange="getServiceDelay();">
                         <div class="invalid-feedback">
                          Please enter Cm end date.
                         </div>
@@ -520,9 +512,19 @@
                   <div class="col-md-4">
                     <div class="form-group">
                         <label for="cm_end_time">Cm end time:</label>
-                        <input type="time" class="form-control" id="cm_end_time" name="cm_end_time" value="{{ data.cm_end_time|date:"H:i" }}">
+                        <input type="time" class="form-control" id="cm_end_time" name="cm_end_time" value="{{ data.cm_end_time|date:"H:i" }}" onchange="getServiceDelay();">
                         <div class="invalid-feedback">
                          Please enter Cm end time.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="service_delay">*Delay Time (mins):</label>
+                        <input type="number" class="form-control" id="service_delay" required="required" name="service_delay" value="{{data.service_delay}}">
+                        <div class="invalid-feedback">
+                         Please enter Delay Time.
                         </div>
                     </div>
                 </div>
@@ -782,6 +784,58 @@
 
 
 });
+
+
+function getServiceDelay(){
+    $('#service_delay').val('');
+
+    var cm_start_date= $('#cm_start_date').val()
+    var cm_start_time= $('#cm_start_time').val()
+    var cm_end_date= $('#cm_end_date').val()
+    var cm_end_time= $('#cm_end_time').val()
+
+    if(cm_start_date != "" && cm_start_time != "" && cm_end_date != "" && cm_end_time != "" ){
+        const input = cm_start_date+" "+cm_start_time;
+        const input2 = cm_end_date+" "+cm_end_time;
+
+        const diffInMinutes = getTimeDifferenceInMinutes(input2,input);
+        $('#service_delay').val(diffInMinutes);
+        // console.log(`Time difference: ${diffInMinutes} minute(s)`);
+
+    }
+
+
+}
+
+
+function getTimeDifferenceInMinutes(inputDateTimeStr, inputDateTimeStr2 ) {
+    // Parse input date string in "dd/mm/yyyy hh:mm" format
+    const [datePart, timePart] = inputDateTimeStr.split(' ');
+    const [day, month, year] = datePart.split('/').map(Number);
+    const [hours, minutes] = timePart.split(':').map(Number);
+
+    // Create a Date object from input
+    const inputDate = new Date(year, month - 1, day, hours, minutes);
+
+
+    const [datePart2, timePart2] = inputDateTimeStr2.split(' ');
+    const [day2, month2, year2] = datePart2.split('/').map(Number);
+    const [hours2, minutes2] = timePart2.split(':').map(Number);
+
+    // Create a Date object from input
+    const currentDate = new Date(year2, month2 - 1, day2, hours2, minutes2);
+
+    // Get current time
+    // const currentDate = new Date();
+
+    // Calculate difference in milliseconds
+    const diffMs = inputDate - currentDate;
+
+    // Convert to minutes (rounded down)
+    const diffMins = Math.floor(diffMs / 1000 / 60);
+
+    return diffMins;
+}
 
 
 
