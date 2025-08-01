@@ -52,8 +52,8 @@
                             <div class="tab-pane fade show" role="tabpanel" id="SetPBSMasterUnit">
                                 <form id="ConfiguForm"> 
                                 <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">MTBF/MTBSAF </label>
-                                    <div class="col-sm-10">
+                                    <label for="staticEmail" class="col-sm-3 col-form-label">MTBF/MTBSAF </label>
+                                    <div class="col-sm-9">
                                         <input type="hidden" name="id" id="id" value="{{id}}"/>
                                         <select class="form-control" id="MTBFMTBSAF" name="MTBFMTBSAF" required="required">
                                             {% if 'days' == MTBFMTBSAF %}
@@ -75,8 +75,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">MTTR</label>
-                                    <div class="col-sm-10">
+                                    <label for="staticEmail" class="col-sm-3 col-form-label">MTTR</label>
+                                    <div class="col-sm-9">
                                         <select class="form-control" id="MTTR" name="MTTR" required="required">
                                             {% if 'days' == MTTR %}
                                                 <option value="days" selected>days</option>
@@ -97,8 +97,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Service delay (Minutes)</label>
-                                    <div class="col-sm-10">
+                                    <label for="staticEmail" class="col-sm-3 col-form-label">Service delay (Minutes)</label>
+                                    <div class="col-sm-9">
                                         <select class="form-control" id="service_delay" name="service_delay" required="required">
                                                 <option value="mins" selected>mins</option>
                                         </select>
@@ -106,8 +106,8 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">Average Speed</label>
-                                    <div class="col-sm-8">
+                                    <label for="staticEmail" class="col-sm-3 col-form-label">Average Speed</label>
+                                    <div class="col-sm-7">
                                         <input type="text" value="{{average_speed}}" class="form-control" id="average_speed" name="average_speed" placeholder="Enter average speed" required="required">
                                        
                                     </div>
@@ -124,12 +124,27 @@
                                 </div>
 
                                  <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label">MDBF</label>
-                                    <div class="col-sm-10">
+                                    <label for="staticEmail" class="col-sm-3 col-form-label">MDBF</label>
+                                    <div class="col-sm-9">
                                         <select class="form-control" id="mdbf_unit" name="mdbf_unit" required="required">
                                                 <option value="KM" selected>KM</option>
                                                 <option value="MILES" disabled>MILES</option>
                                         </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-3 col-form-label">Running Time (days)</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" value="{{running_time}}" class="form-control" id="running_time" name="running_time" placeholder="Enter running time" required="required">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-3 col-form-label">Number of days</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" value="{{num_of_days}}" class="form-control" id="num_of_days" name="num_of_days" placeholder="Enter number of days" required="required">
                                     </div>
                                 </div>
 
@@ -174,6 +189,8 @@
         var id= $('#id').val()
         var service_delay= $('select[name=service_delay] option').filter(':selected').val()
         var average_speed = $('#average_speed').val();
+        var running_time = $('#running_time').val();
+        var num_of_days = $('#num_of_days').val();
         var checkbox = document.getElementById("chk_average_speed");
         // Check if the checkbox is checked
         var chk_average_speed = 0;
@@ -192,7 +209,9 @@
                 'id':id,
                 'service_delay':service_delay,
                 'average_speed':average_speed,
-                'chk_average_speed':chk_average_speed
+                'chk_average_speed':chk_average_speed,
+                'num_of_days':num_of_days,
+                'running_time':running_time
             },
             success: function (response) {
                 if(response.status == '1') {

@@ -416,6 +416,8 @@ class PBSUnit(models.Model):
     MTTR = models.TextField()
     average_speed = models.FloatField(default=0)
     chk_average_speed = models.FloatField(default=0)
+    running_time = models.IntegerField(default=18)
+    num_of_days = models.IntegerField(default=7)
 
 class Systems(models.Model):
     project = models.ForeignKey('Product', on_delete=models.CASCADE,null=True, blank=True)
