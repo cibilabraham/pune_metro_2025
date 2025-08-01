@@ -852,6 +852,9 @@ class LogPlotMtbfReportView(View):
         slop_value = 0
         asset_types = []
         pbs_asset_types = []
+
+        equation = ""
+        R2 = ""
         
         if req.get('start_date') !="" and req.get('end_date') !="":
             start_date = datetime.datetime.strptime(req.get('start_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
@@ -971,13 +974,19 @@ class LogPlotMtbfReportView(View):
             print(Hightest_date_of_failure[0].date,'Hightest_date_of_failure')
             Hightest_date_of_failure = str(Hightest_date_of_failure[0].date)
             Hightest_date_of_failure = datetime.datetime.strptime(Hightest_date_of_failure, '%Y-%m-%d').strftime('%Y-%m-%d')
+
+            print(f"pbs_mtbf_value = {pbs_mtbf_value}")
            
             findUnit = PBSUnit.objects.filter()
             if findUnit[0].chk_average_speed == 1:
                 pbs_mtbf_value = float(pbs_mtbf_value) * float(findUnit[0].average_speed)
 
+            print(f"pbs_mtbf_value * Speed = {pbs_mtbf_value}")
+
             pbs_mtbf_value = round(np.log(pbs_mtbf_value),2)
             Ii = 1
+
+            print(f"np (pbs_mtbf_value * Speed) = {pbs_mtbf_value}")
 
             week_number = math.ceil(number_of_days / 7)
             number_of_days_count_chk = number_of_days
@@ -992,6 +1001,16 @@ class LogPlotMtbfReportView(View):
 
             if number_of_days % 7 == 0:
                 week_number = week_number + 1
+
+            sum_of_lru_population_hours = 0
+            sum_of_actual_mtbf_value = 0
+            sum_of_irn_mtbf_value = 0
+            sum_of_lru_population_hours_sqr = 0
+
+            lru_population_hours_arr = []
+            actual_mtbf_value_arr = {}
+
+
 
             for i in range(1, week_number+1):
                 if FN_NAME == 'one':
@@ -1033,7 +1052,7 @@ class LogPlotMtbfReportView(View):
                 # print(week_start_date,'week_start_date')
                 week_end_date1 = datetime.datetime.strptime(str(week_end_date), '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
                 # print(Hightest_date_of_failure,'Hightest_date_of_failure')
-                print(f"{week_start_date} - fc: {failure_count} - cfc: {cum_actual_failure_count} - coh: {lru_population_hours} - MTBF: {actual_mtbf_value}")
+                
 
                 if findUnit[0].chk_average_speed == 1:
                     if actual_mtbf_value != 'null':
@@ -1051,8 +1070,13 @@ class LogPlotMtbfReportView(View):
                 if actual_mtbf_value != 'null':
                     actual_mtbf_value = round(actual_mtbf_value)
 
+
+                
+
                 last_x_point = lru_population_hours
                 last_y_point = actual_mtbf_value
+
+                
                
 
                 if Ii == 1:
@@ -1064,19 +1088,89 @@ class LogPlotMtbfReportView(View):
                 if actual_mtbf_value != 'null':
                     actual_mtbf_value = round(np.log(actual_mtbf_value),2)
 
-                data.append({'x': lru_population_hours, 'y': actual_mtbf_value})
-                data1.append({'x': lru_population_hours, 'y': pbs_mtbf_value})
+                print(f"{week_start_date} - fc: {failure_count} - cfc: {cum_actual_failure_count} - coh: {lru_population_hours} - MTBF: {actual_mtbf_value}")
+
+                log_lru_population_hours = round(np.log(lru_population_hours),2)
+
+                data.append({'x': log_lru_population_hours, 'y': actual_mtbf_value})
+                data1.append({'x': log_lru_population_hours, 'y': pbs_mtbf_value})
+
+                lru_population_hours_arr.append(log_lru_population_hours)
+                actual_mtbf_value_arr[log_lru_population_hours] = actual_mtbf_value
+
+                sum_of_lru_population_hours = sum_of_lru_population_hours + log_lru_population_hours
+                sum_of_actual_mtbf_value = sum_of_actual_mtbf_value + actual_mtbf_value
+                sum_of_irn_mtbf_value = sum_of_irn_mtbf_value + ( log_lru_population_hours * actual_mtbf_value)
+                sum_of_lru_population_hours_sqr = sum_of_lru_population_hours_sqr + ( log_lru_population_hours * log_lru_population_hours )
+
+            sum_of_lru_population_hours_all_sqr = sum_of_lru_population_hours * sum_of_lru_population_hours
+
+            m = ( week_number * sum_of_irn_mtbf_value - sum_of_lru_population_hours * sum_of_actual_mtbf_value ) / (week_number * sum_of_lru_population_hours_sqr - sum_of_lru_population_hours_all_sqr )
+
+            c= ( sum_of_actual_mtbf_value - m * sum_of_lru_population_hours ) / week_number
+
+
+            print('===============================')
+            print('===============================')
+            print(f"sum_of_lru_population_hours = {sum_of_lru_population_hours}")
+            print(f"sum_of_actual_mtbf_value = {sum_of_actual_mtbf_value}")
+            print(f"sum_of_irn_mtbf_value = {sum_of_irn_mtbf_value}")
+            print(f"n = {week_number}")
+            print(f"sum_of_lru_population_hours_sqr = {sum_of_lru_population_hours_sqr}")
+            print(f"sum_of_lru_population_hours_all_sqr = {sum_of_lru_population_hours_all_sqr}")
+            print(f"m = {m}")
+            print(f"c = {c}")
+
+            print(f"lru_population_hours_arr = {lru_population_hours_arr}")
+
+            y_mean = sum_of_actual_mtbf_value / week_number
+            print(f"y_mean {y_mean}")
+
+            sum_sstot = 0
+            sum_ssres = 0
+
+            for item in lru_population_hours_arr:
+                prediction_y = m*item + c
+                
+                stot = actual_mtbf_value_arr[item] - y_mean
+                sstot = stot * stot
+
+                sum_sstot = sum_sstot + sstot
+
+                sres = actual_mtbf_value_arr[item] - prediction_y
+                ssres = sres * sres
+
+                sum_ssres = sum_ssres + ssres
+
+                print(f"prediction_y {prediction_y}")
+                print(f"sstot {sstot}")
+                print(f"ssres {ssres}")
+
+                data3.append({'x': item, 'y': prediction_y})
+
+            print(f"sum_sstot {sum_sstot}")
+            print(f"sum_ssres {sum_ssres}")
+
+            R2 = round( 1 - ( sum_ssres / sum_sstot ) , 2 )
+
+            print(f"R2 {R2}")
+
+            equation = f"y = {round(m,2)}x + {round(c,2)}"
+            print(f"equation {equation}")
+
+            print('===============================')
+
             
 
-            print(first_x_point,'first_x_point')
-            print(first_y_point,'first_y_point')
-            print(last_x_point,'last_x_point')
-            print(last_y_point,'last_y_point')
+            # print(first_x_point,'first_x_point')
+            # print(first_y_point,'first_y_point')
+            # print(last_x_point,'last_x_point')
+            # print(last_y_point,'last_y_point')
             if first_x_point == last_x_point and first_y_point == last_y_point:
                 slope = 1
             else:
                 slope = (last_y_point - first_y_point) / (last_x_point - first_x_point)
-            print(slope,'slope')
+            # print(slope,'slope')
             LinerPointFlow = 0
 
             number_of_days_count_chk = number_of_days
@@ -1157,21 +1251,23 @@ class LogPlotMtbfReportView(View):
 
                 if LinerPoint != 'null':
                     LinerPoint = round(np.log(LinerPoint),2)
-                print('predicted_mtbf_value',predicted_mtbf_value)
+                # print('predicted_mtbf_value',predicted_mtbf_value)
                 
                 if predicted_mtbf_value != 'null':
                     if predicted_mtbf_value >=0:
                         predicted_mtbf_value = round(np.log(predicted_mtbf_value),2)
                     else:
                         predicted_mtbf_value = 'null'
+
+                log_lru_population_hours = round(np.log(lru_population_hours),2)
                 
-                data2.append({'x': lru_population_hours, 'y': LinerPoint})
-                data3.append({'x': lru_population_hours, 'y': predicted_mtbf_value})
+                data2.append({'x': log_lru_population_hours, 'y': LinerPoint})
+                # data3.append({'x': lru_population_hours, 'y': predicted_mtbf_value})
             
 
         else:
             data=[]
-        response = {'data' : data, 'data1' : data1, 'data2' : data2, 'slop':data3}
+        response = {'data' : data, 'data1' : data1, 'data2' : data2, 'slop':data3, 'equation':equation, 'R2':R2}
         return JsonResponse(response)
 
 

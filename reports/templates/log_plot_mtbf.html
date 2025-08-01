@@ -373,9 +373,15 @@
       $('#equation_div').html("");
 
       var slop_max = parseInt(chartData.data.length) - 1;
-     
-      findLineEquationAndR2(parseInt(chartData.data[0].x), parseInt(chartData.data[0].y), parseInt(chartData.data[slop_max].x), parseInt(chartData.data[slop_max].y));
 
+      // Create the equation and R² output as HTML
+      var tbl = '<b>' + chartData.equation + '</b>';
+      tbl += "<br>";
+      tbl += '<b>R<sup>2</sup> = ' + chartData.R2 + '</b>';
+
+      // Update the HTML content inside the div with id 'equation_div'
+      $('#equation_div').html(tbl);
+     
         var timeFormat = 'YYYY-MM-DD';
         var startDate   = '' ;
         var endDate     = '';
