@@ -721,14 +721,19 @@ class MTBFvsTimeReportView(View):
 
             print(f"asset_quantity: {asset_quantity}")
 
+
+            findUnit = PBSUnit.objects.filter()
+            running_time = findUnit[0].running_time
+            num_of_days = findUnit[0].running_time
+
             if number_of_days % 7 == 0:
                 week_number = week_number + 1
                 
             for i in range(1, week_number+1):
                 if FN_NAME == 'one':
-                    lru_population_hours = (asset_quantity*18*7)*i # to get LRU Weekely Hours
+                    lru_population_hours = (asset_quantity*running_time*num_of_days)*i # to get LRU Weekely Hours
                 else:
-                    lru_population_hours = (asset_quantity*18*7)*i # to get LRU Weekely Hours
+                    lru_population_hours = (asset_quantity*running_time*num_of_days)*i # to get LRU Weekely Hours
                 actual_mtbf_value = 'null'
                 # to get start/end dates of current week
 
@@ -767,7 +772,7 @@ class MTBFvsTimeReportView(View):
                 print(f"start date: {week_start_date} to end date: {week_end_date}")
                 # print(f"{week_start_date} - fc: {failure_count} - cfc: {cum_actual_failure_count} - coh: {lru_population_hours} - MTBF: {actual_mtbf_value}")
 
-                findUnit = PBSUnit.objects.filter()
+                # findUnit = PBSUnit.objects.filter()
                 if findUnit[0].chk_average_speed == 1:
                     if actual_mtbf_value != 'null':
                         actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
@@ -1010,13 +1015,14 @@ class LogPlotMtbfReportView(View):
             lru_population_hours_arr = []
             actual_mtbf_value_arr = {}
 
-
+            running_time = findUnit[0].running_time
+            num_of_days = findUnit[0].running_time
 
             for i in range(1, week_number+1):
                 if FN_NAME == 'one':
-                    lru_population_hours = (asset_quantity*18*7)*i # to get LRU Weekely Hours
+                    lru_population_hours = (asset_quantity*running_time*num_of_days)*i # to get LRU Weekely Hours
                 else:
-                    lru_population_hours = (asset_quantity*18*7)*i # to get LRU Weekely Hours
+                    lru_population_hours = (asset_quantity*running_time*num_of_days)*i # to get LRU Weekely Hours
                 actual_mtbf_value = 'null'
                 # to get start/end dates of current week
                 
@@ -1175,11 +1181,14 @@ class LogPlotMtbfReportView(View):
 
             number_of_days_count_chk = number_of_days
 
+            running_time = findUnit[0].running_time
+            num_of_days = findUnit[0].running_time
+
             for i in range(1, week_number+1):
                 if FN_NAME == 'one':
-                    lru_population_hours = (asset_quantity*18*7)*i # to get LRU Weekely Hours
+                    lru_population_hours = (asset_quantity*running_time*num_of_days)*i # to get LRU Weekely Hours
                 else:
-                    lru_population_hours = (asset_quantity*18*7)*i # to get LRU Weekely Hours
+                    lru_population_hours = (asset_quantity*running_time*num_of_days)*i # to get LRU Weekely Hours
                 actual_mtbf_value = 'null'
                 # to get start/end dates of current week
                 if i == 1:
@@ -1485,9 +1494,13 @@ class CumalativeMtbfReportView(View):
 
             print(f"asset_quantity: {asset_quantity}")
 
+            findUnit = PBSUnit.objects.filter()
+            running_time = findUnit[0].running_time
+            num_of_days = findUnit[0].running_time
+
 
             # print(asset_count,"count")
-            random_failure_count = round((18*365*asset_quantity)/pbs_mtbf_value,1)
+            random_failure_count = round((running_time*365*asset_quantity)/pbs_mtbf_value,1)
             # print(random_failure_count,"DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
             if random_failure_count != 0:
                 total_failures_count += random_failure_count
@@ -1550,8 +1563,15 @@ class CumalativeMtbfReportView(View):
                 
                 predicted_avg_failures_per_week = predicted_avg_failures_per_week+avg_failures_per_week
                 i = i+1
-                lru_population_hours = (asset_quantity*18*7)*i
+             
                 findUnit = PBSUnit.objects.filter()
+                running_time = findUnit[0].running_time
+                num_of_days = findUnit[0].running_time
+
+                lru_population_hours = (asset_quantity*running_time*num_of_days)*i
+
+
+
                 # print(week_start_date, defects, avg_failures_per_week, predicted_avg_failures_per_week)
                 if week_end_date <= current_date:
                     if failure_count != 0:
@@ -2179,10 +2199,14 @@ class AvailabilityView(View):
 
             print(f"asset_quantity: {asset_quantity}")
 
+            findUnit = PBSUnit.objects.filter()
+            running_time = findUnit[0].running_time
+            num_of_days = findUnit[0].running_time
+
             if FN_NAME == 'two':
-                fist_hrs = 7*18*asset_quantity
+                fist_hrs = num_of_days*running_time*asset_quantity
             else:
-                fist_hrs = 7*18*asset_quantity
+                fist_hrs = num_of_days*running_time*asset_quantity
             
             if start_date and end_date : # coming start date and end date are used further calculation
                 start_dates = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
@@ -2439,10 +2463,14 @@ class Availability2View(View):
 
             print(f"asset_quantity: {asset_quantity}")
 
+            findUnit = PBSUnit.objects.filter()
+            running_time = findUnit[0].running_time
+            num_of_days = findUnit[0].running_time
+
             if FN_NAME == 'two':
-                fist_hrs = 7*18*asset_quantity
+                fist_hrs = num_of_days*running_time*asset_quantity
             else:
-                fist_hrs = 7*18*asset_quantity
+                fist_hrs = num_of_days*running_time*asset_quantity
             
             if start_date and end_date : # coming start date and end date are used further calculation
                 start_dates = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()

@@ -11290,18 +11290,18 @@ textarea {
 }
 .work-flow-chart-container a.failure-data{
   position: absolute;
-  width: 143px;
-  height: 119px;
-  top: 10px;
-  left: 31px;
+  width: 123px;
+  height: 89px;
+  top: 110px;
+  left: 121px;
 }
 
 .work-flow-chart-container a.failure-attr{
 	position: absolute;
-    width: 143px;
+    width: 123px;
     height: 143px;
     top: 67px;
-    left: 249px;
+    left: 289px;
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -o-transform: rotate(45deg);
@@ -11311,34 +11311,34 @@ textarea {
 
 .work-flow-chart-container a.failure-mode{
   position: absolute;
-  width: 155px;
-  height: 87px;
-  bottom: 78px;
-  left: 25px;
+    width: 155px;
+    height: 87px;
+    bottom: 158px;
+    left: 185px;
 }
 
 .work-flow-chart-container a.asset-reg{
   position: absolute;
-  width: 110px;
-  height: 112px;
-  top: 11px;
-  left: 765px;
+  width: 123px;
+  height: 89px;
+  top: 0px;
+  left: 121px;
 }
 
 .work-flow-chart-container a.fracas-defect{
-    position: absolute;
+       position: absolute;
     width: 110px;
     height: 85px;
-    top: 205px;
-    left: 416px;
+    top: 215px;
+    left: 400px;
 }
 
 .work-flow-chart-container a.root-cause{
     position: absolute;
     width: 110px;
     height: 88px;
-    top: 203px;
-    left: 585px;
+    top: 215px;
+    left: 520px;
 }
 
 
@@ -11346,8 +11346,8 @@ textarea {
     position: absolute;
     width: 110px;
     height: 88px;
-    top: 203px;
-    left: 755px;
+    top: 215px;
+    left: 650px;
 }
 
 #failuredata_set h2 {
