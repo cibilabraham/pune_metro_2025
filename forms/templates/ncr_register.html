@@ -43,6 +43,7 @@
                             <th>NCR Opening Date</th>
                             <th>NCR Closure Date</th>
                             <th>Status</th>
+                            <th>Remark</th>
                           
                             <th></th>
                         </tr>
@@ -132,13 +133,34 @@ function getDefectData(){
                             if(item.ncr_status == 1){
                                 return '<h5 class="text-danger"> Closed </h5>';
                             }else{
+                                if(item.rejection_status == 1) {
+                                    return '<h5 class="text-info"> Rejected </h5>';
+                                }
+
                                 return '<h5 class="text-success"> Open </h5>';
+                                
                             }
                             
                         
                         }
                     },
-                     
+                      {"data":null,"render":function(item){
+
+                            if(item.ncr_status == 1){
+                                return 'NCR was closed on '+moment(item.fnl_date).format('DD-MM-YYYY')+'.';
+                            }else{
+                                if(item.rejection_status == 1) {
+                                    return item.remark;
+                                }else if(item.accept_status == 1) {
+                                    return 'The NCR has been accepted.';
+                                }
+                            }
+
+                            return 'The NCR is currently being processed.'
+                            
+                        
+                        }
+                    },
                      
                       {"data":null,"render":function(item){
 
@@ -146,7 +168,7 @@ function getDefectData(){
                             tbl += '<a href="/forms/ncr_register/viewncr/'+ item.id +'" >View</a>  ';
 
                             
-                            if( item.user_Role == 1 || item.user_Role == 2 || item.ncr_status == 0 ){
+                            if( (item.user_Role == 1 || item.user_Role == 2 ) || ( item.ncr_status == 0 && item.user_Role == 7 &&  item.rejection_status == 0 && item.accept_status == 0) ){
                                 tbl += ' | <a href="/forms/ncr_register/addncr/'+ item.id +'" >Edit</a> ';
                             }
 

@@ -250,6 +250,18 @@
                     </div>
                 </div>
 
+
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="assembly_no">PART or ASSEMBLY No:</label>
+                        <input type="text" autocomplete="off" class="form-control" id="assembly_no" name="assembly_no" value="{{data.assembly_no}}">
+                        <div class="invalid-feedback">
+                            Please enter PART or ASSEMBLY No.
+                        </div>
+                    </div>
+                </div>
+
            
             </div>
 
@@ -966,6 +978,7 @@
         var systemic_cause= $('#systemic_cause').val();
         var organistaional_management_cause= $('#organistaional_management_cause').val();
         var material_is_damaged= $('#material_is_damaged').val();
+        var assembly_no= $('#assembly_no').val();
 
 
         console.log(datas);
@@ -990,6 +1003,7 @@
                 'systemic_cause':systemic_cause,
                 'organistaional_management_cause':organistaional_management_cause,
                 'material_is_damaged':material_is_damaged,
+                'assembly_no':assembly_no,
             },
             success: function (response) {
 

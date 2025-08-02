@@ -25,7 +25,7 @@
                 </div>
             </div>
             <!-- /.row -->
-            {% if request.session.user_Role != 4  %}
+            {% if request.session.user_Role != 4 and request.session.user_Role != 6 and request.session.user_Role != 7  %}
             <div class="row ">
             <div class="col-lg-12 mb-5">
 
@@ -221,12 +221,12 @@ function getDefectData(){
                   },
                   "columns" : [
                     {"data":null,"render":function(item){
-                        if(item.user_Role != 4) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                        if(item.user_Role != 4 && item.user_Role != 6 && item.user_Role != 7) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
                             else return '';
                         }
                     },
                     {"data":null,"render":function(item){
-                            if(item.user_Role != 4) return '<a href="/forms/rootcause/add/'+ item.id +'" >'+ item.root_cause_id +'</a>';
+                            if(item.user_Role != 4 && item.user_Role != 6 && item.user_Role != 7) return '<a href="/forms/rootcause/add/'+ item.id +'" >'+ item.root_cause_id +'</a>';
                             else return item.root_cause_id;
                         }
                     },
@@ -254,7 +254,7 @@ function getDefectData(){
 
                       {"data" : "root_cause_status"},
                       {"data":null,"render":function(item){
-                            if(item.user_Role != 4 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleterootcause('+ item.id +')">';
+                            if(item.user_Role != 4 && item.user_Role != 6 && item.user_Role != 7 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleterootcause('+ item.id +')">';
                             else return '';
                         }
                     },

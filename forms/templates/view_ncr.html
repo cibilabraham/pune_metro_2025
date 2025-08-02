@@ -30,20 +30,56 @@
                 </div>
 
             </div>
+
+
+
+            <div class="row justify-content-center py-4">
+                <div class="col-lg-8">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body text-center">
+                            {% if data.ncr_status == 1 %}
+                                <h3 class="text-danger">
+                                     NCR Closed
+                                </h3>
+                            {% else %}
+
+                                {% if data.rejection_status == 1 %}
+                                    <h3 class="text-info">
+                                        NCR Rejected
+                                    </h3>
+                                {% else %}
+
+                                    <h3 class="text-success">
+                                        NCR Open
+                                    </h3>
+
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+              <div class="col-lg-12 " >
+
+                <div class="  border-0">
+                        <div class=" text-center">
+                                <h3 class="text-dark">
+                                    Level 1
+                                </h3>
+                           
+                        </div>
+                    </div>
+
+            </div>
+
+
+
  
 
                 <div class="row " style="padding: 20px;">
 
-                     <div class="col-lg-12 " >
-                             <div class="form-group">
-                                {% if data.ncr_status == 1 %}
-                                    <h3 class="text-danger"> Closed </h3>
-                                {% else %}
-                                    <h3 class="text-success"> Open </h3>
-                                {% endif %}
-                            </div>
-
-                    </div>
+                  
 
                     <div class="col-lg-12 " >
                         <div class="form-group">
@@ -52,47 +88,43 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6 " >
-                        <div class="row ">
 
-                             
-
-                             <div class="col-lg-12 " >
+                     <div class="col-lg-4 " >
                                 <div class="form-group">
                                     <label for="ncr_gen_id">NON-CONFORMITY REPORT No:</label>
                                     <b>{{data.ncr_gen_id}}</b>
                                 </div>
                             </div>
 
-                             <div class="col-lg-12 " >
+                             <div class="col-lg-4 " >
                                 <div class="form-group">
                                     <label for="inspector_name">Name of the inspector (NCR Raised):</label>
                                     <b>{{data.inspector_name}}</b>
                                 </div>
                             </div>
 
-                              <div class="col-lg-12 " >
+                              <div class="col-lg-4 " >
                                 <div class="form-group">
                                     <label for="project_name">PROJECT NAME:</label>
                                    <b>{{data.project_name}}</b>
                                 </div>
                             </div>
 
-                            <div class="col-lg-12 " >
+                            <div class="col-lg-4 " >
                                 <div class="form-group">
                                     <label for="assembly_name">PART Description /ASSEMBLY NAME:</label>
                                    <b>{{data.assembly_name}}</b>
                                 </div>
                             </div>
 
-                             <div class="col-lg-12 " >
+                             <div class="col-lg-4 " >
                                 <div class="form-group">
                                     <label for="assembly_no">PART or ASSEMBLY No:</label>
                                    <b>{{data.assembly_no}}</b>
                                 </div>
                             </div>
 
-                             <div class="col-lg-12 " >
+                             <div class="col-lg-4 " >
                                 <div class="form-group">
                                     <label for="drawing_no">Drawing No :</label>
                                     <b>{{data.drawing_no}}</b>
@@ -100,23 +132,14 @@
                             </div>
 
 
-
-
-                        </div>
-
-                    </div>
-                    <div class="col-lg-6 " >
-
-                        <div class="row ">
-
-                             <div class="col-lg-12 " >
+                             <div class="col-lg-4 " >
                                 <div class="form-group">
                                     <label for="date">NCR opening date:</label>
                                     <b>{{data.date}}</b>
                                 </div>
                             </div>
 
-                              <div class="col-lg-12 " >
+                              <div class="col-lg-4 " >
                                 <div class="form-group">
                                     <label for="time">NCR opening Time:</label>
                                    <b>{{data.time}}</b>
@@ -124,7 +147,7 @@
                             </div>
 
 
-                               <div class="col-lg-12 " >
+                               <div class="col-lg-4 " >
                                     <div class="form-group">
                                         <label for="detection_workstation">Detection workstation:</label>
                                        <b>{{data.detection_workstation}}</b>
@@ -133,7 +156,54 @@
 
 
 
-                                 <div class="col-lg-12 ">
+
+                                  {% if data.rejection_status == 1  %}
+
+
+                             <div class="col-lg-12">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-body text-center">
+                                        <h5 class="text-danger">
+                                               {{data.remark}}
+                                            </h5>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            {% endif %}
+
+                </div>
+
+
+
+            {% if data.accept_status == 1  %}
+
+                <div id="level2Div">
+            {% else %}
+
+            <div id="level2Div" class="hide d-none">
+
+            {% endif %}  
+
+
+
+                     <div class="col-lg-12 " >
+                        <div class="  border-0">
+                            <div class=" text-center">
+                                    <h3 class="text-dark">
+                                        Level 2
+                                    </h3>
+                            
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row " style="padding: 20px;">
+
+
+
+                                 <div class="col-lg-4 ">
                                     <div class="form-group">
                                         <label for="software_version">Trainset & Car No:</label>
 
@@ -147,7 +217,7 @@
 
 
 
-                                 <div class="col-lg-12 " >
+                                 <div class="col-lg-4 " >
                                     <div class="form-group">
                                         <label for="serial_no">Serial no/Traceability:</label>
                                        <b>{{data.serial_no}}</b>
@@ -156,7 +226,7 @@
 
 
 
-                                 <div class="col-lg-12">
+                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label for="green_red_channel">Green/Red Channel :</label>
                                     <b>{{data.green_red_channel}}</b>
@@ -166,11 +236,12 @@
 
 
 
-                        </div>
-                        
-                    </div>
 
-                </div>
+
+
+
+
+                    </div>
 
                 <hr>
 
@@ -912,6 +983,41 @@
 
                 </div>
 
+
+            </div>
+
+
+
+
+              {% if data.accept_status == 1  %}
+
+                    <div id="level3Div">
+                {% else %}
+
+                <div id="level3Div" class="hide d-none">
+
+                {% endif %}  
+
+
+                <div class="col-lg-12 " >
+                        <div class="  border-0">
+                            <div class=" text-center">
+                                    <h3 class="text-dark">
+                                        Level 3
+                                    </h3>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
                 <div class="row " style="padding: 20px;">
                     <div class="col-12">  
                         <b>NCR Closure( final)</b>
@@ -991,7 +1097,7 @@
 
 
 
-
+            </div>
             
 
 

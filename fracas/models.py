@@ -165,6 +165,7 @@ class RootCause(models.Model):
     systemic_cause = models.TextField(blank=True)
     organistaional_management_cause = models.TextField(blank=True)
     material_is_damaged = models.CharField(max_length=550, blank=True)
+    assembly_no = models.TextField( blank=True)
     
 
     class Meta:
@@ -769,6 +770,10 @@ class NCRGeneration(models.Model):
     root_cause_analysis = models.CharField(max_length=550, default=0)
 
     rev_no = models.CharField(max_length=550, default=0)
+
+    remark = models.TextField(blank=True)
+    rejection_status = models.IntegerField(default=0)
+    accept_status = models.IntegerField(default=0)
 
 
     class Meta:
