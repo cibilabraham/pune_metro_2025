@@ -724,7 +724,7 @@ class MTBFvsTimeReportView(View):
 
             findUnit = PBSUnit.objects.filter()
             running_time = findUnit[0].running_time
-            num_of_days = findUnit[0].running_time
+            num_of_days = findUnit[0].num_of_days
 
             if number_of_days % 7 == 0:
                 week_number = week_number + 1
@@ -1016,7 +1016,10 @@ class LogPlotMtbfReportView(View):
             actual_mtbf_value_arr = {}
 
             running_time = findUnit[0].running_time
-            num_of_days = findUnit[0].running_time
+            num_of_days = findUnit[0].num_of_days
+
+            print(f"running_time = {running_time}")
+            print(f"num_of_days ={num_of_days}")
 
             for i in range(1, week_number+1):
                 if FN_NAME == 'one':
@@ -1025,6 +1028,8 @@ class LogPlotMtbfReportView(View):
                     lru_population_hours = (asset_quantity*running_time*num_of_days)*i # to get LRU Weekely Hours
                 actual_mtbf_value = 'null'
                 # to get start/end dates of current week
+
+                # print(f"lru_population_hours :{lru_population_hours}")
                 
              
                 if i == 1:
@@ -1092,11 +1097,13 @@ class LogPlotMtbfReportView(View):
                         Ii = 2
 
                 if actual_mtbf_value != 'null':
+                    old_mtbf = actual_mtbf_value
                     actual_mtbf_value = round(np.log(actual_mtbf_value),2)
 
-                print(f"{week_start_date} - fc: {failure_count} - cfc: {cum_actual_failure_count} - coh: {lru_population_hours} - MTBF: {actual_mtbf_value}")
-
                 log_lru_population_hours = round(np.log(lru_population_hours),2)
+
+                print(f"{week_start_date} - fc: {failure_count} - cfc: {cum_actual_failure_count} - coh: {lru_population_hours} - MTBF: {old_mtbf} - Log MTBF: {actual_mtbf_value} - Log cfc: {log_lru_population_hours}")
+
 
                 data.append({'x': log_lru_population_hours, 'y': actual_mtbf_value})
                 data1.append({'x': log_lru_population_hours, 'y': pbs_mtbf_value})
@@ -1116,21 +1123,21 @@ class LogPlotMtbfReportView(View):
             c= ( sum_of_actual_mtbf_value - m * sum_of_lru_population_hours ) / week_number
 
 
-            print('===============================')
-            print('===============================')
-            print(f"sum_of_lru_population_hours = {sum_of_lru_population_hours}")
-            print(f"sum_of_actual_mtbf_value = {sum_of_actual_mtbf_value}")
-            print(f"sum_of_irn_mtbf_value = {sum_of_irn_mtbf_value}")
-            print(f"n = {week_number}")
-            print(f"sum_of_lru_population_hours_sqr = {sum_of_lru_population_hours_sqr}")
-            print(f"sum_of_lru_population_hours_all_sqr = {sum_of_lru_population_hours_all_sqr}")
-            print(f"m = {m}")
-            print(f"c = {c}")
+            # print('===============================')
+            # print('===============================')
+            # print(f"sum_of_lru_population_hours = {sum_of_lru_population_hours}")
+            # print(f"sum_of_actual_mtbf_value = {sum_of_actual_mtbf_value}")
+            # print(f"sum_of_irn_mtbf_value = {sum_of_irn_mtbf_value}")
+            # print(f"n = {week_number}")
+            # print(f"sum_of_lru_population_hours_sqr = {sum_of_lru_population_hours_sqr}")
+            # print(f"sum_of_lru_population_hours_all_sqr = {sum_of_lru_population_hours_all_sqr}")
+            # print(f"m = {m}")
+            # print(f"c = {c}")
 
-            print(f"lru_population_hours_arr = {lru_population_hours_arr}")
+            # print(f"lru_population_hours_arr = {lru_population_hours_arr}")
 
             y_mean = sum_of_actual_mtbf_value / week_number
-            print(f"y_mean {y_mean}")
+            # print(f"y_mean {y_mean}")
 
             sum_sstot = 0
             sum_ssres = 0
@@ -1148,23 +1155,23 @@ class LogPlotMtbfReportView(View):
 
                 sum_ssres = sum_ssres + ssres
 
-                print(f"prediction_y {prediction_y}")
-                print(f"sstot {sstot}")
-                print(f"ssres {ssres}")
+                # print(f"prediction_y {prediction_y}")
+                # print(f"sstot {sstot}")
+                # print(f"ssres {ssres}")
 
                 data3.append({'x': item, 'y': prediction_y})
 
-            print(f"sum_sstot {sum_sstot}")
-            print(f"sum_ssres {sum_ssres}")
+            # print(f"sum_sstot {sum_sstot}")
+            # print(f"sum_ssres {sum_ssres}")
 
             R2 = round( 1 - ( sum_ssres / sum_sstot ) , 2 )
 
-            print(f"R2 {R2}")
+            # print(f"R2 {R2}")
 
             equation = f"y = {round(m,2)}x + {round(c,2)}"
-            print(f"equation {equation}")
+            # print(f"equation {equation}")
 
-            print('===============================')
+            # print('===============================')
 
             
 
@@ -1182,7 +1189,7 @@ class LogPlotMtbfReportView(View):
             number_of_days_count_chk = number_of_days
 
             running_time = findUnit[0].running_time
-            num_of_days = findUnit[0].running_time
+            num_of_days = findUnit[0].num_of_days
 
             for i in range(1, week_number+1):
                 if FN_NAME == 'one':
@@ -1496,7 +1503,7 @@ class CumalativeMtbfReportView(View):
 
             findUnit = PBSUnit.objects.filter()
             running_time = findUnit[0].running_time
-            num_of_days = findUnit[0].running_time
+            num_of_days = findUnit[0].num_of_days
 
 
             # print(asset_count,"count")
@@ -1566,7 +1573,7 @@ class CumalativeMtbfReportView(View):
              
                 findUnit = PBSUnit.objects.filter()
                 running_time = findUnit[0].running_time
-                num_of_days = findUnit[0].running_time
+                num_of_days = findUnit[0].num_of_days
 
                 lru_population_hours = (asset_quantity*running_time*num_of_days)*i
 
@@ -2201,7 +2208,7 @@ class AvailabilityView(View):
 
             findUnit = PBSUnit.objects.filter()
             running_time = findUnit[0].running_time
-            num_of_days = findUnit[0].running_time
+            num_of_days = findUnit[0].num_of_days
 
             if FN_NAME == 'two':
                 fist_hrs = num_of_days*running_time*asset_quantity
@@ -2465,7 +2472,7 @@ class Availability2View(View):
 
             findUnit = PBSUnit.objects.filter()
             running_time = findUnit[0].running_time
-            num_of_days = findUnit[0].running_time
+            num_of_days = findUnit[0].num_of_days
 
             if FN_NAME == 'two':
                 fist_hrs = num_of_days*running_time*asset_quantity
