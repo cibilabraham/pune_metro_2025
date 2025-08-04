@@ -30,7 +30,7 @@
                 </div>
             </div>
             <!-- /.row -->
-            {% if request.session.user_Role < 4 or request.session.user_Role == 5 %}
+            {% if request.session.user_Role < 3 or request.session.user_Role == 5 %}
             <div class="row ">
             <div class="col-lg-12 mb-5">
                 
@@ -415,12 +415,12 @@
                     },
                     "columns" : [
                         {"data":null,"render":function(item){
-                            if(item.user_Role < 4 || item.user_Role == 5) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                            if(item.user_Role < 3 || item.user_Role == 5) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
                                 else return '';
                             }
                         },
                         {"data":null,"render":function(item){
-                            if(item.user_Role < 4 || item.user_Role == 5 ) return '<a href="/forms/failuredata/addfailuredata/'+ item.id +'" >'+ item.failure_id +'</a>';
+                            if(item.user_Role < 3 || item.user_Role == 5 ) return '<a href="/forms/failuredata/addfailuredata/'+ item.id +'" >'+ item.failure_id +'</a>';
                             else return item.failure_id;
                             }
                         },
@@ -496,7 +496,7 @@
                         // {"data" : "oem_failure_reference"},
                         // {"data" : "defect"},
                         {"data":null,"render":function(item){
-                            if(item.user_Role < 4 || item.user_Role == 5 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleteFailure('+ item.id +')">';
+                            if(item.user_Role < 3 || item.user_Role == 5 ) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleteFailure('+ item.id +')">';
                             else return '';
                         }
                         },

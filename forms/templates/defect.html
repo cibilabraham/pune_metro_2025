@@ -84,7 +84,7 @@
             </div>
         </form>
 
-        {% if request.session.user_Role != 4 and request.session.user_Role != 6 and request.session.user_Role != 7 and request.session.user_Role != 5  %}
+        {% if request.session.user_Role != 4 and request.session.user_Role != 7 and request.session.user_Role != 5  %}
         <div class="row ">
         <div class="col-lg-12 mb-5">
 
@@ -418,12 +418,12 @@ function getDefectData(){
                   },
                   "columns" : [
                     {"data":null,"render":function(item){
-                        if(item.user_Role != 4 && item.user_Role != 5 && item.user_Role != 6 && item.user_Role != 7) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
+                        if(item.user_Role != 4 && item.user_Role != 5 && item.user_Role != 7) return '<input type="checkbox" value="'+ item.id +'" name="deleteAll" class="deleteAll"/>';
                             else return '';
                         }
                     },
                     {"data":null,"render":function(item){
-                            if(item.user_Role != 4 && item.user_Role != 5 && item.user_Role != 6 && item.user_Role != 7) return '<a href="/forms/defect/update/'+ item.id +'" >'+ item.defect_id +'</a>';
+                            if(item.user_Role != 4 && item.user_Role != 5 && item.user_Role != 7) return '<a href="/forms/defect/update/'+ item.id +'" >'+ item.defect_id +'</a>';
                             else return item.defect_id;
                         }
                     },
@@ -452,7 +452,7 @@ function getDefectData(){
                       {"data" : "oem_defect_reference"},
                       {"data" : "asset_type"},
                       {"data":null,"render":function(item){
-                            if(item.user_Role != 4 && item.user_Role != 5 && item.user_Role != 6 && item.user_Role != 7) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deletedefect('+ item.id +')">';
+                            if(item.user_Role != 4 && item.user_Role != 5 && item.user_Role != 7) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deletedefect('+ item.id +')">';
                             else return '';
                         }
                     },

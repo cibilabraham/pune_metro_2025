@@ -262,6 +262,29 @@
                     </div>
                 </div>
 
+
+                   <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="failure_detection">Failure Detection:</label>
+                        <select class="form-control" id="failure_detection" name="failure_detection" >
+                            {% if 'ML' == data.failure_detection %}
+                            <option value="ML" selected>Main Line</option>
+                            {% else %}
+                                <option value="ML">Main Line</option>
+                            {% endif %}
+                            {% if 'TS' == data.failure_detection %}
+                            <option value="TS" selected>Testing</option>
+                            {% else %}
+                                <option value="TS">Testing</option>
+                            {% endif %}
+                        </select>
+                        {% comment %} <input type="text" class="form-control" id="failure_detection" name="failure_detection" value="{{data.failure_detection}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                        Please select Failure Detection.
+                        </div>
+                    </div>
+                </div>
+
            
             </div>
 
@@ -979,6 +1002,7 @@
         var organistaional_management_cause= $('#organistaional_management_cause').val();
         var material_is_damaged= $('#material_is_damaged').val();
         var assembly_no= $('#assembly_no').val();
+        var failure_detection= $('#failure_detection').val();
 
 
         console.log(datas);
@@ -1004,6 +1028,7 @@
                 'organistaional_management_cause':organistaional_management_cause,
                 'material_is_damaged':material_is_damaged,
                 'assembly_no':assembly_no,
+                'failure_detection':failure_detection,
             },
             success: function (response) {
 

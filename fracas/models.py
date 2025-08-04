@@ -166,6 +166,7 @@ class RootCause(models.Model):
     organistaional_management_cause = models.TextField(blank=True)
     material_is_damaged = models.CharField(max_length=550, blank=True)
     assembly_no = models.TextField( blank=True)
+    failure_detection = models.CharField(max_length=550, blank=True)
     
 
     class Meta:

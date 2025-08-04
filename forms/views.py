@@ -2263,6 +2263,7 @@ class AddRootcauseView(View):
             'organistaional_management_cause':'',
             'material_is_damaged':'',
             'assembly_no':'',
+            'failure_detection':'',
             }
         else:
             if RootCause.objects.filter(root_cause_id=id,is_active=1).exists():
@@ -2284,6 +2285,7 @@ class AddRootcauseView(View):
                     'organistaional_management_cause':a.organistaional_management_cause,
                     'material_is_damaged':a.material_is_damaged,
                     'assembly_no':a.assembly_no,
+                    'failure_detection':a.failure_detection,
                 }
         if user_Role == 1:
             asset_type = PBSMaster.objects.filter(is_active=0).order_by('asset_type')
@@ -2321,6 +2323,7 @@ class AddRootcauseView(View):
         organistaional_management_cause = req.get('organistaional_management_cause')
         material_is_damaged = req.get('material_is_damaged')
         assembly_no = req.get('assembly_no')
+        failure_detection = req.get('failure_detection')
 
         current_year = datetime.datetime.now().year
         current_month = datetime.datetime.now().month
@@ -2345,7 +2348,7 @@ class AddRootcauseView(View):
 
 
         DATA = []
-        HEAD = ["asset_type",'defect_id','rca_workshop_date','root_cause_status','immediate_cause','leading_reasons','root_cause_description','systemic_cause','organistaional_management_cause','material_is_damaged','assembly_no']
+        HEAD = ["asset_type",'defect_id','rca_workshop_date','root_cause_status','immediate_cause','leading_reasons','root_cause_description','systemic_cause','organistaional_management_cause','material_is_damaged','assembly_no','failure_detection']
         for f in HEAD:
             if f == 'rca_workshop_date':
                 DATA.append({
@@ -2386,7 +2389,7 @@ class AddRootcauseView(View):
                 else:
                     Find_Pids =PBSMaster.objects.filter(id=asset_type)
                     for Find_Pid in Find_Pids:
-                        r=RootCause(P_id=Find_Pid.project_id,asset_type=asset_type,defect_id=defect,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no)
+                        r=RootCause(P_id=Find_Pid.project_id,asset_type=asset_type,defect_id=defect,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no,failure_detection=failure_detection)
                         r.save()
                         FindUser = UserProfile.objects.filter(user_id=user_ID)
                         now = datetime.datetime.now()
@@ -2407,7 +2410,7 @@ class AddRootcauseView(View):
 
                             new_ncr_id = int(ncr_latest_id) + 1
 
-                            ncr_rec_no = f"TWLPune-RS-ML-NCR-{current_year}/{new_ncr_id:03}"
+                            ncr_rec_no = f"TWLPune-RS-{failure_detection}-NCR-{current_year}/{new_ncr_id:03}"
 
                             today_date = datetime.datetime.today().strftime('%Y-%m-%d')
                             current_time = datetime.datetime.now().strftime('%H:%M:%S')
@@ -2429,7 +2432,7 @@ class AddRootcauseView(View):
                     if RootCause.objects.filter(defect_id=defect,root_cause_id=ids,is_active=0).exists():
                         Find_Pids =PBSMaster.objects.filter(id=asset_type)
                         for Find_Pid in Find_Pids:
-                            RootCause.objects.filter(root_cause_id=ids).update(P_id=Find_Pid.project_id,asset_type=asset_type,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no)
+                            RootCause.objects.filter(root_cause_id=ids).update(P_id=Find_Pid.project_id,asset_type=asset_type,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no,failure_detection=failure_detection)
                             if meg !='':
                                 FindUser = UserProfile.objects.filter(user_id=user_ID)
                                 now = datetime.datetime.now()
@@ -2443,7 +2446,7 @@ class AddRootcauseView(View):
                 else:
                     Find_Pids =PBSMaster.objects.filter(id=asset_type)
                     for Find_Pid in Find_Pids:
-                        RootCause.objects.filter(root_cause_id=ids).update(P_id=Find_Pid.project_id,asset_type=asset_type,defect_id=defect,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no)
+                        RootCause.objects.filter(root_cause_id=ids).update(P_id=Find_Pid.project_id,asset_type=asset_type,defect_id=defect,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no,failure_detection=failure_detection)
                         if meg !='':
                             FindUser = UserProfile.objects.filter(user_id=user_ID)
                             now = datetime.datetime.now()
@@ -2460,7 +2463,7 @@ class AddRootcauseView(View):
                 else:
                     Find_Pids =PBSMaster.objects.filter(id=asset_type)
                     for Find_Pid in Find_Pids:
-                        r=RootCause(P_id=Find_Pid.project_id,asset_type=asset_type,defect_id=defect,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no)
+                        r=RootCause(P_id=Find_Pid.project_id,asset_type=asset_type,defect_id=defect,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no,failure_detection=failure_detection)
                         r.save()
 
 
@@ -2475,7 +2478,7 @@ class AddRootcauseView(View):
 
                             new_ncr_id = int(ncr_latest_id) + 1
 
-                            ncr_rec_no = f"TWLPune-RS-ML-NCR-{current_year}/{new_ncr_id:03}"
+                            ncr_rec_no = f"TWLPune-RS-{failure_detection}-NCR-{current_year}/{new_ncr_id:03}"
 
                             today_date = datetime.datetime.today().strftime('%Y-%m-%d')
                             current_time = datetime.datetime.now().strftime('%H:%M:%S')
@@ -2502,7 +2505,7 @@ class AddRootcauseView(View):
                         h.save()
                         if data !="":
                             for items in data:
-                                x= items['corrective_action_id'];
+                                x= items['corrective_action_id']
                                 if x !="":
                                     CorrectiveAction.objects.filter(corrective_action_id=x).update(is_active=0)
                                 else:
@@ -2514,7 +2517,7 @@ class AddRootcauseView(View):
                     if RootCause.objects.filter(defect_id=defect,root_cause_id=ids,is_active=0).exists():
                         Find_Pids =PBSMaster.objects.filter(id=asset_type)
                         for Find_Pid in Find_Pids:
-                            RootCause.objects.filter(root_cause_id=ids).update(P_id=Find_Pid.project_id,asset_type=asset_type,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no)
+                            RootCause.objects.filter(root_cause_id=ids).update(P_id=Find_Pid.project_id,asset_type=asset_type,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no,failure_detection=failure_detection)
                             if meg !='':
                                 FindUser = UserProfile.objects.filter(user_id=user_ID)
                                 now = datetime.datetime.now()
@@ -2536,7 +2539,7 @@ class AddRootcauseView(View):
                 else:
                     Find_Pids =PBSMaster.objects.filter(id=asset_type)
                     for Find_Pid in Find_Pids:
-                        RootCause.objects.filter(root_cause_id=ids).update(P_id=Find_Pid.project_id,asset_type=asset_type,defect_id=defect,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no)
+                        RootCause.objects.filter(root_cause_id=ids).update(P_id=Find_Pid.project_id,asset_type=asset_type,defect_id=defect,root_cause_description=root_cause_description,leading_reasons=leading_reasons,immediate_cause=immediate_cause,rca_workshop_date=rca_workshop_date,root_cause_status=root_cause_status,systemic_cause=systemic_cause,organistaional_management_cause=organistaional_management_cause,material_is_damaged=material_is_damaged,assembly_no=assembly_no,failure_detection=failure_detection)
                         if meg !='':
                             FindUser = UserProfile.objects.filter(user_id=user_ID)
                             now = datetime.datetime.now()
