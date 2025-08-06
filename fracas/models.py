@@ -91,6 +91,10 @@ class FailureData(models.Model):
     TO_name = models.TextField(null=True, blank=True)
     incident = models.CharField(max_length=550, null=True, blank=True)
     deboarding = models.CharField(max_length=550, null=True, blank=True)
+    revenue_service_delay = models.TextField(null=True, blank=True)
+    affecting_failures = models.CharField(max_length=550, blank=True)
+    dept_location = models.CharField(max_length=550, blank=True)
+    failure_category = models.CharField(max_length=550, blank=True)
     def __str__(self):
         return ' '
 
@@ -272,6 +276,8 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=50)
     is_active = models.IntegerField(default=0)
     is_disable = models.IntegerField(default=0)
+    designation = models.CharField(max_length=100,blank=True)
+    emp_id = models.CharField(max_length=100,blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

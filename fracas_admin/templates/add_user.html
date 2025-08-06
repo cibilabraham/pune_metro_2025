@@ -123,6 +123,27 @@
                             </div>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                <input type="text" id="designation" name="designation" class="form-control" placeholder="Designation" required="required" value="{{data.designation}}">
+                                <label for="inputDesignation">Designation</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                <input type="text" id="emp_id" name="emp_id" class="form-control" placeholder="EMP ID" required="required" value="{{data.emp_id}}">
+                                <label for="emp_id">EMP ID</label>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+
+
+                      
                         <button type="submit" class="btn btn-primary btn-block" id="btn-sub">
                         {% if data.id != '' %}
                         Update user
@@ -152,6 +173,11 @@ $( "#RegisterForm" ).submit(function(e) {
         var password= $('#password').val()
         var conf_password= $('#conf_password').val()
         var id= $('#id').val()
+
+        var designation= $('#designation').val()
+        var emp_id= $('#emp_id').val()
+
+
         $.ajax({
             url: "/fracas_admin/user/add/",
             method: 'POST',
@@ -166,6 +192,8 @@ $( "#RegisterForm" ).submit(function(e) {
                 'password' : password,
                 'conf_password' : conf_password,
                 'id':id,
+                'designation' : designation,
+                'emp_id' : emp_id,
             },
             success: function (response) {
                 if(response.status == '0') {

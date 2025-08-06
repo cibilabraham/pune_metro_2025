@@ -439,6 +439,15 @@ class Failuredata(View):
                                     'TO_name':FailureDatas.TO_name,
 
 
+                                'revenue_service_delay':FailureDatas.revenue_service_delay,
+                                'affecting_failures' : FailureDatas.affecting_failures,
+                                'dept_location' : FailureDatas.dept_location,
+                                'failure_category' : FailureDatas.failure_category,
+
+                                'system' : PBSMaster_data.system,
+                                'subsystem' : PBSMaster_data.subsystem,
+
+
 
                             })  
                     else:
@@ -481,6 +490,13 @@ class Failuredata(View):
                                     'deboarding' : FailureDatas.deboarding,
                                     'reported_to_PPIO' : FailureDatas.reported_to_PPIO,
                                     'TO_name':FailureDatas.TO_name,
+
+                                'revenue_service_delay':FailureDatas.revenue_service_delay,
+                                'affecting_failures' : FailureDatas.affecting_failures,
+                                'dept_location' : FailureDatas.dept_location,
+                                'failure_category' : FailureDatas.failure_category,
+                                'system' : PBSMaster_data.system,
+                                'subsystem' : PBSMaster_data.subsystem,
 
 
                         })         
@@ -629,7 +645,7 @@ class AddFailureData(View):
             'date' : date.today(),
             'time' : current_time,
             'detection':'',
-            'service_delay' : '',
+            'service_delay' : 0,
             'immediate_investigation' : '',
             'failure_type' : '',
             'safety_failure' : '',
@@ -637,10 +653,10 @@ class AddFailureData(View):
             'cm_description' : '',
             'replaced_asset_config_id':'',
             'id':'',
-            'cm_start_date' : date.today(),
-            'cm_start_time' : current_time,
-            'cm_end_date' : date.today(),
-            'cm_end_time' : current_time,
+            'cm_start_date' : datetime.datetime.now().strftime('%Y-%m-%d'),
+            'cm_start_time' : datetime.datetime.now().strftime("%H:%M"),
+            'cm_end_date' : datetime.datetime.now().strftime('%Y-%m-%d'),
+            'cm_end_time' : datetime.datetime.now().strftime("%H:%M"),
             'oem_failure_reference' : '',
             'defect':'',
 
@@ -656,6 +672,11 @@ class AddFailureData(View):
             'deboarding' : '',
             'reported_to_PPIO' : '',
             'TO_name':'',
+
+            'revenue_service_delay':'',
+            'affecting_failures' : '',
+            'dept_location' : '',
+            'failure_category' : '',
 
 
             }
@@ -701,6 +722,11 @@ class AddFailureData(View):
                 'reported_to_PPIO' : datas.reported_to_PPIO,
                 'TO_name': datas.TO_name,
 
+                'revenue_service_delay':datas.revenue_service_delay,
+                'affecting_failures' : datas.affecting_failures,
+                'dept_location' : datas.dept_location,
+                'failure_category' : datas.failure_category,
+
 
 
                 }
@@ -740,23 +766,34 @@ class AddFailureData(View):
         hazard_id = req.get('hazard_id')
         cm_description = req.get('cm_description')
         replaced_asset_config_id = req.get('replaced_asset_config_id')
-        cm_start_date = datetime.datetime.strptime(req.get('cm_start_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
-        cm_start_time = req.get('cm_start_time')
-        cm_end_date = req.get('cm_end_date')
-        if cm_end_date != '':
-            cm_end_date = datetime.datetime.strptime(req.get('cm_end_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
+        ids = req.get('id')
+
+        if ids =="":
+            cm_start_date = datetime.datetime.now().strftime('%Y-%m-%d')
+            cm_start_time = datetime.datetime.now().strftime("%H:%M")
+            cm_end_date = datetime.datetime.now().strftime('%Y-%m-%d')
+            cm_end_time = datetime.datetime.now().strftime("%H:%M")
+            service_delay = 0
+            cm_description = ''
+
         else:
-            cm_end_date = None
-        print(cm_end_date,'cm_end_date')
-        cm_end_time = req.get('cm_end_time')
-        if cm_end_time == "":
-            cm_end_time = None
+
+            fdt = FailureData.objects.filter(id=ids)
+            cm_start_date = fdt[0].cm_start_date
+            cm_start_time = fdt[0].cm_start_time
+            cm_end_date = fdt[0].cm_end_date
+            cm_end_time = fdt[0].cm_end_time
+            service_delay = fdt[0].service_delay
+            cm_description = fdt[0].cm_description
+
+
         oem_failure_reference = req.get('oem_failure_reference')
         defect = req.get('defect')
         if defect == "":
             defect = None
         Action = req.get('Action')
-        ids = req.get('id')
+        
         ACID = Asset.objects.filter(id=asset_config_ids)
         asset_config_id = ACID[0].asset_config_id
 
@@ -774,8 +811,14 @@ class AddFailureData(View):
         reported_to_PPIO = req.get('reported_to_PPIO')
         TO_name = req.get('TO_name')
 
+        revenue_service_delay = req.get('revenue_service_delay')
+        affecting_failures = req.get('affecting_failures')
+
+        dept_location = req.get('dept_location')
+        failure_category = req.get('failure_category')
+
         DATA = []
-        HEAD = ["asset_type",'failure_id','asset_config_id_id','event_description','mode_id_id','date','time','detection','service_delay','immediate_investigation','failure_type','safety_failure','hazard_id','cm_description','replaced_asset_config_id','cm_start_date','cm_start_time','cm_end_date','cm_end_time','oem_failure_reference','defect_id','location_id','kilometre_reading','equipment','location','direction','incident','no_of_trip_cancel','department','deboarding']
+        HEAD = ["asset_type",'failure_id','asset_config_id_id','event_description','mode_id_id','date','time','detection','immediate_investigation','failure_type','safety_failure','hazard_id','cm_description','replaced_asset_config_id','cm_start_date','cm_start_time','cm_end_date','cm_end_time','oem_failure_reference','defect_id','location_id','kilometre_reading','equipment','location','direction','incident','no_of_trip_cancel','department','deboarding']
         for f in HEAD:
             if f == 'asset_config_id_id':
                 DATA.append({
@@ -795,7 +838,7 @@ class AddFailureData(View):
             elif f == 'cm_start_date':
                 DATA.append({
                     'field':f,
-                    'value':datetime.datetime.strptime(req.get(f), '%d/%m/%Y').strftime('%Y-%m-%d')
+                    'value':cm_start_date
                 })
             elif f == 'cm_end_date':
                 DATA.append({
@@ -827,7 +870,7 @@ class AddFailureData(View):
                 Find_Pids =PBSMaster.objects.filter(id=asset_type)
                 for Find_Pid in Find_Pids:
                     
-                    r=FailureData(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,service_delay=service_delay,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name)
+                    r=FailureData(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name,affecting_failures=affecting_failures,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category)
                     r.save()
 
                     jobcard_latest_id = 0
@@ -935,7 +978,7 @@ class AddFailureData(View):
                 if FailureData.objects.filter(failure_id=failure_id,id=ids,is_active=0).exists():
                     Find_Pids =PBSMaster.objects.filter(id=asset_type)
                     for Find_Pid in Find_Pids:
-                        FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,event_description=event_description,date=date,time=time,detection=detection,service_delay=service_delay,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name)
+                        FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,event_description=event_description,date=date,time=time,detection=detection,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name,affecting_failures=affecting_failures,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category)
                         if meg !='':
                             FindUser = UserProfile.objects.filter(user_id=user_ID)
                             now = datetime.datetime.now()
@@ -950,7 +993,7 @@ class AddFailureData(View):
                 print('---------------2222222222222-----------')
                 Find_Pids =PBSMaster.objects.filter(id=asset_type)
                 for Find_Pid in Find_Pids:
-                    FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,service_delay=service_delay,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name)
+                    FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name,affecting_failures=affecting_failures,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category)
                     if meg !='':
                         FindUser = UserProfile.objects.filter(user_id=user_ID)
                         now = datetime.datetime.now()

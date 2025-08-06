@@ -161,6 +161,8 @@ class ListUsers(View):
                                 'product' : p_data.product_name,
                                 'is_disable' : u_data.is_disable,
                                 'id':UsersData.id,
+                                 'designation' :u_data.designation,
+                                'emp_id' :u_data.emp_id,
                             })
         else:
             user_data =UserProfile.objects.filter(product_id_id=P_id,user_role_id__gte = user_Role,is_active=0).exclude(user_role_id=1)
@@ -183,6 +185,8 @@ class ListUsers(View):
                                 'is_disable' : u_data.is_disable,
                                 'role' : user_Role,
                                 'id':UsersData.id,
+                                 'designation' :u_data.designation,
+                        'emp_id' :u_data.emp_id,
                             })
         return JsonResponse({'data':data})
                 
@@ -263,6 +267,8 @@ class AddUsers(View):
             'email' : '',
             'id' :'',
             'password' :'',
+            'designation' :'',
+            'emp_id' :'',
             }
             if user_Role == 1:
                 products = Product.objects.filter(is_active=0)
@@ -282,6 +288,8 @@ class AddUsers(View):
                         'product' : u_data.product_id_id,
                         'id':UsersData.id,
                         'password' :'XXXXXXXXXXXXXX',
+                        'designation' :u_data.designation,
+                        'emp_id' :u_data.emp_id,
                     }
             if user_Role == 1:
                 products = Product.objects.filter(is_active=0)
@@ -306,6 +314,10 @@ class AddUsers(View):
         email = req.get('email')
         password = req.get('password')
         conf_password = req.get('conf_password')
+
+        designation = req.get('designation')
+        emp_id = req.get('emp_id')
+
         id = req.get('id')
         if id == "":
             if password != conf_password:
@@ -318,7 +330,7 @@ class AddUsers(View):
                 else:
                     q = User.objects.create_user(username=email,password=password)
                     q.save()
-                    u = UserProfile(user_id=q.id,product_id_id=product_id,user_role_id=user_role_id,first_name=first_name,last_name=last_name)
+                    u = UserProfile(user_id=q.id,product_id_id=product_id,user_role_id=user_role_id,first_name=first_name,last_name=last_name,designation=designation,emp_id=emp_id)
                     u.save()
                     message = 'Successfully add new user..!'
                     FindUser = UserProfile.objects.filter(user_id=user_ID)
@@ -353,7 +365,7 @@ class AddUsers(View):
             if password == 'XXXXXXXXXXXXXX' and conf_password == 'XXXXXXXXXXXXXX':
                 if User.objects.filter(username=email).exists():
                     if User.objects.filter(username=email,id=id).exists():
-                        UserProfile.objects.filter(user_id=id).update(product_id_id=product_id,user_role_id=user_role_id,first_name=first_name,last_name=last_name)
+                        UserProfile.objects.filter(user_id=id).update(product_id_id=product_id,user_role_id=user_role_id,first_name=first_name,last_name=last_name,designation=designation,emp_id=emp_id)
                         message = 'Successfully update user..!'
                         if meg !='':
                             FindUser = UserProfile.objects.filter(user_id=user_ID)
@@ -368,7 +380,7 @@ class AddUsers(View):
                         return JsonResponse({'message': message,'status':'0'})
                 else:
                     User.objects.filter(id=id).update(username=email)
-                    UserProfile.objects.filter(user_id=id).update(product_id_id=product_id,user_role_id=user_role_id,first_name=first_name,last_name=last_name)
+                    UserProfile.objects.filter(user_id=id).update(product_id_id=product_id,user_role_id=user_role_id,first_name=first_name,last_name=last_name,designation=designation,emp_id=emp_id)
                     message = 'Successfully update user..!'
                     if meg !='':
                         FindUser = UserProfile.objects.filter(user_id=user_ID)
@@ -388,7 +400,7 @@ class AddUsers(View):
                             p = User.objects.get(id=id)
                             p.set_password(password)
                             p.save()
-                            UserProfile.objects.filter(user_id=id).update(product_id_id=product_id,user_role_id=user_role_id,first_name=first_name,last_name=last_name)
+                            UserProfile.objects.filter(user_id=id).update(product_id_id=product_id,user_role_id=user_role_id,first_name=first_name,last_name=last_name,designation=designation,emp_id=emp_id)
                             message = 'Successfully update user..!'
                             if meg !='':
                                 FindUser = UserProfile.objects.filter(user_id=user_ID)
@@ -406,7 +418,7 @@ class AddUsers(View):
                         p.set_password(password)
                         p.username = email
                         p.save()
-                        UserProfile.objects.filter(user_id=id).update(product_id_id=product_id,user_role_id=user_role_id,first_name=first_name,last_name=last_name)
+                        UserProfile.objects.filter(user_id=id).update(product_id_id=product_id,user_role_id=user_role_id,first_name=first_name,last_name=last_name,designation=designation,emp_id=emp_id)
                         message = 'Successfully update user..!'
                         if meg !='':
                             FindUser = UserProfile.objects.filter(user_id=user_ID)
