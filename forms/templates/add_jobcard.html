@@ -737,17 +737,31 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="issued_by">*Issued by (Name): </label>
-                                        <input type="text" class="form-control" id="issued_by"  name="issued_by" value="{{data.issued_by}}" required="required">
+                                        <input type="text" class="form-control" id="issued_by"  name="issued_by" value="{{data.issued_by}}" required="required" readonly>
                                         <div class="invalid-feedback">
                                         Please enter Issued by (Name).
                                         </div>
                                     </div>
                                 </div>
 
-                                   <div class="col-md-4">
+                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="issued_signature">*Designation / EMP ID: </label>
+                                        <input type="text" class="form-control" id="issued_signature"  name="issued_signature" value="{{data.issued_signature}}" required="required" readonly>
+                                        <div class="invalid-feedback">
+                                        Please enter Designation / EMP ID.
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="col-md-4 hide d-none">
                                     <div class="form-group">
                                         <label for="signature_img">*Signature: </label>
-                                        <input type="file" class="form-control" id="signature_img"  name="signature_img" required="required" accept="image/*">
+                                        <input type="file" class="form-control" id="signature_img"  name="signature_img" accept="image/*">
                                         <div class="invalid-feedback">
                                         Please upload Signature.
                                         </div>
@@ -869,15 +883,13 @@
                                     <div class="col-lg-4">
 
                                         <span>Issued by (Name): <b>{{data.issued_by}}</b></span><br>
+                                        <span>Designation / EMP ID: <b>{{data.issued_signature}}</b></span><br>
                                         <span>Date: <b>{{data.l1_date}}</b></span><br>
                                         <span>Time: <b>{{data.l1_time}}</b></span><br>
 
                                     </div>
 
-                                    <div class="col-lg-4">
-                                        <img src="/static/{{data.signature_img}}" style="width: 60px;">
-
-                                    </div>
+                               
 
                                 </div>
 
@@ -913,17 +925,27 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="received_by">*Received by (Name): </label>
-                                                        <input type="text" class="form-control" id="received_by"  name="received_by" value="{{data.received_by}}" required="required">
+                                                        <input type="text" class="form-control" id="received_by"  name="received_by" value="{{data.received_by}}" required="required" readonly>
                                                         <div class="invalid-feedback">
                                                         Please enter Received by (Name).
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                 <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="received_by_signature">*Designation / EMP ID: </label>
+                                                        <input type="text" class="form-control" id="received_by_signature"  name="received_by_signature" value="{{data.received_by_signature}}" required="required" readonly>
+                                                        <div class="invalid-feedback">
+                                                        Please enter Designation / EMP ID.
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 hide d-none">
                                                     <div class="form-group">
                                                         <label for="signature_img">*Signature: </label>
-                                                        <input type="file" class="form-control" id="signature_img2"  name="signature_img2" required="required" accept="image/*">
+                                                        <input type="file" class="form-control" id="signature_img2"  name="signature_img2" accept="image/*">
                                                         <div class="invalid-feedback">
                                                         Please upload Signature.
                                                         </div>
@@ -1013,15 +1035,16 @@
                                             <div class="col-lg-4">
 
                                                 <span>Received by (Name): <b>{{data.received_by}}</b></span><br>
+                                                <span>Designation / EMP ID: <b>{{data.received_by_signature}}</b></span><br>
                                                 <span>Date: <b>{{data.l2_date}}</b></span><br>
                                                 <span>Time: <b>{{data.l2_time}}</b></span><br>
 
                                             </div>
 
-                                            <div class="col-lg-4">
+                                            <!-- <div class="col-lg-4">
                                                 <img src="/static/{{data.signature_img2}}" style="width: 60px;">
 
-                                            </div>
+                                            </div> -->
 
                                         </div>
 
@@ -1062,7 +1085,7 @@
                                                                     <th>S. No</th>
                                                                     <th>Name</th>
                                                                     <th>Work</th>
-                                                                    <th>Signature</th>
+                                                                    <!-- <th>Signature</th> -->
                                                                    
                                                                     <th class="bg-white">
                                                                         
@@ -1077,11 +1100,11 @@
                                                                         <td>{{ job_works.s_no }}</td>
                                                                         <td>{{ job_works.jobwork_name }}</td>
                                                                         <td>{{ job_works.jobwork_work }}</td>
-                                                                        <td>
+                                                                        <!-- <td>
  <img src="/static/uploads/{{ job_works.jobwork_signature }}" style="width: 60px;">
                                                                             
                                                                             
-                                                                     </td>
+                                                                     </td> -->
                                                                        
                                                                         
                                                                         <td class="bg-white">
@@ -1099,7 +1122,7 @@
                                                                     </tr>
                                                                 {% empty %}
                                                                     <tr>
-                                                                        <td colspan="6" class="text-center text-muted">No work available</td>
+                                                                        <td colspan="5" class="text-center text-muted">No work available</td>
                                                                     </tr>
                                                                 {% endfor %}
 
@@ -1141,10 +1164,10 @@
                                                             </div>
 
 
-                                                             <div class="col-md-4">
+                                                                <div class="col-md-4">
                                                                     <div class="form-group">
                                                                         <label for="handed_over">Job Card Handed over to the next supervisor, if work is not completed in your shift:</label>
-                                                                        <select class="form-control" id="handed_over" name="handed_over" >
+                                                                        <select class="form-control" id="handed_over" name="handed_over" onchange="changeSupervisor();">
                                                                              {% if 'No' == data.handed_over %}
                                                                             <option value="No" selected>No</option>
                                                                             {% else %}
@@ -1164,19 +1187,34 @@
                                                                     </div>
                                                                 </div>
 
+                                                                <div id="new_supervisor_no_div" class="col-8">
 
-                                                                    <div class="col-md-4">
-                                                                        <div class="form-group">
-                                                                            <label for="new_supervisor">Name of the New Supervisor:</label>
-                                                                            <input type="text" class="form-control" id="new_supervisor" name="new_supervisor" value="{{data.new_supervisor}}">
-                                                                            <div class="invalid-feedback">
-                                                                            Please enter Name of the New Supervisor.
+                                                                    <div class="row"> 
+
+
+                                                                        <div class="col-6">
+                                                                            <div class="form-group">
+                                                                                <label for="new_supervisor">Name of the New Supervisor:</label>
+                                                                                <input type="text" class="form-control" id="new_supervisor" name="new_supervisor" value="{{data.new_supervisor}}" readonly>
+                                                                                <div class="invalid-feedback">
+                                                                                Please enter Name of the New Supervisor.
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
 
 
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-6">
+                                                                            <div class="form-group">
+                                                                                <label for="new_supervisor_signature">Designation / EMP ID:</label>
+                                                                                <input type="text" class="form-control" id="new_supervisor_signature" name="new_supervisor_signature" value="{{data.new_supervisor_signature}}" readonly>
+                                                                                <div class="invalid-feedback">
+                                                                                Please enter Designation / EMP ID.
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="col-md-4 hide d-none">
                                                                             <div class="form-group">
                                                                                 <label for="signature_img3">Sign. of the New Supervisor: </label>
                                                                                 <input type="file" class="form-control" id="signature_img3"  name="signature_img3" accept="image/*">
@@ -1185,6 +1223,45 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <div id="new_supervisor_yes_div" class="d-none col-8">
+
+
+                                                                    <div class="row"> 
+
+
+
+                                                                         <div class="col-md-12 ">
+                                                                            <div class="form-group">
+                                                                                <label for="software_version">Select New Supervisor and Designation / EMP ID:</label>
+                                                                                <select class="form-control" id="new_supervisor_id" name="new_supervisor_id" >
+                                                                                <option value="">--  Select New Supervisor and Designation / EMP ID  --</option>
+                                                                                {% for sup in supervisorList %}
+                                                                                    {% if sup.id == data.new_supervisor_id %}
+                                                                                        <option value="{{sup.id}}" selected>{{sup.val}} </option>
+                                                                                    {% else %}
+                                                                                        <option value="{{sup.id}}">{{sup.val}} </option>
+                                                                                    {% endif %}
+                                                                                        
+                                                                                {% endfor %}
+                                                                                </select>
+
+
+                                                                                <div class="invalid-feedback">
+                                                                                Please enter New SupervisorDesignation / EMP ID.
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        
+
+
+                                                                    </div>
+
+                                                                </div>
 
 
 
@@ -1223,7 +1300,7 @@
                                                             <th>S. No</th>
                                                             <th>Name</th>
                                                             <th>Work</th>
-                                                            <th>Signature</th>
+                                                            <!-- <th>Signature</th> -->
                                                     
                                                         </tr>
                                                     </thead>
@@ -1235,13 +1312,13 @@
                                                                 <td>{{ job_works.s_no }}</td>
                                                                 <td>{{ job_works.jobwork_name }}</td>
                                                                 <td>{{ job_works.jobwork_work }}</td>
-                                                                <td>{{ job_works.jobwork_signature }}</td>
+                                                                <!-- <td>{{ job_works.jobwork_signature }}</td> -->
                                                                 
                                                             
                                                             </tr>
                                                         {% empty %}
                                                             <tr>
-                                                                <td colspan="6" class="text-center text-muted">No work available</td>
+                                                                <td colspan="5" class="text-center text-muted">No work available</td>
                                                             </tr>
                                                         {% endfor %}
 
@@ -1260,6 +1337,7 @@
                                                 <span>Follow Up Details: <b>{{data.follow_up_details}}</b></span><br>
                                                 <span>Job Card Handed over to the next supervisor, if work is not completed in your shift: <b>{{data.handed_over}}</b></span><br>
                                                 <span>Name of the New Supervisor: <b>{{data.new_supervisor}}</b></span><br>
+                                                <span>Designation / EMP ID:  <b>{{data.new_supervisor_signature}}</b></span><br>
 
                                             </div>
 
@@ -1420,23 +1498,14 @@
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="completion_name">*Name:</label>
-                                                                    <input type="text" class="form-control" id="completion_name" name="completion_name" value="{{data.completion_name}}" required="required">
+                                                                    <input type="text" class="form-control" id="completion_name" name="completion_name" value="{{data.completion_name}}" required="required" readonly>
                                                                     <div class="invalid-feedback">
                                                                     Please enter Name.
                                                                     </div>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label for="down_time">Down Time (mins):</label>
-                                                                    <input type="number" class="form-control" id="down_time" name="down_time" value="{{data.down_time}}">
-                                                                    <div class="invalid-feedback">
-                                                                    Please enter Down Time.
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
+                                                        
 
                                                               <div class="col-md-4">
                                                                 <div class="form-group">
@@ -1464,7 +1533,7 @@
                                                               <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="completion_date">*Date (DD/MM/YYYY):</label>
-                                                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="completion_date" name="completion_date" value="{{data.completion_date|date:'d/m/Y'}}">
+                                                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="completion_date" name="completion_date" value="{{data.completion_date|date:'d/m/Y'}}" onchange="getServiceDelay();">
                                                                     <div class="invalid-feedback">
                                                                     Please enter Date.
                                                                     </div>
@@ -1474,22 +1543,45 @@
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="completion_date_time">*Time:</label>
-                                                                    <input type="time" class="form-control" id="completion_date_time" required="required" name="completion_date_time" value="{{data.completion_date_time|date:"H:i"}}">
+                                                                    <input type="time" class="form-control" id="completion_date_time" required="required" name="completion_date_time" value="{{data.completion_date_time|date:"H:i"}}" onchange="getServiceDelay();">
                                                                     <div class="invalid-feedback">
                                                                     Please enter Time.
                                                                     </div>
                                                                 </div>
                                                             </div>
 
+
                                                                 <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="down_time">Down Time (mins):</label>
+                                                                    <input type="number" class="form-control" id="down_time" name="down_time" value="{{data.down_time}}">
+                                                                    <div class="invalid-feedback">
+                                                                    Please enter Down Time.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                                <div class="col-md-4 hide d-none">
                                                                     <div class="form-group">
                                                                         <label for="signature_img4">*Signature: </label>
-                                                                        <input type="file" class="form-control" id="signature_img4"  name="signature_img4" required="required" accept="image/*">
+                                                                        <input type="file" class="form-control" id="signature_img4"  name="signature_img4" accept="image/*">
                                                                         <div class="invalid-feedback">
                                                                         Please upload Signature.
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="completion_signature">Designation / EMP ID:</label>
+                                                                    <input type="text" class="form-control" id="completion_signature" name="completion_signature" value="{{data.completion_signature}}" required="required" readonly>
+                                                                    <div class="invalid-feedback">
+                                                                    Please enter Designation / EMP ID.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
 
 
@@ -1643,11 +1735,15 @@
 
                                                                     </div>
 
-                                                                {% if data.signature_img4 %}
+                                                                    <div class="col-lg-12">
+                                                                        <span>Designation / EMP ID: <b>{{data.completion_signature}}</b></span><br>
+                                                                    </div>
+
+                                                                <!-- {% if data.signature_img4 %}
                                                                     <div class="col-lg-4">
                                                                         <img src="/static/{{ data.signature_img4 }}" style="width: 60px;">
                                                                     </div>
-                                                                {% endif %}
+                                                                {% endif %} -->
 
 
                                                             </div>
@@ -1656,13 +1752,13 @@
 
                                                     {% if data.run_status == 6  %}
 
-                                                    {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}   
+                                                    {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}   
 
 
 
                                                             <div class="row " style="padding: 20px;text-align: center;">
                                                                 <div class="col-lg-12 " >
-                                                                    <h5>LEVEL 2 SIC Completion Report</h5>
+                                                                    <h5>LEVEL 3 SIC Completion Report</h5>
                                                                     
                                                                 </div>
 
@@ -1744,7 +1840,7 @@
                                                                             <div class="col-md-4">
                                                                                 <div class="form-group">
                                                                                     <label for="completion_name2">*Name:</label>
-                                                                                    <input type="text" class="form-control" id="completion_name2" name="completion_name2" value="{{data.completion_name2}}" required="required">
+                                                                                    <input type="text" class="form-control" id="completion_name2" name="completion_name2" value="{{data.completion_name2}}" required="required" readonly>
                                                                                     <div class="invalid-feedback">
                                                                                     Please enter Name.
                                                                                     </div>
@@ -1805,15 +1901,28 @@
                                                                                 </div>
                                                                             </div>
 
-                                                                                <div class="col-md-4">
+                                                                                <div class="col-md-4 hide d-none">
                                                                                     <div class="form-group">
                                                                                         <label for="signature_img5">*Signature: </label>
-                                                                                        <input type="file" class="form-control" id="signature_img5"  name="signature_img5" required="required" accept="image/*">
+                                                                                        <input type="file" class="form-control" id="signature_img5"  name="signature_img5" accept="image/*">
                                                                                         <div class="invalid-feedback">
                                                                                         Please upload Signature.
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+
+
+
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="completion_signature2">*Designation / EMP ID:</label>
+                                                                                    <input type="text" class="form-control" id="completion_signature2" name="completion_signature2" value="{{data.completion_signature2}}" required="required" readonly>
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter Designation / EMP ID.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
 
 
 
@@ -1842,13 +1951,13 @@
 
 
                                                                 <div class="row " style="padding: 20px;">
-                                                                    <div class="col-lg-12"><h3>LEVEL 2 SIC Completion Report</h3></div>
+                                                                    <div class="col-lg-12"><h3>LEVEL 3 SIC Completion Report</h3></div>
 
 
                                                                     {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}   
 
                                                                     <div class="col-lg-12">
-                                                                        <input  type="button" value="Edit LEVEL 2 SIC Completion Report" class="btn btn-primary" onClick="editLevel2Close()">
+                                                                        <input  type="button" value="Edit LEVEL 3 SIC Completion Report" class="btn btn-primary" onClick="editLevel2Close()">
                                                                     </div>
 
                                                                    
@@ -1935,11 +2044,15 @@
 
                                                                         </div>
 
-                                                                    {% if data.signature_img5 %}
+                                                                        <div class="col-lg-4">
+                                                                            <span>Designation / EMP ID: <b>{{data.completion_signature2}}</b></span><br>
+                                                                        </div>
+
+                                                                    <!-- {% if data.signature_img5 %}
                                                                         <div class="col-lg-4">
                                                                             <img src="/static/{{ data.signature_img5 }}" style="width: 60px;">
                                                                         </div>
-                                                                    {% endif %}
+                                                                    {% endif %} -->
 
 
                                                                 </div>
@@ -1968,7 +2081,7 @@
                                                                             <div class="col-md-4">
                                                                                 <div class="form-group">
                                                                                     <label for="close_name">*Name :</label>
-                                                                                    <input type="text" class="form-control" id="close_name" name="close_name" value="{{data.close_name }}" required="required">
+                                                                                    <input type="text" class="form-control" id="close_name" name="close_name" value="{{data.close_name }}" required="required" readonly>
                                                                                     <div class="invalid-feedback">
                                                                                         Please enter Name .
                                                                                     </div>
@@ -1998,15 +2111,27 @@
                                                                             </div>
                                                                         </div>
 
-                                                                            <div class="col-md-4">
+                                                                            <div class="col-md-4 hide d-none">
                                                                                 <div class="form-group">
                                                                                     <label for="signature_img6">*Signature: </label>
-                                                                                    <input type="file" class="form-control" id="signature_img6"  name="signature_img6" required="required" accept="image/*">
+                                                                                    <input type="file" class="form-control" id="signature_img6"  name="signature_img6" accept="image/*">
                                                                                     <div class="invalid-feedback">
                                                                                     Please upload Signature.
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+
+
+                                                                              <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="close_name_signature">*Designation / EMP ID :</label>
+                                                                                    <input type="text" class="form-control" id="close_name_signature" name="close_name_signature" value="{{data.close_name_signature }}" required="required" readonly>
+                                                                                    <div class="invalid-feedback">
+                                                                                        Please enter Designation / EMP ID .
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
 
 
 
@@ -2054,14 +2179,15 @@
                                                                                     <span>Name: <b>{{data.close_name}}</b></span><br>
                                                                                     <span>Date: <b>{{data.close_date}}</b></span><br>
                                                                                     <span>Time: <b>{{data.close_time}}</b></span><br>
+                                                                                    <span>Designation / EMP ID: <b>{{data.close_name_signature}}</b></span><br>
 
                                                                                 </div>
 
-                                                                            {% if data.signature_img6 %}
+                                                                            <!-- {% if data.signature_img6 %}
                                                                                 <div class="col-lg-4">
                                                                                     <img src="/static/{{ data.signature_img6 }}" style="width: 60px;">
                                                                                 </div>
-                                                                            {% endif %}
+                                                                            {% endif %} -->
 
                                                                             
                                                                             {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}   
@@ -2265,11 +2391,11 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12">
+                <div class="col-sm-12 hide d-none">
 
                      <div class="form-group">
                     <label for="jobwork_signature">*Signature: </label>
-                    <input type="file" class="form-control" id="jobwork_signature"  name="jobwork_signature"  accept="image/*" required>
+                    <input type="file" class="form-control" id="jobwork_signature"  name="jobwork_signature"  accept="image/*" >
                     <div class="invalid-feedback">
                     Please upload Signature.
                     </div>
@@ -2407,8 +2533,28 @@
           autoclose: true,
           format: 'dd/mm/yyyy',});
 
+          var handed_over = '{{data.handed_over}}';
+            if(handed_over == 'Yes'){
+                $('#new_supervisor_no_div').addClass('d-none');
+                $('#new_supervisor_yes_div').removeClass('d-none');
+            }else{
+                $('#new_supervisor_yes_div').addClass('d-none');
+                $('#new_supervisor_no_div').removeClass('d-none');
+            }
+
         // showRevenueService();
     });
+
+    function changeSupervisor(){
+        var handed_over = $('#handed_over').val();
+        if(handed_over == 'Yes'){
+            $('#new_supervisor_no_div').addClass('d-none');
+            $('#new_supervisor_yes_div').removeClass('d-none');
+        }else{
+            $('#new_supervisor_yes_div').addClass('d-none');
+            $('#new_supervisor_no_div').removeClass('d-none');
+        }
+    }
 
     $( "#JobDetailsForm" ).submit(function(e) {
         e.preventDefault();
@@ -2448,6 +2594,113 @@
 
 
     });
+
+
+
+function getServiceDelay(){
+    $('#down_time').val('');
+
+    var cm_start_date= changeFormateForDate('{{data.l2_date}}');
+    var cm_start_time= changeTimeFormate('{{data.l2_time}}')
+    var cm_end_date= $('#completion_date').val()
+    var cm_end_time= $('#completion_date_time').val()
+
+
+    if(cm_start_date != "" && cm_start_time != "" && cm_end_date != "" && cm_end_time != "" ){
+        const input = cm_start_date+" "+cm_start_time;
+        const input2 = cm_end_date+" "+cm_end_time;
+
+        const diffInMinutes = getTimeDifferenceInMinutes(input2,input);
+        $('#down_time').val(diffInMinutes);
+        // console.log(`Time difference: ${diffInMinutes} minute(s)`);
+
+    }
+
+
+}
+
+function changeTimeFormate(time12h) {
+    if (!time12h) return "";
+
+    // Step 1: Normalize input
+    const cleaned = time12h.toLowerCase().replace(/\./g, '').trim(); // remove periods and trim
+    const parts = cleaned.split(' '); // Split time and am/pm
+
+    if (parts.length !== 2) return ""; // invalid format
+
+    const time = parts[0];      // "01:28"
+    const modifier = parts[1];  // "am" or "pm"
+
+    const timeParts = time.split(':');
+    if (timeParts.length !== 2) return ""; // invalid time format
+
+    let hours = parseInt(timeParts[0], 10);
+    let minutes = parseInt(timeParts[1], 10);
+
+    if (isNaN(hours) || isNaN(minutes)) return ""; // invalid numbers
+
+    if (modifier === 'pm' && hours !== 12) {
+        hours += 12;
+    } else if (modifier === 'am' && hours === 12) {
+        hours = 0;
+    }
+
+    const hh = String(hours).padStart(2, '0');
+    const mm = String(minutes).padStart(2, '0');
+
+    return `${hh}:${mm}`;
+}
+
+
+function changeFormateForDate(inputDate){
+
+// Remove the period after the month abbreviation
+const cleanedDate = inputDate.replace('.', '');
+
+// Parse the date
+const date = new Date(cleanedDate);
+
+// Format to dd/mm/yyyy
+const day = String(date.getDate()).padStart(2, '0');
+const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth is zero-based
+const year = date.getFullYear();
+
+const formattedDate = `${day}/${month}/${year}`;
+return formattedDate
+}
+
+
+
+
+function getTimeDifferenceInMinutes(inputDateTimeStr, inputDateTimeStr2 ) {
+    // Parse input date string in "dd/mm/yyyy hh:mm" format
+    const [datePart, timePart] = inputDateTimeStr.split(' ');
+    const [day, month, year] = datePart.split('/').map(Number);
+    const [hours, minutes] = timePart.split(':').map(Number);
+
+    // Create a Date object from input
+    const inputDate = new Date(year, month - 1, day, hours, minutes);
+
+
+    const [datePart2, timePart2] = inputDateTimeStr2.split(' ');
+    const [day2, month2, year2] = datePart2.split('/').map(Number);
+    const [hours2, minutes2] = timePart2.split(':').map(Number);
+
+    // Create a Date object from input
+    const currentDate = new Date(year2, month2 - 1, day2, hours2, minutes2);
+
+    // Get current time
+    // const currentDate = new Date();
+
+    // Calculate difference in milliseconds
+    const diffMs = inputDate - currentDate;
+
+    // Convert to minutes (rounded down)
+    const diffMins = Math.floor(diffMs / 1000 / 60);
+
+    return diffMins;
+}
+
 
     
      $( "#JobWorkForm" ).submit(function(e) {
@@ -2548,7 +2801,7 @@
 
     function createNewWork(){
         $('#JobWorkID').val('');
-       $('#jobwork_name').val('');
+       $('#jobwork_name').val('{{data.logedUsrName}}');
        $('#jobwork_work').val('');
        $('#jobwork_signature').val('');
         myModal2.show();

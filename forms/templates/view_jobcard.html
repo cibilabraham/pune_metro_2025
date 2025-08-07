@@ -426,15 +426,16 @@
                             <div class="col-lg-4">
 
                                 <span>Issued by (Name): <b>{{data.issued_by}}</b></span><br>
+                                <span>Designation / EMP ID: <b>{{data.issued_signature}}</b></span><br>
                                 <span>Date: <b>{{data.l1_date}}</b></span><br>
                                 <span>Time: <b>{{data.l1_time}}</b></span><br>
 
                             </div>
 
-                            <div class="col-lg-4">
+                            <!-- <div class="col-lg-4">
                                 <img src="/static/{{data.signature_img}}" style="width: 60px;">
 
-                            </div>
+                            </div> -->
 
                         </div>
 
@@ -492,15 +493,16 @@
                             <div class="col-lg-4">
 
                                 <span>Received by (Name): <b>{{data.received_by}}</b></span><br>
+                                <span>Designation / EMP ID: <b>{{data.received_by_signature}}</b></span><br>
                                 <span>Date: <b>{{data.l2_date}}</b></span><br>
                                 <span>Time: <b>{{data.l2_time}}</b></span><br>
 
                             </div>
 
-                            <div class="col-lg-4">
+                            <!-- <div class="col-lg-4">
                                 <img src="/static/{{data.signature_img2}}" style="width: 60px;">
 
-                            </div>
+                            </div> -->
 
                         </div>
 
@@ -548,7 +550,7 @@
                                             <th>S. No</th>
                                             <th>Name</th>
                                             <th>Work</th>
-                                            <th>Signature</th>
+                                            <!-- <th>Signature</th> -->
                                        
                                         </tr>
                                     </thead>
@@ -560,17 +562,17 @@
                                                 <td>{{ job_works.s_no }}</td>
                                                 <td>{{ job_works.jobwork_name }}</td>
                                                 <td>{{ job_works.jobwork_work }}</td>
-                                                <td>
+                                                <!-- <td>
  <img src="/static/uploads/{{ job_works.jobwork_signature }}" style="width: 60px;">
                                                                             
                                                                             
-                                                                     </td>
+                                                                     </td> -->
                                                 
                                              
                                             </tr>
                                         {% empty %}
                                             <tr>
-                                                <td colspan="6" class="text-center text-muted">No work available</td>
+                                                <td colspan="5" class="text-center text-muted">No work available</td>
                                             </tr>
                                         {% endfor %}
 
@@ -589,6 +591,7 @@
                                 <span>Follow Up Details: <b>{{data.follow_up_details}}</b></span><br>
                                 <span>Job Card Handed over to the next supervisor, if work is not completed in your shift: <b>{{data.handed_over}}</b></span><br>
                                 <span>Name of the New Supervisor: <b>{{data.new_supervisor}}</b></span><br>
+                                <span>Designation / EMP ID:  <b>{{data.new_supervisor_signature}}</b></span><br>
 
                             </div>
 
@@ -725,11 +728,15 @@
 
                                         </div>
 
-                                    {% if data.signature_img4 %}
+                                         <div class="col-lg-12">
+                                                                        <span>Designation / EMP ID: <b>{{data.completion_signature}}</b></span><br>
+                                                                    </div>
+
+                                    <!-- {% if data.signature_img4 %}
                                         <div class="col-lg-4">
                                             <img src="/static/{{ data.signature_img4 }}" style="width: 60px;">
                                         </div>
-                                    {% endif %}
+                                    {% endif %} -->
 
 
                                 </div>
@@ -741,12 +748,12 @@
                                         <div class="row " style="padding: 20px;text-align: center;">
                                             <div class="col-lg-12 border p-2 text-danger" >
                                                 <span class="text-muted">
-                                                    <i class="fas fa-spinner fa-spin"></i> Waiting for LEVEL 2 SIC Completion Report
+                                                    <i class="fas fa-spinner fa-spin"></i> Waiting for LEVEL 3 SIC Completion Report
 
                                                 </span>
 
 
-                                                {% if request.session.user_Role == 6 or request.session.user_Role == 1 or request.session.user_Role == 2 %}        
+                                                {% if request.session.user_Role == 5 or request.session.user_Role == 1 or request.session.user_Role == 2 %}        
                                                 <br>
                                                 <a  href="/forms/jobcard_register/addjobcard/{{data.id}}" >Update Now</a>
 
@@ -762,7 +769,7 @@
                                     {% else %}
 
                                         <div class="row " style="padding: 20px;">
-                                        <div class="col-lg-12"><h3>LEVEL 2 SIC Completion Report</h3></div>
+                                        <div class="col-lg-12"><h3>LEVEL 3 SIC Completion Report</h3></div>
                                         
 
                                         </div>
@@ -842,11 +849,15 @@
 
                                                 </div>
 
-                                            {% if data.signature_img5 %}
+                                                <div class="col-lg-4">
+                                                                            <span>Designation / EMP ID: <b>{{data.completion_signature2}}</b></span><br>
+                                                                        </div>
+
+                                            <!-- {% if data.signature_img5 %}
                                                 <div class="col-lg-4">
                                                     <img src="/static/{{ data.signature_img5 }}" style="width: 60px;">
                                                 </div>
-                                            {% endif %}
+                                            {% endif %} -->
 
 
                                         </div>
@@ -893,14 +904,15 @@
                                                             <span>Name: <b>{{data.close_name}}</b></span><br>
                                                             <span>Date: <b>{{data.close_date}}</b></span><br>
                                                             <span>Time: <b>{{data.close_time}}</b></span><br>
+                                                            <span>Designation / EMP ID: <b>{{data.close_name_signature}}</b></span><br>
 
                                                         </div>
-
+<!-- 
                                                     {% if data.signature_img6 %}
                                                         <div class="col-lg-4">
                                                             <img src="/static/{{ data.signature_img6 }}" style="width: 60px;">
                                                         </div>
-                                                    {% endif %}
+                                                    {% endif %} -->
 
 
                                                     </div>

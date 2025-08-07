@@ -516,6 +516,15 @@ class JobCard(models.Model):
     close_time = models.TimeField(max_length=15, null=True)
     signature_img6 = models.TextField(null=True, blank=True)
 
+    issued_signature = models.CharField(max_length=550, blank=True)
+    received_by_signature = models.CharField(max_length=550, blank=True)
+    new_supervisor_signature = models.CharField(max_length=550, blank=True)
+    new_supervisor_id = models.CharField(max_length=550, blank=True)
+    completion_signature = models.CharField(max_length=550, blank=True)
+    completion_signature2 = models.CharField(max_length=550, blank=True)
+    close_name_signature = models.CharField(max_length=550, blank=True)
+
+
     class Meta:
         verbose_name_plural = 'Job Card'
 

@@ -4523,6 +4523,12 @@ class AddJobcard(View):
         jb = JobCard_datas[0]
         ast_data = Asset.objects.filter(id=jb.failure_id.location_id)
 
+        user_ID = request.session['user_ID']
+        user_data = UserProfile.objects.filter(user_id=user_ID)
+        logedUsrName = f"{user_data[0].first_name} {user_data[0].last_name}"
+        logedUsrDesignationEMPID = f"{user_data[0].designation}/{user_data[0].emp_id}"
+        print(logedUsrDesignationEMPID)
+
         FailureDatas=FailureData.objects.filter(id=jb.failure_id.id)
         datas = FailureDatas[0]
 
@@ -4681,6 +4687,115 @@ class AddJobcard(View):
         else:
             close_time = jb.close_time
 
+        if jb.issued_to == None or jb.issued_to == "":
+            issued_to = ''
+        else:
+            issued_to = jb.issued_to
+
+        if jb.assigned_to == None or jb.assigned_to == "":
+            assigned_to = ''
+        else:
+            assigned_to = jb.assigned_to
+
+        if jb.issued_by == None or jb.issued_by == "":
+            issued_by = logedUsrName
+        else:
+            issued_by = jb.issued_by
+
+        if jb.issued_signature == None or jb.issued_signature == "":
+            issued_signature = logedUsrDesignationEMPID
+        else:
+            issued_signature = jb.issued_signature
+
+        if jb.received_by == None or jb.received_by == "":
+            received_by = logedUsrName
+        else:
+            received_by = jb.received_by
+
+
+        if jb.received_by_signature == None or jb.received_by_signature == "":
+            received_by_signature = logedUsrDesignationEMPID
+        else:
+            received_by_signature = jb.received_by_signature
+
+
+        if jb.details_of_the_activitues == None or jb.details_of_the_activitues == "":
+            details_of_the_activitues = ''
+        else:
+            details_of_the_activitues = jb.details_of_the_activitues
+
+        if jb.follow_up_details == None or jb.follow_up_details == "":
+            follow_up_details = ''
+        else:
+            follow_up_details = jb.follow_up_details
+
+
+        if jb.new_supervisor == None or jb.new_supervisor == "":
+            new_supervisor = logedUsrName
+        else:
+            new_supervisor = jb.new_supervisor
+
+
+        if jb.new_supervisor_signature == None or jb.new_supervisor_signature == "":
+            new_supervisor_signature = logedUsrDesignationEMPID
+        else:
+            new_supervisor_signature = jb.new_supervisor_signature
+
+
+            
+        if jb.completion_name == None or jb.completion_name == "":
+            completion_name = logedUsrName
+        else:
+            completion_name = jb.completion_name
+
+
+        if jb.completion_signature == None or jb.completion_signature == "":
+            completion_signature = logedUsrDesignationEMPID
+        else:
+            completion_signature = jb.completion_signature
+
+            
+        if jb.corrective_action == None or jb.corrective_action == "":
+            corrective_action = ''
+        else:
+            corrective_action = jb.corrective_action
+
+            
+        if jb.completion_name2 == None or jb.completion_name2 == "":
+            completion_name2 = logedUsrName
+        else:
+            completion_name2 = jb.completion_name2
+
+
+        if jb.completion_signature2 == None or jb.completion_signature2 == "":
+            completion_signature2 = logedUsrDesignationEMPID
+        else:
+            completion_signature2 = jb.completion_signature2
+
+
+        if jb.close_name == None or jb.close_name == "":
+            close_name = logedUsrName
+        else:
+            close_name = jb.close_name
+
+
+        if jb.close_name_signature == None or jb.close_name_signature == "":
+            close_name_signature = logedUsrDesignationEMPID
+        else:
+            close_name_signature = jb.close_name_signature
+
+
+        if jb.down_time2 == None or jb.down_time2 == "":
+            down_time2 = jb.down_time
+        else:
+            down_time2 = jb.down_time2
+
+            
+
+
+
+            
+
 
         data={ 
             'job_card_no' :  jb.job_card_no,
@@ -4690,7 +4805,7 @@ class AddJobcard(View):
             'department' : jb.failure_id.department,
             'nature_of_job' : jb.nature_of_job,
             'sic_required' : jb.sic_required,
-            'assigned_to':jb.assigned_to,
+            'assigned_to':assigned_to,
             'last_update' : jb.last_update,
             'status':jb.status,
             'id':jb.job_id,
@@ -4734,7 +4849,7 @@ class AddJobcard(View):
             'TO_name': datas.TO_name,
 
             'ohe_required' : jb.ohe_required,
-            'issued_to' : jb.issued_to,
+            'issued_to' : issued_to,
             'completion_time' : jb.completion_time,
             'from_revenue_service' : jb.from_revenue_service,
             'delay_to_service' : jb.delay_to_service,
@@ -4744,45 +4859,54 @@ class AddJobcard(View):
             'sic_no':jb.sic_no,
 
             'signature_img':relative_path,
-            'issued_by' : jb.issued_by,
+            'issued_by' : issued_by,
             'l1_time':l1_time,
             'l1_date':l1_date,
 
             'signature_img2':relative_path2,
-            'received_by' : jb.received_by,
+            'received_by' : received_by,
             'l2_time':l2_time,
             'l2_date':l2_date,
 
 
             'signature_img3':relative_path3,
-            'follow_up_details' : jb.follow_up_details,
-            'details_of_the_activitues' : jb.details_of_the_activitues,
+            'follow_up_details' : follow_up_details,
+            'details_of_the_activitues' : details_of_the_activitues,
             'handed_over':jb.handed_over,
-            'new_supervisor':jb.new_supervisor,
+            'new_supervisor':new_supervisor,
 
             'signature_img4':relative_path4,
             'completion_date_time' : completion_date_time,
             'completion_date':completion_date,
             'train_can_be_moved':jb.train_can_be_moved,
             'down_time':jb.down_time,
-            'completion_name':jb.completion_name,
+            'completion_name':completion_name,
             'train_can_be_energized':jb.train_can_be_energized,
 
             'signature_img5':relative_path5,
             'completion_date_time2' : completion_date_time2,
             'completion_date2': completion_date2,
             'train_can_be_moved2':jb.train_can_be_moved2,
-            'down_time2':jb.down_time2,
-            'completion_name2':jb.completion_name2,
+            'down_time2':down_time2,
+            'completion_name2':completion_name2,
             'train_can_be_energized2':jb.train_can_be_energized2,
-            'corrective_action':jb.corrective_action,
+            'corrective_action':corrective_action,
             'sic_start_time':jb.sic_start_time,
             'sic_has_performed':jb.sic_has_performed,
 
             'signature_img6':relative_path6,
-            'close_name' : jb.close_name,
+            'close_name' : close_name,
             'close_date':close_date,
             'close_time':close_time,
+
+            'issued_signature':issued_signature,
+            'received_by_signature':received_by_signature,
+            'logedUsrName':logedUsrName,
+            'new_supervisor_signature':new_supervisor_signature,
+            'new_supervisor_id':int(jb.new_supervisor_id),
+            'completion_signature':completion_signature,
+            'completion_signature2':completion_signature2,
+            'close_name_signature':close_name_signature,
             
 
 
@@ -4859,8 +4983,18 @@ class AddJobcard(View):
                 's_no' : st,
             })
 
+        supervisorList = []
+        userLDt = UserProfile.objects.filter(is_active=0,is_disable=0,user_role=6)
+        for sprl in userLDt:
+            supervisorList.append({ 
+                'id' :  int(sprl.user.id),
+                'val' :  f"{sprl.first_name} {sprl.last_name} - {sprl.designation} / {sprl.emp_id}",
+            })
+
+        
+
         # print(prv_data)
-        return render(request, self.template_name,{'data':data,'job_details':job_details,'prv_data':prv_data, 'job_works':job_works, 'job_equipment':job_equipment ,'prv_data2':prv_data2 })
+        return render(request, self.template_name,{'data':data,'job_details':job_details,'prv_data':prv_data, 'job_works':job_works, 'job_equipment':job_equipment ,'prv_data2':prv_data2,'supervisorList':supervisorList })
       
  
     def post(self, request, *args, **kwargs):
@@ -4915,40 +5049,42 @@ class AddJobcard(View):
             issued_by = req.get('issued_by')
             l1_date = datetime.datetime.strptime(req.get('l1_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
             l1_time = req.get('l1_time')
+            issued_signature = req.get('issued_signature')
 
-            uploaded_file = request.FILES['signature_img']
-            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+            # uploaded_file = request.FILES['signature_img']
+            # static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
 
-            # Create folder if it doesn't exist
-            os.makedirs(static_path, exist_ok=True)
+            # # Create folder if it doesn't exist
+            # os.makedirs(static_path, exist_ok=True)
 
-            # Save file
-            file_path = os.path.join(static_path, uploaded_file.name)
-            with open(file_path, 'wb+') as destination:
-                for chunk in uploaded_file.chunks():
-                    destination.write(chunk)
+            # # Save file
+            # file_path = os.path.join(static_path, uploaded_file.name)
+            # with open(file_path, 'wb+') as destination:
+            #     for chunk in uploaded_file.chunks():
+            #         destination.write(chunk)
 
-            JobCard.objects.filter(job_id=ids).update(run_status=st,issued_by=issued_by,l1_date=l1_date,l1_time=l1_time,signature_img=file_path)
+            JobCard.objects.filter(job_id=ids).update(run_status=st,issued_by=issued_by,l1_date=l1_date,l1_time=l1_time,issued_signature=issued_signature)
             return JsonResponse({'status':'1'})
 
         elif st == 4 or st == '4':
             received_by = req.get('received_by')
             l2_date = datetime.datetime.strptime(req.get('l2_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
             l2_time = req.get('l2_time')
+            received_by_signature = req.get('received_by_signature')
 
-            uploaded_file = request.FILES['signature_img2']
-            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+            # uploaded_file = request.FILES['signature_img2']
+            # static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
 
-            # Create folder if it doesn't exist
-            os.makedirs(static_path, exist_ok=True)
+            # # Create folder if it doesn't exist
+            # os.makedirs(static_path, exist_ok=True)
 
-            # Save file
-            file_path = os.path.join(static_path, uploaded_file.name)
-            with open(file_path, 'wb+') as destination:
-                for chunk in uploaded_file.chunks():
-                    destination.write(chunk)
+            # # Save file
+            # file_path = os.path.join(static_path, uploaded_file.name)
+            # with open(file_path, 'wb+') as destination:
+            #     for chunk in uploaded_file.chunks():
+            #         destination.write(chunk)
 
-            JobCard.objects.filter(job_id=ids).update(run_status=st,received_by=received_by,l2_date=l2_date,l2_time=l2_time,signature_img2=file_path)
+            JobCard.objects.filter(job_id=ids).update(run_status=st,received_by=received_by,l2_date=l2_date,l2_time=l2_time,received_by_signature=received_by_signature)
             return JsonResponse({'status':'1'})
 
         elif st == 5 or st == '5':
@@ -4956,23 +5092,35 @@ class AddJobcard(View):
             details_of_the_activitues = req.get('details_of_the_activitues')
             handed_over = req.get('handed_over')
             new_supervisor = req.get('new_supervisor')
+            new_supervisor_signature = req.get('new_supervisor_signature')
+            new_supervisor_id = req.get('new_supervisor_id')
 
-            if 'signature_img3' in request.FILES:
-                uploaded_file = request.FILES['signature_img3']
-                static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+            if handed_over == 'Yes':
+                userLDt = UserProfile.objects.filter(user=new_supervisor_id)
+                sprl = userLDt[0]
+                print(sprl)
+                new_supervisor = f"{sprl.first_name} {sprl.last_name}"
+                new_supervisor_signature = f"{sprl.designation} / {sprl.emp_id}"
+                new_supervisor_id = sprl.user.id
 
-                # Create folder if it doesn't exist
-                os.makedirs(static_path, exist_ok=True)
+            print(new_supervisor)
 
-                # Save file
-                file_path = os.path.join(static_path, uploaded_file.name)
-                with open(file_path, 'wb+') as destination:
-                    for chunk in uploaded_file.chunks():
-                        destination.write(chunk)
-            else:
-                file_path = ''
+            # if 'signature_img3' in request.FILES:
+            #     uploaded_file = request.FILES['signature_img3']
+            #     static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
 
-            JobCard.objects.filter(job_id=ids).update(run_status=st,follow_up_details=follow_up_details,handed_over=handed_over,new_supervisor=new_supervisor,signature_img3=file_path,details_of_the_activitues=details_of_the_activitues)
+            #     # Create folder if it doesn't exist
+            #     os.makedirs(static_path, exist_ok=True)
+
+            #     # Save file
+            #     file_path = os.path.join(static_path, uploaded_file.name)
+            #     with open(file_path, 'wb+') as destination:
+            #         for chunk in uploaded_file.chunks():
+            #             destination.write(chunk)
+            # else:
+            #     file_path = ''
+
+            JobCard.objects.filter(job_id=ids).update(run_status=st,follow_up_details=follow_up_details,handed_over=handed_over,new_supervisor=new_supervisor,new_supervisor_id=new_supervisor_id,details_of_the_activitues=details_of_the_activitues,new_supervisor_signature=new_supervisor_signature)
             return JsonResponse({'status':'1'})
 
         elif st == 6 or st == '6':
@@ -4982,20 +5130,21 @@ class AddJobcard(View):
             train_can_be_moved = req.get('train_can_be_moved')
             completion_date_time = req.get('completion_date_time')
             completion_date = datetime.datetime.strptime(req.get('completion_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            completion_signature = req.get('completion_signature')
 
-            uploaded_file = request.FILES['signature_img4']
-            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+            # uploaded_file = request.FILES['signature_img4']
+            # static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
 
-            # Create folder if it doesn't exist
-            os.makedirs(static_path, exist_ok=True)
+            # # Create folder if it doesn't exist
+            # os.makedirs(static_path, exist_ok=True)
 
-            # Save file
-            file_path = os.path.join(static_path, uploaded_file.name)
-            with open(file_path, 'wb+') as destination:
-                for chunk in uploaded_file.chunks():
-                    destination.write(chunk)
+            # # Save file
+            # file_path = os.path.join(static_path, uploaded_file.name)
+            # with open(file_path, 'wb+') as destination:
+            #     for chunk in uploaded_file.chunks():
+            #         destination.write(chunk)
          
-            JobCard.objects.filter(job_id=ids).update(run_status=st,train_can_be_energized=train_can_be_energized,completion_name=completion_name,down_time=down_time,train_can_be_moved=train_can_be_moved,completion_date_time=completion_date_time,completion_date=completion_date,signature_img4=file_path)
+            JobCard.objects.filter(job_id=ids).update(run_status=st,train_can_be_energized=train_can_be_energized,completion_name=completion_name,down_time=down_time,train_can_be_moved=train_can_be_moved,completion_date_time=completion_date_time,completion_date=completion_date,completion_signature=completion_signature)
 
             return JsonResponse({'status':'1'})
 
@@ -5010,20 +5159,21 @@ class AddJobcard(View):
             train_can_be_moved2 = req.get('train_can_be_moved2')
             completion_date_time2 = req.get('completion_date_time2')
             completion_date2 = datetime.datetime.strptime(req.get('completion_date2'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            completion_signature2 = req.get('completion_signature2')
 
-            uploaded_file = request.FILES['signature_img5']
-            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+            # uploaded_file = request.FILES['signature_img5']
+            # static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
 
-            # Create folder if it doesn't exist
-            os.makedirs(static_path, exist_ok=True)
+            # # Create folder if it doesn't exist
+            # os.makedirs(static_path, exist_ok=True)
 
-            # Save file
-            file_path = os.path.join(static_path, uploaded_file.name)
-            with open(file_path, 'wb+') as destination:
-                for chunk in uploaded_file.chunks():
-                    destination.write(chunk)
+            # # Save file
+            # file_path = os.path.join(static_path, uploaded_file.name)
+            # with open(file_path, 'wb+') as destination:
+            #     for chunk in uploaded_file.chunks():
+            #         destination.write(chunk)
          
-            JobCard.objects.filter(job_id=ids).update(run_status=st,train_can_be_energized2=train_can_be_energized2,completion_name2=completion_name2,down_time2=down_time2,train_can_be_moved2=train_can_be_moved2,completion_date_time2=completion_date_time2,completion_date2=completion_date2,signature_img5=file_path,corrective_action=corrective_action,sic_start_time=sic_start_time,sic_has_performed=sic_has_performed)
+            JobCard.objects.filter(job_id=ids).update(run_status=st,train_can_be_energized2=train_can_be_energized2,completion_name2=completion_name2,down_time2=down_time2,train_can_be_moved2=train_can_be_moved2,completion_date_time2=completion_date_time2,completion_date2=completion_date2,completion_signature2=completion_signature2,corrective_action=corrective_action,sic_start_time=sic_start_time,sic_has_performed=sic_has_performed)
 
             return JsonResponse({'status':'1'})
 
@@ -5031,20 +5181,30 @@ class AddJobcard(View):
             close_name = req.get('close_name')
             close_time = req.get('close_time')
             close_date = datetime.datetime.strptime(req.get('close_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            close_name_signature = req.get('close_name_signature')
 
-            uploaded_file = request.FILES['signature_img6']
-            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+            # uploaded_file = request.FILES['signature_img6']
+            # static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
 
-            # Create folder if it doesn't exist
-            os.makedirs(static_path, exist_ok=True)
+            # # Create folder if it doesn't exist
+            # os.makedirs(static_path, exist_ok=True)
 
-            # Save file
-            file_path = os.path.join(static_path, uploaded_file.name)
-            with open(file_path, 'wb+') as destination:
-                for chunk in uploaded_file.chunks():
-                    destination.write(chunk)
+            # # Save file
+            # file_path = os.path.join(static_path, uploaded_file.name)
+            # with open(file_path, 'wb+') as destination:
+            #     for chunk in uploaded_file.chunks():
+            #         destination.write(chunk)
+
+            jobcardDt = JobCard.objects.filter(job_id=ids)
+            jobRec = jobcardDt[0]
+            failure_id = jobRec.failure_id.failure_id
+            print(f"failure_id={failure_id}")
+            FailureData.objects.filter(failure_id=failure_id).update(cm_start_date=jobRec.l2_date,cm_start_time=jobRec.l2_time,cm_end_date=jobRec.completion_date,cm_end_time=jobRec.completion_date_time,service_delay=jobRec.down_time,cm_description=jobRec.corrective_action)
+
+            
+          
          
-            JobCard.objects.filter(job_id=ids).update(run_status=st,signature_img6=file_path,close_name=close_name,close_time=close_time,close_date=close_date,status=1)
+            JobCard.objects.filter(job_id=ids).update(run_status=st,close_name_signature=close_name_signature,close_name=close_name,close_time=close_time,close_date=close_date,status=1)
 
             return JsonResponse({'status':'1'})
 
@@ -5073,26 +5233,26 @@ class AddJobcard(View):
             jobwork_work = req.get('jobwork_work')
             JobWorkID = req.get('JobWorkID')
 
-            static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
-            # Create folder if it doesn't exist
-            os.makedirs(static_path, exist_ok=True)
+            # static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
+            # # Create folder if it doesn't exist
+            # os.makedirs(static_path, exist_ok=True)
 
-            if 'jobwork_signature' in request.FILES:
-                uploaded_file = request.FILES['jobwork_signature']
-                file_path = os.path.join(static_path, uploaded_file.name)
-                jobwork_signature = uploaded_file.name
-                with open(file_path, 'wb+') as destination:
-                    for chunk in uploaded_file.chunks():
-                        destination.write(chunk)
+            # if 'jobwork_signature' in request.FILES:
+            #     uploaded_file = request.FILES['jobwork_signature']
+            #     file_path = os.path.join(static_path, uploaded_file.name)
+            #     jobwork_signature = uploaded_file.name
+            #     with open(file_path, 'wb+') as destination:
+            #         for chunk in uploaded_file.chunks():
+            #             destination.write(chunk)
                         
             # print('here')
 
             if JobWorkID == "":
                 job_dt = JobCard.objects.filter(job_id=ids)
-                j = JobWorkToMaintainers(job_card_id=job_dt[0],jobwork_name=jobwork_name,jobwork_work=jobwork_work,jobwork_signature=jobwork_signature)
+                j = JobWorkToMaintainers(job_card_id=job_dt[0],jobwork_name=jobwork_name,jobwork_work=jobwork_work)
                 j.save()
             else:
-                JobWorkToMaintainers.objects.filter(job_work_id=JobWorkID).update(jobwork_name=jobwork_name,jobwork_work=jobwork_work,jobwork_signature=jobwork_signature)
+                JobWorkToMaintainers.objects.filter(job_work_id=JobWorkID).update(jobwork_name=jobwork_name,jobwork_work=jobwork_work)
 
             return JsonResponse({'status':'1'})
 
@@ -5376,6 +5536,14 @@ class ViewJobcard(View):
             'close_name' : jb.close_name,
             'close_date':jb.close_date,
             'close_time':jb.close_time,
+
+            'issued_signature':jb.issued_signature,
+            'received_by_signature':jb.received_by_signature,
+            'new_supervisor_signature':jb.new_supervisor_signature,
+            'new_supervisor_id':jb.new_supervisor_id,
+            'completion_signature':jb.completion_signature,
+            'completion_signature2':jb.completion_signature2,
+            'close_name_signature':jb.close_name_signature,
             
 
 
