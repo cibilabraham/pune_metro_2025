@@ -131,8 +131,9 @@
 
                             <th>Assigned To</th>
                             <th>Last Update</th> 
-                            <th>Status</th>
                             <th>Level Status</th>
+                            <th>Card Status</th>
+                            
 
                             <th class="bg-white"></th>
                         </tr>
@@ -322,8 +323,31 @@ function getDefectData(){
 
 
 
+
+
+
                     //   {"data" : "assigned_to"},
                       {"data" : "last_update"},
+
+
+                          {"data":null,"render":function(item){
+
+                                if (item.run_status < 3) {
+                                    return '<b class="text-info">LEVEL 1 In Process</b>';
+                                } else if (item.run_status <= 5) {
+                                    return '<b class="text-info">LEVEL 2 In Process</b>';
+                                } else if (item.run_status === 6 || item.run_status === 7) {
+                                    return '<b class="text-info">LEVEL 3 In Process</b>';
+                                } else {
+                                    return '<b class="text-success">Job Card is Closed</b>';
+                                }
+
+
+                                
+                                }
+                            },
+
+                            
                        {"data":null,"render":function(item){
 
                                 if(item.status == 0){
@@ -336,23 +360,6 @@ function getDefectData(){
                             }
                         },
 
-
-                          {"data":null,"render":function(item){
-
-                                if (item.run_status < 3) {
-                                    return '<b class="text-info">LEVEL 1 In Progress</b>';
-                                } else if (item.run_status <= 5) {
-                                    return '<b class="text-info">LEVEL 2 In Progress</b>';
-                                } else if (item.run_status === 6 || item.run_status === 7) {
-                                    return '<b class="text-info">LEVEL 3 In Progress</b>';
-                                } else {
-                                    return '<b class="text-success">Job Card is Closed</b>';
-                                }
-
-
-                                
-                                }
-                            },
 
 
 
