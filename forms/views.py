@@ -4448,7 +4448,10 @@ class jobcardRegister(View):
         #     software_description = Asset.objects.filter(is_active=0,P_id=P_id).distinct('software_description')
         #     asset_status = Asset.objects.filter(is_active=0,P_id=P_id).distinct('asset_status')
         #     asset_type = PBSMaster.objects.filter(is_active=0,project_id=P_id).order_by('asset_type') 
-        return render(request, self.template_name, {})
+
+        train_set_options = [f"TS#{i:02d}" for i in range(1, 35)]  # 01 to 34
+
+        return render(request, self.template_name, {'train_set_options':train_set_options})
 
     def post(self, request, *args, **kwargs):
 
@@ -4456,52 +4459,172 @@ class jobcardRegister(View):
         P_id = request.session['P_id']
         user_ID = request.session['user_ID']
         user_Role = request.session.get('user_Role')
-        # req = request.POST
+        req = request.POST
         # print(req)
+
+        location_id_f = req.get('location_id')
+        department = req.get('department')
+        assigned_to = req.get('assigned_to')
+        status = req.get('status')
        
         JobCardDatas = JobCard.objects.filter().order_by('-job_card_no')
+
+        if status != "all":
+            JobCardDatas=JobCardDatas.filter(status=status)
+
+        if req.get('date') !="":
+            date = datetime.datetime.strptime(req.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            JobCardDatas=JobCardDatas.filter(date=date)
+
+        if assigned_to != "all":
+            if assigned_to == 'Maintainer':
+                JobCardDatas = JobCardDatas.filter(run_status__in=[3, 4, 5])
+            else:
+                JobCardDatas = JobCardDatas.filter(run_status__in=[0, 1, 2, 6, 7])
+
+        if department != "all":
+            JobCardDatas=JobCardDatas.filter(failure_id__department=department)
+
+
+
+
+        
+
+    
        
         for jb in JobCardDatas:
             asset_type_id = jb.failure_id.asset_type
             if PBSMaster.objects.filter(id=asset_type_id,is_active=0).exists():
                 ast_data = Asset.objects.filter(id=jb.failure_id.location_id)
-                if user_Role == 1:
-                    PBSMaster_datas=PBSMaster.objects.filter(id=asset_type_id,is_active=0)
-                    for PBSMaster_data in PBSMaster_datas:
-                        data.append({ 
-                            'job_card_no' :  jb.job_card_no,
-                            'train_set_no' : ast_data[0].location_id,
-                            'date' : jb.failure_id.date,
-                            'time' : jb.failure_id.time,
-                            'department' : jb.failure_id.department,
-                            'nature_of_job' : jb.nature_of_job,
-                            'sic_required' : jb.sic_required,
-                            'assigned_to':jb.assigned_to,
-                            'last_update' : jb.last_update,
-                            'status':jb.status,
-                            'id':jb.job_id,
-                            'user_Role':user_Role,
-                            'run_status' : jb.run_status,
-                        }) 
-                else:
-                    if PBSMaster.objects.filter(id=asset_type_id,project_id=P_id,is_active=0).exists():
+                if location_id_f != "all":
+                    ast_data = ast_data.filter(location_id=location_id_f)
+
+                if ast_data :
+
+                    if user_Role == 1:
                         PBSMaster_datas=PBSMaster.objects.filter(id=asset_type_id,is_active=0)
                         for PBSMaster_data in PBSMaster_datas:
-                            data.append({ 
-                                'job_card_no' :  jb.job_card_no,
-                                'train_set_no' : ast_data[0].location_id,
-                                'date' : jb.failure_id.date,
-                                'time' : jb.failure_id.time,
-                                'department' : jb.failure_id.department,
-                                'nature_of_job' : jb.nature_of_job,
-                                'sic_required' : jb.sic_required,
-                                'assigned_to':jb.assigned_to,
-                                'last_update' : jb.last_update,
-                                'status':jb.status,
-                                'id':jb.job_id,
-                                'user_Role':user_Role,
-                                'run_status' : jb.run_status,
-                            }) 
+
+                            job_equipmentArr = JobReplacedEquipment.objects.filter(job_card_id=jb.job_id,is_active=0)
+                            if job_equipmentArr:
+                                for jdar in job_equipmentArr:
+                                    data.append({ 
+                                        'job_card_no' :  jb.job_card_no,
+                                        'train_set_no' : ast_data[0].location_id,
+                                        'date' : jb.failure_id.date,
+                                        'time' : jb.failure_id.time,
+                                        'department' : jb.failure_id.department,
+                                        'nature_of_job' : jb.nature_of_job,
+                                        'sic_required' : jb.sic_required,
+                                        'assigned_to':jb.assigned_to,
+                                        'last_update' : jb.last_update,
+                                        'status':jb.status,
+                                        'id':jb.job_id,
+                                        'user_Role':user_Role,
+                                        'run_status' : jb.run_status,
+                                        'cm_start_date':jb.l2_date,
+                                        'cm_start_time':jb.l2_time,
+                                        'cm_end_date':jb.completion_date,
+                                        'cm_end_time':jb.completion_date_time,
+                                        'service_delay':jb.down_time,
+                                        'cm_description':jb.corrective_action,
+
+                                        'jobequipment_name':jdar.jobequipment_name,
+                                        'jobequipment_new_no':jdar.jobequipment_new_no,
+                                        'jobequipment_old_no':jdar.jobequipment_old_no,
+
+                                    }) 
+
+                            else:
+                                data.append({ 
+                                    'job_card_no' :  jb.job_card_no,
+                                    'train_set_no' : ast_data[0].location_id,
+                                    'date' : jb.failure_id.date,
+                                    'time' : jb.failure_id.time,
+                                    'department' : jb.failure_id.department,
+                                    'nature_of_job' : jb.nature_of_job,
+                                    'sic_required' : jb.sic_required,
+                                    'assigned_to':jb.assigned_to,
+                                    'last_update' : jb.last_update,
+                                    'status':jb.status,
+                                    'id':jb.job_id,
+                                    'user_Role':user_Role,
+                                    'run_status' : jb.run_status,
+                                    'cm_start_date':jb.l2_date,
+                                    'cm_start_time':jb.l2_time,
+                                    'cm_end_date':jb.completion_date,
+                                    'cm_end_time':jb.completion_date_time,
+                                    'service_delay':jb.down_time,
+                                    'cm_description':jb.corrective_action,
+
+                                    'jobequipment_name':'',
+                                    'jobequipment_new_no':'',
+                                    'jobequipment_old_no':'',
+
+                                }) 
+                    else:
+                        if PBSMaster.objects.filter(id=asset_type_id,project_id=P_id,is_active=0).exists():
+                            PBSMaster_datas=PBSMaster.objects.filter(id=asset_type_id,is_active=0)
+                            for PBSMaster_data in PBSMaster_datas:
+
+                                job_equipmentArr = JobReplacedEquipment.objects.filter(job_card_id=jb.job_id,is_active=0)
+                                if job_equipmentArr:
+                                    for jdar in job_equipmentArr:
+                                        data.append({ 
+                                            'job_card_no' :  jb.job_card_no,
+                                            'train_set_no' : ast_data[0].location_id,
+                                            'date' : jb.failure_id.date,
+                                            'time' : jb.failure_id.time,
+                                            'department' : jb.failure_id.department,
+                                            'nature_of_job' : jb.nature_of_job,
+                                            'sic_required' : jb.sic_required,
+                                            'assigned_to':jb.assigned_to,
+                                            'last_update' : jb.last_update,
+                                            'status':jb.status,
+                                            'id':jb.job_id,
+                                            'user_Role':user_Role,
+                                            'run_status' : jb.run_status,
+                                            'cm_start_date':jb.l2_date,
+                                            'cm_start_time':jb.l2_time,
+                                            'cm_end_date':jb.completion_date,
+                                            'cm_end_time':jb.completion_date_time,
+                                            'service_delay':jb.down_time,
+                                            'cm_description':jb.corrective_action,
+
+                                            'jobequipment_name':jdar.jobequipment_name,
+                                            'jobequipment_new_no':jdar.jobequipment_new_no,
+                                            'jobequipment_old_no':jdar.jobequipment_old_no,
+
+                                        }) 
+
+                                else:
+
+                                    data.append({ 
+                                        'job_card_no' :  jb.job_card_no,
+                                        'train_set_no' : ast_data[0].location_id,
+                                        'date' : jb.failure_id.date,
+                                        'time' : jb.failure_id.time,
+                                        'department' : jb.failure_id.department,
+                                        'nature_of_job' : jb.nature_of_job,
+                                        'sic_required' : jb.sic_required,
+                                        'assigned_to':jb.assigned_to,
+                                        'last_update' : jb.last_update,
+                                        'status':jb.status,
+                                        'id':jb.job_id,
+                                        'user_Role':user_Role,
+                                        'run_status' : jb.run_status,
+                                        'cm_start_date':jb.l2_date,
+                                        'cm_start_time':jb.l2_time,
+                                        'cm_end_date':jb.completion_date,
+                                        'cm_end_time':jb.completion_date_time,
+                                        'service_delay':jb.down_time,
+                                        'cm_description':jb.corrective_action,
+
+                                        'jobequipment_name':'',
+                                        'jobequipment_new_no':'',
+                                        'jobequipment_old_no':'',
+
+                                    }) 
         print(data)
         return JsonResponse({'data':data})
 
@@ -4790,11 +4913,10 @@ class AddJobcard(View):
         else:
             down_time2 = jb.down_time2
 
-            
-
-
-
-            
+        if jb.new_supervisor_id == None or jb.new_supervisor_id == "":
+            new_supervisor_id = ""
+        else:
+            new_supervisor_id = int(jb.new_supervisor_id)
 
 
         data={ 
@@ -4903,7 +5025,7 @@ class AddJobcard(View):
             'received_by_signature':received_by_signature,
             'logedUsrName':logedUsrName,
             'new_supervisor_signature':new_supervisor_signature,
-            'new_supervisor_id':int(jb.new_supervisor_id),
+            'new_supervisor_id':new_supervisor_id,
             'completion_signature':completion_signature,
             'completion_signature2':completion_signature2,
             'close_name_signature':close_name_signature,
@@ -5848,6 +5970,14 @@ class DwdJobcard(View):
             'close_name' : jb.close_name,
             'close_date':jb.close_date,
             'close_time':jb.close_time,
+
+            'issued_signature':jb.issued_signature,
+            'received_by_signature':jb.received_by_signature,
+            'new_supervisor_signature':jb.new_supervisor_signature,
+            'new_supervisor_id':jb.new_supervisor_id,
+            'completion_signature':jb.completion_signature,
+            'completion_signature2':jb.completion_signature2,
+            'close_name_signature':jb.close_name_signature,
             
 
 

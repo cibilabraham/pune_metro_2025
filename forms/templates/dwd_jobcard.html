@@ -467,9 +467,10 @@ table.table-bordered th,
                                     </tr>
                                     <tr>
                                       
-                                        <td> <b>Signature:</b> </td>
+                                        <td> <b>Designation / EMP ID:</b> </td>
                                         <td colspan="2">
-                                             <img src="/static/{{data.signature_img}}" style="width: 60px;">
+                                            {{data.issued_signature}}
+                                             <!-- <img src="/static/{{data.signature_img}}" style="width: 60px;"> -->
                                         </td>
                                         <td> <b>Time:</b> </td>
                                         <td >{{data.l1_time}} </td>
@@ -501,9 +502,10 @@ table.table-bordered th,
                                 </tr>
                                 <tr>
                                     
-                                    <td> <b>Signature:</b> </td>
+                                    <td> <b>Designation / EMP ID:</b> </td>
                                     <td colspan="2">
-                                            <img src="/static/{{data.signature_img2}}" style="width: 60px;">
+                                        {{data.received_by_signature}}
+                                            <!-- <img src="/static/{{data.signature_img2}}" style="width: 60px;"> -->
                                     </td>
                                     <td> <b>Time:</b> </td>
                                     <td >{{data.l2_time}} </td>
@@ -524,7 +526,7 @@ table.table-bordered th,
                                                     <th>S. No</th>
                                                     <th>Name</th>
                                                     <th>Work</th>
-                                                    <th>Signature</th>
+                                                    <!-- <th>Signature</th> -->
                                             
                                                 </tr>
                                             </thead>
@@ -536,17 +538,17 @@ table.table-bordered th,
                                                         <td>{{ job_works.s_no }}</td>
                                                         <td>{{ job_works.jobwork_name }}</td>
                                                         <td>{{ job_works.jobwork_work }}</td>
-                                                        <td>
+                                                        <!-- <td>
         <img src="/static/uploads/{{ job_works.jobwork_signature }}" style="width: 60px;">
                                                                                     
                                                                                     
-                                                                            </td>
+                                                                            </td> -->
                                                         
                                                     
                                                     </tr>
                                                 {% empty %}
                                                     <tr>
-                                                        <td colspan="6" class="text-center text-muted">No work available</td>
+                                                        <td colspan="5" class="text-center text-muted">No work available</td>
                                                     </tr>
                                                 {% endfor %}
 
@@ -617,10 +619,11 @@ table.table-bordered th,
 
                                     </td>
                                     <td colspan="2">
-                                        <b>Sign. of the New Supervisor:</b>
+                                        <b>Designation / EMP ID of the New Supervisor:</b>
                                     </td>
                                     <td colspan="2">
-                                        <img src="/static/{{ data.signature_img3 }}" style="width: 60px;">
+                                        {{data.new_supervisor_signature}}
+                                        <!-- <img src="/static/{{ data.signature_img3 }}" style="width: 60px;"> -->
                                     </td>
 
                                 </tr>
@@ -764,8 +767,8 @@ table.table-bordered th,
 
                                     </td>
                                     <td colspan="2">
-                                        <span><b>Signature:</b> 
-                                        <img src="/static/{{ data.signature_img4 }}" style="width: 60px;">
+                                        <span><b>Designation / EMP ID:</b> {{data.completion_signature}}
+                                        <!-- <img src="/static/{{ data.signature_img4 }}" style="width: 60px;"> -->
                                     </span>
                                     </td>
 
@@ -893,8 +896,8 @@ table.table-bordered th,
 
                                     </td>
                                     <td colspan="2">
-                                        <span><b>Signature:</b> 
-                                        <img src="/static/{{ data.signature_img5 }}" style="width: 60px;">
+                                        <span><b>Designation / EMP ID:</b> {{data.completion_signature2}}
+                                        <!-- <img src="/static/{{ data.signature_img5 }}" style="width: 60px;"> -->
                                     </span>
                                     </td>
 
@@ -924,8 +927,8 @@ table.table-bordered th,
                                     </td>
 
                                     <td colspan="2">
-                                        <span><b>Signature:</b> 
-                                        <img src="/static/{{ data.signature_img6 }}" style="width: 60px;">
+                                        <span><b>Designation / EMP ID:</b> {{data.close_name_signature}}
+                                        <!-- <img src="/static/{{ data.signature_img6 }}" style="width: 60px;"> -->
                                         </span>
                                     </td>
 

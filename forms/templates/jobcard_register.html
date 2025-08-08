@@ -7,6 +7,10 @@
         th:first-child,td:first-child,th:last-child,td:last-child,th:nth-child(2),td:nth-child(2) {  
         background-color:white;    
         }
+
+        .bg-white{
+             background-color:white !important;    
+        }
     </style>
     <!-- <h1 id="site-name">Asset Optima</h1> -->
   {% endblock %}
@@ -30,25 +34,103 @@
                 </div>
             </div>
             <!-- /.row -->
+
+            <div class="row mb-4">
+
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="location_id">Train set no</label>
+                        <select class="form-control" id="location_id" name="location_id">
+                        <option value="all">--All--</option>
+                        {% for train_set_options in train_set_options %}
+                            <option value="{{train_set_options}}">{{train_set_options}}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="date">By date</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" value="">
+                    </div>
+                </div> 
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select class="form-control" id="department" name="department">
+                        <option value="all">--All--</option>
+                        <option value="Operator">Operator</option>
+                        <option value="Maintainer">Maintainer</option>
+                        </select>
+                    </div>
+                </div>
+
+                 <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="assigned_to">Assigned To</label>
+                        <select class="form-control" id="assigned_to" name="assigned_to">
+                        <option value="all">--All--</option>
+                        <option value="Operator">Operator</option>
+                        <option value="Maintainer">Maintainer</option>
+                        </select>
+                    </div>
+                </div>
+
+                 <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                        <option value="all">--All--</option>
+                        <option value="0">Open</option>
+                        <option value="1">Closed</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+                 <div class="col-md-3 ">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter Now</button>
+                </div>
           
 
 
             
           <div class="row">
             <div class="col-md-12">
-                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Job Card No</th>
-                            <th>Train Set No</th>
+                            <th class="bg-white">Job Card No</th>
+                            <th >Train Set No</th>
                             <th>Date Issued</th>
                             <th>Department</th>
                             <th>Nature of Job</th>
-                            <th>SIC Required</th>
+                            <th>CM Start Date</th>
+                            <th>CM Start Time</th>
+                            <th>CM End Date</th>
+                            <th>CM End Time</th>
+                            <th>Down Time</th>
+                            <th>CM Description</th>
+
+                            <th>Name of Equipment Replaced</th>
+                            <th>In Sr.No.(New)</th>
+                            <th>Out Sr.No.(Old)</th>
+
+
+
                             <th>Assigned To</th>
                             <th>Last Update</th> 
                             <th>Status</th>
-                            <th>Operations</th>
+                            <th class="bg-white"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -63,6 +145,11 @@
        
         $('#example').DataTable();
         getDefectData();
+
+
+         $('#date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
        
     });
 
@@ -105,34 +192,68 @@
 
 function getDefectData(){
 
+        var location_id= $('select[name=location_id] option').filter(':selected').val()
+        var date= $('#date').val()
+        var department= $('select[name=department] option').filter(':selected').val()
+        var assigned_to= $('select[name=assigned_to] option').filter(':selected').val()
+        var status= $('select[name=status] option').filter(':selected').val()
+
    
 
         $('#example').DataTable().destroy();
         $('#example').DataTable({
                   dom: 'Bfrtip',
-                   buttons: [
+                  buttons: [
                         {
                         extend: 'excel',
                         title: 'Job Cards',
-                        className: 'btn-outline-primary'
-                        },
-                        {
-                        extend: 'pdf',
-                        title: 'Job Cards',
-                        className: 'btn-outline-primary'
-                        },
-                        {
-                        extend: 'print',
-                        title: 'Job Cards',
-                        className: 'btn-outline-primary'
+                        className: 'btn-outline-primary',
+                        exportOptions: {
+                            columns: ':not(:last-child)', // hides only the last column from export
                         }
+                        },
+                        {
+    extend: 'pdfHtml5',
+    title: 'Job Cards',
+    orientation: 'landscape',
+    pageSize: 'A3',
+    className: 'btn-outline-primary',
+    exportOptions: {
+        columns: ':not(:last-child)', // hides only the last column from export
+    },
+    customize: function (doc) {
+      doc.defaultStyle.fontSize = 7;
+      doc.styles.tableHeader.fontSize = 9;
+
+      // ✅ Fix multi-row header (use header from original HTML)
+      var headerRows = document.querySelectorAll('#example thead tr');
+      var tableHeader = [];
+
+      headerRows.forEach(function(row) {
+        var rowData = [];
+        row.querySelectorAll('th').forEach(function(cell) {
+          var colSpan = cell.colSpan || 1;
+          for (var i = 0; i < colSpan; i++) {
+            rowData.push(cell.innerText);
+          }
+        });
+        tableHeader.push(rowData);
+      });
+
+      // Replace the PDF table header with custom header
+      if (doc.content[1].table && tableHeader.length > 1) {
+        // doc.content[1].table.body.unshift(tableHeader[1]); // second header row
+        doc.content[1].table.body.unshift(tableHeader[0]); // first header row
+      }
+    }
+  }
                     ],
                   scrollY:        "400px",
                     scrollX:        true,
                     scrollCollapse: true,
                     paging:         true,
                     fixedColumns:   {
-                        left: 2,
+                        left: 1,
                         right: 1
                     },
                   "order": [[ 1, "asc" ]],
@@ -140,7 +261,14 @@ function getDefectData(){
                   'ajax' : {
                       "url": "/forms/jobcard_register/",
                       "type": "POST",
-                      "headers": {'X-CSRFToken': '{{ csrf_token }}'}
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                      'data' : {
+                        'location_id':location_id,
+                        'date':date,
+                        'department':department,
+                        'assigned_to' : assigned_to,
+                        'status': status,
+                    }
                   },
                   "columns" : [
                    
@@ -157,16 +285,25 @@ function getDefectData(){
                         },
                       {"data" : "department"},
                       {"data" : "nature_of_job"},
-                      {"data" : "sic_required"},
+                      {"data" : "cm_start_date"},
+                      {"data" : "cm_start_time"},
+                      {"data" : "cm_end_date"},
+                      {"data" : "cm_end_time"},
+                      {"data" : "service_delay"},
+                      {"data" : "cm_description"},
+
+                      {"data" : "jobequipment_name"},
+                      {"data" : "jobequipment_new_no"},
+                      {"data" : "jobequipment_old_no"},
 
 
                        {"data":null,"render":function(item){
 
                         if(item.run_status < 3){
                             return 'Operator';
-                        }else if(item.run_status <= 6){
+                        }else if(item.run_status <= 5){
                             return 'Maintainer';
-                        }else if(item.run_status == 7){
+                        }else if(item.run_status == 7 || item.run_status == 6){
                             return 'Operator';
                         }else {
                             return 'Operator';
