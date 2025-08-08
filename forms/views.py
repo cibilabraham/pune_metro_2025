@@ -4534,7 +4534,7 @@ class jobcardRegister(View):
                                         'cm_end_date':jb.completion_date,
                                         'cm_end_time':jb.completion_date_time,
                                         'service_delay':jb.down_time,
-                                        'cm_description':jb.corrective_action,
+                                        'cm_description':jb.details_of_the_activitues,
 
                                         'jobequipment_name':jdar.jobequipment_name,
                                         'jobequipment_new_no':jdar.jobequipment_new_no,
@@ -4564,7 +4564,7 @@ class jobcardRegister(View):
                                     'cm_end_date':jb.completion_date,
                                     'cm_end_time':jb.completion_date_time,
                                     'service_delay':jb.down_time,
-                                    'cm_description':jb.corrective_action,
+                                    'cm_description':jb.details_of_the_activitues,
 
                                     'jobequipment_name':'',
                                     'jobequipment_new_no':'',
@@ -4600,7 +4600,7 @@ class jobcardRegister(View):
                                             'cm_end_date':jb.completion_date,
                                             'cm_end_time':jb.completion_date_time,
                                             'service_delay':jb.down_time,
-                                            'cm_description':jb.corrective_action,
+                                            'cm_description':jb.details_of_the_activitues,
 
                                             'jobequipment_name':jdar.jobequipment_name,
                                             'jobequipment_new_no':jdar.jobequipment_new_no,
@@ -4631,7 +4631,7 @@ class jobcardRegister(View):
                                         'cm_end_date':jb.completion_date,
                                         'cm_end_time':jb.completion_date_time,
                                         'service_delay':jb.down_time,
-                                        'cm_description':jb.corrective_action,
+                                        'cm_description':jb.details_of_the_activitues,
 
                                         'jobequipment_name':'',
                                         'jobequipment_new_no':'',
