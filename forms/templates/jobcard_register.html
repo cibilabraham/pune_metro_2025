@@ -333,11 +333,11 @@ function getDefectData(){
                           {"data":null,"render":function(item){
 
                                 if (item.run_status < 3) {
-                                    return '<b class="text-info">LEVEL 1 In Process </b><br><span class="text-danger"> LEVEL 2 Pending </span><br><span class="text-danger"> LEVEL 3 Pending</span>';
+                                    return '<b class="text-warning">LEVEL 1 In Process </b><br><span class="text-danger"> LEVEL 2 Pending </span><br><span class="text-danger"> LEVEL 3 Pending</span>';
                                 } else if (item.run_status <= 5) {
-                                    return '<span class="text-success">LEVEL 1 Completed </span><br><b class="text-info"> LEVEL 2 In Process </b><br><span class="text-danger"> LEVEL 3 Pending</span>';
+                                    return '<span class="text-success">LEVEL 1 Completed </span><br><b class="text-warning"> LEVEL 2 In Process </b><br><span class="text-danger"> LEVEL 3 Pending</span>';
                                 } else if (item.run_status === 6 || item.run_status === 7) {
-                                    return '<span class="text-success">LEVEL 1 Completed </span><br><span class="text-success"> LEVEL 2 Completed </span><br><b class="text-info"> LEVEL 3 In Process</b>';
+                                    return '<span class="text-success">LEVEL 1 Completed </span><br><span class="text-success"> LEVEL 2 Completed </span><br><b class="text-warning"> LEVEL 3 In Process</b>';
                                 } else {
                                     return '<span class="text-success">Job card is closed</span>';
                                 }
