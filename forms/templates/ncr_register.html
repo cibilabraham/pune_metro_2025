@@ -30,6 +30,45 @@
                 </div>
             </div>
             <!-- /.row -->
+
+            <div class="row mb-4">
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="date">By NCR Opening Date</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" value="">
+                    </div>
+                </div> 
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="date2">By NCR Closure Date</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date2" name="date2" value="">
+                    </div>
+                </div> 
+
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                        <option value="all">--All--</option>
+                        <option value="0">Open</option>
+                        <option value="1">Closed</option>
+                        <option value="2">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+                 <div class="col-md-3 ">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter Now</button>
+                </div>
+          
           
 
 
@@ -42,6 +81,10 @@
                             <th>NON-CONFORMITY REPORT No</th>
                             <th>NCR Opening Date</th>
                             <th>NCR Closure Date</th>
+                            <th>PART Description /ASSEMBLY NAME</th>
+                            <th>PART or ASSEMBLY No</th>
+
+
                             <th>Status</th>
                             <th>Remark</th>
                           
@@ -60,6 +103,14 @@
        
         $('#example').DataTable();
         getDefectData();
+
+          $('#date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
+            $('#date2').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
        
     });
 
@@ -67,6 +118,10 @@
 
 function getDefectData(){
 
+
+    var date= $('#date').val()
+    var date2= $('#date2').val()
+    var status= $('select[name=status] option').filter(':selected').val()
    
 
         $('#example').DataTable().destroy();
@@ -76,17 +131,26 @@ function getDefectData(){
                     {
                     extend: 'excel',
                     title: 'Engineering Incident Report(EIR) Generation',
-                    className: 'btn-outline-primary'
+                    className: 'btn-outline-primary',
+                    exportOptions: {
+                            columns: ':not(:last-child)', // hides only the last column from export
+                        }
                     },
                     {
                     extend: 'pdf',
                     title: 'Engineering Incident Report(EIR) Generation',
-                    className: 'btn-outline-primary'
+                    className: 'btn-outline-primary',
+                    exportOptions: {
+                            columns: ':not(:last-child)', // hides only the last column from export
+                        }
                     },
                     {
                     extend: 'print',
                     title: 'Engineering Incident Report(EIR) Generation',
-                    className: 'btn-outline-primary'
+                    className: 'btn-outline-primary',
+                    exportOptions: {
+                            columns: ':not(:last-child)', // hides only the last column from export
+                        }
                     }
                 ],
                   scrollY:        "400px",
@@ -102,7 +166,12 @@ function getDefectData(){
                   'ajax' : {
                       "url": "/forms/ncr_register/",
                       "type": "POST",
-                      "headers": {'X-CSRFToken': '{{ csrf_token }}'}
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                      'data' : {
+                        'date':date,
+                        'date2':date2,
+                        'status': status,
+                    }
                   },
                   "columns" : [
                    
@@ -127,6 +196,9 @@ function getDefectData(){
                         
                         }
                     },
+
+                     {"data" : "assembly_name"},
+                      {"data" : "assembly_no"},
                       
                     {"data":null,"render":function(item){
 

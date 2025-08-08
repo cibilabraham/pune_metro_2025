@@ -524,6 +524,8 @@ class JobCard(models.Model):
     completion_signature2 = models.CharField(max_length=550, blank=True)
     close_name_signature = models.CharField(max_length=550, blank=True)
 
+    sic_start_date = models.DateField(null=True)
+
 
     class Meta:
         verbose_name_plural = 'Job Card'

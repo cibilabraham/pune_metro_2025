@@ -817,6 +817,13 @@ class AddFailureData(View):
         dept_location = req.get('dept_location')
         failure_category = req.get('failure_category')
 
+        if revenue_service_delay == 0 or revenue_service_delay == "" or revenue_service_delay == None:
+            revenue_service_delay = 0
+            service_delay = 0
+        else:
+            service_delay = revenue_service_delay
+
+
         DATA = []
         HEAD = ["asset_type",'failure_id','asset_config_id_id','event_description','mode_id_id','date','time','detection','immediate_investigation','failure_type','safety_failure','hazard_id','cm_description','replaced_asset_config_id','cm_start_date','cm_start_time','cm_end_date','cm_end_time','oem_failure_reference','defect_id','location_id','kilometre_reading','equipment','location','direction','incident','no_of_trip_cancel','department','deboarding']
         for f in HEAD:
@@ -870,7 +877,7 @@ class AddFailureData(View):
                 Find_Pids =PBSMaster.objects.filter(id=asset_type)
                 for Find_Pid in Find_Pids:
                     
-                    r=FailureData(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name,affecting_failures=affecting_failures,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category)
+                    r=FailureData(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name,affecting_failures=affecting_failures,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay)
                     r.save()
 
                     jobcard_latest_id = 0
@@ -978,7 +985,7 @@ class AddFailureData(View):
                 if FailureData.objects.filter(failure_id=failure_id,id=ids,is_active=0).exists():
                     Find_Pids =PBSMaster.objects.filter(id=asset_type)
                     for Find_Pid in Find_Pids:
-                        FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,event_description=event_description,date=date,time=time,detection=detection,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name,affecting_failures=affecting_failures,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category)
+                        FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,event_description=event_description,date=date,time=time,detection=detection,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name,affecting_failures=affecting_failures,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay)
                         if meg !='':
                             FindUser = UserProfile.objects.filter(user_id=user_ID)
                             now = datetime.datetime.now()
@@ -993,7 +1000,7 @@ class AddFailureData(View):
                 print('---------------2222222222222-----------')
                 Find_Pids =PBSMaster.objects.filter(id=asset_type)
                 for Find_Pid in Find_Pids:
-                    FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name,affecting_failures=affecting_failures,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category)
+                    FailureData.objects.filter(id=ids).update(P_id=Find_Pid.project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,detection=detection,immediate_investigation=immediate_investigation,failure_type=failure_type,safety_failure=safety_failure,hazard_id=hazard_id,cm_description=cm_description,replaced_asset_config_id=replaced_asset_config_id,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,oem_failure_reference=oem_failure_reference,location_id=location_id,kilometre_reading=kilometre_reading,sel_car=sel_car,equipment=equipment,location=location,direction=direction,incident=incident,no_of_trip_cancel=no_of_trip_cancel,department=department,deboarding=deboarding,reported_to_PPIO=reported_to_PPIO,TO_name=TO_name,affecting_failures=affecting_failures,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay)
                     if meg !='':
                         FindUser = UserProfile.objects.filter(user_id=user_ID)
                         now = datetime.datetime.now()
@@ -4533,6 +4540,8 @@ class jobcardRegister(View):
                                         'jobequipment_new_no':jdar.jobequipment_new_no,
                                         'jobequipment_old_no':jdar.jobequipment_old_no,
 
+                                        'received_by' : jb.received_by,
+
                                     }) 
 
                             else:
@@ -4560,6 +4569,8 @@ class jobcardRegister(View):
                                     'jobequipment_name':'',
                                     'jobequipment_new_no':'',
                                     'jobequipment_old_no':'',
+
+                                    'received_by' : jb.received_by,
 
                                 }) 
                     else:
@@ -4595,6 +4606,8 @@ class jobcardRegister(View):
                                             'jobequipment_new_no':jdar.jobequipment_new_no,
                                             'jobequipment_old_no':jdar.jobequipment_old_no,
 
+                                            'received_by' : jb.received_by,
+
                                         }) 
 
                                 else:
@@ -4623,6 +4636,8 @@ class jobcardRegister(View):
                                         'jobequipment_name':'',
                                         'jobequipment_new_no':'',
                                         'jobequipment_old_no':'',
+
+                                        'received_by' : jb.received_by,
 
                                     }) 
         print(data)
@@ -4784,6 +4799,11 @@ class AddJobcard(View):
             completion_date = today_date
         else:
             completion_date = jb.completion_date
+
+        if jb.sic_start_date == None or jb.sic_start_date == "":
+            sic_start_date = today_date
+        else:
+            sic_start_date = jb.sic_start_date
 
         if jb.completion_date_time == None or jb.completion_date_time == "":
             completion_date_time = current_time
@@ -5029,6 +5049,8 @@ class AddJobcard(View):
             'completion_signature':completion_signature,
             'completion_signature2':completion_signature2,
             'close_name_signature':close_name_signature,
+
+            'sic_start_date':sic_start_date,
             
 
 
@@ -5283,6 +5305,8 @@ class AddJobcard(View):
             completion_date2 = datetime.datetime.strptime(req.get('completion_date2'), '%d/%m/%Y').strftime('%Y-%m-%d')
             completion_signature2 = req.get('completion_signature2')
 
+            sic_start_date = datetime.datetime.strptime(req.get('sic_start_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+
             # uploaded_file = request.FILES['signature_img5']
             # static_path = os.path.join(settings.BASE_DIR, 'static', 'uploads')
 
@@ -5295,7 +5319,7 @@ class AddJobcard(View):
             #     for chunk in uploaded_file.chunks():
             #         destination.write(chunk)
          
-            JobCard.objects.filter(job_id=ids).update(run_status=st,train_can_be_energized2=train_can_be_energized2,completion_name2=completion_name2,down_time2=down_time2,train_can_be_moved2=train_can_be_moved2,completion_date_time2=completion_date_time2,completion_date2=completion_date2,completion_signature2=completion_signature2,corrective_action=corrective_action,sic_start_time=sic_start_time,sic_has_performed=sic_has_performed)
+            JobCard.objects.filter(job_id=ids).update(run_status=st,train_can_be_energized2=train_can_be_energized2,completion_name2=completion_name2,down_time2=down_time2,train_can_be_moved2=train_can_be_moved2,completion_date_time2=completion_date_time2,completion_date2=completion_date2,completion_signature2=completion_signature2,corrective_action=corrective_action,sic_start_time=sic_start_time,sic_has_performed=sic_has_performed,sic_start_date=sic_start_date)
 
             return JsonResponse({'status':'1'})
 
@@ -5321,7 +5345,7 @@ class AddJobcard(View):
             jobRec = jobcardDt[0]
             failure_id = jobRec.failure_id.failure_id
             print(f"failure_id={failure_id}")
-            FailureData.objects.filter(failure_id=failure_id).update(cm_start_date=jobRec.l2_date,cm_start_time=jobRec.l2_time,cm_end_date=jobRec.completion_date,cm_end_time=jobRec.completion_date_time,service_delay=jobRec.down_time,cm_description=jobRec.corrective_action)
+            FailureData.objects.filter(failure_id=failure_id).update(cm_start_date=jobRec.l2_date,cm_start_time=jobRec.l2_time,cm_end_date=jobRec.completion_date,cm_end_time=jobRec.completion_date_time,cm_description=jobRec.corrective_action)
 
             
           
@@ -5666,6 +5690,8 @@ class ViewJobcard(View):
             'completion_signature':jb.completion_signature,
             'completion_signature2':jb.completion_signature2,
             'close_name_signature':jb.close_name_signature,
+
+            'sic_start_date':jb.sic_start_date,
             
 
 
@@ -6820,11 +6846,33 @@ class NCRRegister(View):
         P_id = request.session['P_id']
         user_ID = request.session['user_ID']
         user_Role = request.session.get('user_Role')
-        # req = request.POST
+        req = request.POST
         # print(req)
         print('==========HERE=========')
+
+
+        status = req.get('status')
        
         NCRGenerationDatas = NCRGeneration.objects.filter().order_by('-ncr_gen_id')
+
+        if status != "all":
+            if status == 0 or status == '0':
+                NCRGenerationDatas=NCRGenerationDatas.filter(ncr_status=0,rejection_status=0)
+            elif status == 1 or status == '1':
+                NCRGenerationDatas=NCRGenerationDatas.filter(ncr_status=1)
+            elif status == 2 or status == '2':
+                NCRGenerationDatas=NCRGenerationDatas.filter(ncr_status=0,rejection_status=1)
+
+        if req.get('date') !="":
+            date = datetime.datetime.strptime(req.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            NCRGenerationDatas=NCRGenerationDatas.filter(date=date)
+
+        if req.get('date2') !="":
+            date2 = datetime.datetime.strptime(req.get('date2'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            NCRGenerationDatas=NCRGenerationDatas.filter(fnl_date=date2)
+
+       
+        
         print(NCRGenerationDatas)
        
         for jb in NCRGenerationDatas:
@@ -6844,6 +6892,8 @@ class NCRRegister(View):
                             'remark':jb.remark,
                             'rejection_status':jb.rejection_status,
                             'accept_status':jb.accept_status,
+                            'assembly_name':jb.assembly_name,
+                            'assembly_no':jb.assembly_no,
                         }) 
                 else:
                     if PBSMaster.objects.filter(id=asset_type_id,project_id=P_id,is_active=0).exists():
@@ -6860,6 +6910,8 @@ class NCRRegister(View):
                                 'remark':jb.remark,
                                 'rejection_status':jb.rejection_status,
                                 'accept_status':jb.accept_status,
+                                'assembly_name':jb.assembly_name,
+                                'assembly_no':jb.assembly_no,
                             }) 
         print(data)
         return JsonResponse({'data':data})

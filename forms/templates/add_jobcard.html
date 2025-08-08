@@ -1783,10 +1783,21 @@
                                                                                 </div>
                                                                             </div>
 
+
                                                                             <div class="col-md-4">
                                                                                 <div class="form-group">
-                                                                                    <label for="sic_start_time">SIC Start Time(HH:MM):</label>
-                                                                                    <input type="time" class="form-control" id="sic_start_time" name="sic_start_time" value="{{data.sic_start_time}}">
+                                                                                    <label for="sic_start_date">*SIC Start Date (DD/MM/YYYY):</label>
+                                                                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="sic_start_date" name="sic_start_date" value="{{data.sic_start_date|date:'d/m/Y'}}" onchange="getDounTime();">
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter Date.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="sic_start_time">*SIC Start Time(HH:MM):</label>
+                                                                                    <input type="time" class="form-control" id="sic_start_time" name="sic_start_time" value="{{data.sic_start_time}}" required="required" onchange="getDounTime();">
                                                                                     <div class="invalid-feedback">
                                                                                     Please enter SIC Start Time.
                                                                                     </div>
@@ -1847,16 +1858,7 @@
                                                                                 </div>
                                                                             </div>
 
-                                                                            <div class="col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="down_time2">Down Time(mins):</label>
-                                                                                    <input type="number" class="form-control" id="down_time2" name="down_time2" value="{{data.down_time2}}">
-                                                                                    <div class="invalid-feedback">
-                                                                                    Please enter Down Time.
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-
+                                                                         
 
                                                                             <div class="col-md-4">
                                                                                 <div class="form-group">
@@ -1884,7 +1886,7 @@
                                                                             <div class="col-md-4">
                                                                                 <div class="form-group">
                                                                                     <label for="completion_date2">*Date (DD/MM/YYYY):</label>
-                                                                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="completion_date2" name="completion_date2" value="{{data.completion_date2|date:'d/m/Y'}}">
+                                                                                    <input type="text" autocomplete="off" required="required" class="form-control date-time" id="completion_date2" name="completion_date2" value="{{data.completion_date2|date:'d/m/Y'}}" onchange="getDounTime();">
                                                                                     <div class="invalid-feedback">
                                                                                     Please enter Date.
                                                                                     </div>
@@ -1894,12 +1896,24 @@
                                                                             <div class="col-md-4">
                                                                                 <div class="form-group">
                                                                                     <label for="completion_date_time2">*Time:</label>
-                                                                                    <input type="time" class="form-control" id="completion_date_time2" required="required" name="completion_date_time2" value="{{data.completion_date_time2|date:"H:i"}}">
+                                                                                    <input type="time" class="form-control" id="completion_date_time2" required="required" name="completion_date_time2" value="{{data.completion_date_time2|date:"H:i"}}" onchange="getDounTime();">
                                                                                     <div class="invalid-feedback">
                                                                                     Please enter Time.
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+
+
+                                                                            <div class="col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="down_time2">Down Time(mins):</label>
+                                                                                    <input type="number" class="form-control" id="down_time2" name="down_time2" value="{{data.down_time2}}">
+                                                                                    <div class="invalid-feedback">
+                                                                                    Please enter Down Time.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
 
                                                                                 <div class="col-md-4 hide d-none">
                                                                                     <div class="form-group">
@@ -1976,6 +1990,7 @@
                                                                         <div class="col-lg-12">
 
                                                                             <span>Corrective action required to be carried out (if any): <b>{{data.corrective_action}}</b></span><br>
+                                                                            <span>SIC Start Date: <b>{{data.sic_start_date}}</b></span><br>
                                                                             <span>SIC Start Time: <b>{{data.sic_start_time}}</b></span><br>
 
                                                                             {% if data.sic_has_performed == 1 or data.sic_has_performed == '1' %}
@@ -2533,6 +2548,11 @@
           autoclose: true,
           format: 'dd/mm/yyyy',});
 
+
+           $('#sic_start_date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
+
           var handed_over = '{{data.handed_over}}';
             if(handed_over == 'Yes'){
                 $('#new_supervisor_no_div').addClass('d-none');
@@ -2594,6 +2614,30 @@
 
 
     });
+
+    function getDounTime(){
+
+    
+        $('#down_time2').val('');
+
+    var cm_start_date= $('#sic_start_date').val()
+    var cm_start_time= $('#sic_start_time').val()
+    var cm_end_date= $('#completion_date2').val()
+    var cm_end_time= $('#completion_date_time2').val()
+
+
+    if(cm_start_date != "" && cm_start_time != "" && cm_end_date != "" && cm_end_time != "" ){
+        const input = cm_start_date+" "+cm_start_time;
+        const input2 = cm_end_date+" "+cm_end_time;
+
+        const diffInMinutes = getTimeDifferenceInMinutes(input2,input);
+        $('#down_time2').val(diffInMinutes);
+        // console.log(`Time difference: ${diffInMinutes} minute(s)`);
+
+    }
+
+
+    }
 
 
 
