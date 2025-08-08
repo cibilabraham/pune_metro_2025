@@ -203,13 +203,13 @@ function getDefectData(){
                     {"data":null,"render":function(item){
 
                             if(item.ncr_status == 1){
-                                return '<h5 class="text-danger"> Closed </h5>';
+                                return '<h5 class="badge badge-danger" style="font-size: 1.2rem; padding: 0.3em 0.8em;"> Closed </h5>';
                             }else{
                                 if(item.rejection_status == 1) {
-                                    return '<h5 class="text-info"> Rejected </h5>';
+                                    return '<h5 class="badge badge-info" style="font-size: 1.2rem; padding: 0.3em 0.8em;"> Rejected </h5>';
                                 }
 
-                                return '<h5 class="text-success"> Open </h5>';
+                                return '<h5 class="badge badge-success" style="font-size: 1.2rem; padding: 0.3em 0.8em;"> Open </h5>';
                                 
                             }
                             
