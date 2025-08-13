@@ -158,11 +158,11 @@
                             <span>OHE Required: <b>{{data.ohe_required}}</b></span><br>
                             <span>Issued to: <b>{{data.issued_to}}</b></span><br>
 
-                            {% if data.completion_time %}
+                            <!-- {% if data.completion_time %}
                             <span>Expected Time of Completion: <b>{{ data.completion_time }} hrs</b></span>
                             {% else %}
                             <span>Expected Time of Completion: <b>{{data.completion_time}} </b></span>
-                            {% endif %}
+                            {% endif %} -->
 
                             <br><br>
 
@@ -177,6 +177,7 @@
                             <span>Depot Location: <b>{{data.dept_location}}</b></span>
 
                             <br>
+                            <span>Revenue Service Delay: <b>{{data.revenue_service_delay}}</b></span><br>
                             <span>Trip No: <b>{{data.trip_no}}</b></span><br>                 
                            
 
@@ -238,6 +239,7 @@
                                             <th>Car No</th>
                                             <th>System</th>
                                             <th>Sub System</th>
+                                            <th>Failure Location</th>
                                             <th>Equipment</th>
                                             <th>Failure Description</th>
                                             <th>Immediate Investigation </th>
@@ -252,6 +254,7 @@
                                                 <td>{{ data.sel_car }}</td>
                                                 <td>{{ data.system }}</td>
                                                 <td>{{ data.subsystem }}</td>
+                                                <td>{{ data.failure_location }}</td>
                                                 <td>{{ data.equipment }}</td>
                                                 <td>{{ data.event_description }}</td>
                                                 <td>{{ data.immediate_investigation }}</td>

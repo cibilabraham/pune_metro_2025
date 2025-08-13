@@ -5135,6 +5135,9 @@ class AddJobcard(View):
             'equipment' : jb.failure_id.equipment,
             'event_description' : jb.failure_id.event_description,
             'immediate_investigation' : jb.failure_id.immediate_investigation,
+
+            'revenue_service_delay' : jb.failure_id.revenue_service_delay,
+            'failure_location': jb.failure_id.location,
             
 
 
@@ -5785,6 +5788,9 @@ class ViewJobcard(View):
             'equipment' : jb.failure_id.equipment,
             'event_description' : jb.failure_id.event_description,
             'immediate_investigation' : jb.failure_id.immediate_investigation,
+
+            'revenue_service_delay' : jb.failure_id.revenue_service_delay,
+            'failure_location': jb.failure_id.location,
             
 
 
@@ -6107,6 +6113,9 @@ class DwdJobcard(View):
             'equipment' : jb.failure_id.equipment,
             'event_description' : jb.failure_id.event_description,
             'immediate_investigation' : jb.failure_id.immediate_investigation,
+
+            'revenue_service_delay' : jb.failure_id.revenue_service_delay,
+            'failure_location': jb.failure_id.location,
             
 
 
