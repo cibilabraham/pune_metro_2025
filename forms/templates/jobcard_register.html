@@ -144,7 +144,7 @@
                             <th>Job Card Status</th>
 
 
-                            <!-- <th>Assigned To</th> -->
+                            <th>Assigned To</th>
                          
 
                             <th class="bg-white"></th>
@@ -375,21 +375,21 @@ function getDefectData(){
 
 
 
-                    //    {"data":null,"render":function(item){
+                       {"data":null,"render":function(item){
 
-                    //     if(item.run_status < 3){
-                    //         return 'Operator';
-                    //     }else if(item.run_status <= 5){
-                    //         return 'Maintainer';
-                    //     }else if(item.run_status == 7 || item.run_status == 6){
-                    //         return 'Operator';
-                    //     }else {
-                    //         return 'Operator';
-                    //     }
+                        if(item.run_status < 3){
+                            return 'Operator';
+                        }else if(item.run_status <= 5){
+                            return 'Maintainer';
+                        }else if(item.run_status == 7 || item.run_status == 6){
+                            return 'Operator';
+                        }else {
+                            return 'Operator';
+                        }
 
                            
-                    //     }
-                    // },
+                        }
+                    },
 
 
 
