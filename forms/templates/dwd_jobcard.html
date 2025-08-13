@@ -214,7 +214,7 @@ table.table-bordered th,
                                             {% endif %}
 
                                         </td>
-                                        <td colspan="2"><span><b>Depot Location: </b>{{data.dept_location}}</span></td>
+                                        <td colspan="2"><span><b>Revenue Service Delay: </b>{{data.revenue_service_delay}}</span></td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: center;">
@@ -251,20 +251,20 @@ table.table-bordered th,
                                                      <tr>
                                                     
                                                          <th>S. No</th>
-                                                        <th>Car No</th>
-                                                        <th>System</th>
-                                                        <th>Sub System</th>
-                                                        <th>Failure Location</th>
-                                                        <th>Equipment</th>
-                                                        <th>Failure Description</th>
-                                                        <th>Immediate Investigation </th>
-                                                                
+                                            <th>Car No</th>
+                                            <th>System</th>
+                                            <th>Sub System</th>
+                                            <th>Failure Location</th>
+                                            <th>Equipment</th>
+                                            <th>Failure Description</th>
+                                            <th>Immediate Investigation </th>
+                                                    
                                                     </tr>
 
                                                 </thead>
                                                 <tbody>
 
-                                                        <tr>
+                                            <tr>
                                                 <td>1</td>
                                                 <td>{{ data.sel_car }}</td>
                                                 <td>{{ data.system }}</td>
@@ -274,7 +274,8 @@ table.table-bordered th,
                                                 <td>{{ data.event_description }}</td>
                                                 <td>{{ data.immediate_investigation }}</td>
                                             </tr>
-                                                   
+
+
                                                     </tbody>
 
 
