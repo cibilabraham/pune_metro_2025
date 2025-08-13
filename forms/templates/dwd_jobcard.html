@@ -214,8 +214,7 @@ table.table-bordered th,
                                             {% endif %}
 
                                         </td>
-                                        <td rowspan="2">Delay to Service:</td>
-                                        <td><span><b>Minutes: </b>{{data.delay_to_service}}</span></td>
+                                        <td colspan="2"><span><b>Depot Location: </b>{{data.dept_location}}</span></td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: center;">
@@ -229,7 +228,7 @@ table.table-bordered th,
                                             {% endif %}
 
                                         </td>
-                                        <td><span><b>Trip No: </b>{{data.trip_no}}</span></td>
+                                        <td colspan="2"><span><b>Trip No: </b>{{data.trip_no}}</span></td>
 
                                     </tr>
                                     <tr>
@@ -251,34 +250,29 @@ table.table-bordered th,
                                                 <thead>
                                                      <tr>
                                                     
-                                                        <th>S. No</th>
+                                                         <th>S. No</th>
                                                         <th>Car No</th>
+                                                        <th>System</th>
                                                         <th>Sub System</th>
                                                         <th>Equipment</th>
-                                                        <th>Job Details</th>
-                                                    
+                                                        <th>Failure Description</th>
+                                                        <th>Immediate Investigation </th>
+                                                                
                                                     </tr>
 
                                                 </thead>
                                                 <tbody>
 
-                                                {% for job_details in job_details %}
                                                         <tr>
-                                                            <td>{{ job_details.s_no }}</td>
-                                                            <td>{{ data.sel_car }}</td>
-                                                            <td>{{ data.subsystem }}</td>
-                                                            <td>{{ data.equipment }}</td>
-                                                            <td>{{ job_details.job_description }}</td>
-
-                                                            
-                                                        
-                                                        </tr>
-                                                    {% empty %}
-                                                        <tr>
-                                                            <td colspan="5" class="text-center text-muted">No job details available</td>
-                                                        </tr>
-                                                    {% endfor %}
-
+                                                <td>1</td>
+                                                <td>{{ data.sel_car }}</td>
+                                                <td>{{ data.system }}</td>
+                                                <td>{{ data.subsystem }}</td>
+                                                <td>{{ data.equipment }}</td>
+                                                <td>{{ data.event_description }}</td>
+                                                <td>{{ data.immediate_investigation }}</td>
+                                            </tr>
+                                                   
                                                     </tbody>
 
 

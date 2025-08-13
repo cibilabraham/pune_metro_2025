@@ -110,30 +110,42 @@
                     <thead>
                         <tr>
                             <th class="bg-white">Job Card No</th>
+                            <th class="bg-white">Depot Location</th>
+                            <th>Nature of Failure</th>
+                            <th>OHE Required </th>
+                            <th>Failure Reported Date (DD-MM-YYYY) </th>
+                            <th>Failure Reported Time (HH:MM)</th>
                             <th >Train Set No</th>
-                            <th>Date Issued</th>
+                            <th>CAR No</th>
+                            <th>Failure Location</th>
+                            <th>Job Card Issued Date</th>
+                            <th>Job Card Issued Time</th>
                             <th>Department</th>
-                            <th>Nature of Job</th>
+                            <th>No. of Trips Cancelled</th>
+                            <th>Revenue Service Delay</th>
+                            <th>System</th>
+                            <th>Subsytem</th>
+                            <th>Equipment</th>
+                            <th>Failure description</th>
+                            <th>Immediate investigation</th>
+                            <th>CM Description</th>
+                            <th>Investigation Done By</th>
                             <th>CM Start Date</th>
                             <th>CM Start Time</th>
                             <th>CM End Date</th>
                             <th>CM End Time</th>
                             <th>Down Time</th>
-                            <th>CM Description</th>
-
                             <th>Name of Equipment Replaced</th>
                             <th>In Sr.No.(New)</th>
                             <th>Out Sr.No.(Old)</th>
-
-                            <th>Investigation Done By</th>
-
-
-
-                            <th>Assigned To</th>
+                            <th>Kilometre Reading</th>
                             <th>Last Update</th> 
                             <th>Level Status</th>
                             <th>Job Card Status</th>
-                            
+
+
+                            <!-- <th>Assigned To</th> -->
+                         
 
                             <th class="bg-white"></th>
                         </tr>
@@ -227,8 +239,8 @@ function getDefectData(){
         columns: ':not(:last-child)', // hides only the last column from export
     },
     customize: function (doc) {
-      doc.defaultStyle.fontSize = 7;
-      doc.styles.tableHeader.fontSize = 9;
+      doc.defaultStyle.fontSize = 3;
+      doc.styles.tableHeader.fontSize = 4;
 
       // ✅ Fix multi-row header (use header from original HTML)
       var headerRows = document.querySelectorAll('#example thead tr');
@@ -278,7 +290,9 @@ function getDefectData(){
                   "columns" : [
                    
                       {"data" : "job_card_no"},
-                      {"data" : "train_set_no"},
+                      {"data" : "dept_location"},
+                      {"data" : "nature_of_job"},
+                      {"data" : "ohe_required"},
                        {"data":null,"render":function(item){
 
                                 if(item.date != null){
@@ -288,41 +302,41 @@ function getDefectData(){
                             
                             }
                         },
-                      {"data" : "department"},
-                      {"data" : "nature_of_job"},
-                      {"data" : "cm_start_date"},
-                      {"data" : "cm_start_time"},
-                      {"data" : "cm_end_date"},
-                      {"data" : "cm_end_time"},
-                      {"data" : "service_delay"},
-                      {"data" : "cm_description"},
+                        {"data" : "time"},
+                        {"data" : "train_set_no"},
+                        {"data" : "sel_car"},
+                        {"data" : "location"},
+                         {"data":null,"render":function(item){
 
-                      {"data" : "jobequipment_name"},
-                      {"data" : "jobequipment_new_no"},
-                      {"data" : "jobequipment_old_no"},
+                                if(item.date_issued != null){
+                                    return moment(item.date_issued).format('DD-MM-YYYY');
+                                }
+                                return item.date_issued;
+                            
+                            }
+                        },
+                        {"data" : "time_issued"},
+                        {"data" : "department"},
+                        {"data" : "no_of_trip_cancel"},
+                        {"data" : "revenue_service_delay"},
+                        {"data" : "system"},
+                        {"data" : "subsystem"},
+                        {"data" : "equipment"},
+                        {"data" : "event_description"},
+                        {"data" : "immediate_investigation"},
 
+                        {"data" : "cm_description"},
+                        {"data" : "received_by"},
+                        {"data" : "cm_start_date"},
+                        {"data" : "cm_start_time"},
+                        {"data" : "cm_end_date"},
+                        {"data" : "cm_end_time"},
+                        {"data" : "service_delay"},
+                        {"data" : "jobequipment_name"},
+                        {"data" : "jobequipment_new_no"},
+                        {"data" : "jobequipment_old_no"},
 
-                      {"data" : "received_by"},
-
-
-                       {"data":null,"render":function(item){
-
-                        if(item.run_status < 3){
-                            return 'Operator';
-                        }else if(item.run_status <= 5){
-                            return 'Maintainer';
-                        }else if(item.run_status == 7 || item.run_status == 6){
-                            return 'Operator';
-                        }else {
-                            return 'Operator';
-                        }
-
-                           
-                        }
-                    },
-
-
-
+                        {"data" : "kilometre_reading"},
 
 
 
@@ -358,6 +372,25 @@ function getDefectData(){
                             
                             }
                         },
+
+
+
+                    //    {"data":null,"render":function(item){
+
+                    //     if(item.run_status < 3){
+                    //         return 'Operator';
+                    //     }else if(item.run_status <= 5){
+                    //         return 'Maintainer';
+                    //     }else if(item.run_status == 7 || item.run_status == 6){
+                    //         return 'Operator';
+                    //     }else {
+                    //         return 'Operator';
+                    //     }
+
+                           
+                    //     }
+                    // },
+
 
 
 

@@ -168,11 +168,13 @@
 
                             <span>Train Withdrawn from Revenue Service: <b>{{data.from_revenue_service}}</b></span><br>
 
-                            {% if data.delay_to_service %}
+                            <!-- {% if data.delay_to_service %}
                             <span>Delay to Service: <b>{{ data.delay_to_service }} mins</b></span>
                             {% else %}
                             <span>Delay to Service: <b>{{data.delay_to_service}} </b></span>
-                            {% endif %}
+                            {% endif %} -->
+
+                            <span>Depot Location: <b>{{data.dept_location}}</b></span>
 
                             <br>
                             <span>Trip No: <b>{{data.trip_no}}</b></span><br>                 
@@ -184,8 +186,8 @@
                     <div class="col-lg-4">
 
                         <span>Nature of Job: <b>{{data.nature_of_job}}</b></span><br>
-                        <span>Event Date: <b>{{data.event_date}}</b></span><br>
-                        <span>Event Time: <b>{{data.event_time}}</b></span><br>
+                        <span>Failure Reported Date: <b>{{data.date}}</b></span><br>
+                        <span>Failure Reported Time: <b>{{data.time}}</b></span><br>
 
                     </div>
 
@@ -228,42 +230,32 @@
 
                          <div class="row " style="padding: 20px;text-align: center;">
                             <div class="col-md-12">
-                                <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                                <table  class="table stripe row-border order-column table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
                                            
                                             <th>S. No</th>
                                             <th>Car No</th>
+                                            <th>System</th>
                                             <th>Sub System</th>
                                             <th>Equipment</th>
-                                            <th>Job Details</th>
-                                         
+                                            <th>Failure Description</th>
+                                            <th>Immediate Investigation </th>
+                                       
                                         </tr>
                                     </thead>
                                     <tbody>
 
 
-                                     {% for job_details in job_details %}
                                             <tr>
-                                                <td>{{ job_details.s_no }}</td>
+                                                <td>1</td>
                                                 <td>{{ data.sel_car }}</td>
+                                                <td>{{ data.system }}</td>
                                                 <td>{{ data.subsystem }}</td>
                                                 <td>{{ data.equipment }}</td>
-                                                <td>{{ job_details.job_description }}</td>
-
-                                                
-                                              
+                                                <td>{{ data.event_description }}</td>
+                                                <td>{{ data.immediate_investigation }}</td>
                                             </tr>
-                                        {% empty %}
-                                            <tr>
-                                                <td colspan="5" class="text-center text-muted">No job details available</td>
-                                            </tr>
-                                        {% endfor %}
-
-                                        
-
-
-
 
 
                                     </tbody>

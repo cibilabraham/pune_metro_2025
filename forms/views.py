@@ -4517,9 +4517,30 @@ class jobcardRegister(View):
                                 for jdar in job_equipmentArr:
                                     data.append({ 
                                         'job_card_no' :  jb.job_card_no,
-                                        'train_set_no' : ast_data[0].location_id,
+                                        'dept_location': jb.failure_id.dept_location,
+                                        'ohe_required':jb.ohe_required,
+                                        'sel_car': jb.failure_id.sel_car,
+                                        'location': jb.failure_id.location,
                                         'date' : jb.failure_id.date,
                                         'time' : jb.failure_id.time,
+                                        'date_issued' : jb.date,
+                                        'time_issued' : jb.time,
+                                        'no_of_trip_cancel' : jb.failure_id.no_of_trip_cancel,
+                                        'revenue_service_delay' : jb.failure_id.revenue_service_delay,
+
+                                        'system' : PBSMaster_data.system,
+                                        'subsystem' : PBSMaster_data.subsystem,
+                                        'equipment' : jb.failure_id.equipment,
+                                        'event_description' : jb.failure_id.event_description,
+                                        'immediate_investigation' : jb.failure_id.immediate_investigation,
+                                        'kilometre_reading' : jb.failure_id.kilometre_reading,
+
+                                        
+
+
+
+                                        'train_set_no' : ast_data[0].location_id,
+                                        
                                         'department' : jb.failure_id.department,
                                         'nature_of_job' : jb.nature_of_job,
                                         'sic_required' : jb.sic_required,
@@ -4547,6 +4568,24 @@ class jobcardRegister(View):
                             else:
                                 data.append({ 
                                     'job_card_no' :  jb.job_card_no,
+                                    'dept_location': jb.failure_id.dept_location,
+                                    'ohe_required':jb.ohe_required,
+                                    'sel_car': jb.failure_id.sel_car,
+                                    'location': jb.failure_id.location,
+                                    'date_issued' : jb.date,
+                                    'time_issued' : jb.time,
+                                    'no_of_trip_cancel' : jb.failure_id.no_of_trip_cancel,
+                                    'revenue_service_delay' : jb.failure_id.revenue_service_delay,
+
+                                    'system' : PBSMaster_data.system,
+                                    'subsystem' : PBSMaster_data.subsystem,
+                                    'equipment' : jb.failure_id.equipment,
+                                    'event_description' : jb.failure_id.event_description,
+                                    'immediate_investigation' : jb.failure_id.immediate_investigation,
+                                    'kilometre_reading' : jb.failure_id.kilometre_reading,
+
+
+
                                     'train_set_no' : ast_data[0].location_id,
                                     'date' : jb.failure_id.date,
                                     'time' : jb.failure_id.time,
@@ -4583,6 +4622,24 @@ class jobcardRegister(View):
                                     for jdar in job_equipmentArr:
                                         data.append({ 
                                             'job_card_no' :  jb.job_card_no,
+                                            'dept_location': jb.failure_id.dept_location,
+                                            'ohe_required':jb.ohe_required,
+                                            'sel_car': jb.failure_id.sel_car,
+                                            'location': jb.failure_id.location,
+                                            'date_issued' : jb.date,
+                                            'time_issued' : jb.time,
+                                            'no_of_trip_cancel' : jb.failure_id.no_of_trip_cancel,
+                                            'revenue_service_delay' : jb.failure_id.revenue_service_delay,
+
+                                            'system' : PBSMaster_data.system,
+                                            'subsystem' : PBSMaster_data.subsystem,
+                                            'equipment' : jb.failure_id.equipment,
+                                            'event_description' : jb.failure_id.event_description,
+                                            'immediate_investigation' : jb.failure_id.immediate_investigation,
+                                            'kilometre_reading' : jb.failure_id.kilometre_reading,
+
+
+
                                             'train_set_no' : ast_data[0].location_id,
                                             'date' : jb.failure_id.date,
                                             'time' : jb.failure_id.time,
@@ -4614,6 +4671,23 @@ class jobcardRegister(View):
 
                                     data.append({ 
                                         'job_card_no' :  jb.job_card_no,
+                                        'dept_location': jb.failure_id.dept_location,
+                                        'ohe_required':jb.ohe_required,
+                                        'sel_car': jb.failure_id.sel_car,
+                                        'location': jb.failure_id.location,
+                                        'date_issued' : jb.date,
+                                        'time_issued' : jb.time,
+                                        'no_of_trip_cancel' : jb.failure_id.no_of_trip_cancel,
+                                        'revenue_service_delay' : jb.failure_id.revenue_service_delay,
+
+                                        'system' : PBSMaster_data.system,
+                                        'subsystem' : PBSMaster_data.subsystem,
+                                        'equipment' : jb.failure_id.equipment,
+                                        'event_description' : jb.failure_id.event_description,
+                                        'immediate_investigation' : jb.failure_id.immediate_investigation,
+                                        'kilometre_reading' : jb.failure_id.kilometre_reading,
+
+
                                         'train_set_no' : ast_data[0].location_id,
                                         'date' : jb.failure_id.date,
                                         'time' : jb.failure_id.time,
@@ -4954,7 +5028,7 @@ class AddJobcard(View):
             'user_Role':user_Role,
             'run_status' : jb.run_status,
 
-
+        
             'asset_type' : PBSMaster_datas[0].asset_type,
             'subsystem' : PBSMaster_datas[0].subsystem,
             'failure_id' : datas.failure_id,
@@ -4981,7 +5055,7 @@ class AddJobcard(View):
             'location_id' : datas.location_id,
             'kilometre_reading' : datas.kilometre_reading,
             'sel_car' : datas.sel_car,
-            'equipment' : datas.equipment,
+            # 'equipment' : datas.equipment,
             'location' : datas.location,
             'direction': datas.direction,
             'incident' : datas.incident,
@@ -5051,6 +5125,16 @@ class AddJobcard(View):
             'close_name_signature':close_name_signature,
 
             'sic_start_date':sic_start_date,
+
+            'dept_location': jb.failure_id.dept_location,
+            'date_issued' : jb.date,
+            'time_issued' : jb.time,
+
+
+            'system' : PBSMaster_datas[0].system,
+            'equipment' : jb.failure_id.equipment,
+            'event_description' : jb.failure_id.event_description,
+            'immediate_investigation' : jb.failure_id.immediate_investigation,
             
 
 
@@ -5161,13 +5245,13 @@ class AddJobcard(View):
             delay_to_service = req.get('delay_to_service')
             trip_no = req.get('trip_no')
             nature_of_job = req.get('nature_of_job')
-            event_date = datetime.datetime.strptime(req.get('event_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
-            event_time = req.get('event_time')
+            # event_date = datetime.datetime.strptime(req.get('event_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            # event_time = req.get('event_time')
 
             if from_revenue_service == 'Yes':
-                JobCard.objects.filter(job_id=ids).update(ohe_required=ohe_required,issued_to=issued_to,completion_time=completion_time,from_revenue_service=from_revenue_service,delay_to_service=delay_to_service,trip_no=trip_no,nature_of_job=nature_of_job,event_date=event_date,event_time=event_time,run_status=st)
+                JobCard.objects.filter(job_id=ids).update(ohe_required=ohe_required,issued_to=issued_to,completion_time=completion_time,from_revenue_service=from_revenue_service,delay_to_service=delay_to_service,trip_no=trip_no,nature_of_job=nature_of_job,run_status=st)
             else:
-                JobCard.objects.filter(job_id=ids).update(ohe_required=ohe_required,issued_to=issued_to,completion_time=completion_time,from_revenue_service=from_revenue_service,nature_of_job=nature_of_job,event_date=event_date,event_time=event_time,run_status=st)
+                JobCard.objects.filter(job_id=ids).update(ohe_required=ohe_required,issued_to=issued_to,completion_time=completion_time,from_revenue_service=from_revenue_service,nature_of_job=nature_of_job,run_status=st)
 
             return JsonResponse({'status':'1'})
         elif st == 0 or st == '0':
@@ -5692,6 +5776,15 @@ class ViewJobcard(View):
             'close_name_signature':jb.close_name_signature,
 
             'sic_start_date':jb.sic_start_date,
+
+            'dept_location': jb.failure_id.dept_location,
+            'date_issued' : jb.date,
+            'time_issued' : jb.time,
+
+            'system' : PBSMaster_datas[0].system,
+            'equipment' : jb.failure_id.equipment,
+            'event_description' : jb.failure_id.event_description,
+            'immediate_investigation' : jb.failure_id.immediate_investigation,
             
 
 
@@ -6004,6 +6097,16 @@ class DwdJobcard(View):
             'completion_signature':jb.completion_signature,
             'completion_signature2':jb.completion_signature2,
             'close_name_signature':jb.close_name_signature,
+
+
+            'dept_location': jb.failure_id.dept_location,
+            'date_issued' : jb.date,
+            'time_issued' : jb.time,
+
+            'system' : PBSMaster_datas[0].system,
+            'equipment' : jb.failure_id.equipment,
+            'event_description' : jb.failure_id.event_description,
+            'immediate_investigation' : jb.failure_id.immediate_investigation,
             
 
 
@@ -6098,8 +6201,10 @@ class EIRRegister(View):
         P_id = request.session['P_id']
         user_ID = request.session['user_ID']
         user_Role = request.session.get('user_Role')
+
+        train_set_options = [f"TS#{i:02d}" for i in range(1, 35)]  # 01 to 34
      
-        return render(request, self.template_name, {})
+        return render(request, self.template_name, {'train_set_options':train_set_options})
 
     def post(self, request, *args, **kwargs):
 
@@ -6107,43 +6212,38 @@ class EIRRegister(View):
         P_id = request.session['P_id']
         user_ID = request.session['user_ID']
         user_Role = request.session.get('user_Role')
-        # req = request.POST
-        # print(req)
-        print('==========HERE=========')
-       
+        req = request.POST
+
+        location_id_f = req.get('location_id')
+        depot = req.get('depot')
+      
         EIRGenerationDatas = EIRGeneration.objects.filter().order_by('-eir_gen_id')
-        print(EIRGenerationDatas)
+
+        if depot != "all":
+            EIRGenerationDatas=EIRGenerationDatas.filter(depot=depot)
+
+        if req.get('date') !="":
+            date = datetime.datetime.strptime(req.get('date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            EIRGenerationDatas=EIRGenerationDatas.filter(failure_id__date=date)
+
+
+
+
+        # # print(req)
+        # print('==========HERE=========')
+       
+        
+        # print(EIRGenerationDatas)
        
         for jb in EIRGenerationDatas:
             asset_type_id = jb.failure_id.asset_type
             if PBSMaster.objects.filter(id=asset_type_id,is_active=0).exists():
                 ast_data = Asset.objects.filter(id=jb.failure_id.location_id)
-                if user_Role == 1:
-                    PBSMaster_datas=PBSMaster.objects.filter(id=asset_type_id,is_active=0)
-                    for PBSMaster_data in PBSMaster_datas:
-                        data.append({ 
-                            'eir_id' :  jb.eir_id,
-                            'train_set_no' : ast_data[0].location_id,
-                            'date' : jb.failure_id.date,
-                            'time' : jb.failure_id.time,
-                            'department' : jb.failure_id.department,
-                            'eir_gen_id' : jb.eir_gen_id,
-                            'depot' : jb.depot,
-                            'addressed_by':jb.addressed_by,
-                            'incident_details' : jb.incident_details,
-                            'repercussion':jb.repercussion,
-                            'id':jb.eir_id,
-                            'user_Role':user_Role,
-                            'incident_location' : jb.incident_location,
-                            'incident_time' : jb.incident_time,
-                            'sel_car' : jb.failure_id.sel_car,
-                            'equipment' : jb.failure_id.equipment,
-                            'component' : jb.component,
-                            'location': jb.failure_id.location,
-                            
-                        }) 
-                else:
-                    if PBSMaster.objects.filter(id=asset_type_id,project_id=P_id,is_active=0).exists():
+                if location_id_f != "all":
+                    ast_data=ast_data.filter(location_id=location_id_f)
+                if ast_data:
+
+                    if user_Role == 1:
                         PBSMaster_datas=PBSMaster.objects.filter(id=asset_type_id,is_active=0)
                         for PBSMaster_data in PBSMaster_datas:
                             data.append({ 
@@ -6165,8 +6265,33 @@ class EIRRegister(View):
                                 'equipment' : jb.failure_id.equipment,
                                 'component' : jb.component,
                                 'location': jb.failure_id.location,
+                                
                             }) 
-        print(data)
+                    else:
+                        if PBSMaster.objects.filter(id=asset_type_id,project_id=P_id,is_active=0).exists():
+                            PBSMaster_datas=PBSMaster.objects.filter(id=asset_type_id,is_active=0)
+                            for PBSMaster_data in PBSMaster_datas:
+                                data.append({ 
+                                    'eir_id' :  jb.eir_id,
+                                    'train_set_no' : ast_data[0].location_id,
+                                    'date' : jb.failure_id.date,
+                                    'time' : jb.failure_id.time,
+                                    'department' : jb.failure_id.department,
+                                    'eir_gen_id' : jb.eir_gen_id,
+                                    'depot' : jb.depot,
+                                    'addressed_by':jb.addressed_by,
+                                    'incident_details' : jb.incident_details,
+                                    'repercussion':jb.repercussion,
+                                    'id':jb.eir_id,
+                                    'user_Role':user_Role,
+                                    'incident_location' : jb.incident_location,
+                                    'incident_time' : jb.incident_time,
+                                    'sel_car' : jb.failure_id.sel_car,
+                                    'equipment' : jb.failure_id.equipment,
+                                    'component' : jb.component,
+                                    'location': jb.failure_id.location,
+                                }) 
+        # print(data)
         return JsonResponse({'data':data})
 
     

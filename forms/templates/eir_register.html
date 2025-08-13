@@ -30,6 +30,52 @@
                 </div>
             </div>
             <!-- /.row -->
+
+            <div class="row mb-4">
+
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="location_id">Train set no</label>
+                        <select class="form-control" id="location_id" name="location_id">
+                        <option value="all">--All--</option>
+                        {% for train_set_options in train_set_options %}
+                            <option value="{{train_set_options}}">{{train_set_options}}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="date">By date</label>
+                        <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" value="">
+                    </div>
+                </div> 
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="depot">Depot</label>
+                        <select class="form-control" id="depot" name="depot">
+                        <option value="all">--All--</option>
+                        <option value="RHD">Range Hill Depot (RHD)</option>
+                        <option value="HVPCD">Hill View Park Car Depot (HVPCD)</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+
+                 <div class="col-md-3 ">     
+                    <button type="button" onClick="return getDefectData();" class="btn btn-primary mt-2">Filter Now</button>
+                </div>
+          
           
 
 
@@ -63,12 +109,23 @@
        
         $('#example').DataTable();
         getDefectData();
+
+
+         $('#date').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',});
        
     });
 
    
 
 function getDefectData(){
+
+
+        var location_id= $('select[name=location_id] option').filter(':selected').val()
+        var date= $('#date').val()
+        var depot= $('select[name=depot] option').filter(':selected').val()
+     
 
    
 
@@ -79,17 +136,26 @@ function getDefectData(){
                     {
                     extend: 'excel',
                     title: 'Engineering Incident Report(EIR) Generation',
-                    className: 'btn-outline-primary'
+                    className: 'btn-outline-primary',
+                     exportOptions: {
+                            columns: ':not(:last-child)', // hides only the last column from export
+                        }
                     },
                     {
                     extend: 'pdf',
                     title: 'Engineering Incident Report(EIR) Generation',
-                    className: 'btn-outline-primary'
+                    className: 'btn-outline-primary',
+                     exportOptions: {
+                            columns: ':not(:last-child)', // hides only the last column from export
+                        }
                     },
                     {
                     extend: 'print',
                     title: 'Engineering Incident Report(EIR) Generation',
-                    className: 'btn-outline-primary'
+                    className: 'btn-outline-primary',
+                     exportOptions: {
+                            columns: ':not(:last-child)', // hides only the last column from export
+                        }
                     }
                 ],
                   scrollY:        "400px",
@@ -105,7 +171,12 @@ function getDefectData(){
                   'ajax' : {
                       "url": "/forms/eir_register/",
                       "type": "POST",
-                      "headers": {'X-CSRFToken': '{{ csrf_token }}'}
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'},
+                        'data' : {
+                        'location_id':location_id,
+                        'date':date,
+                        'depot':depot,
+                    }
                   },
                   "columns" : [
                    
