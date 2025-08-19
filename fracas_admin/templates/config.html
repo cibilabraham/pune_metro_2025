@@ -148,6 +148,13 @@
                                     </div>
                                 </div>
 
+                                  <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-3 col-form-label">Criteria Delay for SAF (min)</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" value="{{criteria_delay_for_saf}}" class="form-control" id="criteria_delay_for_saf" name="criteria_delay_for_saf" placeholder="Enter criteria delay for SAF" required="required">
+                                    </div>
+                                </div>
+
 
 
 
@@ -191,6 +198,7 @@
         var average_speed = $('#average_speed').val();
         var running_time = $('#running_time').val();
         var num_of_days = $('#num_of_days').val();
+        var criteria_delay_for_saf = $('#criteria_delay_for_saf').val();
         var checkbox = document.getElementById("chk_average_speed");
         // Check if the checkbox is checked
         var chk_average_speed = 0;
@@ -211,6 +219,7 @@
                 'average_speed':average_speed,
                 'chk_average_speed':chk_average_speed,
                 'num_of_days':num_of_days,
+                'criteria_delay_for_saf':criteria_delay_for_saf,
                 'running_time':running_time
             },
             success: function (response) {

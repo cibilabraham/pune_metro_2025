@@ -97,6 +97,19 @@
                         <input type="text" autocomplete="off" class="form-control date-time" id="endDate" value="">
                     </div>
                 </div>
+
+                   <div class="col-md-3">     
+                    <div class="form-group">
+                        <label for="mdbf_mdsaf">MDBF / MDBSAF</label>
+                        <select class="form-control" id="mdbf_mdsaf" name="mdbf_mdsaf">
+                            <option value="MDBF" selected>MDBF</option>
+                            <option value="MDBSAF">MDBSAF</option>
+                        </select>
+                    </div>
+                </div>
+
+
+
                 <div class="col-md-3 pt-4">     
                     <button type="button" onClick="return Validate();" class="btn btn-primary mt-2" id="GenBTN">Generate</button>
                 </div>
@@ -465,6 +478,7 @@ html2canvas(tableElement, {
         var product_id = 'all'
         var startDate = $('#startDate').val() ;
         var endDate = $('#endDate').val() ;
+        var mdbf_mdsaf = $('#mdbf_mdsaf').val() ;
         $.ajax({
           url: "/reports/actual_mtbf/",
           method: 'POST',
@@ -479,6 +493,7 @@ html2canvas(tableElement, {
             'start_date': startDate,
             'end_date' : endDate,
             'FN_NAME':FN_NAME,
+            'mdbf_mdsaf':mdbf_mdsaf,
           },
           success: function (response) {
                 console.log(response)

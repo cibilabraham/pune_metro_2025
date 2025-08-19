@@ -564,6 +564,8 @@ class MTBFvsTimeReportView(View):
         FN_NAME = req.get('FN_NAME')
         product_id = req.get('product_id')
         lru_type = req.get('lru_type')
+
+        mdbf_mdsaf = req.get('mdbf_mdsaf')
         
         data=[]
         data1=[]
@@ -651,14 +653,28 @@ class MTBFvsTimeReportView(View):
       
         if (lru_type or asset_types) and asset_types!=['']: 
 
-            if lru_type and lru_type!="all":
-                if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
-                    response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
-                    return JsonResponse(response)
+            if mdbf_mdsaf == 'MDBF':
+
+                if lru_type and lru_type!="all":
+                    if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
+                        response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                        return JsonResponse(response)
+                else:
+                    if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
+                        response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                        return JsonResponse(response)
             else:
-                if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
-                    response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
-                    return JsonResponse(response)
+
+                if lru_type and lru_type!="all":
+                    if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+                        response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                        return JsonResponse(response)
+                else:
+                    if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+                        response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                        return JsonResponse(response)
+
+
             
             if lru_type and lru_type!="all":
                 asset_data = Asset.objects.filter(asset_type=lru_type,is_active=0)
@@ -696,11 +712,19 @@ class MTBFvsTimeReportView(View):
             asset_count = asset_data.count()
             cum_actual_failure_count = 0
 
+            if mdbf_mdsaf == 'MDBF':
+                if lru_type and lru_type!="all":
+                    Hightest_date_of_failure = FailureData.objects.filter(asset_config_id__asset_type=lru_type, is_active=0).exclude(failure_type='Other').order_by('-date')
+                else:
+                    Hightest_date_of_failure = FailureData.objects.filter(asset_config_id__asset_type__in=asset_types,is_active=0).exclude(failure_type='Other').order_by('-date')
 
-            if lru_type and lru_type!="all":
-                Hightest_date_of_failure = FailureData.objects.filter(asset_config_id__asset_type=lru_type, is_active=0).exclude(failure_type='Other').order_by('-date')
             else:
-                Hightest_date_of_failure = FailureData.objects.filter(asset_config_id__asset_type__in=asset_types,is_active=0).exclude(failure_type='Other').order_by('-date')
+
+                if lru_type and lru_type!="all":
+                    Hightest_date_of_failure = FailureData.objects.filter(asset_config_id__asset_type=lru_type, is_active=0,failure_category='SAF').exclude(failure_type='Other').order_by('-date')
+                else:
+                    Hightest_date_of_failure = FailureData.objects.filter(asset_config_id__asset_type__in=asset_types,is_active=0,failure_category='SAF').exclude(failure_type='Other').order_by('-date')
+
 
             # print(Hightest_date_of_failure[0].date,'Hightest_date_of_failure')
             Hightest_date_of_failure = str(Hightest_date_of_failure[0].date)

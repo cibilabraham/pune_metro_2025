@@ -285,36 +285,6 @@
                 </div>
 
 
-                  <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="failure_category">*Failure Category :</label>
-                      
-                        <select class="form-control" id="failure_category " name="failure_category" required="required">
-                            {% if 'SAF' == data.failure_category %}
-                            <option value="SAF" selected>SAF</option>
-                            {% else %}
-                                <option value="SAF">SAF</option>
-                            {% endif %}
-                            {% if 'Non-SAF' == data.failure_category %}
-                            <option value="Non-SAF" selected>Non-SAF</option>
-                            {% else %}
-                                <option value="Non-SAF">Non-SAF</option>
-                            {% endif %}
-                            {% if 'Depot Failure' == data.failure_category %}
-                            <option value="Depot Failure" selected>Depot Failure</option>
-                            {% else %}
-                                <option value="Depot Failure">Depot Failure</option>
-                            {% endif %}
-                           
-                        </select>
-
-
-                        {% comment %} <input type="text" class="form-control" id="failure_category" name="failure_category" value="{{data.failure_category}}"> {% endcomment %}
-                        <div class="invalid-feedback">
-                         Please enter Failure Category .
-                        </div>
-                    </div>
-                </div>
 
 
                  <div class="col-md-4">
@@ -391,13 +361,46 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="revenue_service_delay">*Revenue Service Delay:</label>
-                            <input type="text" class="form-control" id="revenue_service_delay" name="revenue_service_delay" value="{{data.revenue_service_delay}}" required="required">
+                            <label for="revenue_service_delay">*Revenue Service Delay (mins):</label>
+                            <input type="number" class="form-control" id="revenue_service_delay" name="revenue_service_delay" value="{{data.revenue_service_delay}}" required="required" onchange="updateFailureCategory();">
                             <div class="invalid-feedback">
                             Please enter Revenue Delay Time.
                             </div>
                         </div>
                     </div>
+
+
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="failure_category">*Failure Category :</label>
+                      
+                        <select class="form-control" id="failure_category " name="failure_category" required="required">
+                            {% if 'SAF' == data.failure_category %}
+                            <option value="SAF" selected>SAF</option>
+                            {% else %}
+                                <option value="SAF">SAF</option>
+                            {% endif %}
+                            {% if 'Non-SAF' == data.failure_category %}
+                            <option value="Non-SAF" selected>Non-SAF</option>
+                            {% else %}
+                                <option value="Non-SAF">Non-SAF</option>
+                            {% endif %}
+                            {% if 'Depot Failure' == data.failure_category %}
+                            <option value="Depot Failure" selected>Depot Failure</option>
+                            {% else %}
+                                <option value="Depot Failure">Depot Failure</option>
+                            {% endif %}
+                           
+                        </select>
+
+
+                        {% comment %} <input type="text" class="form-control" id="failure_category" name="failure_category" value="{{data.failure_category}}"> {% endcomment %}
+                        <div class="invalid-feedback">
+                         Please enter Failure Category .
+                        </div>
+                    </div>
+                </div>
 
 
 
@@ -798,6 +801,8 @@
         // autoclose: true,
         // format: 'dd/mm/yyyy',});
 
+        updateFailureCategory();
+
         $('#asset_type').val('{{ data.asset_type }}');
         var id= $('#id').val();
         if(id != ""){
@@ -904,6 +909,23 @@
 
 
 });
+
+function updateFailureCategory(){
+    var revenue_service_delay = $('#revenue_service_delay').val();
+    var criteria_delay_for_saf = '{{criteria_delay_for_saf}}';
+
+    $('select[name="failure_category"]').val('Non-SAF').trigger('change');
+
+
+    if(revenue_service_delay == "") return false;
+
+    if(revenue_service_delay >= criteria_delay_for_saf){
+        $('select[name="failure_category"]').val('SAF').trigger('change');
+    }else{
+        $('select[name="failure_category"]').val('Non-SAF').trigger('change');
+    }
+
+}
 
 
 function getServiceDelay(){

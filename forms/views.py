@@ -742,8 +742,11 @@ class AddFailureData(View):
             mode_id = FailureMode.objects.filter(is_active=0,P_id=P_id).distinct('mode_id')
             defect = Defect.objects.filter(is_active=0,P_id=P_id).distinct('defect_id')
 
+        units = PBSUnit.objects.all()
+        criteria_delay_for_saf = units[0].criteria_delay_for_saf
+
         return render(request, self.template_name,{'data':data,'defect':defect,'asset_type':asset_types
-                                                   ,'asset_config_id':asset_config_id,'mode_id':mode_id})
+                                                   ,'asset_config_id':asset_config_id,'mode_id':mode_id,'criteria_delay_for_saf':criteria_delay_for_saf})
 
     def post(self, request, *args, **kwargs):
         P_id = request.session['P_id']

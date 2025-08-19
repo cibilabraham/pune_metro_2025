@@ -426,6 +426,7 @@ class PBSUnit(models.Model):
     chk_average_speed = models.FloatField(default=0)
     running_time = models.IntegerField(default=18)
     num_of_days = models.IntegerField(default=7)
+    criteria_delay_for_saf = models.IntegerField(default=3)
 
 class Systems(models.Model):
     project = models.ForeignKey('Product', on_delete=models.CASCADE,null=True, blank=True)
