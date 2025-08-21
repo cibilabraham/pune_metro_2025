@@ -146,7 +146,7 @@
             <div class="card mb-4">
                 <div class="card-header d-none">
                     <i class="fas fa-chart-area mr-1"></i>
-                    Cumulative {{display_val}} of selected subsystem vs Time based on Daily Kilometre Reading
+                    Cumulative {{display_val}} of selected subsystem vs Time 
                 </div>
                 <h1 class="nodata" style="margin-top: 20px;text-align: center;">No data available please search</h1>
                 <div class="card-body" id="canvasDiv">
@@ -307,7 +307,7 @@
     var y = 25;
     
     pdf.setFontSize(18);
-    pdf.text(pdfWidth / 3, y, 'Actual '+display_val+' vs Time based on Daily Kilometre Reading');
+    pdf.text(pdfWidth / 3, y, 'Actual '+display_val+' vs Time ');
     y = y + 10;
     
     pdf.setFontSize(10);
@@ -602,7 +602,7 @@ html2canvas(tableElement, {
                 responsive: true,
                 title:      {
                     display: true,
-                    text:    "Cumulative "+display_val+" of "+subsystem+" vs Time based on Daily Kilometre Reading",
+                    text:    "Cumulative "+display_val+" of "+subsystem+" vs Time ",
                     fontSize: 18,
                 },
                 legend: {
