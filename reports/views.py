@@ -826,7 +826,7 @@ class MTBFvsTimeReportView(View):
                     actual_mtbf_value = round(actual_mtbf_value)
 
                 data.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':actual_mtbf_value})
-                data1.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':pbs_mtbf_val})
+                data1.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':pbs_mtbf_value})
            
         else:
             data=[]
@@ -3432,7 +3432,7 @@ class MTBFvsTimeDailyKilometreReadingReportView(View):
                     actual_mtbf_value = round(actual_mtbf_value)
 
                 data.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':actual_mtbf_value})
-                data1.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':pbs_mtbf_val})
+                data1.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':pbs_mtbf_value})
            
         else:
             data=[]
