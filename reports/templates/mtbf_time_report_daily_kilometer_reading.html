@@ -19,11 +19,11 @@
                 <div class="col-lg-12">
                     {% if display_val %}
                     <h3 class="page-header">
-                        Actual {{display_val}} vs Time based on Daily Kilometre Reading
+                        Actual MDBF/MDBSAF vs Time
                     </h3>
                     {% else %}
                         <h3 class="page-header">
-                            Actual MTBF/MDBF vs Time based on Daily Kilometre Reading
+                            Actual MDBF/MDBSAF vs Time
                         </h3>
                     {% endif %}
                     <!--ol class="breadcrumb">
@@ -102,8 +102,8 @@
                     <div class="form-group">
                         <label for="mdbf_mdsaf">MDBF / MDBSAF</label>
                         <select class="form-control" id="mdbf_mdsaf" name="mdbf_mdsaf">
-                            <option value="MDBF" selected>MTBF / MDBF</option>
-                            <option value="MDBSAF">MTBSAF / MDBSAF</option>
+                            <option value="MDBF" selected>MDBF</option>
+                            <option value="MDBSAF">MDBSAF</option>
                         </select>
                     </div>
                 </div>
@@ -173,7 +173,7 @@
 {% block sb_admin_js %}
 <script>
 
-    var display_val = '{{display_val}}';
+    var display_val = 'MDBF';
    
     //  function Print_Graph(PrintOption){
     //     // $("#canvasDiv").css({"width": "75%"});
@@ -484,11 +484,9 @@ html2canvas(tableElement, {
         var endDate = $('#endDate').val() ;
         var mdbf_mdsaf = $('#mdbf_mdsaf').val() ;
         if(mdbf_mdsaf == 'MDBF'){
-            display_val = '{{display_val}}';                
+            display_val = 'MDBF';                
         }else{
-            display_val_chk = '{{display_val}}';
-            if(display_val_chk == 'MTBF') display_val = 'MTBSAF'; 
-            else display_val = 'MDBSAF'; 
+            display_val = 'MDBSAF'; 
         }
 
         $.ajax({

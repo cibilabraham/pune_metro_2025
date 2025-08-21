@@ -52,7 +52,7 @@
                             <div class="tab-pane fade show" role="tabpanel" id="SetPBSMasterUnit">
                                 <form id="ConfiguForm"> 
                                 <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-3 col-form-label">MTBF/MTBSAF </label>
+                                    <label for="staticEmail" class="col-sm-3 col-form-label">MDBF</label>
                                     <div class="col-sm-9">
                                         <input type="hidden" name="id" id="id" value="{{id}}"/>
                                         <select class="form-control" id="MTBFMTBSAF" name="MTBFMTBSAF" required="required">
@@ -105,7 +105,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-3 col-form-label">Average Speed</label>
                                     <div class="col-sm-7">
                                         <input type="text" value="{{average_speed}}" class="form-control" id="average_speed" name="average_speed" placeholder="Enter average speed" required="required">
@@ -121,9 +121,9 @@
 
                                         
                                     </div>
-                                </div>
+                                </div> -->
 
-                                 <div class="form-group row">
+                                 <!-- <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-3 col-form-label">MDBF</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" id="mdbf_unit" name="mdbf_unit" required="required">
@@ -131,7 +131,7 @@
                                                 <option value="MILES" disabled>MILES</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> -->
 
 
                                 <div class="form-group row">
@@ -195,16 +195,16 @@
         var MTTR= $('select[name=MTTR] option').filter(':selected').val()
         var id= $('#id').val()
         var service_delay= $('select[name=service_delay] option').filter(':selected').val()
-        var average_speed = $('#average_speed').val();
+        var average_speed = 1;
         var running_time = $('#running_time').val();
         var num_of_days = $('#num_of_days').val();
         var criteria_delay_for_saf = $('#criteria_delay_for_saf').val();
-        var checkbox = document.getElementById("chk_average_speed");
+        // var checkbox = document.getElementById("chk_average_speed");
         // Check if the checkbox is checked
         var chk_average_speed = 0;
-        if (checkbox.checked) {
-            chk_average_speed = 1;
-        }
+        // if (checkbox.checked) {
+        //     chk_average_speed = 1;
+        // }
 
         $.ajax({
             url: "/config/",

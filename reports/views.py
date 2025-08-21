@@ -547,11 +547,7 @@ class MTBFvsTimeReportView(View):
         defect_datas = Defect.objects.all().distinct('defect_id')
         systems = PBSMaster.objects.all().distinct('system')
 
-        findUnit = PBSUnit.objects.filter()
-        if findUnit[0].chk_average_speed == 1:
-            display_val = 'MDBF'
-        else:
-            display_val = 'MTBF'
+        display_val = 'MDBF'
             
         return render(request, self.template_name, {'project':project,'asset_data' : Asset_data, 'defect_datas' : defect_datas, 'systems':systems, 'display_val':display_val })
 
@@ -796,13 +792,13 @@ class MTBFvsTimeReportView(View):
                 print(f"start date: {week_start_date} to end date: {week_end_date}")
                 # print(f"{week_start_date} - fc: {failure_count} - cfc: {cum_actual_failure_count} - coh: {lru_population_hours} - MTBF: {actual_mtbf_value}")
 
-                # findUnit = PBSUnit.objects.filter()
-                if findUnit[0].chk_average_speed == 1:
-                    if actual_mtbf_value != 'null':
-                        actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
-                    pbs_mtbf_val = float(pbs_mtbf_value) * float(findUnit[0].average_speed)
-                else:
-                    pbs_mtbf_val = pbs_mtbf_value
+                # # findUnit = PBSUnit.objects.filter()
+                # if findUnit[0].chk_average_speed == 1:
+                #     if actual_mtbf_value != 'null':
+                #         actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
+                #     pbs_mtbf_val = float(pbs_mtbf_value) * float(findUnit[0].average_speed)
+                # else:
+                #     pbs_mtbf_val = pbs_mtbf_value
 
                 # if week_end_date1 < Hightest_date_of_failure or failure_count != 0 :
                     
@@ -855,11 +851,7 @@ class LogPlotMtbfReportView(View):
         Asset_data = Asset.objects.all().distinct('asset_type')
         defect_datas = Defect.objects.all().distinct('defect_id')
         systems = PBSMaster.objects.all().distinct('system')
-        findUnit = PBSUnit.objects.filter()
-        if findUnit[0].chk_average_speed == 1:
-            display_val = 'MDBF'
-        else:
-            display_val = 'MTBF'
+        display_val = 'MDBF'
 
         return render(request, self.template_name, {'project':project,'asset_data' : Asset_data, 'defect_datas' : defect_datas, 'systems':systems, 'display_val':display_val})
 
@@ -1007,8 +999,8 @@ class LogPlotMtbfReportView(View):
             print(f"pbs_mtbf_value = {pbs_mtbf_value}")
            
             findUnit = PBSUnit.objects.filter()
-            if findUnit[0].chk_average_speed == 1:
-                pbs_mtbf_value = float(pbs_mtbf_value) * float(findUnit[0].average_speed)
+            # if findUnit[0].chk_average_speed == 1:
+            #     pbs_mtbf_value = float(pbs_mtbf_value) * float(findUnit[0].average_speed)
 
             print(f"pbs_mtbf_value * Speed = {pbs_mtbf_value}")
 
@@ -1089,9 +1081,9 @@ class LogPlotMtbfReportView(View):
                 # print(Hightest_date_of_failure,'Hightest_date_of_failure')
                 
 
-                if findUnit[0].chk_average_speed == 1:
-                    if actual_mtbf_value != 'null':
-                        actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
+                # if findUnit[0].chk_average_speed == 1:
+                #     if actual_mtbf_value != 'null':
+                #         actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
 
                 if findUnit[0].MTBFMTBSAF == 'days':
                     if actual_mtbf_value != 'null':
@@ -1251,9 +1243,9 @@ class LogPlotMtbfReportView(View):
                 week_end_date1 = datetime.datetime.strptime(str(week_end_date), '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
 
                 findUnit = PBSUnit.objects.filter()
-                if findUnit[0].chk_average_speed == 1:
-                    if actual_mtbf_value != 'null':
-                        actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
+                # if findUnit[0].chk_average_speed == 1:
+                #     if actual_mtbf_value != 'null':
+                #         actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
 
                 if findUnit[0].MTBFMTBSAF == 'days':
                     if actual_mtbf_value != 'null':
@@ -1328,11 +1320,7 @@ class CumalativeMtbfReportView(View):
         Asset_data = Asset.objects.all().distinct('asset_type')
         defect_datas = Defect.objects.all().distinct('defect_id')
         systems = PBSMaster.objects.all().distinct('system')
-        findUnit = PBSUnit.objects.filter()
-        if findUnit[0].chk_average_speed == 1:
-            display_val = 'MDBF'
-        else:
-            display_val = 'MTBF'
+        display_val = 'MDBF'
         return render(request, self.template_name, {'project':project,'asset_data' : Asset_data, 'systems':systems, 'display_val':display_val})
 
     def post(self, request, *args, **kwargs):
@@ -1613,9 +1601,9 @@ class CumalativeMtbfReportView(View):
                     if actual_mtbf_value == 0:
                         actual_mtbf_value = 'null'
 
-                    if findUnit[0].chk_average_speed == 1:
-                        if actual_mtbf_value != 'null':
-                            actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
+                    # if findUnit[0].chk_average_speed == 1:
+                    #     if actual_mtbf_value != 'null':
+                    #         actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
                       
                     actual_MTBF.append({'x':week, 'y':actual_mtbf_value,})
                     prediced_MTBF.append({'x':week, 'y':'null',})
@@ -1636,9 +1624,9 @@ class CumalativeMtbfReportView(View):
                         prediced_mtbf_value = round(lru_population_hours/cum_actual_failure_count, 2)
                         # prediced_mtbf_value = round(lru_population_hours/predicted_avg_failures_per_week, 2)
 
-                        if findUnit[0].chk_average_speed == 1:
-                            if prediced_mtbf_value != 'null':
-                                prediced_mtbf_value = float(prediced_mtbf_value) * float(findUnit[0].average_speed)
+                        # if findUnit[0].chk_average_speed == 1:
+                        #     if prediced_mtbf_value != 'null':
+                        #         prediced_mtbf_value = float(prediced_mtbf_value) * float(findUnit[0].average_speed)
                           
                         prediced_MTBF.append({'x':week, 'y':prediced_mtbf_value,})
                         
@@ -1664,9 +1652,9 @@ class CumalativeMtbfReportView(View):
                 # print(len(defects), lru_population_hours,avg_failures_per_week,round(predicted_avg_failures_per_week,2),prediced_mtbf_value)
                 # print(avg_failures_per_week,predicted_avg_failures_per_week,cum_actual_failure_count,actual_mtbf_value,prediced_mtbf_value,'----',week,"looooooooo")
 
-                if findUnit[0].chk_average_speed == 1:
-                    if pbs_mtbf_value != 'null' and MTBFT != 'MTBFT':
-                        pbs_mtbf_value = float(pbs_mtbf_value) * float(findUnit[0].average_speed)
+                # if findUnit[0].chk_average_speed == 1:
+                #     if pbs_mtbf_value != 'null' and MTBFT != 'MTBFT':
+                #         pbs_mtbf_value = float(pbs_mtbf_value) * float(findUnit[0].average_speed)
                   
                 MTBF_target.append({'x':week, 'y':pbs_mtbf_value,})
                 soft_mode = 'null'
@@ -3150,11 +3138,7 @@ class MTBFvsTimeDailyKilometreReadingReportView(View):
         defect_datas = Defect.objects.all().distinct('defect_id')
         systems = PBSMaster.objects.all().distinct('system')
 
-        findUnit = PBSUnit.objects.filter()
-        if findUnit[0].chk_average_speed == 1:
-            display_val = 'MDBF'
-        else:
-            display_val = 'MTBF'
+        display_val = 'MDBF'
             
         return render(request, self.template_name, {'project':project,'asset_data' : Asset_data, 'defect_datas' : defect_datas, 'systems':systems, 'display_val':display_val })
 
@@ -3414,13 +3398,13 @@ class MTBFvsTimeDailyKilometreReadingReportView(View):
                
 
 
-                # findUnit = PBSUnit.objects.filter()
-                if findUnit[0].chk_average_speed == 1:
-                    if actual_mtbf_value != 'null':
-                        actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
-                    pbs_mtbf_val = float(pbs_mtbf_value) * float(findUnit[0].average_speed)
-                else:
-                    pbs_mtbf_val = pbs_mtbf_value
+                # # findUnit = PBSUnit.objects.filter()
+                # if findUnit[0].chk_average_speed == 1:
+                #     if actual_mtbf_value != 'null':
+                #         actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
+                #     pbs_mtbf_val = float(pbs_mtbf_value) * float(findUnit[0].average_speed)
+                # else:
+                #     pbs_mtbf_val = pbs_mtbf_value
 
                 # if week_end_date1 < Hightest_date_of_failure or failure_count != 0 :
                     

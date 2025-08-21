@@ -156,9 +156,9 @@
                             <th>Product description</th>
                             <th>Asset name</th>
                             <th>Asset description</th>
-                            <th>MTBF ({{MTBFMTBSAF}})</th>
                             <th>MDBF ({{MTBFMTBSAF}})</th>
-                            <th>MTBSAF ({{MTBFMTBSAF}})</th>
+                            <th>MDBF ({{MTBFMTBSAF}})</th>
+                            <th>MDBSAF ({{MTBFMTBSAF}})</th>
                             <th>MDBSAF ({{MTBFMTBSAF}})</th>
                             <th>MTTR ({{MTTR}})</th>
                             <th>MART</th>
@@ -282,12 +282,8 @@ var average_speed = '{{average_speed}}';
         var subsystem= $('select[name=selSubsystem] option').filter(':selected').val()
         var product_id= $('select[name=selProduct] option').filter(':selected').val()
         var asset_type= $('select[name=selasset_type] option').filter(':selected').val()
-        var visible = true;
-        if(display_val == 'MTBF'){
-            visible = false;
-        }
-
-
+        var visible = false;
+      
 
         $('#example').DataTable().destroy();
         $('#example').DataTable({
