@@ -21,4 +21,5 @@ urlpatterns = [
     path('availability2/',Availability2View.as_view(),name='availability2'),
     
     path('review_details/PDF/',ReviewBoardDetailsToPDFView.as_view(),name='review_detailsPDF'),
+    path('daily_kilometre_reading_actual_mtbf/',MTBFvsTimeDailyKilometreReadingReportView.as_view(),name='Actual MTBF Report Daily Kilometre Reading'),
 ]

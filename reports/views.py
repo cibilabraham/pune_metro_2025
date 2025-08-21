@@ -3130,3 +3130,382 @@ class CumalativeMtbfReportF3View(View):
 
         response = {'actualMTBF' : actual_MTBF, 'predicedMTBF' : prediced_MTBF, 'MTBFtarget' : MTBF_target, 'softwareMode' : software_mode,'rangeScale' : week_scale, 'scale':scale}
         return JsonResponse(response)
+
+
+
+class MTBFvsTimeDailyKilometreReadingReportView(View):
+    template_name = 'mtbf_time_report_daily_kilometer_reading.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+        if user_Role == 1:
+            project = Product.objects.filter(is_active=0)
+        else:
+            project = Product.objects.filter(product_id=P_id,is_active=0)
+        Asset_data = Asset.objects.all().distinct('asset_type')
+        defect_datas = Defect.objects.all().distinct('defect_id')
+        systems = PBSMaster.objects.all().distinct('system')
+
+        findUnit = PBSUnit.objects.filter()
+        if findUnit[0].chk_average_speed == 1:
+            display_val = 'MDBF'
+        else:
+            display_val = 'MTBF'
+            
+        return render(request, self.template_name, {'project':project,'asset_data' : Asset_data, 'defect_datas' : defect_datas, 'systems':systems, 'display_val':display_val })
+
+    def post(self, request, *args, **kwargs):
+
+        req = request.POST
+        project = req.get('project')
+        system = req.get('system')
+        sub_system = req.get('sub_system')
+        FN_NAME = req.get('FN_NAME')
+        product_id = req.get('product_id')
+        lru_type = req.get('lru_type')
+
+        mdbf_mdsaf = req.get('mdbf_mdsaf')
+        
+        data=[]
+        data1=[]
+        scale=[]
+        asset_types = []
+        pbs_asset_types = []
+
+        print('===========++++++++++++============')
+        
+        if req.get('start_date') !="" and req.get('end_date') !="":
+            start_date = datetime.datetime.strptime(req.get('start_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+            end_date = datetime.datetime.strptime(req.get('end_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        else:
+            start_date = req.get('start_date')
+            end_date = req.get('end_date')
+        pbs_mtbf_value = ''
+        
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+
+        # date_obj = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+        # next_day = date_obj + timedelta(days=1)
+        # end_date = next_day.strftime("%Y-%m-%d")
+
+        print(start_date + '  << start_date')
+        print(end_date + ' << end_date')
+
+        print('===========++++++++++++============')
+
+        
+        if user_Role == 1:
+            Asset_data=Asset.objects.filter(is_active=0)
+        else:
+            Asset_data=Asset.objects.filter(is_active=0,P_id=P_id)
+        pbs_master_data = PBSMaster.objects.filter(is_active=0)
+        if FN_NAME == 'two':
+            if project != "all":
+                if Asset_data.filter(asset_type=lru_type,is_active=0).exists():
+                    Asset_data=Asset_data.filter(asset_type=lru_type) 
+                    pbs_master_data = pbs_master_data.filter(id=lru_type)
+                else:
+                    response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                    return JsonResponse(response)
+        elif FN_NAME == 'three':
+            if project != "all":
+                SUBSYSTEM=PBSMaster.objects.filter(project_id=project,is_active=0,system=system)
+                if not SUBSYSTEM.exists():
+                    response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                    return JsonResponse(response)
+                a=[]
+                for SUB in SUBSYSTEM:
+                    a.append(SUB.id)
+                Asset_data=Asset_data.filter(asset_type__in=a) 
+                pbs_master_data = pbs_master_data.filter(id__in=a)   
+        else:
+            if project != "all":
+                SUBSYSTEM=PBSMaster.objects.filter(project_id=project,is_active=0)
+                if not SUBSYSTEM.exists():
+                    response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                    return JsonResponse(response)
+                a=[]
+                for SUB in SUBSYSTEM:
+                    a.append(SUB.id)
+                Asset_data=Asset_data.filter(asset_type__in=a) 
+                pbs_master_data = pbs_master_data.filter(id__in=a)
+        if FN_NAME == 'two':
+            pbs_mtbf_value = pbs_master_data[0].MTBF
+        elif FN_NAME == 'three':
+            if Systems.objects.filter(project_id=project,System=system,is_active=0).exists():
+                D_MTBF = Systems.objects.filter(project_id=project,System=system,is_active=0) 
+                pbs_mtbf_value = D_MTBF[0].MTBF
+            else:
+                response = {'status':'2','data' : data, 'data1' : data1, 'scale':scale}
+                return JsonResponse(response)
+        else:
+            D_MTBF = Product.objects.filter(product_id=project) 
+            pbs_mtbf_value = D_MTBF[0].MTBF
+        # for pbs in pbs_master_data:
+        #     pbs_mtbf_value = pbs.MTBF
+        
+        for ASSET in Asset_data:
+            asset_types.append(ASSET.asset_type)
+        
+      
+        if (lru_type or asset_types) and asset_types!=['']: 
+
+            if mdbf_mdsaf == 'MDBF':
+
+                if lru_type and lru_type!="all":
+                    if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
+                        response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                        return JsonResponse(response)
+                else:
+                    if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
+                        response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                        return JsonResponse(response)
+            else:
+
+                if lru_type and lru_type!="all":
+                    if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+                        response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                        return JsonResponse(response)
+                else:
+                    if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+                        response = {'status':'1','data' : data, 'data1' : data1, 'scale':scale}
+                        return JsonResponse(response)
+
+
+            
+            if lru_type and lru_type!="all":
+                asset_data = Asset.objects.filter(asset_type=lru_type,is_active=0)
+            else:
+                asset_data = Asset.objects.filter(asset_type__in=asset_types,is_active=0)
+            if start_date and end_date : # coming start date and end date are used further calculation
+                formated_start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
+                formated_end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
+                # formated_start_date = datetime.strptime(start_date[:15], '%a %b %d %Y').date()
+                # formated_end_date = datetime.strptime(end_date[:15], '%a %b %d %Y').date()
+            else: # Took current year start date and end date are used further calculation
+                formated_start_date = (date.today() - offsets.YearBegin()).date()
+                formated_end_date = (date.today() + offsets.YearEnd()).date()
+            print(formated_start_date)
+            print(formated_end_date)
+            number_of_days = (formated_end_date-formated_start_date).days
+            print(number_of_days)
+            
+            # To get scale dates. If number of days greater than 150days scales took as months and otherwise took as weeks
+            first_week_day = formated_start_date.weekday()
+            first_week_sunday = formated_start_date + timedelta(days=(5-first_week_day))
+            second_week_start_date = first_week_sunday + timedelta(days=1)
+            # number_of_days = (formated_end_date-second_week_start_date).days
+            if number_of_days % 7 == 0:
+                weeks = number_of_days//7 
+            else:
+                weeks = number_of_days/7
+            if type(weeks)==float:
+                week_number = int(weeks) + 2
+            else:
+                week_number = weeks + 1
+            
+            # to get week end date
+            week_end_date = second_week_start_date + timedelta(days=week_number*7)
+            asset_count = asset_data.count()
+            cum_actual_failure_count = 0
+            cum_daily_kilometer_reading = 0
+
+            if mdbf_mdsaf == 'MDBF':
+                if lru_type and lru_type!="all":
+                    Hightest_date_of_failure = FailureData.objects.filter(asset_config_id__asset_type=lru_type, is_active=0).exclude(failure_type='Other').order_by('-date')
+                else:
+                    Hightest_date_of_failure = FailureData.objects.filter(asset_config_id__asset_type__in=asset_types,is_active=0).exclude(failure_type='Other').order_by('-date')
+
+            else:
+
+                if lru_type and lru_type!="all":
+                    Hightest_date_of_failure = FailureData.objects.filter(asset_config_id__asset_type=lru_type, is_active=0,failure_category='SAF').exclude(failure_type='Other').order_by('-date')
+                else:
+                    Hightest_date_of_failure = FailureData.objects.filter(asset_config_id__asset_type__in=asset_types,is_active=0,failure_category='SAF').exclude(failure_type='Other').order_by('-date')
+
+
+            # print(Hightest_date_of_failure[0].date,'Hightest_date_of_failure')
+            Hightest_date_of_failure = str(Hightest_date_of_failure[0].date)
+            Hightest_date_of_failure = datetime.datetime.strptime(Hightest_date_of_failure, '%Y-%m-%d').strftime('%Y-%m-%d')
+
+            week_number = math.ceil(number_of_days / 7)
+            number_of_days_count_chk = number_of_days
+
+            print(number_of_days)
+            print(number_of_days / 7)
+            print(week_number)
+
+            print(f"asset_count: {asset_count}")
+            asset_quantity = pbs_master_data[0].asset_quantity
+
+            asset_quantity_new = Product.objects.filter(product_id=project)
+            asset_quantity = asset_quantity_new[0].num_of_trains
+
+            print(f"asset_quantity: {asset_quantity}")
+
+
+            findUnit = PBSUnit.objects.filter()
+            running_time = findUnit[0].running_time
+            num_of_days = findUnit[0].num_of_days
+
+            if number_of_days % 7 == 0:
+                week_number = week_number + 1
+                
+            for i in range(1, week_number+1):
+                if FN_NAME == 'one':
+                    lru_population_hours = (asset_quantity*running_time*num_of_days)*i # to get LRU Weekely Hours
+                else:
+                    lru_population_hours = (asset_quantity*running_time*num_of_days)*i # to get LRU Weekely Hours
+                actual_mtbf_value = 'null'
+                # to get start/end dates of current week
+
+             
+                if i == 1:
+                    week_start_date = formated_start_date
+                    if number_of_days_count_chk < 6:
+                        week_end_date = week_start_date + timedelta(days=number_of_days_count_chk) 
+                    else:
+                        week_end_date = week_start_date + timedelta(days=6) 
+                    number_of_days_count_chk = number_of_days_count_chk - 7
+                else:
+                    week_start_date = week_end_date + timedelta(days=1)
+                    if number_of_days_count_chk < 6:
+                        week_end_date = week_start_date + timedelta(days=number_of_days_count_chk) 
+                    else:
+                        week_end_date = week_start_date + timedelta(days=6)  
+                    number_of_days_count_chk = number_of_days_count_chk - 7
+            
+
+              
+                failure_count = 0
+                if lru_type and lru_type!="all":
+                    failure_count = FailureData.objects.filter(asset_config_id__asset_type=lru_type, date__range=[week_start_date,week_end_date],is_active=0).exclude(failure_type='Other').count()
+                else:
+                    failure_count = FailureData.objects.filter(asset_config_id__asset_type__in=asset_types, date__range=[week_start_date,week_end_date],is_active=0).exclude(failure_type='Other').count()
+                
+                if failure_count != 0:
+                    cum_actual_failure_count = cum_actual_failure_count+failure_count
+
+                
+
+                # print(week_start_date,'week_start_date')
+                week_end_date1 = datetime.datetime.strptime(str(week_end_date), '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
+                # print(Hightest_date_of_failure,'Hightest_date_of_failure')
+                print(f"start date: {week_start_date} to end date: {week_end_date}")
+                # print(f"{week_start_date} - fc: {failure_count} - cfc: {cum_actual_failure_count} - coh: {lru_population_hours} - MTBF: {actual_mtbf_value}")
+
+                total_kilometer_reading = self.fetchTotalKilometer(week_start_date,week_end_date)
+
+                print(f"total_kilometer_reading: {total_kilometer_reading}")
+
+                if total_kilometer_reading != 0:
+                    cum_daily_kilometer_reading = float(cum_daily_kilometer_reading) + float(total_kilometer_reading)
+
+                print(f"cum_daily_kilometer_reading: {cum_daily_kilometer_reading}")
+
+                if cum_actual_failure_count != 0:
+                    actual_mtbf_value = round(cum_daily_kilometer_reading/cum_actual_failure_count,2)
+               
+
+
+                # findUnit = PBSUnit.objects.filter()
+                if findUnit[0].chk_average_speed == 1:
+                    if actual_mtbf_value != 'null':
+                        actual_mtbf_value = float(actual_mtbf_value) * float(findUnit[0].average_speed)
+                    pbs_mtbf_val = float(pbs_mtbf_value) * float(findUnit[0].average_speed)
+                else:
+                    pbs_mtbf_val = pbs_mtbf_value
+
+                # if week_end_date1 < Hightest_date_of_failure or failure_count != 0 :
+                    
+                #     if findUnit[0].MTBFMTBSAF == 'days':
+                #         if actual_mtbf_value != 'null':
+                #             actual_mtbf_value = round(actual_mtbf_value/24,2)                        
+                #     elif findUnit[0].MTBFMTBSAF == 'mins':
+                #         if actual_mtbf_value != 'null':
+                #             actual_mtbf_value = actual_mtbf_value *60
+                #     else:
+                #         actual_mtbf_value = actual_mtbf_value
+                # else:
+                #     actual_mtbf_value = 'null'
+
+                if findUnit[0].MTBFMTBSAF == 'days':
+                    if actual_mtbf_value != 'null':
+                        actual_mtbf_value = round(actual_mtbf_value/24,2)                        
+                elif findUnit[0].MTBFMTBSAF == 'mins':
+                    if actual_mtbf_value != 'null':
+                        actual_mtbf_value = actual_mtbf_value *60
+                else:
+                    actual_mtbf_value = actual_mtbf_value
+
+                if actual_mtbf_value != 'null':
+                    actual_mtbf_value = round(actual_mtbf_value)
+
+                data.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':actual_mtbf_value})
+                data1.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':pbs_mtbf_val})
+           
+        else:
+            data=[]
+        # print(data)
+        print(f"pbs_mtbf_value: {pbs_mtbf_value}")
+        response = {'data' : data, 'data1' : data1, 'scale':scale}
+        return JsonResponse(response)
+
+    def fetchTotalKilometer(self,week_start_date,week_end_date):
+        total_kilometer = 0
+
+        KilometreReadingDatas = KilometreReading.objects.filter(date__range=[week_start_date,week_end_date])
+        # print(KilometreReadingDatas)
+        for jb in KilometreReadingDatas:
+            run_date = jb.date
+            # print(f"run_date: {run_date}")
+
+            previous_record = KilometreReading.objects.filter(date__lt=run_date).order_by('-date').first()
+
+            if previous_record:
+                # print('Previous record exists:', previous_record)
+                record = KilometreReading.objects.filter(date__lt=run_date).order_by('-date').first()
+                if record:
+                    dail_jb = record
+                else:
+                    dail_jb = jb
+            else:
+                dail_jb = jb
+
+            total_kilometer = total_kilometer + self.calculate_total_kilometer(jb, dail_jb)
+
+
+        return total_kilometer
+
+    def calculate_total_kilometer(self, jb, dail_jb, start=0, end=34):
+        """
+        Calculate total kilometers from ts01_tkm to ts34_tkm fields.
+
+        Args:
+            jb (object or dict): Current day kilometer readings.
+            dail_jb (object or dict): Previous day kilometer readings.
+            start (int): Start index (default 1).
+            end (int): End index (default 34).
+
+        Returns:
+            int: Total kilometers for all tsXX_tkm fields.
+        """
+        total_kilometer = 0
+
+        for i in range(start, end + 1):
+            field = f"ts{i:02d}_tkm"   # formats like ts01_tkm, ts02_tkm ... ts34_tkm
+
+            # Support both dicts and objects
+            jb_val = jb[field] if isinstance(jb, dict) else getattr(jb, field, 0)
+            dail_val = dail_jb[field] if isinstance(dail_jb, dict) else getattr(dail_jb, field, 0)
+
+            daily_diff = float(jb_val) - float(dail_val)
+            total_kilometer += daily_diff
+
+        return total_kilometer
