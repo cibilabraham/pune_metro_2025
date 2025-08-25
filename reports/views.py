@@ -3219,20 +3219,41 @@ class MTBFvsTimeDailyKilometreReadingReportView(View):
                     a.append(SUB.id)
                 Asset_data=Asset_data.filter(asset_type__in=a) 
                 pbs_master_data = pbs_master_data.filter(id__in=a)
-        if FN_NAME == 'two':
-            pbs_mtbf_value = pbs_master_data[0].MTBF
-        elif FN_NAME == 'three':
-            if Systems.objects.filter(project_id=project,System=system,is_active=0).exists():
-                D_MTBF = Systems.objects.filter(project_id=project,System=system,is_active=0) 
-                pbs_mtbf_value = D_MTBF[0].MTBF
+
+        if mdbf_mdsaf == 'MDBF':
+
+
+            if FN_NAME == 'two':
+                pbs_mtbf_value = pbs_master_data[0].MTBF
+            elif FN_NAME == 'three':
+                if Systems.objects.filter(project_id=project,System=system,is_active=0).exists():
+                    D_MTBF = Systems.objects.filter(project_id=project,System=system,is_active=0) 
+                    pbs_mtbf_value = D_MTBF[0].MTBF
+                else:
+                    response = {'status':'2','data' : data, 'data1' : data1, 'scale':scale}
+                    return JsonResponse(response)
             else:
-                response = {'status':'2','data' : data, 'data1' : data1, 'scale':scale}
-                return JsonResponse(response)
+                D_MTBF = Product.objects.filter(product_id=project) 
+                pbs_mtbf_value = D_MTBF[0].MTBF
+            # for pbs in pbs_master_data:
+            #     pbs_mtbf_value = pbs.MTBF
+
         else:
-            D_MTBF = Product.objects.filter(product_id=project) 
-            pbs_mtbf_value = D_MTBF[0].MTBF
-        # for pbs in pbs_master_data:
-        #     pbs_mtbf_value = pbs.MTBF
+
+            if FN_NAME == 'two':
+                pbs_mtbf_value = pbs_master_data[0].MTBSAF
+            elif FN_NAME == 'three':
+                if Systems.objects.filter(project_id=project,System=system,is_active=0).exists():
+                    D_MTBF = Systems.objects.filter(project_id=project,System=system,is_active=0) 
+                    pbs_mtbf_value = D_MTBF[0].MTBSAF
+                else:
+                    response = {'status':'2','data' : data, 'data1' : data1, 'scale':scale}
+                    return JsonResponse(response)
+            else:
+                D_MTBF = Product.objects.filter(product_id=project) 
+                pbs_mtbf_value = D_MTBF[0].MTBSAF
+            # for pbs in pbs_master_data:
+            #     pbs_mtbf_value = pbs.MTBF
         
         for ASSET in Asset_data:
             asset_types.append(ASSET.asset_type)
@@ -3493,3 +3514,351 @@ class MTBFvsTimeDailyKilometreReadingReportView(View):
             total_kilometer += daily_diff
 
         return total_kilometer
+
+
+
+class AvailabilityDailyKilometreReadingReportView(View):
+    template_name = 'daily_kilometer_availability.html'
+
+    def convert_month_year_to_range(self, start_str, end_str):
+        # split input "MM/YYYY"
+        start_month, start_year = map(int, start_str.split("/"))
+        end_month, end_year = map(int, end_str.split("/"))
+
+        # first date of start month
+        start_date = date(start_year, start_month, 1)
+
+        # last date of end month
+        last_day = calendar.monthrange(end_year, end_month)[1]
+        end_date = date(end_year, end_month, last_day)
+
+        return start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
+
+    def get_month_ranges(self, start_date_str, end_date_str):
+        # Convert input strings to date objects
+        start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d").date()
+        end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d").date()
+
+        # First day of start month
+        current = date(start_date.year, start_date.month, 1)
+
+        month_ranges = []
+
+        while current <= end_date:
+            # Last day of this month
+            last_day = calendar.monthrange(current.year, current.month)[1]
+            month_end = date(current.year, current.month, last_day)
+
+            # Clip month_end if it goes beyond end_date
+            if month_end > end_date:
+                month_end = end_date
+
+            month_ranges.append((current, month_end))
+
+            # Move to first day of next month
+            if current.month == 12:
+                current = date(current.year + 1, 1, 1)
+            else:
+                current = date(current.year, current.month + 1, 1)
+
+        return month_ranges
+
+    def fetchTotalKilometer(self,week_start_date,week_end_date):
+        total_kilometer = 0
+
+        KilometreReadingDatas = KilometreReading.objects.filter(date__range=[week_start_date,week_end_date])
+        # print(KilometreReadingDatas)
+        for jb in KilometreReadingDatas:
+            run_date = jb.date
+            # print(f"run_date: {run_date}")
+
+            previous_record = KilometreReading.objects.filter(date__lt=run_date).order_by('-date').first()
+
+            if previous_record:
+                # print('Previous record exists:', previous_record)
+                record = KilometreReading.objects.filter(date__lt=run_date).order_by('-date').first()
+                if record:
+                    dail_jb = record
+                else:
+                    dail_jb = jb
+            else:
+                dail_jb = jb
+
+            total_kilometer = total_kilometer + self.calculate_total_kilometer(jb, dail_jb)
+
+
+        return total_kilometer
+
+    def calculate_total_kilometer(self, jb, dail_jb, start=0, end=34):
+        """
+        Calculate total kilometers from ts01_tkm to ts34_tkm fields.
+
+        Args:
+            jb (object or dict): Current day kilometer readings.
+            dail_jb (object or dict): Previous day kilometer readings.
+            start (int): Start index (default 1).
+            end (int): End index (default 34).
+
+        Returns:
+            int: Total kilometers for all tsXX_tkm fields.
+        """
+        total_kilometer = 0
+
+        for i in range(start, end + 1):
+            field = f"ts{i:02d}_tkm"   # formats like ts01_tkm, ts02_tkm ... ts34_tkm
+
+            # Support both dicts and objects
+            jb_val = jb[field] if isinstance(jb, dict) else getattr(jb, field, 0)
+            dail_val = dail_jb[field] if isinstance(dail_jb, dict) else getattr(dail_jb, field, 0)
+
+            daily_diff = float(jb_val) - float(dail_val)
+            total_kilometer += daily_diff
+
+        return total_kilometer
+
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+        if user_Role == 1:
+            project = Product.objects.filter(is_active=0)
+        else:
+            project = Product.objects.filter(product_id=P_id,is_active=0)
+        return render(request, self.template_name, {'project' : project})
+    
+    def post(self, request, *args, **kwargs):
+        req = request.POST
+        project = req.get('project')
+        system = req.get('system')
+        sub_system = req.get('sub_system')
+        FN_NAME = req.get('FN_NAME')
+        product_id = req.get('product_id')
+        lru_type = req.get('lru_type')
+
+        dt_sc = req.get('dt_sc')
+        dt_opm = req.get('dt_opm')
+        dt_cm = req.get('dt_cm')
+
+        mdbf_mdsaf = req.get('mdbf_mdsaf')
+        
+        Avalability_data=[]
+        availability_target_data=[]
+        week_scale=[]
+        scale = []
+        asset_types = []
+        pbs_asset_types = []
+
+        
+
+        if req.get('start_date') !="" and req.get('end_date') !="":
+            first_date_str, last_date_str = self.convert_month_year_to_range(req.get('start_date'), req.get('end_date'))
+        else:
+            today = date.today()
+            first_date = date(today.year, 1, 1)
+            last_day = calendar.monthrange(today.year, today.month)[1]  # get last day of month
+            last_date = date(today.year, today.month, last_day)
+
+            first_date_str = first_date.strftime("%Y-%m-%d")
+            last_date_str = last_date.strftime("%Y-%m-%d")
+
+        print("First date of year:", first_date_str)
+        print("Last date of current month:", last_date_str)
+
+        start_date = first_date_str
+        end_date = last_date_str
+
+        pbs_mtbf_value = 0
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+
+        if user_Role == 1:
+            Asset_data=Asset.objects.filter(is_active=0)
+        else:
+            Asset_data=Asset.objects.filter(is_active=0,P_id=P_id)
+        pbs_master_data = PBSMaster.objects.filter(is_active=0)
+
+
+
+        print('======== Availability time View ')
+        
+        # if req.get('start_date') !="" and req.get('end_date') !="":
+        #     start_date = datetime.datetime.strptime(req.get('start_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        #     end_date = datetime.datetime.strptime(req.get('end_date'), '%d/%m/%Y').strftime('%Y-%m-%d')
+        # else:
+        #     start_date = req.get('start_date')
+        #     end_date = req.get('end_date')
+        
+        
+        
+        
+        if FN_NAME == 'two':
+            if project != "all":
+                if Asset_data.filter(asset_type=lru_type,is_active=0).exists():
+                    Asset_data=Asset_data.filter(asset_type=lru_type)
+                    pbs_master_data = pbs_master_data.filter(id=lru_type)
+                else:
+                    response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                    return JsonResponse(response)    
+        elif FN_NAME == 'three':
+            if project != "all":
+                SUBSYSTEM=PBSMaster.objects.filter(project_id=project,is_active=0,system=system)
+                if not SUBSYSTEM.exists():
+                    response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                    return JsonResponse(response)
+                a=[]
+                for SUB in SUBSYSTEM:
+                    a.append(SUB.id)
+                Asset_data=Asset_data.filter(asset_type__in=a) 
+                pbs_master_data = pbs_master_data.filter(id__in=a)
+        else:
+            if project != "all":
+                SUBSYSTEM=PBSMaster.objects.filter(project_id=project,is_active=0)
+                if not SUBSYSTEM.exists():
+                    response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                    return JsonResponse(response)
+                a=[]
+                for SUB in SUBSYSTEM:
+                    a.append(SUB.id)
+                Asset_data=Asset_data.filter(asset_type__in=a) 
+                pbs_master_data = pbs_master_data.filter(id__in=a)
+                
+        if FN_NAME == 'two':
+            availability_target = pbs_master_data[0].availability_target
+        elif FN_NAME == 'three':
+            if Systems.objects.filter(project_id=project,System=system,is_active=0).exists():
+                D_availability_target = Systems.objects.filter(project_id=project,System=system,is_active=0) 
+                availability_target = D_availability_target[0].availability_target
+            else:
+                response = {'status':'2','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                return JsonResponse(response)
+        else:
+            D_availability_target = Product.objects.filter(product_id=project) 
+            availability_target = D_availability_target[0].availability_target
+            
+        for ASSET in Asset_data:
+            asset_types.append(ASSET.asset_type)
+
+            
+        if (lru_type or asset_types) and asset_types!=['']:
+
+            if mdbf_mdsaf == 'MDBF':
+
+                if lru_type and lru_type!="all":
+                    if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
+                        response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                        return JsonResponse(response)
+                else:
+                    if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
+                        response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                        return JsonResponse(response)
+                    
+                if lru_type and lru_type!="all":
+                    if FailureData.objects.filter(asset_type=lru_type,is_active=0).exclude(failure_type='Other').exists():
+                        all_failure = FailureData.objects.filter(asset_type=lru_type,is_active=0).exclude(failure_type='Other')
+                        asset_count = Asset.objects.filter(asset_type=lru_type,is_active=0).count()
+                    else:
+                        response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                        return JsonResponse(response)
+                else:
+                    if FailureData.objects.filter(asset_type__in=asset_types,is_active=0).exclude(failure_type='Other').exists():
+                        all_failure = FailureData.objects.filter(asset_type__in=asset_types,is_active=0).exclude(failure_type='Other')
+                        asset_count = Asset.objects.filter(asset_type__in=asset_types,is_active=0).count()
+                    else:
+                        response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                        return JsonResponse(response)
+
+            else:
+
+                if lru_type and lru_type!="all":
+                    if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+                        response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                        return JsonResponse(response)
+                else:
+                    if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+                        response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                        return JsonResponse(response)
+                    
+                if lru_type and lru_type!="all":
+                    if FailureData.objects.filter(asset_type=lru_type,is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+                        all_failure = FailureData.objects.filter(asset_type=lru_type,is_active=0,failure_category='SAF').exclude(failure_type='Other')
+                        asset_count = Asset.objects.filter(asset_type=lru_type,is_active=0).count()
+                    else:
+                        response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                        return JsonResponse(response)
+                else:
+                    if FailureData.objects.filter(asset_type__in=asset_types,is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+                        all_failure = FailureData.objects.filter(asset_type__in=asset_types,is_active=0,failure_category='SAF').exclude(failure_type='Other')
+                        asset_count = Asset.objects.filter(asset_type__in=asset_types,is_active=0).count()
+                    else:
+                        response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                        return JsonResponse(response)
+            
+            print(f"asset_count = {asset_count}")
+
+            asset_quantity = pbs_master_data[0].asset_quantity
+
+            asset_quantity_new = Product.objects.filter(product_id=project)
+            asset_quantity = asset_quantity_new[0].num_of_trains
+
+            print(f"asset_quantity: {asset_quantity}")
+
+            ranges = self.get_month_ranges(start_date,end_date)
+
+            cum_operation_hr = 0
+
+            for start, end in ranges:
+                print(f"Start: {start} , End: {end}")
+                operation_hr = self.fetchTotalKilometer(start,end)
+                print(f"operation_hr: {operation_hr}")
+
+                if operation_hr != 0 and operation_hr != '0':
+                    cum_operation_hr = float(cum_operation_hr) + float(operation_hr)
+
+                if cum_operation_hr == 0 or cum_operation_hr == '0':
+                    response = {'status':'3','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+                    return JsonResponse(response)
+
+                print(f"cum_operation_hr: {cum_operation_hr}")
+
+
+                handing_over_time_to_repair_hrs = 0
+
+                if mdbf_mdsaf == 'MDBF':
+                    if lru_type and lru_type!="all":
+                        failure_dt = FailureData.objects.filter(asset_type=lru_type,is_active=0,date__range=[start,end]).exclude(failure_type='Other')
+                    else:
+                        failure_dt = FailureData.objects.filter(asset_type__in=asset_types,is_active=0,date__range=[start,end]).exclude(failure_type='Other')
+                else:
+                    if lru_type and lru_type!="all":
+                        failure_dt = FailureData.objects.filter(asset_type=lru_type,is_active=0,date__range=[start,end],failure_category='SAF').exclude(failure_type='Other')
+                    else:
+                        failure_dt = FailureData.objects.filter(asset_type__in=asset_types,is_active=0,date__range=[start,end],failure_category='SAF').exclude(failure_type='Other')
+
+                if failure_dt:
+                    for fd in failure_dt:
+                        failure_id = fd.failure_id
+                        if JobCard.objects.filter(failure_id=fd).exists():
+                            JobCardDatas = JobCard.objects.filter(failure_id=fd)
+                            down_time = JobCardDatas[0].down_time
+                            # print(f"down_time: {down_time}")
+                            if down_time != "" and down_time != None:
+                                handing_over_time_to_repair_hrs = int(handing_over_time_to_repair_hrs) + int(down_time)
+
+
+                print(f"handing_over_time_to_repair_hrs: {handing_over_time_to_repair_hrs}")
+                Availability = ( 1 - ( ( float(handing_over_time_to_repair_hrs) + float(dt_sc) + float(dt_opm) + float(dt_cm) ) / float(cum_operation_hr) )) * 100
+                print(f"Availability: {Availability}")
+
+                Avalability_data.append({'x':start.strftime('%Y-%m-%d'), 'y':round(Availability,2),})
+                availability_target_data.append({'x':start.strftime('%Y-%m-%d'), 'y':round(availability_target,2),})
+                week_scale.append(str(start.strftime('%Y-%m-%d')))
+
+
+            response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+            return JsonResponse(response)
+
+

@@ -482,7 +482,7 @@ html2canvas(tableElement, {
         var product_id = 'all'
         var startDate = $('#startDate').val() ;
         var endDate = $('#endDate').val() ;
-        var mdbf_mdsaf = $('#mdbf_mdsaf').val() ;
+        var mdbf_mdsaf = $('select[name=mdbf_mdsaf] option').filter(':selected').val()
         if(mdbf_mdsaf == 'MDBF'){
             display_val = 'MDBF';                
         }else{
