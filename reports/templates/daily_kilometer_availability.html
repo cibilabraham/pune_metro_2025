@@ -169,6 +169,11 @@
                 </div>
             </div>
 
+
+             <div id="tableContainer">
+                <!-- Table will be dynamically created and appended here -->
+            </div>
+
 {% endblock sb_admin_content %}
 {% block sb_admin_js %}
 <script>
@@ -359,6 +364,10 @@
 
 
     function getChartData2(FN_NAME){
+
+        document.getElementById("tableContainer").innerHTML = '';
+
+
         $("#canvasDiv").html('<canvas id="mtbfChart" width="100%" height="30" style="background-color:#fff"></canvas>');
         showloader();
         var project= $('select[name=project] option').filter(':selected').val()
@@ -433,9 +442,98 @@
           });
     }
 
+
+
+    function generateTable(jsonData) {
+    // Create the table element
+    var table = document.createElement("table");
+    table.id = "dataTable"; // Set the table ID
+    table.className = "table stripe row-border order-column table-bordered";
+    table.style.width = "100%";
+    
+    // Create the table head
+    var thead = document.createElement("thead");
+    var headerRow = document.createElement("tr");
+
+    // Create header cells
+    var dateHeader = document.createElement("th");
+    dateHeader.textContent = "Date";
+    var cumMTBFHeader = document.createElement("th");
+    cumMTBFHeader.textContent = "Avaiability ";
+    var mtbfTargetHeader = document.createElement("th");
+    mtbfTargetHeader.textContent = "Availability Targets";
+
+    // Append header cells to the header row
+    headerRow.appendChild(dateHeader);
+    headerRow.appendChild(cumMTBFHeader);
+    headerRow.appendChild(mtbfTargetHeader);
+
+    // Append the header row to the thead
+    thead.appendChild(headerRow);
+
+    // Create the table body
+    var tbody = document.createElement("tbody");
+    tbody.id = "tableBody"; // Set the table body ID
+
+    // Loop through the data and create table rows
+    for (var i = 0; i < jsonData.Avaiability.length; i++) {
+        var x = jsonData.Avaiability[i].x;
+        var yCumMTBF = jsonData.Avaiability[i].y;
+        var yMTBFTarget = jsonData.availability_targets[i].y;
+
+        var inputDate = x;  
+        var dateObj = new Date(inputDate);  
+
+        // Format to "Jun 2025"
+        var formattedDate = dateObj.toLocaleString("en-US", { month: "short", year: "numeric" });  
+
+        // Create a new row
+        var row = document.createElement("tr");
+
+        // Create cells for each piece of data
+        var dateCell = document.createElement("td");
+        var cumMTBFCell = document.createElement("td");
+        var mtbfTargetCell = document.createElement("td");
+
+        // Set the text content of the cells
+        dateCell.textContent = formattedDate;
+        cumMTBFCell.textContent = yCumMTBF;
+        mtbfTargetCell.textContent = yMTBFTarget;
+
+        // Append cells to the row
+        row.appendChild(dateCell);
+        row.appendChild(cumMTBFCell);
+        row.appendChild(mtbfTargetCell);
+
+        // Append the row to the table body
+        tbody.appendChild(row);
+    }
+
+    // Append the thead and tbody to the table
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+    // Append the table to the div (with id "tableContainer")
+    document.getElementById("tableContainer").innerHTML = ''; // Clear any previous content in the container
+    document.getElementById("tableContainer").appendChild(table);
+
+    // Reinitialize the DataTable with new settings
+    $('#dataTable').DataTable({
+        paging: false,  // Disable pagination
+        searching: false,  // Disable searching
+        info: false,  // Disable information display
+        destroy: true , // Allow destroying existing DataTable to reinitialize
+        ordering: false,     // Disable column sorting
+    });
+}
+
+   
+
   
 
     function getChart(chartData){
+
+        generateTable(chartData);
 
         var system= $('select[name=system] option').filter(':selected').val()
         if(system == "all"){
