@@ -3296,10 +3296,10 @@ class MTBFvsTimeDailyKilometreReadingReportView(View):
             else: # Took current year start date and end date are used further calculation
                 formated_start_date = (date.today() - offsets.YearBegin()).date()
                 formated_end_date = (date.today() + offsets.YearEnd()).date()
-            print(formated_start_date)
-            print(formated_end_date)
+            # print(formated_start_date)
+            # print(formated_end_date)
             number_of_days = (formated_end_date-formated_start_date).days
-            print(number_of_days)
+            # print(number_of_days)
             
             # To get scale dates. If number of days greater than 150days scales took as months and otherwise took as weeks
             first_week_day = formated_start_date.weekday()
@@ -3342,17 +3342,17 @@ class MTBFvsTimeDailyKilometreReadingReportView(View):
             week_number = math.ceil(number_of_days / 7)
             number_of_days_count_chk = number_of_days
 
-            print(number_of_days)
-            print(number_of_days / 7)
-            print(week_number)
+            # print(number_of_days)
+            # print(number_of_days / 7)
+            # print(week_number)
 
-            print(f"asset_count: {asset_count}")
+            # print(f"asset_count: {asset_count}")
             asset_quantity = pbs_master_data[0].asset_quantity
 
             asset_quantity_new = Product.objects.filter(product_id=project)
             asset_quantity = asset_quantity_new[0].num_of_trains
 
-            print(f"asset_quantity: {asset_quantity}")
+            # print(f"asset_quantity: {asset_quantity}")
 
 
             findUnit = PBSUnit.objects.filter()
@@ -3389,10 +3389,16 @@ class MTBFvsTimeDailyKilometreReadingReportView(View):
 
               
                 failure_count = 0
-                if lru_type and lru_type!="all":
-                    failure_count = FailureData.objects.filter(asset_config_id__asset_type=lru_type, date__range=[week_start_date,week_end_date],is_active=0).exclude(failure_type='Other').count()
+                if mdbf_mdsaf == 'MDBF':
+                    if lru_type and lru_type!="all":
+                        failure_count = FailureData.objects.filter(asset_config_id__asset_type=lru_type, date__range=[week_start_date,week_end_date],is_active=0).exclude(failure_type='Other').count()
+                    else:
+                        failure_count = FailureData.objects.filter(asset_config_id__asset_type__in=asset_types, date__range=[week_start_date,week_end_date],is_active=0).exclude(failure_type='Other').count()
                 else:
-                    failure_count = FailureData.objects.filter(asset_config_id__asset_type__in=asset_types, date__range=[week_start_date,week_end_date],is_active=0).exclude(failure_type='Other').count()
+                    if lru_type and lru_type!="all":
+                        failure_count = FailureData.objects.filter(asset_config_id__asset_type=lru_type, date__range=[week_start_date,week_end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').count()
+                    else:
+                        failure_count = FailureData.objects.filter(asset_config_id__asset_type__in=asset_types, date__range=[week_start_date,week_end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').count()
                 
                 if failure_count != 0:
                     cum_actual_failure_count = cum_actual_failure_count+failure_count
@@ -3402,17 +3408,17 @@ class MTBFvsTimeDailyKilometreReadingReportView(View):
                 # print(week_start_date,'week_start_date')
                 week_end_date1 = datetime.datetime.strptime(str(week_end_date), '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
                 # print(Hightest_date_of_failure,'Hightest_date_of_failure')
-                print(f"start date: {week_start_date} to end date: {week_end_date}")
+                # print(f"start date: {week_start_date} to end date: {week_end_date}")
                 # print(f"{week_start_date} - fc: {failure_count} - cfc: {cum_actual_failure_count} - coh: {lru_population_hours} - MTBF: {actual_mtbf_value}")
 
                 total_kilometer_reading = self.fetchTotalKilometer(week_start_date,week_end_date)
 
-                print(f"total_kilometer_reading: {total_kilometer_reading}")
+                # print(f"total_kilometer_reading: {total_kilometer_reading}")
 
                 if total_kilometer_reading != 0:
                     cum_daily_kilometer_reading = float(cum_daily_kilometer_reading) + float(total_kilometer_reading)
 
-                print(f"cum_daily_kilometer_reading: {cum_daily_kilometer_reading}")
+                # print(f"cum_daily_kilometer_reading: {cum_daily_kilometer_reading}")
 
                 if cum_actual_failure_count != 0:
                     actual_mtbf_value = round(cum_daily_kilometer_reading/cum_actual_failure_count,2)
@@ -3451,6 +3457,8 @@ class MTBFvsTimeDailyKilometreReadingReportView(View):
 
                 if actual_mtbf_value != 'null':
                     actual_mtbf_value = round(actual_mtbf_value)
+
+                print(f"start date: {week_start_date}, end date: {week_end_date}, failure_count: {failure_count}, cum_actual_failure_count: {cum_actual_failure_count}, total_kilometer_reading:{total_kilometer_reading}, cum_daily_kilometer_reading:{cum_daily_kilometer_reading}, actual_mtbf_value:{actual_mtbf_value} ")
 
                 data.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':actual_mtbf_value})
                 data1.append({'x':week_start_date.strftime('%Y-%m-%d'), 'y':pbs_mtbf_value})
