@@ -40,6 +40,18 @@
              {% if request.session.user_Role == 1 or request.session.user_Role == 2 or request.session.user_Role == 3 or request.session.user_Role == 5 %}
             <div class="row ">
             <div class="col-lg-12 mb-5">
+
+
+                  {% comment %} {% if request.session.user_Role == 1 or request.session.user_Role == 2 %}        {% endcomment %}
+                <a href="/forms/kilometre_reading/importkilometre_reading/">  
+                    <button class="btn btn-primary btn-icon-split float-right m-2" >            
+                    <span class="text">Import Kilometre Readings </span>
+                    <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                    </span>
+                    </button>
+                </a>
+                {% comment %} {% endif %} {% endcomment %}
                 
                
                

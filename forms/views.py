@@ -8233,3 +8233,181 @@ class DwdNCR(View):
         return render(request, self.template_name,{'data':data ,'train_set_options':train_set_options,'Corrective_data':Corrective_data,'imageList':imageList })
 
        
+
+
+class ImportKilometreReadingForm(View):
+    template_name = 'importkilometre_reading.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        user_Role = request.session.get('user_Role')
+        if user_Role == 4:
+            return redirect('/dashboard/')
+        user_ID = request.session['user_ID']
+        temp_table_asset_register.objects.filter(updated_by=user_ID).delete()
+        return render(request, self.template_name,)
+    
+    
+    def post(self, request, *args, **kwargs):
+        user_ID = request.session['user_ID']
+        P_id = request.session['P_id']
+        user_Role = request.session.get('user_Role')
+        ExcelFile = request.FILES['import_assetRegister'] 
+        data=[]  
+        ExcelFile_name = ExcelFile.name
+        fn=ExcelFile_name.split('.')
+        df=fn[0]
+        count = 0
+        for a in df:
+            if (a.isspace()) == True:
+                count+=1
+        if count != 0:
+            message="Don't include space for the uploaded filename"
+            return render(request, self.template_name, {"message": message})
+        extension = os.path.splitext(ExcelFile_name)[-1].lower()
+        if extension=='.xlsx' or extension=='.xls':
+            fs = FileSystemStorage()
+            filename = fs.save('excelFile/'+ExcelFile.name, ExcelFile)
+            ExcelFileloc = fs.url(filename)
+           
+            # wb=xlrd.open_workbook('excelFile/imppbs_SFZqfeF.xlsx')
+            wb = xlrd.open_workbook(filename)
+            sheet = wb.sheet_by_index(0)
+            row_count = sheet.nrows
+            cols_count = sheet.ncols
+            # print(cols_count)
+            if(cols_count is not 35):
+                message='The excel file is not in the required format'
+                return render(request, self.template_name, {"message": message})
+
+
+            valid = False
+
+            if sheet.cell_value(0,0) != "Dates":
+                message="Invalid header: A1 must be 'Dates'"
+                return render(request, self.template_name, {"message": message})
+            else:
+                valid = True
+                # Loop B1 to AI1 (columns 2 to 35 → TS#01 to TS#34)
+                for col in range(1, 35):  # 2 = B, 35 = AI
+                    expected = f"TS#{col:02d}"  # TS#01, TS#02, ..., TS#34
+                    cell_value = sheet.cell_value(1,col)
+
+                    if cell_value != expected:
+                        message= f"Invalid header at column {col}: expected {expected}, got {cell_value}"
+                        valid = False
+                        return render(request, self.template_name, {"message": message})
+
+           
+            asset_type_array=[]
+
+            if valid :
+                # return render(request, self.template_name, {"message": 'required format'})
+
+                for row in range(2, row_count):
+                    date= sheet.cell_value(row,0)
+                    err_status = '1'
+
+                    date_err = '1'
+                
+                    if date == "":
+                        date_err = 'Empty'
+                    else:
+                        if type(date) == str:
+                            try:
+                                date1 = datetime.datetime.strptime(str(date), '%d-%m-%Y').date()
+                                date=datetime.datetime.strftime(date1, '%d-%m-%Y')
+                            except ValueError:
+                                message='Invalid Date format, should be (DD-MM-YYYY in string OR change cell format to date)  in row '+str(rowCountVar)
+                                return render(request, self.template_name, {"message": message})
+                        else:
+                            try:
+                                date1 = xlrd.xldate.xldate_as_datetime(date, wb.datemode)
+                                try:
+                                    date=datetime.datetime.strftime(date1, '%d-%m-%Y')
+                                except ValueError:
+                                    message='Invalid Date format in row '+str(rowCountVar)
+                                    return render(request, self.template_name, {"message": message})
+                                
+                            except ValueError:
+                                message='Invalid Date format in row '+str(rowCountVar)
+                                return render(request, self.template_name, {"message": message})
+
+                    row_data = {
+                        'id': row,
+                        'date': date,
+                        'date_err': date_err,
+                        'err_status': '1'
+                    }
+
+                    # Loop through TS01 → TS34 (columns 2 → 35)
+                    for col in range(1, 35):
+                        ts_key = f"TS{col:02d}"       # TS01, TS02, ..., TS34
+                        ts_err_key = f"{ts_key}_err"
+
+                        ts_value = sheet.cell_value(row,col)
+                        ts_err = '1' if ts_value not in (None, "") else 'Empty'
+
+                        row_data[ts_key] = ts_value
+                        row_data[ts_err_key] = ts_err
+
+                        if ts_err != '1':
+                            row_data['err_status'] = '0'  # mark error if any TS is empty
+
+                    if date_err != '1':
+                        row_data['err_status'] = '0'
+
+                    data.append(row_data)
+
+            else:
+                message='The excel file is not in the required format'
+                return render(request, self.template_name, {"message": message})
+        else:
+            message='The file selected is not excel document'
+            return render(request, self.template_name, {"message": message})
+        return render(request, self.template_name, {"data": data,"status":"1"})
+    
+   
+
+
+
+class AddImportKilometreReading(View):
+    template_name = 'importkilometre_reading.html'
+    
+    def post(self, request, *args, **kwargs):
+        req = self.request.POST
+        # ids = req.get('ids')        
+        user_ID = request.session['user_ID']
+        updated=0
+        inserted=0
+        ids=[int(x) for x in req.get('ids', '').split(',')]
+        datas= req.get('datas')
+        data=json.loads(datas)
+        if data !="":
+            for items in data:
+                itemId=items['id']
+                if itemId in ids:
+                    date = datetime.datetime.strptime(items['date'], '%d-%m-%Y').strftime('%Y-%m-%d')
+                    if KilometreReading.objects.filter(date=date).exists(): 
+                        KilometreReading.objects.filter(date=date).update(ts01_tkm=items['TS01'],ts02_tkm=items['TS02'],ts03_tkm=items['TS03'],ts04_tkm=items['TS04'],ts05_tkm=items['TS05'],ts06_tkm=items['TS06'],ts07_tkm=items['TS07'],ts08_tkm=items['TS08'],ts09_tkm=items['TS09'],ts10_tkm=items['TS10'],ts11_tkm=items['TS11'],ts12_tkm=items['TS12'],ts13_tkm=items['TS13'],ts14_tkm=items['TS14'],ts15_tkm=items['TS15'],ts16_tkm=items['TS16'],ts17_tkm=items['TS17'],ts18_tkm=items['TS18'],ts19_tkm=items['TS19'],ts20_tkm=items['TS20'],ts21_tkm=items['TS21'],ts22_tkm=items['TS22'],ts23_tkm=items['TS23'],ts24_tkm=items['TS24'],ts25_tkm=items['TS25'],ts26_tkm=items['TS26'],ts27_tkm=items['TS27'],ts28_tkm=items['TS28'],ts29_tkm=items['TS29'],ts30_tkm=items['TS30'],ts31_tkm=items['TS31'],ts32_tkm=items['TS32'],ts33_tkm=items['TS33'],ts34_tkm=items['TS34'])
+
+                        updated+=1
+
+                    else:
+                        j = KilometreReading(date=date,ts01_tkm=items['TS01'],ts02_tkm=items['TS02'],ts03_tkm=items['TS03'],ts04_tkm=items['TS04'],ts05_tkm=items['TS05'],ts06_tkm=items['TS06'],ts07_tkm=items['TS07'],ts08_tkm=items['TS08'],ts09_tkm=items['TS09'],ts10_tkm=items['TS10'],ts11_tkm=items['TS11'],ts12_tkm=items['TS12'],ts13_tkm=items['TS13'],ts14_tkm=items['TS14'],ts15_tkm=items['TS15'],ts16_tkm=items['TS16'],ts17_tkm=items['TS17'],ts18_tkm=items['TS18'],ts19_tkm=items['TS19'],ts20_tkm=items['TS20'],ts21_tkm=items['TS21'],ts22_tkm=items['TS22'],ts23_tkm=items['TS23'],ts24_tkm=items['TS24'],ts25_tkm=items['TS25'],ts26_tkm=items['TS26'],ts27_tkm=items['TS27'],ts28_tkm=items['TS28'],ts29_tkm=items['TS29'],ts30_tkm=items['TS30'],ts31_tkm=items['TS31'],ts32_tkm=items['TS32'],ts33_tkm=items['TS33'],ts34_tkm=items['TS34'])
+                        j.save()
+
+                        inserted+=1
+
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        FindUser = UserProfile.objects.filter(user_id=user_ID)
+        now = datetime.datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        meg ="Insert "+str(inserted)+" record and Update "+str(updated)+" record to Daily Kilometre Reading"
+        h = history(user_id=FindUser[0].id,P_id=P_id,date=datetime.date.today(),time=current_time,message=meg,function_name="Import Daily Kilometre Reading")
+        h.save()
+        return JsonResponse({'status':'1','inserted': inserted,'updated': updated})
+   
+   
