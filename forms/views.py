@@ -3200,7 +3200,7 @@ class ImportFailureData(View):
             # return render(request, self.template_name, {"message": B1})
             asset_type_array=[]
 
-            if(A1=='Failure ID' and B1=='Depot Location' and C1=='Failure Reported Date' and D1=='Failure Reported Time' and E1=='Train Set No' and F1=='CAR No' and G1=='System' and H1=='Subsytem' and I1=='Equipment' and J1=='Failure Location' and K1=='Failure description' and L1=='Immediate investigation' and M1=='Failure Category' and N1=='Category of Failure' and O1=='No. of Trips Cancelled' and P1=='Deboarding' and Q1=='Revenue Service Delay' and R1=='Failure type' and S1=='Asset Name' and T1=='Asset config id' ):
+            if(A1=='Failure ID' and B1=='Depot Location' and C1=='Failure Reported Date (DD-MM-YYYY)' and D1=='Failure Reported Time (HH:MM:SS)' and E1=='Train Set No' and F1=='CAR No' and G1=='System' and H1=='Subsytem' and I1=='Equipment' and J1=='Failure Location' and K1=='Failure description' and L1=='Immediate investigation' and M1=='Failure Category' and N1=='Category of Failure' and O1=='No. of Trips Cancelled' and P1=='Deboarding' and Q1=='Revenue Service Delay (mins)' and R1=='Failure type' and S1=='Asset Name' and T1=='Asset config id' ):
                 # return render(request, self.template_name, {"message": 'required format'})
                 print('------COMPLETE VALIDATION ______') 
                 rowCountVar = 0
