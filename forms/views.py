@@ -3213,7 +3213,15 @@ class ImportFailureData(View):
                     dept_location = sheet.cell_value(row,1)
                     date= sheet.cell_value(row,2)
                     time = sheet.cell_value(row,3)
-                    location_id = sheet.cell_value(row,4).strip()
+
+                    cell_val = sheet.cell_value(row, 4)
+                    if isinstance(cell_val, str):
+                        location_id = cell_val.strip()
+                    else:
+                        location_id = str(cell_val).strip()
+
+
+                    # location_id = sheet.cell_value(row,4).strip()
                     sel_car = sheet.cell_value(row,5)
                     system = sheet.cell_value(row,6)
                     subsytem = sheet.cell_value(row,7)
@@ -3222,11 +3230,23 @@ class ImportFailureData(View):
                     event_description = sheet.cell_value(row,10)
                     immediate_investigation = sheet.cell_value(row,11)
                     category_of_failure = sheet.cell_value(row,12)
-                    failure_category = sheet.cell_value(row,13).strip()
+
+                    cell_val = sheet.cell_value(row, 13)
+                    if isinstance(cell_val, str):
+                        failure_category = cell_val.strip()
+                    else:
+                        failure_category = str(cell_val).strip()
+                    # failure_category = sheet.cell_value(row,13).strip()
                     no_of_trip_cancel = sheet.cell_value(row,14)
                     deboarding = sheet.cell_value(row,15)
                     revenue_service_delay = sheet.cell_value(row,16)
-                    failure_type = sheet.cell_value(row,17).strip()
+
+                    cell_val = sheet.cell_value(row, 17)
+                    if isinstance(cell_val, str):
+                        failure_type = cell_val.strip()
+                    else:
+                        failure_type = str(cell_val).strip()
+
                     asset_type = sheet.cell_value(row,18)
                     asset_config_id=sheet.cell_value(row,19)
 
