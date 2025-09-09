@@ -24,6 +24,8 @@ import random
 from django.utils import timezone
 from datetime import timedelta
 
+import re
+
 class assetRegister(View):
     template_name = 'asset_register.html'
 
@@ -3128,6 +3130,10 @@ class AddImportAssetReg(View):
 class ImportFailureData(View):
     template_name = 'import_failuredata.html'
 
+    def is_valid_code(self, value: str) -> bool:
+        pattern = r'^[A-Z]+/(0[1-9]|1[0-2])-\d{4}/\d+$'
+        return bool(re.match(pattern, value))
+
     def get(self, request, *args, **kwargs):
         if 'login' not in request.session:
             return redirect('index')
@@ -3166,7 +3172,7 @@ class ImportFailureData(View):
             sheet = wb.sheet_by_index(0)
             row_count = sheet.nrows
             cols_count = sheet.ncols
-            if(cols_count is not 21):
+            if(cols_count is not 20):
                 message='The excel file is not in the required format'
                 return render(request, self.template_name, {"message": message})
 
@@ -3190,132 +3196,75 @@ class ImportFailureData(View):
             R1= sheet.cell_value(0,17)
             S1= sheet.cell_value(0,18)
             T1= sheet.cell_value(0,19)
-            U1= sheet.cell_value(0,20)
+            # U1= sheet.cell_value(0,20)
             # return render(request, self.template_name, {"message": B1})
             asset_type_array=[]
 
-            if(A1=='Failure id' and B1=='Asset type' and C1=='Asset config id' and D1=='Event description' and E1=='Mode id' and F1=='Date' and G1=='Time' and H1=='Detection' and I1=='Service delay' and J1=='Immediate investigation' and K1=='Failure type' and L1=='Safety failure' and M1=='Hazard id' and N1=='Cm description' and O1=='Replaced asset config id' and P1=='Cm start date' and Q1=='Cm start time' and R1=='Cm end date' and S1=='Cm end time' and T1=='Oem failure reference' and U1=='defect' ):
+            if(A1=='Failure ID' and B1=='Depot Location' and C1=='Failure Reported Date' and D1=='Failure Reported Time' and E1=='Train Set No' and F1=='CAR No' and G1=='System' and H1=='Subsytem' and I1=='Equipment' and J1=='Failure Location' and K1=='Failure description' and L1=='Immediate investigation' and M1=='Failure Category' and N1=='Category of Failure' and O1=='No. of Trips Cancelled' and P1=='Deboarding' and Q1=='Revenue Service Delay' and R1=='Failure type' and S1=='Asset Name' and T1=='Asset config id' ):
                 # return render(request, self.template_name, {"message": 'required format'})
                 print('------COMPLETE VALIDATION ______') 
                 rowCountVar = 0
                 for row in range(1, row_count):
+
                     rowCountVar = rowCountVar + 1
                     print('--------------------------------  '+ str(rowCountVar)) 
-                    if isinstance(sheet.cell_value(row,0), str):
-                        failure_id = sheet.cell_value(row,0)
-                    else:
-                        failure_id = int(sheet.cell_value(row,0))
-                    asset_type=sheet.cell_value(row,1)
-                    asset_config_id= sheet.cell_value(row,2)
-                    event_description= sheet.cell_value(row,3)
-                    if isinstance(sheet.cell_value(row,4), str):
-                        mode_id = sheet.cell_value(row,4)
-                    else:
-                        mode_id = int(sheet.cell_value(row,4))
-                    date= sheet.cell_value(row,5)
-                    time = sheet.cell_value(row,6)
-                    # time1 = xlrd.xldate_as_tuple(time1, wb.datemode)
-                    # time = datetime.time(*time1[3:])
-                    # time = time.strftime("%H:%M")
-                    detection= sheet.cell_value(row,7)
-                    if isinstance(sheet.cell_value(row,8), str):
-                        service_delay = sheet.cell_value(row,8)
-                    else:
-                        service_delay = int(sheet.cell_value(row,8))
-                    immediate_investigation = sheet.cell_value(row,9)
-                    failure_type = sheet.cell_value(row,10)
-                    safety_failure = sheet.cell_value(row,11)
-                    hazard_id= sheet.cell_value(row,12)
-                    cm_description = sheet.cell_value(row,13)
-                    replaced_asset_config_id = sheet.cell_value(row,14)
-                    cm_start_date =sheet.cell_value(row,15) 
-                    cm_start_time = sheet.cell_value(row,16)
-                    
-                    # cm_start_time1 = xlrd.xldate_as_tuple(cm_start_time1, wb.datemode)
-                    # cm_start_time1 = datetime.time(*cm_start_time1[3:])
-                    # cm_start_time = cm_start_time1.strftime("%H:%M")
-                    cm_end_date=sheet.cell_value(row,17) 
-                    cm_end_time = sheet.cell_value(row,18)
-                   
-                    # cm_end_time1 = xlrd.xldate_as_tuple(cm_end_time1, wb.datemode)
-                    # cm_end_time1 = datetime.time(*cm_end_time1[3:])
-                    # cm_end_time = cm_end_time1.strftime("%H:%M")
-                    oem_failure_reference = sheet.cell_value(row,19)
-                    if isinstance(sheet.cell_value(row,20), str):
-                        defect = sheet.cell_value(row,20)
-                    else:
-                        defect = int(sheet.cell_value(row,20))
+
+                    failure_id = sheet.cell_value(row,0)
+                    dept_location = sheet.cell_value(row,1)
+                    date= sheet.cell_value(row,2)
+                    time = sheet.cell_value(row,3)
+                    location_id = sheet.cell_value(row,4).strip()
+                    sel_car = sheet.cell_value(row,5)
+                    system = sheet.cell_value(row,6)
+                    subsytem = sheet.cell_value(row,7)
+                    equipment = sheet.cell_value(row,8)
+                    location = sheet.cell_value(row,9)
+                    event_description = sheet.cell_value(row,10)
+                    immediate_investigation = sheet.cell_value(row,11)
+                    category_of_failure = sheet.cell_value(row,12)
+                    failure_category = sheet.cell_value(row,13).strip()
+                    no_of_trip_cancel = sheet.cell_value(row,14)
+                    deboarding = sheet.cell_value(row,15)
+                    revenue_service_delay = sheet.cell_value(row,16)
+                    failure_type = sheet.cell_value(row,17).strip()
+                    asset_type = sheet.cell_value(row,18)
+                    asset_config_id=sheet.cell_value(row,19)
+
+
                     failure_id_err = '1'
-                    asset_type_err = '1'
-                    asset_config_id_err = '1'
-                    event_description_err = '1'
-                    mode_id_err = '1'
+                    dept_location_err = '1'
                     date_err = '1'
                     time_err = '1'
-                    detection_err = '1'
-                    service_delay_err = '1'
+                    location_id_err = '1'
+                    sel_car_err = '1'
+                    system_err = '1'
+                    subsytem_err = '1'
+                    equipment_err = '1'
+                    location_err = '1'
+                    event_description_err = '1'
                     immediate_investigation_err = '1'
+                    category_of_failure_err = '1'
+                    failure_category_err = '1'
+                    no_of_trip_cancel_err = '1'
+                    deboarding_err = '1'
+                    revenue_service_delay_err = '1'
                     failure_type_err = '1'
-                    safety_failure_err = '1'
-                    hazard_id_err = '1'
-                    cm_description_err = '1'
-                    replaced_asset_config_id_err = '1'
-                    cm_start_date_err = '1'
-                    cm_start_time_err = '1'
-                    cm_end_date_err = '1'
-                    cm_end_time_err = '1'
-                    oem_failure_reference_err = '1'
-                    defect_err = '1'
+                    asset_type_err = '1'
+                    asset_config_id_err = '1'
+
                     err_status = '1'
 
 
-                    # if not isinstance(failure_id, int) :
-                    #     failure_id_err='Value error'
-                    if not isinstance(service_delay, int) :
-                        service_delay_err='Value error'
-                    if not isinstance(defect, int) :
-                        defect=''
-                    if mode_id != "":                        
-                        if not FailureMode.objects.filter(mode_id=mode_id,is_active=0).exists():
-                            mode_id_err = 'Invalid match'
-                    else:
-                        mode_id_err = 'Empty'
-
-                    if defect != "": 
-                        if not Defect.objects.filter(defect_id=defect,is_active=0).exists():
-                            defect_err = 'Invalid match'
-                    else:
-                        defect_err = 'Empty'
-                        
                     if failure_id == "":
                         failure_id_err = 'Empty'
-                    if asset_type == "":
-                        asset_type_err = 'Empty'
-                    else:
-                        if user_Role == 1:
-                            if not PBSMaster.objects.filter(asset_type=asset_type,is_active=0).exists():
-                                asset_type_err = 'Invalid asset type' 
-                                asset_config_id_err = 'Invalid match'
-                            else: 
-                                Project = PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
-                                if asset_config_id == "":
-                                    asset_config_id_err = 'Empty'
-                                else:
-                                    if not Asset.objects.filter(asset_config_id=asset_config_id,asset_type=Project[0].id,is_active=0).exists():
-                                        asset_config_id_err = 'Invalid match'
-                        else:
-                            if not PBSMaster.objects.filter(asset_type=asset_type,is_active=0,project_id=P_id).exists():
-                                asset_type_err = 'Invalid asset type' 
-                                asset_config_id_err = 'Invalid match'
-                            else: 
-                                Project = PBSMaster.objects.filter(asset_type=asset_type,is_active=0,project_id=P_id)
-                                if asset_config_id == "":
-                                    asset_config_id_err = 'Empty'
-                                else:
-                                    if not Asset.objects.filter(asset_config_id=asset_config_id,asset_type=Project[0].id,is_active=0,P_id=P_id).exists():
-                                        asset_config_id_err = 'Invalid match'
-                    if event_description == "":
-                        event_description_err = 'Empty'
+                    elif not self.is_valid_code(failure_id):
+                        failure_id_err = 'Invalid Failure ID'
+
+                    if dept_location == "":
+                        dept_location_err = 'Empty'
+                    elif dept_location != "RHD" and dept_location != "HVPCD":
+                        dept_location_err = 'Invalid match – only RHD and HVPCD are accepted.'
+
                     if date == "":
                         now = datetime.datetime.now()
                         date = datetime.datetime.strftime(now, '%d-%m-%Y')
@@ -3339,11 +3288,7 @@ class ImportFailureData(View):
                             except ValueError:
                                 message='Invalid Date format in row '+str(rowCountVar)
                                 return render(request, self.template_name, {"message": message})
-                        
-                    # print(date)
-                        # date1 = datetime.datetime.strptime(str(date), '%d-%m-%Y').date()
-                        # date=datetime.datetime.strftime(date1, '%d-%m-%Y')
-                    # print(date)
+
                     if time == "":
                         time_err = 'Empty'
                     else:
@@ -3369,172 +3314,150 @@ class ImportFailureData(View):
                                 message='Invalid Time format, should be (HH:mm:ss in string OR change cell format to time) in row '+str(rowCountVar)
                                 return render(request, self.template_name, {"message": message})
                     print(time)
-                    if detection == "":
-                        detection_err = 'Empty'
-                    if service_delay == "":
-                        service_delay_err = 'Empty'
+
+                    if asset_type == "":
+                        asset_type_err = 'Empty'
+                    else:
+                        if user_Role == 1:
+                            if not PBSMaster.objects.filter(asset_type=asset_type,is_active=0).exists():
+                                asset_type_err = 'Invalid asset type' 
+                                asset_config_id_err = 'Invalid match'
+                            else: 
+                                Project = PBSMaster.objects.filter(asset_type=asset_type,is_active=0)
+                                if asset_config_id == "":
+                                    asset_config_id_err = 'Empty'
+                                else:
+                                    if not Asset.objects.filter(asset_config_id=asset_config_id,asset_type=Project[0].id,is_active=0).exists():
+                                        asset_config_id_err = 'Invalid match'
+                                    else:
+                                        if location_id == "": 
+                                            location_id_err = 'Empty'
+                                        else:
+                                            if not Asset.objects.filter(asset_config_id=asset_config_id,asset_type=Project[0].id,is_active=0,location_id=location_id).exists():
+                                                location_id_err = 'Invalid match'
+
+                        else:
+                            if not PBSMaster.objects.filter(asset_type=asset_type,is_active=0,project_id=P_id).exists():
+                                asset_type_err = 'Invalid asset type' 
+                                asset_config_id_err = 'Invalid match'
+                            else: 
+                                Project = PBSMaster.objects.filter(asset_type=asset_type,is_active=0,project_id=P_id)
+                                if asset_config_id == "":
+                                    asset_config_id_err = 'Empty'
+                                else:
+                                    if not Asset.objects.filter(asset_config_id=asset_config_id,asset_type=Project[0].id,is_active=0,P_id=P_id).exists():
+                                        asset_config_id_err = 'Invalid match'
+                                    else:
+                                        if location_id == "": 
+                                            location_id_err = 'Empty'
+                                        else:
+                                            if not Asset.objects.filter(asset_config_id=asset_config_id,asset_type=Project[0].id,is_active=0,P_id=P_id,location_id=location_id).exists():
+                                                location_id_err = 'Invalid match'
+
+                    if sel_car.strip() == "":
+                        sel_car_err = 'Empty'
+                    else:
+                        allowed = {"DMA", "TC", "DMB"}  # valid options
+                        # split by comma, strip spaces
+                        selected = [s.strip() for s in sel_car.split(",") if s.strip()]
+
+                        # check if every selected value is valid
+                        if not all(val in allowed for val in selected):
+                            sel_car_err = "Invalid match – only DMA, TC, and DMB are accepted"
+
+                    if equipment == "":
+                        equipment_err = 'Empty'
+
+                    if location == "":
+                        location_err = 'Empty'
+
+                    if event_description == "":
+                        event_description_err = 'Empty'
+
                     if immediate_investigation == "":
                         immediate_investigation_err = 'Empty'
-                        
+
+                    if failure_category == "":
+                        failure_category_err = 'Empty'
+                    elif failure_category != "SAF" and failure_category != "Non-SAF" and failure_category != "Depot Failure":
+                        failure_category_err = 'Invalid match – only SAF, Non-SAF and Depot Failure are accepted.'
+
+                    if str(no_of_trip_cancel).strip() == "":
+                        no_of_trip_cancel_err = "Empty"
+                    elif not isinstance(no_of_trip_cancel, int):
+                        try:
+                            no_of_trip_cancel = int(no_of_trip_cancel)  # try convert
+                        except ValueError:
+                            no_of_trip_cancel_err = "Value error"
+
+                    if deboarding == "":
+                        deboarding_err = 'Empty'
+                    elif deboarding != "Yes" and deboarding != "No" :
+                        deboarding_err = 'Invalid match – only Yes or No are accepted.'
+
+                    if str(revenue_service_delay).strip() == "":
+                        revenue_service_delay_err = "Empty"
+                    elif not isinstance(revenue_service_delay, int):
+                        try:
+                            revenue_service_delay = int(revenue_service_delay)  # try convert
+                        except ValueError:
+                            revenue_service_delay_err = "Value error"
+
                     failure_types = ['Software','Hardware','Random','Other']
                     if failure_type == "":
                         failure_type_err = 'Empty'
                     else:
                         if not failure_type in failure_types :
                             failure_type_err = 'Invalid failure type'
-                        
-                    if safety_failure == "":
-                        safety_failure_err = 'Empty'
-                    if cm_description == "":
-                        cm_description_err = 'Empty'
-                    
-                    print('------ CHK VARIABLES STN 4 ______')  
-                    if cm_start_date == "":
-                        cm_start_date_err = 'Empty'
-                    else:
-                        if type(cm_start_date) == str:
-                            try:
-                                cm_start_date1 = datetime.datetime.strptime(str(cm_start_date), '%d-%m-%Y').date()
-                                cm_start_date=datetime.datetime.strftime(cm_start_date1, '%d-%m-%Y')
-                            except ValueError:
-                                message='Invalid Cm start date format, should be (DD-MM-YYYY in string OR change cell format to date)  in row '+str(rowCountVar)
-                                return render(request, self.template_name, {"message": message})
-                        else:
-                            try:
-                                cm_start_date1 = xlrd.xldate.xldate_as_datetime(cm_start_date, wb.datemode)
-                                try:
-                                    cm_start_date=datetime.datetime.strftime(cm_start_date1, '%d-%m-%Y')
-                                except ValueError:
-                                    message='Invalid Cm start date format in row '+str(rowCountVar)
-                                    return render(request, self.template_name, {"message": message})
-                                
-                            except ValueError:
-                                message='Invalid Cm start date format in row '+str(rowCountVar)
-                                return render(request, self.template_name, {"message": message})
 
-                    # print(cm_start_date)
-                      
-                    if cm_start_time == "":
-                        cm_start_time_err = 'Empty'
-                    else:
-                        if type(cm_start_time) == float:
-                            # print(cm_start_time)
-                            try:
-                                cm_start_time1 = xlrd.xldate.xldate_as_datetime(cm_start_time, wb.datemode)
-                                try:
-                                    cm_start_time=datetime.datetime.strftime(cm_start_time1, '%H:%M:%S')
-                                except ValueError:
-                                    message='Invalid Cm start time format in row '+str(rowCountVar)
-                                    return render(request, self.template_name, {"message": message})
-                                
-                            except ValueError:
-                                message='Invalid Cm start time format in row '+str(rowCountVar)
-                                return render(request, self.template_name, {"message": message})
-                        else:
-                            try:
-                                datetime.datetime.strptime(str(cm_start_time), '%H:%M:%S').date()
-                            except ValueError:
-                                message='Invalid Cm start time format, should be (HH:mm:ss in string OR change cell format to time) in row '+str(rowCountVar)
-                                return render(request, self.template_name, {"message": message})
-
-
-                    # print(cm_start_time)
-                    if cm_end_date == "":
-                        cm_end_date = ''
-                    else:
-                        if type(cm_end_date) == str:
-                            try:
-                                cm_end_date1 = datetime.datetime.strptime(str(cm_end_date), '%d-%m-%Y').date()
-                                cm_end_date=datetime.datetime.strftime(cm_end_date1, '%d-%m-%Y')
-                            except ValueError:
-                                message='Invalid Cm end date format, should be (DD-MM-YYYY in string OR change cell format to date)  in row '+str(rowCountVar)
-                                return render(request, self.template_name, {"message": message})
-                        else:
-                            try:
-                                cm_end_date1 = xlrd.xldate.xldate_as_datetime(cm_end_date, wb.datemode)
-                                try:
-                                    cm_end_date=datetime.datetime.strftime(cm_end_date1, '%d-%m-%Y')
-                                except ValueError:
-                                    message='Invalid Cm end date format in row '+str(rowCountVar)
-                                    return render(request, self.template_name, {"message": message})
-                                
-                            except ValueError:
-                                message='Invalid Cm end date format in row '+str(rowCountVar)
-                                return render(request, self.template_name, {"message": message})
-
-                    # print(cm_end_date)
-
-
-                    if cm_end_time != "":
-                        if type(cm_end_time) == float:
-                            print(cm_end_time)
-                            try:
-                                cm_end_time1 = xlrd.xldate.xldate_as_datetime(cm_end_time, wb.datemode)
-                                try:
-                                    cm_end_time=datetime.datetime.strftime(cm_end_time1, '%H:%M:%S')
-                                except ValueError:
-                                    message='Invalid Cm end time format in row '+str(rowCountVar)
-                                    return render(request, self.template_name, {"message": message})
-                                
-                            except ValueError:
-                                message='Invalid Cm end time format in row '+str(rowCountVar)
-                                return render(request, self.template_name, {"message": message})
-                        else:
-                            try:
-                                datetime.datetime.strptime(str(cm_end_time), '%H:%M:%S').date()
-                            except ValueError:
-                                message='Invalid Cm end time format, should be (HH:mm:ss in string OR change cell format to time) in row '+str(rowCountVar)
-                                return render(request, self.template_name, {"message": message})
-
-                    # print(cm_end_time)
-                        
-                    if failure_id_err != '1' or asset_type_err != '1' or asset_config_id_err != '1' or event_description_err != '1' or date_err != '1' or time_err != '1' or detection_err != '1' or service_delay_err != '1' or immediate_investigation_err != '1' or failure_type_err != '1' or safety_failure_err != '1' or hazard_id_err != '1' or cm_description_err != '1' or replaced_asset_config_id_err != '1' or cm_start_date_err != '1' or cm_start_time_err != '1' or cm_end_date_err != '1' or cm_end_time_err != '1' or oem_failure_reference_err != '1' or mode_id_err != '1' or defect_err != '1':
+                    if failure_id_err != '1' or dept_location_err != '1' or date_err != '1' or time_err != '1' or location_id_err != '1' or sel_car_err != '1' or system_err != '1' or subsytem_err != '1' or equipment_err != '1' or location_err != '1' or event_description_err != '1' or immediate_investigation_err != '1' or category_of_failure_err != '1' or failure_category_err != '1' or no_of_trip_cancel_err != '1' or deboarding_err != '1' or revenue_service_delay_err != '1' or failure_type_err != '1' or asset_type_err != '1' or asset_config_id_err != '1':
                         err_status = '0'
+
+
                     data.append({
                         'id':row,
-                        'failure_id' :  failure_id,
-                        'asset_type' : asset_type,
-                        'asset_config_id' : asset_config_id,
-                        'event_description' : event_description,
-                        'mode_id' : mode_id,
-                        'date' : date,
-                        'time' : time,
-                        'detection':detection,
-                        'service_delay' :  service_delay,
-                        'immediate_investigation' : immediate_investigation,
-                        'failure_type' : failure_type,
-                        'safety_failure' : safety_failure,
-                        'hazard_id' : hazard_id,
-                        'cm_description' : cm_description,
-                        'replaced_asset_config_id' : replaced_asset_config_id,
-                        'cm_start_date' : cm_start_date,
-                        'cm_start_time' : cm_start_time,
-                        'cm_end_date' : cm_end_date,
-                        'cm_end_time' : cm_end_time,
-                        'oem_failure_reference' : oem_failure_reference,
-                        'defect' : defect,
                         'err_status':err_status,
-                        'failure_id_err' :  failure_id_err,
-                        'asset_type_err' : asset_type_err,
-                        'asset_config_id_err' : asset_config_id_err,
-                        'event_description_err' : event_description_err,
-                        'mode_id_err' : mode_id_err,
+                        'failure_id': failure_id,
+                        'dept_location': dept_location,
+                        'date':date,
+                        'time' : time,
+                        'location_id' : location_id,
+                        'sel_car' : sel_car,
+                        'system' : system,
+                        'subsytem' : subsytem,
+                        'equipment' : equipment,
+                        'location': location,
+                        'event_description' : event_description,
+                        'immediate_investigation' : immediate_investigation,
+                        'category_of_failure' : category_of_failure,
+                        'failure_category' : failure_category,
+                        'no_of_trip_cancel': no_of_trip_cancel,
+                        'deboarding' : deboarding,
+                        'revenue_service_delay' : revenue_service_delay,
+                        'failure_type' :failure_type,
+                        'asset_type': asset_type,
+                        'asset_config_id':asset_config_id,
+                        'failure_id_err' : failure_id_err,
+                        'dept_location_err': dept_location_err,
                         'date_err' : date_err,
                         'time_err' : time_err,
-                        'detection_err':detection_err,
-                        'service_delay_err' :  service_delay_err,
+                        'location_id_err' : location_id_err,
+                        'sel_car_err' : sel_car_err,
+                        'system_err' : system_err,
+                        'subsytem_err' : subsytem_err,
+                        'equipment_err' : equipment_err,
+                        'location_err': location_err,
+                        'event_description_err' : event_description_err,
                         'immediate_investigation_err' : immediate_investigation_err,
+                        'category_of_failure_err' : category_of_failure_err,
+                        'failure_category_err' : failure_category_err,
+                        'no_of_trip_cancel_err' : no_of_trip_cancel_err,
+                        'deboarding_err' : deboarding_err,
+                        'revenue_service_delay_err' : revenue_service_delay_err,
                         'failure_type_err' : failure_type_err,
-                        'safety_failure_err' : safety_failure_err,
-                        'hazard_id_err' : hazard_id_err,
-                        'cm_description_err' : cm_description_err,
-                        'replaced_asset_config_id_err' : replaced_asset_config_id_err,
-                        'cm_start_date_err' : cm_start_date_err,
-                        'cm_start_time_err' : cm_start_time_err,
-                        'cm_end_date_err' : cm_end_date_err,
-                        'cm_end_time_err' : cm_end_time_err,
-                        'oem_failure_reference_err' : oem_failure_reference_err,
-                        'defect_err' : defect_err,
+                        'asset_type_err' : asset_type_err,
+                        'asset_config_id_err' : asset_config_id_err
+
                     })
             else:
                 message='The excel file is not in the required format'
@@ -3773,63 +3696,103 @@ class AddImportFailureData(View):
             for items in data:
                 itemId=items['id']
                 # itemdate = items['date']
+                failure_id = items['failure_id']
+                dept_location = items['dept_location']
                 itemdate1=datetime.datetime.strptime(items['date'], '%d-%m-%Y').date()
-                itemdate=datetime.datetime.strftime(itemdate1, '%Y-%m-%d')
-                # print(itemdate)
-                # itemcm_start_date = items['cm_start_date']
-                itemcm_start_date1=datetime.datetime.strptime(items['cm_start_date'], '%d-%m-%Y').date()
-                itemcm_start_date=datetime.datetime.strftime(itemcm_start_date1, '%Y-%m-%d')
-                # print(itemcm_start_date)
-                # itemcm_end_date = items['cm_end_date']
-                print(items['cm_end_date'])
+                date=datetime.datetime.strftime(itemdate1, '%Y-%m-%d')
+                time = items['time']
+                location_id = items['location_id']
+                sel_car = items['sel_car']
+                equipment = items['equipment']
+                location = items['location']
+                event_description = items['event_description']
+                immediate_investigation = items['immediate_investigation']
+                failure_category = items['failure_category']
+                no_of_trip_cancel = items['no_of_trip_cancel']
+                deboarding = items['deboarding']
+                revenue_service_delay = items['revenue_service_delay']
+                failure_type = items['failure_type']
+                asset_types = items['asset_type']
+                asset_config_ids = items['asset_config_id']
 
-                if items['cm_end_date'] != "":
-                    itemcm_end_date1=datetime.datetime.strptime(items['cm_end_date'], '%d-%m-%Y').date()
-                    itemcm_end_date=datetime.datetime.strftime(itemcm_end_date1, '%Y-%m-%d')
-                else:
-                    itemcm_end_date = None
-                print(itemcm_end_date)
-              
-                itemfailure_id = items['failure_id']
-                itemasset_type = items['asset_type']
-                itemasset_config_id = items['asset_config_id']
-                itemmode_id = items['mode_id']
-                itemdefect = items['defect']
-                itemscm_end_time = items['cm_end_time']
-                if itemscm_end_time == '':
-                    itemscm_end_time = None
-               
                 if itemId in ids:
-                    Project = PBSMaster.objects.filter(asset_type=itemasset_type,is_active=0)
-                    if not FailureMode.objects.filter(mode_id=itemmode_id,P_id=Project[0].project_id).exists():
-                        itemmode_id = None
+                    Project = PBSMaster.objects.filter(asset_type=asset_types,is_active=0)
+
+                    failure_ext_id = ""
+                    if FailureData.objects.filter(failure_id=failure_id,is_active=0).exists():
+                        old_failure = FailureData.objects.filter(failure_id=failure_id,is_active=0)
+                        failure_ext_id = old_failure[0].id
+                        print(f"failure ID: {failure_id} alredy exist")
+
+                    if failure_ext_id =="":
+                        cm_start_date = datetime.datetime.now().strftime('%Y-%m-%d')
+                        cm_start_time = datetime.datetime.now().strftime("%H:%M")
+                        cm_end_date = datetime.datetime.now().strftime('%Y-%m-%d')
+                        cm_end_time = datetime.datetime.now().strftime("%H:%M")
+                        service_delay = 0
+                        cm_description = ''
+
                     else:
-                        MODE = FailureMode.objects.filter(mode_id=itemmode_id,P_id=Project[0].project_id)
-                        itemmode_id = MODE[0].id
-                    if itemdefect == '':
-                        itemdefect = None
+
+                        fdt = FailureData.objects.filter(id=failure_ext_id)
+                        cm_start_date = fdt[0].cm_start_date
+                        cm_start_time = fdt[0].cm_start_time
+                        cm_end_date = fdt[0].cm_end_date
+                        cm_end_time = fdt[0].cm_end_time
+                        service_delay = fdt[0].service_delay
+                        cm_description = fdt[0].cm_description
+
+                    if revenue_service_delay == 0 or revenue_service_delay == "" or revenue_service_delay == None:
+                        revenue_service_delay = 0
+                        service_delay = 0
                     else:
-                        if not Defect.objects.filter(defect_id=itemdefect,P_id=Project[0].project_id).exists():
-                            itemdefect = None
-                    if FailureData.objects.filter(failure_id=itemfailure_id).exists():
-                        FailureData.objects.filter(failure_id=itemfailure_id).update(is_active=0,P_id=Project[0].project_id,asset_type=Project[0].id,asset_config_id_id=itemasset_config_id,
-                                        event_description=items['event_description'],mode_id_id=itemmode_id,date=itemdate,time=items['time'],detection=items['detection'],
-                                        service_delay=items['service_delay'],immediate_investigation=items['immediate_investigation'],failure_type=items['failure_type'],
-                                        safety_failure=items['safety_failure'],hazard_id=items['hazard_id'],cm_description=items['cm_description'],
-                                        replaced_asset_config_id=items['replaced_asset_config_id'],cm_start_date=itemcm_start_date,
-                                        cm_start_time=items['cm_start_time'],cm_end_date=itemcm_end_date,cm_end_time=itemscm_end_time,
-                                        oem_failure_reference=items['oem_failure_reference'],defect_id=itemdefect)
-                        updated+=1
-                    else:
-                        u = FailureData(P_id=Project[0].project_id,failure_id=itemfailure_id,asset_type=Project[0].id,asset_config_id_id=itemasset_config_id,
-                                        event_description=items['event_description'],mode_id_id=itemmode_id,date=itemdate,time=items['time'],detection=items['detection'],
-                                        service_delay=items['service_delay'],immediate_investigation=items['immediate_investigation'],failure_type=items['failure_type'],
-                                        safety_failure=items['safety_failure'],hazard_id=items['hazard_id'],cm_description=items['cm_description'],
-                                        replaced_asset_config_id=items['replaced_asset_config_id'],cm_start_date=itemcm_start_date,
-                                        cm_start_time=items['cm_start_time'],cm_end_date=itemcm_end_date,cm_end_time=itemscm_end_time,
-                                        oem_failure_reference=items['oem_failure_reference'],defect_id=itemdefect)
-                        u.save()
+                        service_delay = revenue_service_delay
+
+
+                    parts = failure_id.split("/")
+                    date_str = parts[1]
+                    num_str = parts[2]
+
+                    current_month, current_year = date_str.split("-")
+                    last_failure_id = num_str.lstrip("0")
+
+                    if failure_ext_id =="":
+                        f_latest_id = 0
+                        if FailureDataIDs.objects.filter(year=current_year,month=current_month).exists():
+                            JOBID = FailureDataIDs.objects.filter(year=current_year,month=current_month)
+                            f_latest_id = JOBID[0].last_id
+                        # print(f_latest_id)
+                        if int(f_latest_id) < int(last_failure_id):
+                            # print(f'update to {last_failure_id}')
+                            if FailureDataIDs.objects.filter(year=current_year,month=current_month).exists():
+                                FailureDataIDs.objects.filter(year=current_year,month=current_month).update(last_id=last_failure_id)
+                            else:
+                                ju = FailureDataIDs(year=current_year,month=current_month,last_id=last_failure_id)
+                                ju.save()
+
+                    ACID = Asset.objects.filter(asset_config_id=asset_config_ids)
+                    asset_config_id = ACID[0].asset_config_id
+
+                    location_id = ACID[0].id
+
+                    mode_id = None
+                    defect = None
+                    asset_type = ACID[0].asset_type
+                    detection = None
+                   
+
+                    if failure_ext_id =="":
+
+                        r=FailureData(P_id=Project[0].project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,immediate_investigation=immediate_investigation,failure_type=failure_type,cm_description=cm_description,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,location_id=location_id,sel_car=sel_car,equipment=equipment,location=location,no_of_trip_cancel=no_of_trip_cancel,deboarding=deboarding,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay,detection='',replaced_asset_config_id='',oem_failure_reference='')
+                        r.save()
+                        
                         inserted+=1
+                    else:
+
+                        FailureData.objects.filter(id=failure_ext_id).update(is_active=0,P_id=Project[0].project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,immediate_investigation=immediate_investigation,failure_type=failure_type,cm_description=cm_description,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,location_id=location_id,sel_car=sel_car,equipment=equipment,location=location,no_of_trip_cancel=no_of_trip_cancel,deboarding=deboarding,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay,detection='',replaced_asset_config_id='',oem_failure_reference='')
+
+                        updated+=1
+
         P_id = request.session['P_id']
         user_ID = request.session['user_ID']
         FindUser = UserProfile.objects.filter(user_id=user_ID)

@@ -59,29 +59,28 @@
                           <thead>
                               <tr>
                                     <th><input type="checkbox" id="SACB_importAssetRegister" /></th>
-                                    <th>failure_id</th>
-                                    <th>asset type</th>
-                                    <th>asset_config id</th>
-                                    <th>event description</th>
-                                    <th>mode id</th>
-                                    <th>date</th>
-                                    <th>time</th>
-                                    <th>detection</th>
-                                    <th>service delay</th>
-                                    <th>immediate investigation</th>
-                                    <th>failure type</th>
-                                    <th>safety failure</th>
-                                    <th>hazard id</th>
-                                    <th>cm description</th>
-                                    <th>replaced asset config id</th>
-                                    <th>cm start date</th>
-                                    <th>cm start time</th>
-                                    <th>cm end date</th>
-                                    <th>cm end time</th>
-                                    <th>oem failure reference</th>
-                                    <th>defect</th>
-
-                                    <th>Error</th>
+                                    <th>Failure ID</th>
+                                    <th>Depot Location</th>
+                                    <th>Failure Reported Date</th>
+                                    <th>Failure Reported Time</th>
+                                    <th>Train Set No</th>
+                                    <th>CAR No</th>
+                                    <!-- <th>System</th>
+                                    <th>Subsytem</th> -->
+                                    <th>Equipment</th>
+                                    <th>Failure Location</th>
+                                    <th>Failure description</th>
+                                    <th>Immediate investigation</th>
+                                    <th>Failure Category</th>
+                                    <!-- <th>Category of Failure</th> -->
+                                    <th>No. of Trips Cancelled</th>
+                                    <th>Deboarding</th>
+                                    <th>Revenue Service Delay</th>
+                                    <th>Failure type</th>
+                                    <th>Asset Name</th>
+                                    <th>Asset config id</th>
+                                   
+                                    <th></th>
                               </tr>
                           </thead>
                           <tbody>
@@ -97,24 +96,9 @@
                                         <span class="text-danger"><br>{{dU.failure_id_err}}</span>
                                         {% endif %}
                                     </td>
-                                    <td>{{dU.asset_type}}
-                                        {% if dU.asset_type_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.asset_type_err}}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{dU.asset_config_id}}
-                                        {% if dU.asset_config_id_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.asset_config_id_err}}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{dU.event_description}}
-                                        {% if dU.event_description_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.event_description_err}}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{dU.mode_id}}
-                                        {% if dU.mode_id_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.mode_id_err}}</span>
+                                    <td>{{dU.dept_location}}
+                                        {% if dU.dept_location_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.dept_location_err}}</span>
                                         {% endif %}
                                     </td>
                                     <td>{{dU.date}}
@@ -127,14 +111,39 @@
                                         <span class="text-danger"><br>{{dU.time_err}}</span>
                                         {% endif %}
                                     </td>
-                                    <td>{{dU.detection}}
-                                        {% if dU.detection_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.detection_err}}</span>
+                                    <td>{{dU.location_id}}
+                                        {% if dU.location_id_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.location_id_err}}</span>
                                         {% endif %}
                                     </td>
-                                    <td>{{dU.service_delay}}
-                                        {% if dU.service_delay_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.service_delay_err}}</span>
+                                    <td>{{dU.sel_car}}
+                                        {% if dU.sel_car_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.sel_car_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <!-- <td>{{dU.system}}
+                                        {% if dU.system_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.system_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.subsytem}}
+                                        {% if dU.subsytem_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.subsytem_err}}</span>
+                                        {% endif %}
+                                    </td> -->
+                                    <td>{{dU.equipment}}
+                                        {% if dU.equipment_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.equipment_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.location}}
+                                        {% if dU.location_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.location_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.event_description}}
+                                        {% if dU.event_description_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.event_description_err}}</span>
                                         {% endif %}
                                     </td>
                                     <td>{{dU.immediate_investigation}}
@@ -142,61 +151,47 @@
                                         <span class="text-danger"><br>{{dU.immediate_investigation_err}}</span>
                                         {% endif %}
                                     </td>
+                                    <!-- <td>{{dU.category_of_failure}}
+                                        {% if dU.category_of_failure_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.category_of_failure_err}}</span>
+                                        {% endif %}
+                                    </td> -->
+                                    <td>{{dU.failure_category}}
+                                        {% if dU.failure_category_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.failure_category_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.no_of_trip_cancel}}
+                                        {% if dU.no_of_trip_cancel_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.no_of_trip_cancel_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.deboarding}}
+                                        {% if dU.deboarding_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.deboarding_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{dU.revenue_service_delay}}
+                                        {% if dU.revenue_service_delay_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.revenue_service_delay_err}}</span>
+                                        {% endif %}
+                                    </td>
                                     <td>{{dU.failure_type}}
                                         {% if dU.failure_type_err != '1' %}
                                         <span class="text-danger"><br>{{dU.failure_type_err}}</span>
                                         {% endif %}
                                     </td>
-                                    <td>{{dU.safety_failure}}
-                                        {% if dU.safety_failure_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.safety_failure_err}}</span>
+                                    <td>{{dU.asset_type}}
+                                        {% if dU.asset_type_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.asset_type_err}}</span>
                                         {% endif %}
                                     </td>
-                                    <td>{{dU.hazard_id}}
-                                        {% if dU.hazard_id_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.hazard_id_err}}</span>
+                                    <td>{{dU.asset_config_id}}
+                                        {% if dU.asset_config_id_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.asset_config_id_err}}</span>
                                         {% endif %}
                                     </td>
-                                    <td>{{dU.cm_description}}
-                                        {% if dU.cm_description_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.cm_description_err}}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{dU.replaced_asset_config_id}}
-                                        {% if dU.replaced_asset_config_id_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.replaced_asset_config_id_err}}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{dU.cm_start_date}}
-                                        {% if dU.cm_start_date_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.cm_start_date_err}}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{dU.cm_start_time}}
-                                        {% if dU.cm_start_time_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.cm_start_time_err}}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{dU.cm_end_date}}
-                                        {% if dU.cm_end_date_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.cm_end_date_err}}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{dU.cm_end_time}}
-                                        {% if dU.cm_end_time_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.cm_end_time_err}}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{dU.oem_failure_reference}}
-                                        {% if dU.oem_failure_reference_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.oem_failure_reference_err}}</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>{{dU.defect}}
-                                        {% if dU.defect_err != '1' %}
-                                        <span class="text-danger"><br>{{dU.defect_err}}</span>
-                                        {% endif %}
-                                    </td>
+                                   
                                    
                                     <td>
                                         {% if dU.err_status == '1' %}
