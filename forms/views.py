@@ -3229,9 +3229,9 @@ class ImportFailureData(View):
                     location = sheet.cell_value(row,9)
                     event_description = sheet.cell_value(row,10)
                     immediate_investigation = sheet.cell_value(row,11)
-                    category_of_failure = sheet.cell_value(row,12)
+                    category_of_failure = sheet.cell_value(row,13)
 
-                    cell_val = sheet.cell_value(row, 13)
+                    cell_val = sheet.cell_value(row, 12)
                     if isinstance(cell_val, str):
                         failure_category = cell_val.strip()
                     else:
