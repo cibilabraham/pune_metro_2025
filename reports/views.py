@@ -3862,7 +3862,7 @@ class AvailabilityDailyKilometreReadingReportView(View):
                         if JobCard.objects.filter(failure_id=fd).exists():
                             JobCardDatas = JobCard.objects.filter(failure_id=fd)
                             down_time = JobCardDatas[0].down_time
-                            # print(f"down_time: {down_time}")
+                            print(f"job_id: {JobCardDatas[0].job_id}")
                             if down_time != "" and down_time != None:
                                 handing_over_time_to_repair_hrs = int(handing_over_time_to_repair_hrs) + int(down_time)
 
