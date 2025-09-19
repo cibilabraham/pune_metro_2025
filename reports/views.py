@@ -3623,7 +3623,7 @@ class AvailabilityDailyKilometreReadingReportView(View):
 
             # print(f"daily_diff:{daily_diff}")
 
-            if daily_diff >= float(min_km):
+            if daily_diff > float(min_km):
                 total_kilometer = total_kilometer + 1
 
         return total_kilometer
