@@ -3864,6 +3864,7 @@ class AvailabilityDailyKilometreReadingReportView(View):
                             down_time = JobCardDatas[0].down_time
                             print(f"job_card_no: {JobCardDatas[0].job_card_no}")
                             if down_time != "" and down_time != None:
+                                print(f"down_time: {JobCardDatas[0].down_time}")
                                 handing_over_time_to_repair_hrs = int(handing_over_time_to_repair_hrs) + int(down_time)
 
 
