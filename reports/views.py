@@ -3571,7 +3571,7 @@ class AvailabilityDailyKilometreReadingReportView(View):
 
         return month_ranges
 
-    def fetchTotalKilometer(self,week_start_date,week_end_date):
+    def fetchTotalKilometer(self,week_start_date,week_end_date,min_km,running_time):
         total_kilometer = 0
 
         KilometreReadingDatas = KilometreReading.objects.filter(date__range=[week_start_date,week_end_date])
@@ -3592,12 +3592,12 @@ class AvailabilityDailyKilometreReadingReportView(View):
             else:
                 dail_jb = jb
 
-            total_kilometer = total_kilometer + self.calculate_total_kilometer(jb, dail_jb)
+            total_kilometer = total_kilometer + self.calculate_total_kilometer(jb, dail_jb,min_km)
 
 
-        return total_kilometer
+        return total_kilometer * running_time
 
-    def calculate_total_kilometer(self, jb, dail_jb, start=0, end=34):
+    def calculate_total_kilometer(self, jb, dail_jb,min_km, start=0, end=34):
         """
         Calculate total kilometers from ts01_tkm to ts34_tkm fields.
 
@@ -3620,7 +3620,11 @@ class AvailabilityDailyKilometreReadingReportView(View):
             dail_val = dail_jb[field] if isinstance(dail_jb, dict) else getattr(dail_jb, field, 0)
 
             daily_diff = float(jb_val) - float(dail_val)
-            total_kilometer += daily_diff
+
+            # print(f"daily_diff:{daily_diff}")
+
+            if daily_diff >= float(min_km):
+                total_kilometer = total_kilometer + 1
 
         return total_kilometer
 
@@ -3649,8 +3653,14 @@ class AvailabilityDailyKilometreReadingReportView(View):
         dt_sc = req.get('dt_sc')
         dt_opm = req.get('dt_opm')
         dt_cm = req.get('dt_cm')
+        min_km = req.get('min_km')
 
         mdbf_mdsaf = req.get('mdbf_mdsaf')
+
+        findUnit = PBSUnit.objects.filter()
+        running_time = findUnit[0].running_time
+
+        print(f"running_time:{running_time}")
         
         Avalability_data=[]
         availability_target_data=[]
@@ -3820,7 +3830,7 @@ class AvailabilityDailyKilometreReadingReportView(View):
 
             for start, end in ranges:
                 print(f"Start: {start} , End: {end}")
-                operation_hr = self.fetchTotalKilometer(start,end)
+                operation_hr = self.fetchTotalKilometer(start,end,min_km,running_time)
                 print(f"operation_hr: {operation_hr}")
 
                 if operation_hr != 0 and operation_hr != '0':

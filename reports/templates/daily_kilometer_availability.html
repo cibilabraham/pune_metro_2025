@@ -108,6 +108,13 @@
                     </div>
                 </div>
 
+                 <div class="col-md-3">     
+                    <div class="form-group">
+                        <label >MINIMUM NO OF KILOMETER</label>
+                        <input type="number" step="any" class="form-control " id="min_km" value="0" required>
+                    </div>
+                </div>
+
                    <div class="col-md-3">     
                     <div class="form-group">
                         <label for="mdbf_mdsaf">MDBF / MDBSAF</label>
@@ -117,7 +124,8 @@
                         </select>
                     </div>
                 </div>
-              
+
+             
 
                 <div class="col-md-3 pt-4">     
                     <button type="button" onClick="return Validate();" class="btn btn-primary mt-2" id="GenBTN">Generate</button>
@@ -324,6 +332,7 @@
         var dt_sc = $('#dt_sc').val();
         var dt_opm = $('#dt_opm').val();
         var dt_cm = $('#dt_cm').val();
+        var min_km = $('#min_km').val();
 
         if(dt_sc == ""){
             $('#dt_sc').focus();
@@ -337,6 +346,11 @@
 
          if(dt_cm == ""){
             $('#dt_cm').focus();
+            return false;
+        }
+
+          if(min_km == ""){
+            $('#min_km').focus();
             return false;
         }
 
@@ -381,6 +395,7 @@
         var dt_sc = $('#dt_sc').val();
         var dt_opm = $('#dt_opm').val();
         var dt_cm = $('#dt_cm').val();
+        var min_km = $('#min_km').val();
 
         var mdbf_mdsaf = $('select[name=mdbf_mdsaf] option').filter(':selected').val()
 
@@ -402,6 +417,7 @@
             'dt_sc':dt_sc,
             'dt_opm':dt_opm,
             'dt_cm':dt_cm,
+            'min_km':min_km,
             'mdbf_mdsaf':mdbf_mdsaf
           },
           success: function (response) {
