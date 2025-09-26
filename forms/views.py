@@ -3735,6 +3735,8 @@ class AddImportFailureData(View):
                 asset_types = items['asset_type']
                 asset_config_ids = items['asset_config_id']
 
+                f_data = None
+
                 if itemId in ids:
                     Project = PBSMaster.objects.filter(asset_type=asset_types,is_active=0)
 
@@ -3742,6 +3744,7 @@ class AddImportFailureData(View):
                     if FailureData.objects.filter(failure_id=failure_id,is_active=0).exists():
                         old_failure = FailureData.objects.filter(failure_id=failure_id,is_active=0)
                         failure_ext_id = old_failure[0].id
+                        f_data = old_failure[0]
                         print(f"failure ID: {failure_id} alredy exist")
 
                     if failure_ext_id =="":
@@ -3805,6 +3808,8 @@ class AddImportFailureData(View):
 
                         r=FailureData(P_id=Project[0].project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,immediate_investigation=immediate_investigation,failure_type=failure_type,cm_description=cm_description,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,location_id=location_id,sel_car=sel_car,equipment=equipment,location=location,no_of_trip_cancel=no_of_trip_cancel,deboarding=deboarding,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay,detection='',replaced_asset_config_id='',oem_failure_reference='')
                         r.save()
+
+                        f_data = r
                         
                         inserted+=1
                     else:
@@ -3812,6 +3817,34 @@ class AddImportFailureData(View):
                         FailureData.objects.filter(id=failure_ext_id).update(is_active=0,P_id=Project[0].project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,immediate_investigation=immediate_investigation,failure_type=failure_type,cm_description=cm_description,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,location_id=location_id,sel_car=sel_car,equipment=equipment,location=location,no_of_trip_cancel=no_of_trip_cancel,deboarding=deboarding,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay,detection='',replaced_asset_config_id='',oem_failure_reference='')
 
                         updated+=1
+
+                    if not JobCard.objects.filter(failure_id=f_data).exists():
+
+                        # check jobcard here
+                        jobcard_latest_id = 0
+                        current_year = int(current_year)
+                        current_month = int(current_month)
+                        
+                        if JobCardIDs.objects.filter(year=current_year,month=current_month).exists():
+                            JOBID = JobCardIDs.objects.filter(year=current_year,month=current_month)
+                            jobcard_latest_id = JOBID[0].last_id
+
+                        new_job_id = int(jobcard_latest_id) + 1
+
+                        job_card_no = f"RST/{current_month:02}-{current_year}/{new_job_id:04}"
+                        print(f"job_card_no: {job_card_no}")
+
+                        print('Job card not exists')
+                        j = JobCard(job_card_no=job_card_no,failure_id=f_data,train_set_no=location_id,date=date,time=time,department='Operator',equipment=equipment)
+                        j.save()
+
+                        if JobCardIDs.objects.filter(year=current_year,month=current_month).exists():
+                            JobCardIDs.objects.filter(year=current_year,month=current_month).update(last_id=new_job_id)
+                        else:
+                            ju = JobCardIDs(year=current_year,month=current_month,last_id=new_job_id)
+                            ju.save()
+
+
 
         P_id = request.session['P_id']
         user_ID = request.session['user_ID']
@@ -6876,11 +6909,12 @@ class AddKilometreReading(View):
         else:
             print(today_date)
             record = KilometreReading.objects.filter(date__lte=today_date).order_by('-date').first()
+            id = ''
 
         if record:
             jb = record
             data={ 
-                'id':jb.km_id,
+                'id':id,
                 'date':jb.date,
                 'ts01_tkm' : jb.ts01_tkm,
                 'ts02_tkm' : jb.ts02_tkm,
@@ -8394,3 +8428,119 @@ class AddImportKilometreReading(View):
         return JsonResponse({'status':'1','inserted': inserted,'updated': updated})
    
    
+
+
+class ViewDowntimeMaintenanceLog(View):
+    template_name = 'downtime_maintenance_log.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+     
+        return render(request, self.template_name, {})
+
+    def post(self, request, *args, **kwargs):
+
+        data=[]
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        user_Role = request.session.get('user_Role')
+        # req = request.POST
+        # print(req)
+        print('==========HERE=========')
+       
+        DowntimeMaintenanceLogDt = DowntimeMaintenanceLog.objects.filter().order_by('-date')
+        print(DowntimeMaintenanceLogDt)
+       
+        for jb in DowntimeMaintenanceLogDt:
+
+            data.append({
+                'id':jb.log_id,
+                'date':jb.date,
+                'dt_sc' : jb.dt_sc,
+                'dt_opm' : jb.dt_opm,
+                'dt_cm' : jb.dt_cm,
+                'user_Role':user_Role
+
+            })
+          
+        print(data)
+        return JsonResponse({'data':data, 'user_Role':user_Role })
+
+
+
+class AddDowntimeMaintenanceLog(View):
+    template_name = 'add_downtime_maintenance_log.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'login' not in request.session:
+            return redirect('index')
+        user_Role = request.session.get('user_Role')
+        P_id = request.session['P_id']
+        if user_Role == 4:
+            return redirect('/dashboard/')
+        id = kwargs.get("id")
+        data=[]
+
+        today_date = date.today()
+
+        if id == "" or id == None:
+            cust_date = datetime.datetime.strptime(str(today_date), '%Y-%m-%d').strftime('%Y-%m')
+            cust_date = f"{cust_date}-01"
+            if DowntimeMaintenanceLog.objects.filter(date=cust_date).exists():
+                setDt = DowntimeMaintenanceLog.objects.filter(date=cust_date)
+                id = setDt[0].log_id
+            print(cust_date)
+
+        if id == "" or id == None:
+            data={ 
+                'id' : '',
+                'date' : today_date,
+                'dt_sc' : 0,
+                'dt_opm' : 0,
+                'dt_cm' : 0,
+            }
+        else:
+            record = DowntimeMaintenanceLog.objects.filter(log_id=id).first()
+            if record:
+                data={ 
+                    'id' : '',
+                    'date':record.date,
+                    'dt_sc' : record.dt_sc,
+                    'dt_opm' : record.dt_opm,
+                    'dt_cm' : record.dt_cm,
+                }
+
+
+        # print(prv_data)
+        return render(request, self.template_name,{ 'data':data })
+      
+ 
+    def post(self, request, *args, **kwargs):
+        P_id = request.session['P_id']
+        user_ID = request.session['user_ID']
+        req = request.POST
+        cursor = connection.cursor()
+        # print(req)
+        ids = req.get('id')
+
+        date = datetime.datetime.strptime(req.get('date'), '%m/%Y').strftime('%Y-%m')
+        print(date)
+        date = f"{date}-01"
+
+        if DowntimeMaintenanceLog.objects.filter(date=date).exists(): 
+            DowntimeMaintenanceLog.objects.filter(date=date).update(dt_sc=req.get('dt_sc'),dt_opm=req.get('dt_opm'),dt_cm=req.get('dt_cm'))
+            return JsonResponse({'status':'1','message':'success'})
+
+        else:
+            j = DowntimeMaintenanceLog(date=date,dt_sc=req.get('dt_sc'),dt_opm=req.get('dt_opm'),dt_cm=req.get('dt_cm'))
+            j.save()
+
+            return JsonResponse({'status':'1','message':'success'})
+
+        return JsonResponse({'status':'0','message':'Failed to save Downtime Maintenance Log'})
+
+

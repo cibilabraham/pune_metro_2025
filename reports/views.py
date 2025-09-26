@@ -3653,7 +3653,7 @@ class AvailabilityDailyKilometreReadingReportView(View):
         dt_sc = req.get('dt_sc')
         dt_opm = req.get('dt_opm')
         dt_cm = req.get('dt_cm')
-        min_km = req.get('min_km')
+        number_of_trains = req.get('number_of_trains')
 
         mdbf_mdsaf = req.get('mdbf_mdsaf')
 
@@ -3713,36 +3713,36 @@ class AvailabilityDailyKilometreReadingReportView(View):
         
         
         
-        if FN_NAME == 'two':
-            if project != "all":
-                if Asset_data.filter(asset_type=lru_type,is_active=0).exists():
-                    Asset_data=Asset_data.filter(asset_type=lru_type)
-                    pbs_master_data = pbs_master_data.filter(id=lru_type)
-                else:
-                    response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                    return JsonResponse(response)    
-        elif FN_NAME == 'three':
-            if project != "all":
-                SUBSYSTEM=PBSMaster.objects.filter(project_id=project,is_active=0,system=system)
-                if not SUBSYSTEM.exists():
-                    response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                    return JsonResponse(response)
-                a=[]
-                for SUB in SUBSYSTEM:
-                    a.append(SUB.id)
-                Asset_data=Asset_data.filter(asset_type__in=a) 
-                pbs_master_data = pbs_master_data.filter(id__in=a)
-        else:
-            if project != "all":
-                SUBSYSTEM=PBSMaster.objects.filter(project_id=project,is_active=0)
-                if not SUBSYSTEM.exists():
-                    response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                    return JsonResponse(response)
-                a=[]
-                for SUB in SUBSYSTEM:
-                    a.append(SUB.id)
-                Asset_data=Asset_data.filter(asset_type__in=a) 
-                pbs_master_data = pbs_master_data.filter(id__in=a)
+        # if FN_NAME == 'two':
+        #     if project != "all":
+        #         if Asset_data.filter(asset_type=lru_type,is_active=0).exists():
+        #             Asset_data=Asset_data.filter(asset_type=lru_type)
+        #             pbs_master_data = pbs_master_data.filter(id=lru_type)
+        #         else:
+        #             response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+        #             return JsonResponse(response)    
+        # elif FN_NAME == 'three':
+        #     if project != "all":
+        #         SUBSYSTEM=PBSMaster.objects.filter(project_id=project,is_active=0,system=system)
+        #         if not SUBSYSTEM.exists():
+        #             response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+        #             return JsonResponse(response)
+        #         a=[]
+        #         for SUB in SUBSYSTEM:
+        #             a.append(SUB.id)
+        #         Asset_data=Asset_data.filter(asset_type__in=a) 
+        #         pbs_master_data = pbs_master_data.filter(id__in=a)
+        # else:
+        #     if project != "all":
+        #         SUBSYSTEM=PBSMaster.objects.filter(project_id=project,is_active=0)
+        #         if not SUBSYSTEM.exists():
+        #             response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+        #             return JsonResponse(response)
+        #         a=[]
+        #         for SUB in SUBSYSTEM:
+        #             a.append(SUB.id)
+        #         Asset_data=Asset_data.filter(asset_type__in=a) 
+        #         pbs_master_data = pbs_master_data.filter(id__in=a)
                 
         if FN_NAME == 'two':
             availability_target = pbs_master_data[0].availability_target
@@ -3760,69 +3760,72 @@ class AvailabilityDailyKilometreReadingReportView(View):
         for ASSET in Asset_data:
             asset_types.append(ASSET.asset_type)
 
+        findUnit = PBSUnit.objects.filter()
+        running_time = findUnit[0].running_time
+
             
-        if (lru_type or asset_types) and asset_types!=['']:
+        if True:
 
-            if mdbf_mdsaf == 'MDBF':
+            # if mdbf_mdsaf == 'MDBF':
 
-                if lru_type and lru_type!="all":
-                    if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
-                        response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                        return JsonResponse(response)
-                else:
-                    if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
-                        response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                        return JsonResponse(response)
+            #     if lru_type and lru_type!="all":
+            #         if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
+            #             response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+            #             return JsonResponse(response)
+            #     else:
+            #         if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0).exclude(failure_type='Other').exists():
+            #             response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+            #             return JsonResponse(response)
                     
-                if lru_type and lru_type!="all":
-                    if FailureData.objects.filter(asset_type=lru_type,is_active=0).exclude(failure_type='Other').exists():
-                        all_failure = FailureData.objects.filter(asset_type=lru_type,is_active=0).exclude(failure_type='Other')
-                        asset_count = Asset.objects.filter(asset_type=lru_type,is_active=0).count()
-                    else:
-                        response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                        return JsonResponse(response)
-                else:
-                    if FailureData.objects.filter(asset_type__in=asset_types,is_active=0).exclude(failure_type='Other').exists():
-                        all_failure = FailureData.objects.filter(asset_type__in=asset_types,is_active=0).exclude(failure_type='Other')
-                        asset_count = Asset.objects.filter(asset_type__in=asset_types,is_active=0).count()
-                    else:
-                        response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                        return JsonResponse(response)
+            #     if lru_type and lru_type!="all":
+            #         if FailureData.objects.filter(asset_type=lru_type,is_active=0).exclude(failure_type='Other').exists():
+            #             all_failure = FailureData.objects.filter(asset_type=lru_type,is_active=0).exclude(failure_type='Other')
+            #             asset_count = Asset.objects.filter(asset_type=lru_type,is_active=0).count()
+            #         else:
+            #             response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+            #             return JsonResponse(response)
+            #     else:
+            #         if FailureData.objects.filter(asset_type__in=asset_types,is_active=0).exclude(failure_type='Other').exists():
+            #             all_failure = FailureData.objects.filter(asset_type__in=asset_types,is_active=0).exclude(failure_type='Other')
+            #             asset_count = Asset.objects.filter(asset_type__in=asset_types,is_active=0).count()
+            #         else:
+            #             response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+            #             return JsonResponse(response)
 
-            else:
+            # else:
 
-                if lru_type and lru_type!="all":
-                    if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
-                        response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                        return JsonResponse(response)
-                else:
-                    if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
-                        response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                        return JsonResponse(response)
+            #     if lru_type and lru_type!="all":
+            #         if not FailureData.objects.filter(asset_type=lru_type, date__range=[start_date,end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+            #             response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+            #             return JsonResponse(response)
+            #     else:
+            #         if not FailureData.objects.filter(asset_type__in=asset_types, date__range=[start_date,end_date],is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+            #             response = {'status':'1','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+            #             return JsonResponse(response)
                     
-                if lru_type and lru_type!="all":
-                    if FailureData.objects.filter(asset_type=lru_type,is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
-                        all_failure = FailureData.objects.filter(asset_type=lru_type,is_active=0,failure_category='SAF').exclude(failure_type='Other')
-                        asset_count = Asset.objects.filter(asset_type=lru_type,is_active=0).count()
-                    else:
-                        response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                        return JsonResponse(response)
-                else:
-                    if FailureData.objects.filter(asset_type__in=asset_types,is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
-                        all_failure = FailureData.objects.filter(asset_type__in=asset_types,is_active=0,failure_category='SAF').exclude(failure_type='Other')
-                        asset_count = Asset.objects.filter(asset_type__in=asset_types,is_active=0).count()
-                    else:
-                        response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
-                        return JsonResponse(response)
+            #     if lru_type and lru_type!="all":
+            #         if FailureData.objects.filter(asset_type=lru_type,is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+            #             all_failure = FailureData.objects.filter(asset_type=lru_type,is_active=0,failure_category='SAF').exclude(failure_type='Other')
+            #             asset_count = Asset.objects.filter(asset_type=lru_type,is_active=0).count()
+            #         else:
+            #             response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+            #             return JsonResponse(response)
+            #     else:
+            #         if FailureData.objects.filter(asset_type__in=asset_types,is_active=0,failure_category='SAF').exclude(failure_type='Other').exists():
+            #             all_failure = FailureData.objects.filter(asset_type__in=asset_types,is_active=0,failure_category='SAF').exclude(failure_type='Other')
+            #             asset_count = Asset.objects.filter(asset_type__in=asset_types,is_active=0).count()
+            #         else:
+            #             response = {'Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
+            #             return JsonResponse(response)
             
-            print(f"asset_count = {asset_count}")
+            # print(f"asset_count = {asset_count}")
 
-            asset_quantity = pbs_master_data[0].asset_quantity
+            # asset_quantity = pbs_master_data[0].asset_quantity
 
-            asset_quantity_new = Product.objects.filter(product_id=project)
-            asset_quantity = asset_quantity_new[0].num_of_trains
+            # asset_quantity_new = Product.objects.filter(product_id=project)
+            # asset_quantity = asset_quantity_new[0].num_of_trains
 
-            print(f"asset_quantity: {asset_quantity}")
+            # print(f"asset_quantity: {asset_quantity}")
 
             ranges = self.get_month_ranges(start_date,end_date)
 
@@ -3830,7 +3833,15 @@ class AvailabilityDailyKilometreReadingReportView(View):
 
             for start, end in ranges:
                 print(f"Start: {start} , End: {end}")
-                operation_hr = self.fetchTotalKilometer(start,end,min_km,running_time)
+                delta = end - start
+                # Number of days (inclusive)
+                days_inclusive = delta.days + 1
+                print("Days difference (inclusive):", days_inclusive)
+
+                operation_hr = int(number_of_trains) * int(running_time) * float(days_inclusive)
+
+
+                # operation_hr = self.fetchTotalKilometer(start,end,min_km,running_time)
                 print(f"operation_hr: {operation_hr}")
 
                 if operation_hr != 0 and operation_hr != '0':
@@ -3845,31 +3856,46 @@ class AvailabilityDailyKilometreReadingReportView(View):
 
                 handing_over_time_to_repair_hrs = 0
 
-                if mdbf_mdsaf == 'MDBF':
-                    if lru_type and lru_type!="all":
-                        failure_dt = FailureData.objects.filter(asset_type=lru_type,is_active=0,date__range=[start,end]).exclude(failure_type='Other')
-                    else:
-                        failure_dt = FailureData.objects.filter(asset_type__in=asset_types,is_active=0,date__range=[start,end]).exclude(failure_type='Other')
+                # if mdbf_mdsaf == 'MDBF':
+                #     if lru_type and lru_type!="all":
+                #         failure_dt = FailureData.objects.filter(asset_type=lru_type,is_active=0,date__range=[start,end]).exclude(failure_type='Other')
+                #     else:
+                #         failure_dt = FailureData.objects.filter(asset_type__in=asset_types,is_active=0,date__range=[start,end]).exclude(failure_type='Other')
+                # else:
+                #     if lru_type and lru_type!="all":
+                #         failure_dt = FailureData.objects.filter(asset_type=lru_type,is_active=0,date__range=[start,end],failure_category='SAF').exclude(failure_type='Other')
+                #     else:
+                #         failure_dt = FailureData.objects.filter(asset_type__in=asset_types,is_active=0,date__range=[start,end],failure_category='SAF').exclude(failure_type='Other')
+
+                # if failure_dt:
+                #     for fd in failure_dt:
+                #         failure_id = fd.failure_id
+                #         if JobCard.objects.filter(failure_id=fd).exists():
+                #             JobCardDatas = JobCard.objects.filter(failure_id=fd)
+                #             down_time = JobCardDatas[0].down_time
+                #             print(f"job_card_no: {JobCardDatas[0].job_card_no}")
+                #             if down_time != "" and down_time != None:
+                #                 print(f"down_time: {JobCardDatas[0].down_time}")
+                #                 handing_over_time_to_repair_hrs = int(handing_over_time_to_repair_hrs) + int(down_time)
+
+
+                # print(f"handing_over_time_to_repair_hrs: {handing_over_time_to_repair_hrs}")
+                cust_date = datetime.datetime.strptime(str(start), '%Y-%m-%d').strftime('%Y-%m')
+                cust_date = f"{cust_date}-01"
+                # print(f"cust_date:{cust_date}")
+                if DowntimeMaintenanceLog.objects.filter(date=cust_date).exists():
+                    setDt = DowntimeMaintenanceLog.objects.filter(date=cust_date)
+                    dt_sc = setDt[0].dt_sc
+                    dt_cm = setDt[0].dt_cm
+                    dt_opm = setDt[0].dt_opm
                 else:
-                    if lru_type and lru_type!="all":
-                        failure_dt = FailureData.objects.filter(asset_type=lru_type,is_active=0,date__range=[start,end],failure_category='SAF').exclude(failure_type='Other')
-                    else:
-                        failure_dt = FailureData.objects.filter(asset_type__in=asset_types,is_active=0,date__range=[start,end],failure_category='SAF').exclude(failure_type='Other')
+                    dt_sc = 0
+                    dt_cm = 0
+                    dt_opm = 0
 
-                if failure_dt:
-                    for fd in failure_dt:
-                        failure_id = fd.failure_id
-                        if JobCard.objects.filter(failure_id=fd).exists():
-                            JobCardDatas = JobCard.objects.filter(failure_id=fd)
-                            down_time = JobCardDatas[0].down_time
-                            print(f"job_card_no: {JobCardDatas[0].job_card_no}")
-                            if down_time != "" and down_time != None:
-                                print(f"down_time: {JobCardDatas[0].down_time}")
-                                handing_over_time_to_repair_hrs = int(handing_over_time_to_repair_hrs) + int(down_time)
+                print(f"dt_sc:{dt_sc}, dt_opm:{dt_opm}, dt_cm:{dt_cm}")
 
-
-                print(f"handing_over_time_to_repair_hrs: {handing_over_time_to_repair_hrs}")
-                Availability = ( 1 - ( ( float(handing_over_time_to_repair_hrs) + float(dt_sc) + float(dt_opm) + float(dt_cm) ) / float(cum_operation_hr) )) * 100
+                Availability = ( 1 - ( ( float(dt_sc) + float(dt_opm) + float(dt_cm) ) / float(cum_operation_hr) )) * 100
                 print(f"Availability: {Availability}")
 
                 Avalability_data.append({'x':start.strftime('%Y-%m-%d'), 'y':round(Availability,2),})

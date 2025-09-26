@@ -87,21 +87,21 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">     
+                <div class="col-md-3 hide d-none">     
                     <div class="form-group">
                         <label >DT(SC) (hrs)</label>
                         <input type="number" step="any" class="form-control " id="dt_sc" value="1" required>
                     </div>
                 </div>
 
-                <div class="col-md-3">     
+                <div class="col-md-3 hide d-none">     
                     <div class="form-group">
                         <label >DT(OPM) (hrs)</label>
                         <input type="number" step="any" class="form-control " id="dt_opm" value="0.5" required>
                     </div>
                 </div>
 
-                <div class="col-md-3">     
+                <div class="col-md-3 hide d-none">     
                     <div class="form-group">
                         <label >DT(CM) (hrs)</label>
                         <input type="number" step="any" class="form-control " id="dt_cm" value="1" required>
@@ -110,12 +110,12 @@
 
                  <div class="col-md-3">     
                     <div class="form-group">
-                        <label >MINIMUM NO OF KILOMETER</label>
-                        <input type="number" step="any" class="form-control " id="min_km" value="0" required>
+                        <label >NUMBER OF TRAINS</label>
+                        <input type="number" step="any" class="form-control " id="number_of_trains" value="0" required>
                     </div>
                 </div>
 
-                   <div class="col-md-3">     
+                <div class="col-md-3 hide d-none">     
                     <div class="form-group">
                         <label for="mdbf_mdsaf">MDBF / MDBSAF</label>
                         <select class="form-control" id="mdbf_mdsaf" name="mdbf_mdsaf">
@@ -332,7 +332,7 @@
         var dt_sc = $('#dt_sc').val();
         var dt_opm = $('#dt_opm').val();
         var dt_cm = $('#dt_cm').val();
-        var min_km = $('#min_km').val();
+        var number_of_trains = $('#number_of_trains').val();
 
         if(dt_sc == ""){
             $('#dt_sc').focus();
@@ -349,8 +349,8 @@
             return false;
         }
 
-          if(min_km == ""){
-            $('#min_km').focus();
+          if(number_of_trains == ""){
+            $('#number_of_trains').focus();
             return false;
         }
 
@@ -395,7 +395,7 @@
         var dt_sc = $('#dt_sc').val();
         var dt_opm = $('#dt_opm').val();
         var dt_cm = $('#dt_cm').val();
-        var min_km = $('#min_km').val();
+        var number_of_trains = $('#number_of_trains').val();
 
         var mdbf_mdsaf = $('select[name=mdbf_mdsaf] option').filter(':selected').val()
 
@@ -417,7 +417,7 @@
             'dt_sc':dt_sc,
             'dt_opm':dt_opm,
             'dt_cm':dt_cm,
-            'min_km':min_km,
+            'number_of_trains':number_of_trains,
             'mdbf_mdsaf':mdbf_mdsaf
           },
           success: function (response) {
@@ -441,7 +441,7 @@
                     $("#print_chart").addClass('d-none');
                     $(".chart_searchby").hide()
                     $('.nodata').removeClass('d-none')
-                    swal('This system does not set Daily Kilometre Reading')
+                    swal('Please check if the number of trains or the running time is zero.')
                     hideloader();
                 }else{
                     getChart(response)

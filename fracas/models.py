@@ -836,3 +836,10 @@ class NCRImagesList(models.Model):
 
     def __str__(self):
         return ''
+
+class DowntimeMaintenanceLog(models.Model):
+    log_id = models.AutoField(primary_key=True)
+    date = models.DateField(null=True)
+    dt_sc = models.CharField(max_length=550, null=True, blank=True)
+    dt_opm = models.CharField(max_length=550, null=True, blank=True)
+    dt_cm = models.CharField(max_length=550, null=True, blank=True)

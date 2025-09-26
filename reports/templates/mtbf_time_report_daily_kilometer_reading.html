@@ -19,11 +19,11 @@
                 <div class="col-lg-12">
                     {% if display_val %}
                     <h3 class="page-header">
-                        Actual MDBF/MDBSAF vs Time
+                        Actual MDBF vs Time
                     </h3>
                     {% else %}
                         <h3 class="page-header">
-                            Actual MDBF/MDBSAF vs Time
+                            Actual MDBF vs Time
                         </h3>
                     {% endif %}
                     <!--ol class="breadcrumb">
@@ -98,9 +98,9 @@
                     </div>
                 </div>
 
-                   <div class="col-md-3">     
+                <div class="col-md-3 hide d-none">     
                     <div class="form-group">
-                        <label for="mdbf_mdsaf">MDBF / MDBSAF</label>
+                        <label for="mdbf_mdsaf">MDBF </label>
                         <select class="form-control" id="mdbf_mdsaf" name="mdbf_mdsaf">
                             <option value="MDBF" selected>MDBF</option>
                             <option value="MDBSAF">MDBSAF</option>
@@ -483,11 +483,7 @@ html2canvas(tableElement, {
         var startDate = $('#startDate').val() ;
         var endDate = $('#endDate').val() ;
         var mdbf_mdsaf = $('select[name=mdbf_mdsaf] option').filter(':selected').val()
-        if(mdbf_mdsaf == 'MDBF'){
-            display_val = 'MDBF';                
-        }else{
-            display_val = 'MDBSAF'; 
-        }
+        display_val = 'MDBF'; 
 
         $.ajax({
           url: "/reports/daily_kilometre_reading_actual_mtbf/",
@@ -503,7 +499,7 @@ html2canvas(tableElement, {
             'start_date': startDate,
             'end_date' : endDate,
             'FN_NAME':FN_NAME,
-            'mdbf_mdsaf':mdbf_mdsaf,
+            'mdbf_mdsaf':'MDBSAF',
           },
           success: function (response) {
                 console.log(response)

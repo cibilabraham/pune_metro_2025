@@ -1,0 +1,167 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                  
+                    <h3 class="page-header">
+                        {% if data.id != '' %}
+                        Update Downtime Maintenance Log
+
+                        {% else %}
+                        Add Downtime Maintenance Log
+
+                        {% endif %}
+                    </h3>
+                  
+                </div>
+
+                 <div class="col-lg-6 mb-3">
+    
+    
+                    <a href="/forms/downtime_maintenance_log/"><button class="btn btn-primary btn-icon-split float-right m-2" > 
+                    <span class="icon text-white-50">
+                        <i class="fas fa-angle-left"></i>
+                        </span>             
+                    <span class="text">Back</span>
+                    </button></a>
+                
+                </div>
+
+            </div>
+
+
+            <form id="addKilometreReadingForm"> 
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="date">* Month (MM/YYYY):</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="date" name="date" value="{{data.date|date:'m/Y'}}" >
+                            <div class="invalid-feedback">
+                            Please enter  Date.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row " style="padding: 20px;">
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="date">*DT(SC) (hrs) :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="dt_sc" name="dt_sc" value="{{data.dt_sc}}" >
+                            <div class="invalid-feedback">
+                            Please enter  DT(SC) (hrs).
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="date">*DT(OPM) (hrs) :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="dt_opm" name="dt_opm" value="{{data.dt_opm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  DT(OPM) (hrs).
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="date">*DT(CM) (hrs) :</label>
+                            <input type="text" autocomplete="off" required="required" class="form-control date-time" id="dt_cm" name="dt_cm" value="{{data.dt_cm}}" >
+                            <div class="invalid-feedback">
+                            Please enter  DT(CM) (hrs).
+                            </div>
+                        </div>
+                    </div>
+
+                  
+
+
+                </div>
+
+
+                <div class="row mb-4" align="right">
+                    <div class="col-12">  
+                        <button type="submit" class="btn btn-primary mt-2" onClick="return SetButton(1);">Save</button>
+
+                        <a href="/forms/downtime_maintenance_log/"><button type="button" class="btn btn-primary btn-icon-split float-right m-2" >              
+                        <span class="text">Cancel</span>
+                        </button></a>
+                    
+                    </div>
+                </div>
+
+
+
+
+
+            </form>
+
+
+       
+
+
+           
+            
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+
+    $(document).ready(function() {
+        $('#date').datepicker({
+          autoclose: true,
+          startView: "months",    // show months view first
+            minViewMode: "months",   // restrict to month/year only
+          format: 'mm/yyyy',});
+
+    });
+
+
+    $("#addKilometreReadingForm").submit(function(e) {
+        e.preventDefault();
+
+        var form = $('#addKilometreReadingForm')[0];  // Get the raw DOM form element
+        var formData = new FormData(form);    // Create FormData object
+
+        formData.append('id', '{{ data.id }}');
+
+        $.ajax({
+            url: "/forms/downtime_maintenance_log/add_downtime_maintenance_log/",
+            method: 'POST',
+            data: formData,
+            dataType: 'json',
+            processData: false,     // Prevent jQuery from processing data
+            contentType: false,     // Let browser set content type including boundaries
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+
+            success: function (response) {
+                if (response.status == '1') {
+                    window.location.href  = "/forms/downtime_maintenance_log/";
+                } else {
+                    swal(response.message);
+                }
+            },
+            error: function () {
+                swal('An error occurred while submitting the data.');
+            }
+        });
+    });
+
+
+     
+</script>
+
+{% endblock sb_admin_js %}

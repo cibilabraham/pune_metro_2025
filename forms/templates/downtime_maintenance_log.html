@@ -1,0 +1,170 @@
+{% extends "django_sb_admin/base.html" %}
+<!doctype html>
+{% block sb_admin_header %}
+  {% block branding %}
+    <img src="/static/Riyadh-metro-logo.png" style="background: transparent;width: 60px;">
+    <style>
+        th:first-child,td:first-child,th:last-child,td:last-child,th:nth-child(2),td:nth-child(2) {  
+        background-color:white;    
+        }
+
+        table.dataTable th, table.dataTable td {
+          white-space: nowrap;
+        }
+
+    </style>
+    <!-- <h1 id="site-name">Asset Optima</h1> -->
+  {% endblock %}
+{% endblock sb_admin_header %}
+{% block sb_admin_content %}
+              <!-- Page Heading -->
+
+            <div class="row mb-3">
+                <div class="col-lg-12">
+                    <h3 class="page-header" style="margin-left:-15px">
+                      Downtime Maintenance Log
+                    </h3>
+                    <!--ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> Forms
+                        </li>
+                    </ol-->
+                </div>
+            </div>
+            <!-- /.row -->
+
+
+             {% if request.session.user_Role == 1 or request.session.user_Role == 2 or request.session.user_Role == 3 or request.session.user_Role == 5 %}
+            <div class="row ">
+            <div class="col-lg-12 mb-5">
+
+               
+                <a href="/forms/downtime_maintenance_log/add_downtime_maintenance_log/">  
+                    <button class="btn btn-success btn-icon-split float-right m-2" >            
+                    <span class="text">Add Downtime Maintenance Log</span>
+                    <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                    </span>
+                    </button>
+                </a>
+            </div>
+            </div>
+             {% endif %}  
+          
+
+
+            
+          <div class="row">
+            <div class="col-md-12">
+                <table id="example" class="table stripe row-border order-column table-bordered" style="width:100%">
+                    <thead>
+                      
+                        <tr>
+                            <th class="bg-white">Date</th>
+                            <th>DT(SC) (hrs)</th>
+                            <th>DT(OPM) (hrs)</th>
+                            <th>DT(CM) (hrs)</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+{% endblock sb_admin_content %}
+{% block sb_admin_js %}
+<script>
+    $(document).ready(function() {
+       
+        $('#example').DataTable();
+        getDefectData();
+       
+    });
+
+   
+
+function getDefectData(){
+
+   
+
+        $('#example').DataTable().destroy();
+        $('#example').DataTable({
+                  dom: 'Bfrtip',
+                  buttons: [
+  {
+    extend: 'excel',
+    title: 'Downtime Maintenance Log',
+    className: 'btn-outline-primary',
+    exportOptions: {
+      columns: ':visible',
+      modifier: {
+        page: 'all'
+      }
+    }
+  },
+  {
+    extend: 'pdfHtml5',
+    title: 'Downtime Maintenance Log',
+    // orientation: 'landscape',
+    // pageSize: 'A3',
+    className: 'btn-outline-primary',
+    exportOptions: {
+      columns: ':visible',
+      modifier: {
+        page: 'all'  // ✅ ensures all rows get exported
+      }
+    },
+   
+  }
+
+],
+
+                  scrollY:        "400px",
+                    scrollX:        true,
+                    scrollCollapse: true,
+                    paging:         true,
+                    fixedColumns:   {
+                        left: 1
+                    },
+                  ordering: false,  // <-- disable all ordering here
+                  "searching" : true,
+                  'ajax' : {
+                      "url": "/forms/downtime_maintenance_log/",
+                      "type": "POST",
+                      "headers": {'X-CSRFToken': '{{ csrf_token }}'}
+                  },
+                  "columns" : [
+                   
+                    {"data":null,"render":function(item){
+
+                            if(item.date != null){
+                                
+                                if( item.user_Role == 1 || item.user_Role == 2 || item.user_Role == 5 ){
+                                    return '<a href="/forms/downtime_maintenance_log/add_downtime_maintenance_log/'+ item.id +'" >'+ moment(item.date).format('MM-YYYY') +'</a> ';
+                                    
+                                }else{
+                                    return moment(item.date).format('MM-YYYY');
+                                }
+
+                            }
+
+                            return item.date;
+                        
+                        }
+                    },
+                      {"data" : "dt_sc"},
+                      {"data" : "dt_opm"},
+                      {"data" : "dt_cm"}
+                     
+
+                  ]
+        });
+    }
+
+</script>
+
+{% endblock sb_admin_js %}

@@ -105,5 +105,9 @@ urlpatterns = [
     path('get_all_Serialnumber/',GetAllSerialNumber.as_view(),name='get_all_Serialnumber'),
     path('location_id_from_asset_type_ncr/',LocatioIDFromAssetTypeNcr.as_view(),name='location_id_from_asset_type_ncr'),
     path('get_all_Serialnumber_ncr/',GetAllSerialNumberNcr.as_view(),name='get_all_Serialnumber_ncr'),
+
+    path('downtime_maintenance_log/', ViewDowntimeMaintenanceLog.as_view(), name='downtime_maintenance_log'),
+    path('downtime_maintenance_log/add_downtime_maintenance_log/',AddDowntimeMaintenanceLog.as_view(),name='add_downtime_maintenance_log'),
+    path('downtime_maintenance_log/add_downtime_maintenance_log/<int:id>/',AddDowntimeMaintenanceLog.as_view(),name='add_downtime_maintenance_log'),
     
 ]
