@@ -109,5 +109,6 @@ urlpatterns = [
     path('downtime_maintenance_log/', ViewDowntimeMaintenanceLog.as_view(), name='downtime_maintenance_log'),
     path('downtime_maintenance_log/add_downtime_maintenance_log/',AddDowntimeMaintenanceLog.as_view(),name='add_downtime_maintenance_log'),
     path('downtime_maintenance_log/add_downtime_maintenance_log/<int:id>/',AddDowntimeMaintenanceLog.as_view(),name='add_downtime_maintenance_log'),
+    path('downtime_maintenance_log/delete/',DeleteDowntimeMaintenanceLog.as_view(),name='delete_downtime_maintenance_log'),
     
 ]

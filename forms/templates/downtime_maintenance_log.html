@@ -67,6 +67,7 @@
                             <th>DT(SC) (hrs)</th>
                             <th>DT(OPM) (hrs)</th>
                             <th>DT(CM) (hrs)</th>
+                            <th></th>
                            
                         </tr>
                     </thead>
@@ -158,11 +159,50 @@ function getDefectData(){
                     },
                       {"data" : "dt_sc"},
                       {"data" : "dt_opm"},
-                      {"data" : "dt_cm"}
+                      {"data" : "dt_cm"},
+                       {"data":null,"render":function(item){
+                            if(item.user_Role < 4) return '<input type="button" value="delete" class="btn btn-danger" onClick="return deleteAsset('+ item.id +')">';
+                            else return '';
+                        }
+                    }
                      
 
                   ]
         });
+    }
+
+    function deleteAsset(id){
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false,
+            width: '300px'
+        },
+        function(){
+             $.ajax({
+                url: "/forms/downtime_maintenance_log/delete/",
+                method: 'GET',
+                dataType: 'json',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                data : {
+                    'id':id,
+                },
+                success: function (response) {
+                    swal("Deleted!", "Downtime Maintenance Log has been deleted.");
+                    getDefectData();
+                }
+            });     
+        });
+
+
+        /*if (confirm('Are you sure')) {
+           
+        } else {
+            return false;
+        }*/
     }
 
 </script>

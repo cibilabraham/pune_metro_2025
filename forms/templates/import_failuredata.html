@@ -79,6 +79,7 @@
                                     <th>Failure type</th>
                                     <th>Asset Name</th>
                                     <th>Asset config id</th>
+                                    <th>Incident</th>
                                    
                                     <th></th>
                               </tr>
@@ -189,6 +190,11 @@
                                     <td>{{dU.asset_config_id}}
                                         {% if dU.asset_config_id_err != '1' %}
                                         <span class="text-danger"><br>{{dU.asset_config_id_err}}</span>
+                                        {% endif %}
+                                    </td>
+                                     <td>{{dU.incident}}
+                                        {% if dU.incident_err != '1' %}
+                                        <span class="text-danger"><br>{{dU.incident_err}}</span>
                                         {% endif %}
                                     </td>
                                    

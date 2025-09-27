@@ -3172,7 +3172,7 @@ class ImportFailureData(View):
             sheet = wb.sheet_by_index(0)
             row_count = sheet.nrows
             cols_count = sheet.ncols
-            if(cols_count is not 20):
+            if(cols_count is not 21):
                 message='The excel file is not in the required format'
                 return render(request, self.template_name, {"message": message})
 
@@ -3196,11 +3196,11 @@ class ImportFailureData(View):
             R1= sheet.cell_value(0,17)
             S1= sheet.cell_value(0,18)
             T1= sheet.cell_value(0,19)
-            # U1= sheet.cell_value(0,20)
+            U1= sheet.cell_value(0,20)
             # return render(request, self.template_name, {"message": B1})
             asset_type_array=[]
 
-            if(A1=='Failure ID' and B1=='Depot Location' and C1=='Failure Reported Date (DD-MM-YYYY)' and D1=='Failure Reported Time (HH:MM:SS)' and E1=='Train Set No' and F1=='CAR No' and G1=='System' and H1=='Subsytem' and I1=='Equipment' and J1=='Failure Location' and K1=='Failure description' and L1=='Immediate investigation' and M1=='Failure Category' and N1=='Category of Failure' and O1=='No. of Trips Cancelled' and P1=='Deboarding' and Q1=='Revenue Service Delay (mins)' and R1=='Failure type' and S1=='Asset Name' and T1=='Asset config id' ):
+            if(A1=='Failure ID' and B1=='Depot Location' and C1=='Failure Reported Date (DD-MM-YYYY)' and D1=='Failure Reported Time (HH:MM:SS)' and E1=='Train Set No' and F1=='CAR No' and G1=='System' and H1=='Subsytem' and I1=='Equipment' and J1=='Failure Location' and K1=='Failure description' and L1=='Immediate investigation' and M1=='Failure Category' and N1=='Category of Failure' and O1=='No. of Trips Cancelled' and P1=='Deboarding' and Q1=='Revenue Service Delay (mins)' and R1=='Failure type' and S1=='Asset Name' and T1=='Asset config id' and U1=='Incident' ):
                 # return render(request, self.template_name, {"message": 'required format'})
                 print('------COMPLETE VALIDATION ______') 
                 rowCountVar = 0
@@ -3249,6 +3249,7 @@ class ImportFailureData(View):
 
                     asset_type = sheet.cell_value(row,18)
                     asset_config_id=sheet.cell_value(row,19)
+                    incident=sheet.cell_value(row,20)
 
 
                     failure_id_err = '1'
@@ -3271,6 +3272,7 @@ class ImportFailureData(View):
                     failure_type_err = '1'
                     asset_type_err = '1'
                     asset_config_id_err = '1'
+                    incident_err = '1'
 
                     err_status = '1'
 
@@ -3430,7 +3432,12 @@ class ImportFailureData(View):
                         if not failure_type in failure_types :
                             failure_type_err = 'Invalid failure type'
 
-                    if failure_id_err != '1' or dept_location_err != '1' or date_err != '1' or time_err != '1' or location_id_err != '1' or sel_car_err != '1' or system_err != '1' or subsytem_err != '1' or equipment_err != '1' or location_err != '1' or event_description_err != '1' or immediate_investigation_err != '1' or category_of_failure_err != '1' or failure_category_err != '1' or no_of_trip_cancel_err != '1' or deboarding_err != '1' or revenue_service_delay_err != '1' or failure_type_err != '1' or asset_type_err != '1' or asset_config_id_err != '1':
+                    if incident == "":
+                        incident_err = 'Empty'
+                    elif incident != "Yes" and incident != "No" :
+                        incident_err = 'Invalid match – only Yes or No are accepted.'
+
+                    if failure_id_err != '1' or dept_location_err != '1' or date_err != '1' or time_err != '1' or location_id_err != '1' or sel_car_err != '1' or system_err != '1' or subsytem_err != '1' or equipment_err != '1' or location_err != '1' or event_description_err != '1' or immediate_investigation_err != '1' or category_of_failure_err != '1' or failure_category_err != '1' or no_of_trip_cancel_err != '1' or deboarding_err != '1' or revenue_service_delay_err != '1' or failure_type_err != '1' or asset_type_err != '1' or asset_config_id_err != '1' or incident_err != '1':
                         err_status = '0'
 
 
@@ -3476,7 +3483,9 @@ class ImportFailureData(View):
                         'revenue_service_delay_err' : revenue_service_delay_err,
                         'failure_type_err' : failure_type_err,
                         'asset_type_err' : asset_type_err,
-                        'asset_config_id_err' : asset_config_id_err
+                        'asset_config_id_err' : asset_config_id_err,
+                        'incident' : incident,
+                        'incident_err' : incident_err
 
                     })
             else:
@@ -3734,6 +3743,7 @@ class AddImportFailureData(View):
                 failure_type = items['failure_type']
                 asset_types = items['asset_type']
                 asset_config_ids = items['asset_config_id']
+                incident = items['incident']
 
                 f_data = None
 
@@ -3806,7 +3816,7 @@ class AddImportFailureData(View):
 
                     if failure_ext_id =="":
 
-                        r=FailureData(P_id=Project[0].project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,immediate_investigation=immediate_investigation,failure_type=failure_type,cm_description=cm_description,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,location_id=location_id,sel_car=sel_car,equipment=equipment,location=location,no_of_trip_cancel=no_of_trip_cancel,deboarding=deboarding,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay,detection='',replaced_asset_config_id='',oem_failure_reference='')
+                        r=FailureData(P_id=Project[0].project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,immediate_investigation=immediate_investigation,failure_type=failure_type,cm_description=cm_description,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,location_id=location_id,sel_car=sel_car,equipment=equipment,location=location,no_of_trip_cancel=no_of_trip_cancel,deboarding=deboarding,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay,detection='',replaced_asset_config_id='',oem_failure_reference='',incident=incident)
                         r.save()
 
                         f_data = r
@@ -3814,7 +3824,7 @@ class AddImportFailureData(View):
                         inserted+=1
                     else:
 
-                        FailureData.objects.filter(id=failure_ext_id).update(is_active=0,P_id=Project[0].project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,immediate_investigation=immediate_investigation,failure_type=failure_type,cm_description=cm_description,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,location_id=location_id,sel_car=sel_car,equipment=equipment,location=location,no_of_trip_cancel=no_of_trip_cancel,deboarding=deboarding,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay,detection='',replaced_asset_config_id='',oem_failure_reference='')
+                        FailureData.objects.filter(id=failure_ext_id).update(is_active=0,P_id=Project[0].project_id,asset_config_id_id=asset_config_id,mode_id_id=mode_id,defect_id=defect,asset_type=asset_type,failure_id=failure_id,event_description=event_description,date=date,time=time,immediate_investigation=immediate_investigation,failure_type=failure_type,cm_description=cm_description,cm_start_date=cm_start_date,cm_start_time=cm_start_time,cm_end_date=cm_end_date,cm_end_time=cm_end_time,location_id=location_id,sel_car=sel_car,equipment=equipment,location=location,no_of_trip_cancel=no_of_trip_cancel,deboarding=deboarding,revenue_service_delay=revenue_service_delay,dept_location=dept_location,failure_category=failure_category,service_delay=service_delay,detection='',replaced_asset_config_id='',oem_failure_reference='',incident=incident)
 
                         updated+=1
 
@@ -3843,6 +3853,34 @@ class AddImportFailureData(View):
                         else:
                             ju = JobCardIDs(year=current_year,month=current_month,last_id=new_job_id)
                             ju.save()
+
+                    if incident == 'Yes':
+                        eir_latest_id = 0
+                 
+                        if EIRIDs.objects.filter(year=current_year).exists():
+                            JOBID = EIRIDs.objects.filter(year=current_year)
+                            eir_latest_id = JOBID[0].last_id
+
+                        new_eir_id = int(eir_latest_id) + 1
+
+                        eir_card_no = f"Maha Metro/RS/{current_year}/{new_eir_id:04}"
+
+                        # print(eir_card_no)
+                        if not EIRGeneration.objects.filter(failure_id=f_data).exists():
+                          
+                            e = EIRGeneration(eir_gen_id=eir_card_no,failure_id=f_data)
+                            e.save()
+
+                            if EIRIDs.objects.filter(year=current_year).exists():
+                                print('----update------')
+                                EIRIDs.objects.filter(year=current_year).update(last_id=new_eir_id)
+                            else:
+                                print('----add------')
+                                ju = EIRIDs(year=current_year,last_id=new_eir_id)
+                                ju.save()
+
+
+                            print('crate EIR')
 
 
 
@@ -8507,7 +8545,7 @@ class AddDowntimeMaintenanceLog(View):
             record = DowntimeMaintenanceLog.objects.filter(log_id=id).first()
             if record:
                 data={ 
-                    'id' : '',
+                    'id' : id,
                     'date':record.date,
                     'dt_sc' : record.dt_sc,
                     'dt_opm' : record.dt_opm,
@@ -8542,5 +8580,17 @@ class AddDowntimeMaintenanceLog(View):
             return JsonResponse({'status':'1','message':'success'})
 
         return JsonResponse({'status':'0','message':'Failed to save Downtime Maintenance Log'})
+
+
+class DeleteDowntimeMaintenanceLog(View):
+    template_name = 'downtime_maintenance_log.html'
+
+    def get(self, request, *args, **kwargs):
+        req = request.GET
+        # print(req)
+        id = req.get('id')
+        DowntimeMaintenanceLog.objects.filter(log_id=id).delete()
+        return JsonResponse({'status':'1'})
+            
 
 
