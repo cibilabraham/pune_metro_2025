@@ -3844,8 +3844,10 @@ class AvailabilityDailyKilometreReadingReportView(View):
                 # operation_hr = self.fetchTotalKilometer(start,end,min_km,running_time)
                 print(f"operation_hr: {operation_hr}")
 
-                if operation_hr != 0 and operation_hr != '0':
-                    cum_operation_hr = float(cum_operation_hr) + float(operation_hr)
+                cum_operation_hr = operation_hr
+
+                # if operation_hr != 0 and operation_hr != '0':
+                #     cum_operation_hr = float(cum_operation_hr) + float(operation_hr)
 
                 if cum_operation_hr == 0 or cum_operation_hr == '0':
                     response = {'status':'3','Avaiability' : Avalability_data, 'availability_targets' : availability_target_data, 'rangeScale' : week_scale, 'scale':scale}
